@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VirtualWallet.DataAccess\VirtualWallet.DataAccess.csproj" />
+    <ProjectReference Include="..\VirtualWallet.DTO\VirtualWallet.DTO.csproj" />
+    <ProjectReference Include="..\VirtualWalletServices\VirtualWallet.Business.csproj" />
+  </ItemGroup>
+
+</Project>
