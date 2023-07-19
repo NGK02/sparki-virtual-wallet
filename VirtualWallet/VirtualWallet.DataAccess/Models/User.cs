@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace VirtualWallet.DataAccess.Models
 {
-	public class User
+	public class User : Entity
 	{
 		[Key]
 		public int Id { get; set; }
@@ -37,11 +37,14 @@ namespace VirtualWallet.DataAccess.Models
 
 		public int WalletId { get; set; }
 
-		[ForeignKey("WalletId")]
 		public Wallet Wallet { get; set; }
 
 		public int RoleId { get; set; } = 2;
 		public Role Role { get; set; }
+
+		public List<Transaction> Incoming { get; set; }
+
+		public List<Transaction> Outgoing { get; set; }
 
 		public string ProfilePicPath { get; set; }
 	}
