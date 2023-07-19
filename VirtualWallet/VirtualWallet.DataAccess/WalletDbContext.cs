@@ -48,7 +48,12 @@ namespace VirtualWallet.DataAccess
 				.HasForeignKey<User>(u => u.WalletId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			builder.Entity<Balance>()
+            builder.Entity<User>()
+                .HasMany(u => u.Cards)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId);
+
+            builder.Entity<Balance>()
 				.HasKey(cb => new { cb.CurrencyId, cb.WalletId });
 
 			builder.Entity<Balance>()
@@ -69,12 +74,12 @@ namespace VirtualWallet.DataAccess
 				.WithMany(u => u.Incoming)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			//modelBuilder.Entity<Blog>()
-			//.HasOne(e => e.Header)
-			//.WithOne(e => e.Blog)
-			//.HasForeignKey<BlogHeader>(e => e.BlogId)
-			//.IsRequired();
-		}
+            //modelBuilder.Entity<Blog>()
+            //.HasOne(e => e.Header)
+            //.WithOne(e => e.Blog)
+            //.HasForeignKey<BlogHeader>(e => e.BlogId)
+            //.IsRequired();
+        }
 
 		protected void CreateSeed(ModelBuilder builder)
 		{
@@ -356,11 +361,43 @@ namespace VirtualWallet.DataAccess
 
 			};
 
-			builder.Entity<Role>().HasData(roles);
+			IList<Card> cards = new List<Card>
+			{
+                new Card
+				{
+                    CardHolder = "Georgi Georgiev",
+                    CardNumber = 1234567890123456,
+                    CheckNumber = 123,
+                    ExpirationDate = new DateTime(2023, 12, 31),
+                    Id = 1,
+                    UserId = 1
+                },
+				new Card
+				{
+                    CardHolder = "Nikolai Barekov",
+                    CardNumber = 9876543210987654,
+                    CheckNumber = 456,
+                    ExpirationDate = new DateTime(2024, 12, 31),
+                    Id = 2,
+                    UserId = 2
+                },
+				new Card
+				{
+                    CardHolder = "Shtilian Uzunov",
+                    CardNumber = 1111222233334444,
+                    CheckNumber = 789,
+                    ExpirationDate = new DateTime(2022, 10, 31),
+                    Id = 3,
+                    UserId = 3
+                }
+            };
+
+            builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);
 			builder.Entity<Balance>().HasData(balances);
+			builder.Entity<Card>().HasData(cards);
 		}
 	}
 }
