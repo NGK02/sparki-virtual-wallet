@@ -1,12 +1,19 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DTO.UserDTO;
 
 namespace VirtualWallet.Business.AutoMapper
 {
-	internal class AutoMapperProfile
+	public class AutoMapperProfile:Profile
 	{
+		public AutoMapperProfile()
+		{
+			CreateMap<CreateUserDTO, User>();
+		}
 	}
 }

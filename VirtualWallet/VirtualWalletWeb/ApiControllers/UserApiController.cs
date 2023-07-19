@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtualWallet.Business.Services;
 using VirtualWallet.DataAccess.Models;
@@ -10,29 +11,36 @@ namespace VirtualWallet.Web.ApiControllers
 	[Route("api/users")]
 	public class UserApiController : ControllerBase
 	{
-		//[HttpPost("")]
-		//public IActionResult CreateUser([FromBody] RegisterUserDTO userDTO)
-		//{
-		//	try
-		//	{
-		//		User mappedUser = mapper.Map<User>(userDTO);
-		//		var createdUser = userService.CreateUser(mappedUser);
-		//		GetUserDTO result = mapper.Map<GetUserDTO>(createdUser);
-		//		return Ok(result);
-		//	}
-		//	catch (EmailAlreadyExistException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-		//	}
-		//	catch (UsernameAlreadyExistException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		return BadRequest(e.Message);
-		//	}
-		//}
+		private readonly IMapper mapper;
+		public UserApiController(IMapper mapper) 
+		{ 
+			this.mapper = mapper;
+		}
+
+		[HttpPost("")]
+		public IActionResult CreateUser([FromBody] CreateUserDTO userDTO)
+		{
+			try
+			{
+				User mappedUser = mapper.Map<User>(userDTO);
+				//var createdUser = userService.CreateUser(mappedUser);
+				//GetUserDTO result = mapper.Map<GetUserDTO>(createdUser);
+				//return Ok(result);
+				return Ok();
+			}
+			//catch (EmailAlreadyExistException e)
+			//{
+			//	return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			//}
+			//catch (UsernameAlreadyExistException e)
+			//{
+			//	return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			//}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
 		//[HttpGet("")]
 		//public IActionResult GetUserByUsername([FromHeader] string credentials)
 		//{

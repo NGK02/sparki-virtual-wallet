@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.DTO.UserDTO
 {
-	internal class RegisterUser
+	public class CreateUserDTO
 	{
+		public string UserName { get; set;}
 	}
 }
