@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,11 @@ namespace VirtualWallet.DataAccess.Models
 
 		[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a valid phone number.")]
 		public string PhoneNumber { get; set; }
+
+		public int WalletId { get; set; }
+
+		[ForeignKey("WalletId")]
+		public Wallet Wallet { get; set; }
 
 		public int RoleId { get; set; } = 2;
 		public Role Role { get; set; }

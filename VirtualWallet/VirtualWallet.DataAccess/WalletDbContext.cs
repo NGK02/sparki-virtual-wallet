@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
@@ -31,6 +33,37 @@ namespace VirtualWallet.DataAccess
 		}
 		protected void ConfigureMigration(ModelBuilder builder)
 		{
+			builder.Entity<Wallet>()
+			.Property(w => w.BGN)
+			.HasPrecision(18, 6);
+
+			builder.Entity<Wallet>()
+			.Property(w => w.CHF)
+			.HasPrecision(18, 6);
+
+			builder.Entity<Wallet>()
+			.Property(w => w.EUR)
+			.HasPrecision(18, 6);
+
+			builder.Entity<Wallet>()
+			.Property(w => w.USD)
+			.HasPrecision(18, 6);
+
+			builder.Entity<Wallet>()
+			.Property(w => w.GBP)
+			.HasPrecision(18, 6);
+
+			builder.Entity<User>()
+				.HasOne(u => u.Wallet)
+				.WithOne(vw => vw.User)
+				//.HasForeignKey(vw=>vw.)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			//modelBuilder.Entity<Blog>()
+			//.HasOne(e => e.Header)
+			//.WithOne(e => e.Blog)
+			//.HasForeignKey<BlogHeader>(e => e.BlogId)
+			//.IsRequired();
 
 		}
 		protected void CreateSeed(ModelBuilder builder)
@@ -63,7 +96,8 @@ namespace VirtualWallet.DataAccess
 				Username = "goshoXx123",
 				Email = "gosho@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 1
 
                 //123
             },
@@ -75,7 +109,8 @@ namespace VirtualWallet.DataAccess
 				Username = "BarekaXx123",
 				Email = "Barekov@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 2
 
                 //123
 
@@ -88,7 +123,8 @@ namespace VirtualWallet.DataAccess
 				Username = "Uzunkata",
 				Email = "Uzunkata@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 3
 
                 //123
             },
@@ -100,7 +136,8 @@ namespace VirtualWallet.DataAccess
 				Username = "Cvete123",
 				Email = "Cvetan@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 4
 
                 //123
             },
@@ -112,7 +149,8 @@ namespace VirtualWallet.DataAccess
 				Username = "BrainDamage123",
 				Email = "Kostev@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 5
 
                 //123
             },
@@ -125,7 +163,7 @@ namespace VirtualWallet.DataAccess
 				Email = "Admin@gmail.com",
 				Password = "MTIz",
 				RoleId = 3,
-				ProfilePicPath="/Images/UserProfilePics/35c6a7f8-decb-440c-853e-d32b5d0a3c64_3853-136116.jpg"
+				WalletId = 6
 
 
                 //123
@@ -138,7 +176,8 @@ namespace VirtualWallet.DataAccess
 				Username = "TopAndreika",
 				Email = "Andrea@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 7
 
                 //123
             },
@@ -150,7 +189,8 @@ namespace VirtualWallet.DataAccess
 				Username = "TopEmanuelka",
 				Email = "Emanuela@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 8
 
                 //123
             },
@@ -162,90 +202,68 @@ namespace VirtualWallet.DataAccess
 				Username = "Katrin",
 				Email = "Katrin@gmail.com",
 				Password = "MTIz",
-				RoleId = 2
+				RoleId = 2,
+				WalletId = 9
 
                 //123
             },
-			//new User()
-			//{
-			//	Id = 10,
-			//	FirstName = "Atanas",
-			//	LastName = "Iliev",
-			//	Username = "Nachosa",
-			//	Email = "Nachosa@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2,
-			//	ProfilePicPath="/Images/UserProfilePics/70f63493-d80b-44ed-a8cc-36e8b84b140c_photo.jpeg"
+			};
 
-   //             //123
-   //         },
-			//new User()
-			//{
-			//	Id = 11,
-			//	FirstName = "Nikolai",
-			//	LastName = "Gigov",
-			//	Username = "Nikolai",
-			//	Email = "Gigov@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2
+			IList<Wallet> wallets = new List<Wallet>
+			{
+				new Wallet()
+			{
+				Id = 1,
+				UserId = 1,
+			},
+					new Wallet()
+			{
+				Id = 2,
+				UserId = 2,
+			},
+						new Wallet()
+			{
+				Id = 3,
+				UserId = 3,
+			},
+					new Wallet()
+			{
+				Id = 4,
+				UserId = 4,
+			},
+						new Wallet()
+			{
+				Id = 5,
+				UserId = 5
+			},
+					new Wallet()
+			{
+				Id = 6,
+				UserId = 6,
+			},
+						new Wallet()
+			{
+				Id = 7,
+				UserId = 7,
+			},
+					new Wallet()
+			{
+				Id = 8,
+				UserId = 8,
+			},
+								new Wallet()
+			{
+				Id = 9,
+				UserId = 9,
+			},
 
-   //             //123
-   //         },
-			//new User()
-			//{
-			//	Id = 12,
-			//	FirstName = "Vlado",
-			//	LastName = "Vladov",
-			//	Username = "BatVlad",
-			//	Email = "Vlad@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2
 
-   //             //123
-   //         },
-			//new User()
-			//{
-			//	Id = 13,
-			//	FirstName = "Ivan",
-			//	LastName = "Vanov",
-			//	Username = "BatVanko",
-			//	Email = "Vanko@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2,
-			//	ProfilePicPath="/Images/UserProfilePics/6c456879-135e-482b-9ba9-bdbda1e6fe8e_309988-profileavatar.jpeg"
-
-   //             //123
-   //         },
-			//new User()
-			//{
-			//	Id = 14,
-			//	FirstName = "Petar",
-			//	LastName = "Ivanov",
-			//	Username = "Peshaka",
-			//	Email = "Peshaka@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2
-
-   //             //123
-   //         },
-			//new User()
-			//{
-			//	Id = 15,
-			//	FirstName = "Georgi",
-			//	LastName = "Goshev",
-			//	Username = "BatGergi",
-			//	Email = "Gergi@gmail.com",
-			//	Password = "MTIz",
-			//	RoleId = 2,
-			//	//ProfilePicPath="/Images/UserProfilePics/c372cf2e-0cab-43a0-81e1-73ea610f9dfd_ddh0598-18d7e667-d117-4b11-8ef0-244eb60bfa45.jpg"
-
-   //             //123
-   //         }
 			};
 
 
 			builder.Entity<Role>().HasData(roles);
 			builder.Entity<User>().HasData(users);
+			builder.Entity<Wallet>().HasData(wallets);
 
 
 		}
