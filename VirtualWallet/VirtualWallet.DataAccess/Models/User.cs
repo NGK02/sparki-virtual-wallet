@@ -47,5 +47,7 @@ namespace VirtualWallet.DataAccess.Models
 		public List<Transaction> Outgoing { get; set; }
 
 		public string ProfilePicPath { get; set; }
-	}
+
+        public ICollection<Card> Cards { get; set; }
+    }
 }

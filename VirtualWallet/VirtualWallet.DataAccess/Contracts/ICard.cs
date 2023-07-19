@@ -10,9 +10,9 @@ namespace VirtualWallet.DataAccess.Contracts
     {
         DateTime ExpirationDate { get; set; }
 
-        int CardNumber { get; set; }
-
         int CheckNumber { get; set; }
+
+        long CardNumber { get; set; }
 
         string CardHolder { get; set; }
     }
