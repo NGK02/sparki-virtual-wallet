@@ -41,19 +41,6 @@ namespace VirtualWallet.DataAccess.Repositories
 			return database.Users.SingleOrDefault(u => u.Username == username);
 		}
 
-		public Wallet GetWalletByUserId(int userId)
-		{
-			return database.Wallets.SingleOrDefault(w => w.UserId == userId);
-		}
-
-		//public bool CreateUser(User user)
-		//{
-		//	user.RoleId = 2;
-		//	database.Users.Add(user);
-		//	database.SaveChanges();
-		//	var wallet = DataBase.
-		//	return true;
-		//}
 		public bool EmailExist(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
