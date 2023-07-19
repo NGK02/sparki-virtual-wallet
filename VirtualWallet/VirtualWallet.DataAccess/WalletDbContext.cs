@@ -18,10 +18,18 @@ namespace VirtualWallet.DataAccess
 
 		}
 
-
 		public DbSet<User> Users { get; set; }
 
 		public DbSet<Role> Roles { get; set; }
+
+		public DbSet<Wallet> Wallets { get; set; }
+
+		public DbSet<Transaction> Transactions { get; set; }
+
+		public DbSet<Currency> Currencies { get; set; }
+
+		public DbSet<Balance> Balances { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
@@ -31,32 +39,34 @@ namespace VirtualWallet.DataAccess
 
 			CreateSeed(builder);
 		}
+
 		protected void ConfigureMigration(ModelBuilder builder)
 		{
-			builder.Entity<Wallet>()
-			.Property(w => w.BGN)
-			.HasPrecision(18, 6);
-
-			builder.Entity<Wallet>()
-			.Property(w => w.CHF)
-			.HasPrecision(18, 6);
-
-			builder.Entity<Wallet>()
-			.Property(w => w.EUR)
-			.HasPrecision(18, 6);
-
-			builder.Entity<Wallet>()
-			.Property(w => w.USD)
-			.HasPrecision(18, 6);
-
-			builder.Entity<Wallet>()
-			.Property(w => w.GBP)
-			.HasPrecision(18, 6);
-
 			builder.Entity<User>()
 				.HasOne(u => u.Wallet)
 				.WithOne(vw => vw.User)
-				//.HasForeignKey(vw=>vw.)
+				.HasForeignKey<User>(u => u.WalletId)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Balance>()
+				.HasKey(cb => new { cb.CurrencyId, cb.WalletId });
+
+			builder.Entity<Balance>()
+				.Property(cb => cb.Amount)
+				.HasPrecision(18, 2);
+
+			builder.Entity<Transaction>()
+				.Property(t => t.Amount)
+				.HasPrecision(18, 2);
+
+			builder.Entity<Transaction>()
+				.HasOne(t => t.Sender)
+				.WithMany(u => u.Outgoing)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Transaction>()
+				.HasOne(t => t.Recipient)
+				.WithMany(u => u.Incoming)
 				.OnDelete(DeleteBehavior.NoAction);
 
 			//modelBuilder.Entity<Blog>()
@@ -64,8 +74,8 @@ namespace VirtualWallet.DataAccess
 			//.WithOne(e => e.Blog)
 			//.HasForeignKey<BlogHeader>(e => e.BlogId)
 			//.IsRequired();
-
 		}
+
 		protected void CreateSeed(ModelBuilder builder)
 		{
 			IList<Role> roles = new List<Role>
@@ -85,6 +95,34 @@ namespace VirtualWallet.DataAccess
 					Id = 3,
 					Name = "Admin"
 				}
+			};
+			IList<Currency> currencies = new List<Currency>
+			{
+				new Currency
+				{
+					Id = 1,
+					Name="USD"
+				},
+				new Currency
+				{
+					Id = 2,
+					Name="EUR"
+				},
+				new Currency
+				{
+					Id = 3,
+					Name="BGN"
+				},
+				new Currency
+				{
+					Id = 4,
+					Name="JPY"
+				},
+				new Currency
+				{
+					Id = 5,
+					Name="CFH"
+				},
 			};
 			IList<User> users = new List<User>
 			{
@@ -212,61 +250,117 @@ namespace VirtualWallet.DataAccess
 			IList<Wallet> wallets = new List<Wallet>
 			{
 				new Wallet()
-			{
-				Id = 1,
-				UserId = 1,
-			},
-					new Wallet()
-			{
-				Id = 2,
-				UserId = 2,
-			},
-						new Wallet()
-			{
-				Id = 3,
-				UserId = 3,
-			},
-					new Wallet()
-			{
-				Id = 4,
-				UserId = 4,
-			},
-						new Wallet()
-			{
-				Id = 5,
-				UserId = 5
-			},
-					new Wallet()
-			{
-				Id = 6,
-				UserId = 6,
-			},
-						new Wallet()
-			{
-				Id = 7,
-				UserId = 7,
-			},
-					new Wallet()
-			{
-				Id = 8,
-				UserId = 8,
-			},
-								new Wallet()
-			{
-				Id = 9,
-				UserId = 9,
-			},
-
+				{
+					Id = 1,
+					UserId = 1,
+				},
+				new Wallet()
+				{
+					Id = 2,
+					UserId = 2,
+				},
+				new Wallet()
+				{
+					Id = 3,
+					UserId = 3,
+				},
+				new Wallet()
+				{
+					Id = 4,
+					UserId = 4,
+				},
+				new Wallet()
+				{
+					Id = 5,
+					UserId = 5
+				},
+				new Wallet()
+				{
+					Id = 6,
+					UserId = 6,
+				},
+				new Wallet()
+				{
+					Id = 7,
+					UserId = 7,
+				},
+				new Wallet()
+				{
+					Id = 8,
+					UserId = 8,
+				},
+				new Wallet()
+				{
+					Id = 9,
+					UserId = 9,
+				},
 
 			};
 
+			IList<Balance> balances = new List<Balance>
+			{
+				new Balance()
+				{
+					WalletId = 1,
+					CurrencyId = 1,
+					Amount = 10000,
+				},
+				new Balance()
+				{
+					WalletId = 2,
+					CurrencyId = 2,
+					Amount = 10000,
+				},
+				new Balance()
+				{
+					WalletId = 3,
+					CurrencyId = 3,
+					Amount = 10000,
+				},
+				new Balance()
+				{
+					WalletId = 4,
+					CurrencyId = 1,
+					Amount = 10200,
+				},
+				new Balance()
+				{
+					WalletId = 5,
+					CurrencyId = 2,
+					Amount = 102400,
+				},
+				new Balance()
+				{
+					WalletId = 6,
+					CurrencyId = 1,
+					Amount = 102004,
+				},
+				new Balance()
+				{
+					WalletId = 7,
+					CurrencyId = 3,
+					Amount = 50200,
+				},
+				new Balance()
+				{
+					WalletId = 8,
+					CurrencyId = 5,
+					Amount = 1023230,
+				},
+				new Balance()
+				{
+					WalletId = 9,
+					CurrencyId = 4,
+					Amount = 102000000,
+				},
+
+			};
 
 			builder.Entity<Role>().HasData(roles);
+			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);
-
-
+			builder.Entity<Balance>().HasData(balances);
 		}
-
 	}
 }
