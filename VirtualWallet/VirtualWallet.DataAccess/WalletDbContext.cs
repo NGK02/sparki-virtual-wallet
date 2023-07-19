@@ -42,27 +42,11 @@ namespace VirtualWallet.DataAccess
 
 		protected void ConfigureMigration(ModelBuilder builder)
 		{
-			builder.Entity<User>()
-				.HasOne(u => u.Wallet)
-				.WithOne(w => w.User)
-				.HasForeignKey<User>(u => u.WalletId)
-				.OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<User>()
-                .HasMany(u => u.Cards)
-                .WithOne(c => c.User)
-                .HasForeignKey(c => c.UserId);
-
-			builder.Entity<Wallet>()
-				.HasOne(w => w.User)
-				.WithOne(u => u.Wallet)
-				.HasForeignKey<Wallet>(w =>w.UserId);
-
-            builder.Entity<Balance>()
-				.HasKey(cb => new { cb.CurrencyId, cb.WalletId });
+			builder.Entity<Balance>()
+				.HasKey(b => new { b.CurrencyId, b.WalletId });
 
 			builder.Entity<Balance>()
-				.Property(cb => cb.Amount)
+				.Property(b => b.Amount)
 				.HasPrecision(18, 2);
 
 			builder.Entity<Transaction>()

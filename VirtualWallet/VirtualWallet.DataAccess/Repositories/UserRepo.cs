@@ -13,21 +13,39 @@ namespace VirtualWallet.DataAccess.Repositories
 	{
 		private readonly WalletDbContext database;
 
-		public UserRepo(WalletDbContext DataBase)
+		public UserRepo(WalletDbContext database)
 		{
-			this.database = DataBase;
+			this.database = database;
 		}
 
 		public bool CreateUser(User user)
 		{
-			var wallet = new Wallet();
-			user.Wallet = wallet;
+
 			database.Users.Add(user);
-			wallet.User = user;
-			database.Wallets.Add(wallet);
 			database.SaveChanges();
+
+			var wallet = new Wallet();
+			wallet.User = user;
+
+			database.Add(wallet);
+			database.SaveChanges();
+
+			user.WalletId = wallet.Id;
+			database.SaveChanges();
+
 			return true;
 		}
+
+		public User GetUserByUsername(string username)
+		{
+			return database.Users.SingleOrDefault(u => u.Username == username);
+		}
+
+		public Wallet GetWalletByUserId(int userId)
+		{
+			return database.Wallets.SingleOrDefault(w => w.UserId == userId);
+		}
+
 		//public bool CreateUser(User user)
 		//{
 		//	user.RoleId = 2;
