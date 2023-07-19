@@ -9,6 +9,8 @@ namespace VirtualWallet.Business.Services.Contracts
 {
 	public interface IUserService
 	{
-		 bool CreateUser(User mappedUser);
-	}
+		bool CreateUser(User mappedUser);
+
+        User GetUserById(int userId);
+    }
 }

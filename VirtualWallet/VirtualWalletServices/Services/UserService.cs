@@ -41,5 +41,11 @@ namespace VirtualWallet.Business.Services
 			return true;
 		}
 
-	}
+        public User GetUserById(int userId)
+        {
+            var originalUser = userRepo.GetUserById(userId) ?? throw new EntityNotFoundException($"User with Id={userId} was not found!");
+            return originalUser;
+        }
+
+    }
 }

@@ -9,16 +9,19 @@ using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using ForumSystem.DataAccess.Exceptions;
 
 namespace VirtualWallet.Business.Services
 {
     public class CardService : ICardService
     {
         private readonly ICardRepository cardRepository;
+        private readonly IUserService userService;
 
-        public CardService(ICardRepository cardRepository)
+        public CardService(ICardRepository cardRepository, IUserService userService)
         {
             this.cardRepository = cardRepository;
+            this.userService = userService;
         }
 
         public Card GetCardById(int cardId)
@@ -27,7 +30,7 @@ namespace VirtualWallet.Business.Services
 
             if (card == null)
             {
-                throw new ArgumentException($"Card with ID {cardId} not found.");
+                throw new EntityNotFoundException($"Card with ID {cardId} not found.");
             }
 
             return card;
@@ -39,20 +42,27 @@ namespace VirtualWallet.Business.Services
 
             if (!cards.Any() || cards == null)
             {
-                throw new ArgumentException("No cards found.");
+                throw new EntityNotFoundException("No cards found.");
             }
 
             return cards;
         }
 
-        public void AddCard(Card card)
+        public void AddCard(Card card, int userId)
         {
-            throw new NotImplementedException();
+            var user = userService.GetUserById(userId);
+
+            card.User = user;
+            user.Cards.Add(card);
+
+            cardRepository.AddCard(card);
         }
 
-        public void DeleteCard(Card card)
+        public void DeleteCard(Card card, int cardId)
         {
-            throw new NotImplementedException();
+            var cardToDelete = GetCardById(cardId);
+
+            cardRepository.DeleteCard(cardToDelete);
         }
 
         public void UpdateCard(Card card, int cardId)

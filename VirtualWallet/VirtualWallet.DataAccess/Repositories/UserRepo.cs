@@ -58,5 +58,11 @@ namespace VirtualWallet.DataAccess.Repositories
 			bool result = database.Users.Any(u => u.Username.ToLower() == userName.ToLower());
 			return result;
 		}
-	}
+
+        public User GetUserById(int Id)
+        {
+            var userWithThatId = database.Users.FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
+            return userWithThatId;
+        }
+    }
 }

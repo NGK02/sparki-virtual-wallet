@@ -13,5 +13,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 		bool EmailExist(string email);
 		bool UsernameExist(string userName);
 		bool PhoneNumberExist(string phoneNumber);
-	}
+
+        User GetUserById(int userId);
+    }
 }

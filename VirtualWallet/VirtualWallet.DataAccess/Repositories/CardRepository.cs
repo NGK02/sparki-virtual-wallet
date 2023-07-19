@@ -20,12 +20,15 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public Card GetCardById(int cardId)
         {
-            return walletDbContext.Cards.Include(c => c.User).FirstOrDefault(c => c.Id == cardId);
+            return walletDbContext.Cards.Include(c => c.User).FirstOrDefault(c => !c.IsDeleted && c.Id == cardId);
         }
 
         public IEnumerable<Card> GetAllCards()
         {
-            return walletDbContext.Cards.Include(c => c.User).ToList();
+            return walletDbContext.Cards
+                .Where(c => !c.IsDeleted)
+                .Include(c => c.User)
+                .ToList();
         }
 
         public void AddCard(Card card)
@@ -36,7 +39,8 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public void DeleteCard(Card card)
         {
-            throw new NotImplementedException();
+            card.IsDeleted = true;
+            walletDbContext.SaveChanges();
         }
 
         public void UpdateCard(Card card, Card cardToUpdate)

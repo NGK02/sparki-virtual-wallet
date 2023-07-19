@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.Models
 {
-    public class Card
+    public class Card : Entity
     {
-		public int Id { get; set; }
+        public int Id { get; set; }
 
 		[Required]
         public DateTime ExpirationDate { get; set; }
