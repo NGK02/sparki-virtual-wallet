@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
 	public class PhoneNumberAlreadyExistException : ApplicationException
 	{

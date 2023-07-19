@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
-using VirtualWallet.DataAccess.Exceptions;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DTO.UserDTO;
+using ForumSystem.DataAccess.Exceptions;
 
 namespace VirtualWallet.Web.ApiControllers
 {

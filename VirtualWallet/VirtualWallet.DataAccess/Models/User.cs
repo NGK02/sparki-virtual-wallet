@@ -41,7 +41,6 @@ namespace VirtualWallet.DataAccess.Models
 		[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a valid phone number.")]
 		public string PhoneNumber { get; set; }
 
-		[Required]
 		public string ProfilePicPath { get; set; }
 
 		public int WalletId { get; set; }
@@ -55,6 +54,6 @@ namespace VirtualWallet.DataAccess.Models
 
 		public List<Transaction> Outgoing { get; set; }
 
-        public ICollection<Card> Cards { get; set; }
+        public List<Card> Cards { get; set; }
     }
 }

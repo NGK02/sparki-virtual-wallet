@@ -140,7 +140,8 @@ namespace VirtualWallet.DataAccess
 				Email = "gosho@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 1
+				WalletId = 1,
+				PhoneNumber="0888888881"
 
                 //123
             },
@@ -153,7 +154,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Barekov@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 2
+				WalletId = 2,
+				PhoneNumber="0888888882"
 
                 //123
 
@@ -167,7 +169,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Uzunkata@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 3
+				WalletId = 3,
+				PhoneNumber="0888888883"
 
                 //123
             },
@@ -180,7 +183,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Cvetan@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 4
+				WalletId = 4,
+				PhoneNumber="0888888884"
 
                 //123
             },
@@ -193,7 +197,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Kostev@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 5
+				WalletId = 5,
+				PhoneNumber="0888888885"
 
                 //123
             },
@@ -206,7 +211,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Admin@gmail.com",
 				Password = "MTIz",
 				RoleId = 3,
-				WalletId = 6
+				WalletId = 6,
+				PhoneNumber="0888888886"
 
 
                 //123
@@ -220,7 +226,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Andrea@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 7
+				WalletId = 7,
+				PhoneNumber="0888888887"
 
                 //123
             },
@@ -233,7 +240,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Emanuela@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 8
+				WalletId = 8,
+				PhoneNumber="0888888888"
 
                 //123
             },
@@ -246,7 +254,8 @@ namespace VirtualWallet.DataAccess
 				Email = "Katrin@gmail.com",
 				Password = "MTIz",
 				RoleId = 2,
-				WalletId = 9
+				WalletId = 9,
+				PhoneNumber="0888888889"
 
                 //123
             },

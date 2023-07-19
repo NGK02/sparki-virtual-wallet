@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ForumSystem.DataAccess.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
-using VirtualWallet.DataAccess.Exceptions;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
@@ -30,7 +31,7 @@ namespace VirtualWallet.Business.Services
 			}
 			if (userRepo.UsernameExist(mappedUser.Username))
 			{
-				throw new UsernameAlreadyExistException("Username already exists!");
+				throw new PhoneNumberAlreadyExistException("Phonenumber already exists!");
 			}
 
 			mappedUser.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(mappedUser.Password));
