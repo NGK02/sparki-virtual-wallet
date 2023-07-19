@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualWallet.Web", "VirtualWalletWeb\VirtualWallet.Web.csproj", "{78BAE06F-FE02-44E0-840A-4AA9B0AB367E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.Web", "VirtualWalletWeb\VirtualWallet.Web.csproj", "{78BAE06F-FE02-44E0-840A-4AA9B0AB367E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualWallet.Business", "VirtualWalletServices\VirtualWallet.Business.csproj", "{239E3A33-E25B-44CC-8357-E7D372237606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.Business", "VirtualWalletServices\VirtualWallet.Business.csproj", "{239E3A33-E25B-44CC-8357-E7D372237606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualWallet.DataAccess", "VirtualWallet.DataAccess\VirtualWallet.DataAccess.csproj", "{443B64A8-6717-44C2-92AA-1594D8DA64FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.DataAccess", "VirtualWallet.DataAccess\VirtualWallet.DataAccess.csproj", "{443B64A8-6717-44C2-92AA-1594D8DA64FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualWallet.DTO", "VirtualWallet.DTO\VirtualWallet.DTO.csproj", "{D0E66981-5E67-45E4-843D-55FF26FFE244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.DTO", "VirtualWallet.DTO\VirtualWallet.DTO.csproj", "{D0E66981-5E67-45E4-843D-55FF26FFE244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
