@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtualWallet.Business.Services;
+using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.DataAccess.Exceptions;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DTO.UserDTO;
 
@@ -12,9 +14,11 @@ namespace VirtualWallet.Web.ApiControllers
 	public class UserApiController : ControllerBase
 	{
 		private readonly IMapper mapper;
-		public UserApiController(IMapper mapper) 
+		private readonly IUserService userService;
+		public UserApiController(IMapper mapper,IUserService userService) 
 		{ 
 			this.mapper = mapper;
+			this.userService = userService;
 		}
 
 		[HttpPost("")]
@@ -23,22 +27,25 @@ namespace VirtualWallet.Web.ApiControllers
 			try
 			{
 				User mappedUser = mapper.Map<User>(userDTO);
-				//var createdUser = userService.CreateUser(mappedUser);
-				//GetUserDTO result = mapper.Map<GetUserDTO>(createdUser);
-				//return Ok(result);
-				return Ok();
+				_ = userService.CreateUser(mappedUser);
+
+				return Ok("Registered Successfully!");
 			}
-			//catch (EmailAlreadyExistException e)
-			//{
-			//	return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-			//}
-			//catch (UsernameAlreadyExistException e)
-			//{
-			//	return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-			//}
+			catch (EmailAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (UsernameAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (PhoneNumberAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
 			catch (Exception e)
 			{
-				return BadRequest(e.Message);
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
 		//[HttpGet("")]

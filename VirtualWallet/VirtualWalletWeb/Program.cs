@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using VirtualWallet.Business.AutoMapper;
+using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.Business.Services;
 using VirtualWallet.DataAccess;
+using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.DataAccess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 builder.Services.AddDbContext<WalletDbContext>(options =>
 {

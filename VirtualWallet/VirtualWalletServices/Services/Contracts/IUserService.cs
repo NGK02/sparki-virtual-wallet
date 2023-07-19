@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.DataAccess.Models;
 
 namespace VirtualWallet.Business.Services.Contracts
 {
-	internal interface IUserService
+	public interface IUserService
 	{
+		 bool CreateUser(User mappedUser);
 	}
 }
