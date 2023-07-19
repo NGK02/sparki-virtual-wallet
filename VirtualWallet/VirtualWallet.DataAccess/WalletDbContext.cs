@@ -30,7 +30,9 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Balance> Balances { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<Card> Cards { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
 			ConfigureMigration(builder);
