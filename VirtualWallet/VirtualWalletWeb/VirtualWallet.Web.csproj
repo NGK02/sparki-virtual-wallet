@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ApiControllers\" />
+    <Folder Include="ViewControllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
