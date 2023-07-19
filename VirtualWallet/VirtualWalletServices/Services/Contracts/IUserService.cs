@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Business.Services.Contracts
 {
-	internal interface IUserService
+	public interface IUserService
 	{
 	}
 }
