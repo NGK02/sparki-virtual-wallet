@@ -44,7 +44,7 @@ namespace VirtualWallet.DataAccess
 		{
 			builder.Entity<User>()
 				.HasOne(u => u.Wallet)
-				.WithOne(vw => vw.User)
+				.WithOne(w => w.User)
 				.HasForeignKey<User>(u => u.WalletId)
 				.OnDelete(DeleteBehavior.NoAction);
 
@@ -52,6 +52,11 @@ namespace VirtualWallet.DataAccess
                 .HasMany(u => u.Cards)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId);
+
+			builder.Entity<Wallet>()
+				.HasOne(w => w.User)
+				.WithOne(u => u.Wallet)
+				.HasForeignKey<Wallet>(w =>w.UserId);
 
             builder.Entity<Balance>()
 				.HasKey(cb => new { cb.CurrencyId, cb.WalletId });

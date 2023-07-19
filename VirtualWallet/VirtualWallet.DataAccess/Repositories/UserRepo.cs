@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,25 @@ namespace VirtualWallet.DataAccess.Repositories
 		{
 			this.database = DataBase;
 		}
-		//private Wallet CreateWallet(User user)
-		//{
-		//	var wallet = new Wallet();
-		//	wallet.User = user;
 
-		//}
 		public bool CreateUser(User user)
 		{
-			user.RoleId = 2;
+			var wallet = new Wallet();
+			user.Wallet = wallet;
 			database.Users.Add(user);
+			wallet.User = user;
+			database.Wallets.Add(wallet);
 			database.SaveChanges();
-			//var wallet = DataBase.
 			return true;
 		}
+		//public bool CreateUser(User user)
+		//{
+		//	user.RoleId = 2;
+		//	database.Users.Add(user);
+		//	database.SaveChanges();
+		//	var wallet = DataBase.
+		//	return true;
+		//}
 		public bool EmailExist(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
