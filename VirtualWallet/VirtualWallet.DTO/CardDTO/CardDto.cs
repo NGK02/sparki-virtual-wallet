@@ -5,29 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.DataAccess.Models
+namespace VirtualWallet.DTO.CardDto
 {
-    public class Card : Entity
+    public class CardDto
     {
-		[Required]
+        [Required]
         public DateTime ExpirationDate { get; set; }
 
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
 
-        public int Id { get; set; }
-
-        public int UserId { get; set; } // Foreign key
-
         [Required]
         [RegularExpression(@"^\d{16}$", ErrorMessage = "The {0} must be a 16-digit number.")]
         public long CardNumber { get; set; }
 
         [Required]
-		[StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
-		public string CardHolder { get; set; }
-
-        public User User { get; set; } // Navigation property
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
+        public string CardHolder { get; set; }
     }
 }

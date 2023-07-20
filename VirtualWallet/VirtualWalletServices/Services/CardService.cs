@@ -1,15 +1,15 @@
-﻿using System;
+﻿using ForumSystem.DataAccess.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.Business.Services.Contracts;
-using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess;
-using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
-using ForumSystem.DataAccess.Exceptions;
+using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
 {
@@ -58,7 +58,7 @@ namespace VirtualWallet.Business.Services
             cardRepository.AddCard(card);
         }
 
-        public void DeleteCard(Card card, int cardId)
+        public void DeleteCard(int cardId)
         {
             var cardToDelete = GetCardById(cardId);
 

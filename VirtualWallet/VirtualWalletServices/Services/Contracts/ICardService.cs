@@ -15,7 +15,7 @@ namespace VirtualWallet.Business.Services.Contracts
 
         void AddCard(Card card, int userId);
 
-        void DeleteCard(Card card, int cardId);
+        void DeleteCard(int cardId);
 
         void UpdateCard(Card card, int cardId);
     }
