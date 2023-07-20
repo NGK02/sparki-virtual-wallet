@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumSystem.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
-    public class EmailAlreadyExistException:ApplicationException
-    {
-        public EmailAlreadyExistException(string message):base(message) { }
-    }
+	public class EmailAlreadyExistException : ApplicationException
+	{
+		public EmailAlreadyExistException(string message) : base(message) { }
+	}
 }

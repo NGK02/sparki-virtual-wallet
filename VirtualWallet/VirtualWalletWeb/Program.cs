@@ -5,11 +5,13 @@ using VirtualWallet.Business.Services;
 using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.Repositories;
+using VirtualWallet.Business.AuthManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IAuthManager,AuthManager>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

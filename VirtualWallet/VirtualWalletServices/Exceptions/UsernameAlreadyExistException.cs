@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumSystem.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
-	public class UsernameAlreadyExistException:ApplicationException
+	public class UsernameAlreadyExistException : ApplicationException
 	{
 		public UsernameAlreadyExistException(string message) : base(message) { }
 	}

@@ -94,5 +94,6 @@ namespace VirtualWallet.DataAccess.Repositories
 
 			return user;
 		}
+
 	}
 }

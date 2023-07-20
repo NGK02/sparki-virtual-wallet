@@ -1,4 +1,4 @@
-﻿using ForumSystem.DataAccess.Exceptions;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Business.Services
 {
@@ -41,11 +42,56 @@ namespace VirtualWallet.Business.Services
 			return true;
 		}
 
-        public User GetUserById(int userId)
+		public bool DeleteUser(string userName, int? userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<User> GetAllUsers()
+		{
+			throw new NotImplementedException();
+		}
+
+		public User GetUserByEmail(string email)
+		{
+			throw new NotImplementedException();
+		}
+
+		public User GetUserById(int userId)
         {
             var originalUser = userRepo.GetUserById(userId) ?? throw new EntityNotFoundException($"User with Id={userId} was not found!");
             return originalUser;
         }
 
-    }
+		public User GetUserByUserName(string userName)
+		{
+			var originalUser=userRepo.GetUserByUsername(userName) ?? throw new EntityNotFoundException($"User with Username={userName} was not found!");
+			return originalUser; ;
+		}
+
+		public List<User> GetUsersByUsernameContains(string input)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetUsersCount()
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<User> SearchBy(UserQueryParameters queryParams)
+		{
+			throw new NotImplementedException();
+		}
+
+		public User UpdateUser(string username, User user)
+		{
+			throw new NotImplementedException();
+		}
+
+		public User UpdateUser(int id, User userNewValues)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

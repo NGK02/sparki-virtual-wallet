@@ -14,6 +14,7 @@ namespace VirtualWallet.Business.AutoMapper
 		public AutoMapperProfile()
 		{
 			CreateMap<CreateUserDTO, User>();
+			CreateMap<UpdateUserDTO, User>();
 		}
 	}
 }
