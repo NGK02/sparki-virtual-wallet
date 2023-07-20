@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.Business.AuthManager
 {
@@ -29,7 +30,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsAdmin(User user)
 		{
-			if (user.RoleId == 3)
+			if (user.RoleId == (int)RoleName.Admin)
 			{
 				return true;
 			}
@@ -38,7 +39,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsAdmin(int roleId)
 		{
-			if (roleId == 3)
+			if (roleId == (int)RoleName.Admin)
 			{
 				return true;
 			}
@@ -52,7 +53,7 @@ namespace VirtualWallet.Business.AuthManager
 			string userName = usernameAndPassword[0];
 			string password = usernameAndPassword[1];
 
-			var user = userService.GetUserByUserName(userName);
+			var user = userService.GetUserByUsername(userName);
 			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
 			if (user.Password == loginPasswordToBASE64)
 			{
@@ -64,7 +65,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public User IsAuthenticated(string userName, string password)
 		{
-			var user = userService.GetUserByUserName(userName);
+			var user = userService.GetUserByUsername(userName);
 			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
 			if (user.Password == loginPasswordToBASE64)
 			{
@@ -85,7 +86,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsBlocked(User user)
 		{
-			if (user.RoleId == 1)
+			if (user.RoleId == (int)RoleName.Blocked)
 			{
 				return true;
 			}
@@ -94,7 +95,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsBlocked(int roleId)
 		{
-			if (roleId == 1)
+			if (roleId == (int)RoleName.Blocked)
 			{
 				return true;
 			}

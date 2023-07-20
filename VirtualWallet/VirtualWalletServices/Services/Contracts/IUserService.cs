@@ -14,8 +14,9 @@ namespace VirtualWallet.Business.Services.Contracts
 
 		int GetUsersCount();
 		User GetUserById(int userId);
-		User GetUserByEmail(string email);
-		User GetUserByUserName(string userName);
+		public User GetUserByEmail(string email);
+
+		User GetUserByUsername(string userName);
 
 		User SearchBy(UserQueryParameters queryParams);
 
