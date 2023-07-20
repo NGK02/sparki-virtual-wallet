@@ -38,6 +38,7 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
+
 		public bool EmailExists(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
@@ -56,25 +57,71 @@ namespace VirtualWallet.DataAccess.Repositories
 			return result;
 		}
 
+		public List<User> GetUsers()
+		{
+			return GetUsersQuerable().ToList();
+		}
+
         public User GetUserById(int Id)
         {
-            return GetUsers().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
+            return GetUsersQuerable().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
 
 		public User GetUserByUsername(string username)
 		{
-			return GetUsers().FirstOrDefault(u => u.Username == username && u.IsDeleted == false);
+			return GetUsersQuerable().FirstOrDefault(u => u.Username == username && u.IsDeleted == false);
+		}
+		public User GetUserByEmail(string email)
+		{
+			return GetUsersQuerable().FirstOrDefault(u => u.Email == email && u.IsDeleted == false);
 		}
 
-		private IQueryable<User> GetUsers()
+		public int GetUsersCount()
 		{
-			var users = database.Users.Where(u => u.IsDeleted == false);
-			return users;
+			throw new NotImplementedException();
 		}
+
+		public User UpdateUser(string userName, User userNewValues)
+		{
+			var userToUpdate = database.Users.FirstOrDefault(u => u.Username == userName);
+			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
+			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
+			userToUpdate.Email = userNewValues.Email ?? userToUpdate.Email;
+			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
+			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
+			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
+			if (userNewValues.ProfilePicPath == "Delete") { userToUpdate.ProfilePicPath = null; }
+			database.SaveChanges();
+			return userToUpdate;
+		}
+		public User UpdateUser(int id, User userNewValues)
+		{
+			var userToUpdate = database.Users.FirstOrDefault(u => u.Id == id);
+			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
+			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
+			userToUpdate.Email = userNewValues.Email ?? userToUpdate.Email;
+			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
+			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
+			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
+			if (userNewValues.ProfilePicPath == "Delete") { userToUpdate.ProfilePicPath = null; }
+			database.SaveChanges();
+			return userToUpdate;
+		}
+		private void Update(User userToUpdate, User userNewValues)
+		{
+			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
+			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
+			userToUpdate.Email = userNewValues.Email ?? userToUpdate.Email;
+			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
+			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
+			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
+			database.SaveChanges();
+		}
+
 
 		public User SearchBy(UserQueryParameters queryParams)
 		{
-			var users = GetUsers();
+			var users = GetUsersQuerable();
 			User user = null;
 
 			if (queryParams.Username is not null)
@@ -95,5 +142,17 @@ namespace VirtualWallet.DataAccess.Repositories
 			return user;
 		}
 
+
+		public bool DeleteUser(User user)
+		{
+			//TODO
+			//ще трябва да доуточним какво да трием на юзъра
+			throw new NotImplementedException();
+		}
+		private IQueryable<User> GetUsersQuerable()
+		{
+			var users = database.Users.Where(u => u.IsDeleted == false);
+			return users;
+		}
 	}
 }

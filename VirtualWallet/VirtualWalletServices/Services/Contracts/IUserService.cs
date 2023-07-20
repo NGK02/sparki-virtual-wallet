@@ -12,21 +12,15 @@ namespace VirtualWallet.Business.Services.Contracts
 	{
 		bool CreateUser(User mappedUser);
 
-		IEnumerable<User> GetAllUsers();
-
 		int GetUsersCount();
-
 		User GetUserById(int userId);
-		public User GetUserByEmail(string email);
-
+		User GetUserByEmail(string email);
 		User GetUserByUserName(string userName);
 
-		List<User> GetUsersByUsernameContains(string input);
+		User SearchBy(UserQueryParameters queryParams);
 
-		List<User> SearchBy(UserQueryParameters queryParams);
-
-		User UpdateUser(string username, User user);
-
+		List<User> GetUsers();
+		User UpdateUser(string username, User userNewValues);
 		User UpdateUser(int id, User userNewValues);
 
 		bool DeleteUser(string userName, int? userId);

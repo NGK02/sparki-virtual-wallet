@@ -82,10 +82,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
-			catch (Exception e)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-			}
+			//catch (Exception e)
+			//{
+			//	return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			//}
 		}
 		//[HttpGet("")]
 		//public IActionResult GetUserByUsername([FromHeader] string credentials)

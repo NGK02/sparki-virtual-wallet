@@ -12,10 +12,10 @@ using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Business.Services
 {
-	public class UserService:IUserService
+	public class UserService : IUserService
 	{
 		private readonly IUserRepository userRepo;
-		public UserService(IUserRepository userRepo) 
+		public UserService(IUserRepository userRepo)
 		{
 			this.userRepo = userRepo;
 		}
@@ -42,36 +42,25 @@ namespace VirtualWallet.Business.Services
 			return true;
 		}
 
-		public bool DeleteUser(string userName, int? userId)
-		{
-			throw new NotImplementedException();
-		}
 
-		public IEnumerable<User> GetAllUsers()
-		{
-			throw new NotImplementedException();
-		}
+
 
 		public User GetUserByEmail(string email)
 		{
-			throw new NotImplementedException();
+			var originalUser = userRepo.GetUserByEmail(email) ?? throw new EntityNotFoundException($"User with Email {email} was not found!");
+			return originalUser;
 		}
 
 		public User GetUserById(int userId)
-        {
-            var originalUser = userRepo.GetUserById(userId) ?? throw new EntityNotFoundException($"User with Id={userId} was not found!");
-            return originalUser;
-        }
+		{
+			var originalUser = userRepo.GetUserById(userId) ?? throw new EntityNotFoundException($"User with Id {userId} was not found!");
+			return originalUser;
+		}
 
 		public User GetUserByUserName(string userName)
 		{
-			var originalUser=userRepo.GetUserByUsername(userName) ?? throw new EntityNotFoundException($"User with Username={userName} was not found!");
+			var originalUser = userRepo.GetUserByUsername(userName) ?? throw new EntityNotFoundException($"User with Username {userName} was not found!");
 			return originalUser; ;
-		}
-
-		public List<User> GetUsersByUsernameContains(string input)
-		{
-			throw new NotImplementedException();
 		}
 
 		public int GetUsersCount()
@@ -79,19 +68,96 @@ namespace VirtualWallet.Business.Services
 			throw new NotImplementedException();
 		}
 
-		public List<User> SearchBy(UserQueryParameters queryParams)
+		public List<User> GetUsers()
 		{
-			throw new NotImplementedException();
+			var users = userRepo.GetUsers();
+			if (users.Count == 0)
+			{
+				throw new EntityNotFoundException($"Users not found!");
+			}
+			return users;
 		}
 
-		public User UpdateUser(string username, User user)
+		public User SearchBy(UserQueryParameters queryParams)
 		{
-			throw new NotImplementedException();
+			var user = new User();
+			if (queryParams.Username is null &
+				   queryParams.PhoneNumber is null &
+				   queryParams.Email is null)
+			{
+				throw new InvalidOperationException("Please provide search parameters!");
+			}
+			else
+			{
+				user = userRepo.SearchBy(queryParams);
+			}
+
+			if (user is null)
+			{
+				throw new EntityNotFoundException($"User not found!");
+			}
+			return user;
+		}
+
+		public User UpdateUser(string username, User userNewValues)
+		{
+			if (userNewValues.Email != null)
+			{
+				if (userRepo.EmailExists(userNewValues.Email))
+				{
+					throw new EmailAlreadyExistException("Email already exist!");
+				}
+			}
+			var userToUpdate = userRepo.GetUserByUsername(username);
+			if (userToUpdate is null)
+			{
+				throw new EntityNotFoundException($"User with username:{username} was not found!");
+			}
+			if (userNewValues.Password is not null)
+			{
+				userNewValues.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(userNewValues.Password));
+			}
+			var updatedUser = userRepo.UpdateUser(username, userNewValues);
+			return updatedUser;
 		}
 
 		public User UpdateUser(int id, User userNewValues)
 		{
-			throw new NotImplementedException();
+			if (userNewValues.Email != null)
+			{
+				if (userRepo.EmailExists(userNewValues.Email))
+				{
+					throw new EmailAlreadyExistException("Email already exist!");
+				}
+			}
+			var userToUpdate = userRepo.GetUserById(id);
+			if (userToUpdate is null)
+			{
+				throw new EntityNotFoundException($"User with Id:{id} was not found!");
+			}
+			if (userNewValues.Password is not null)
+			{
+				userNewValues.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(userNewValues.Password));
+			}
+			var updatedUser = userRepo.UpdateUser(id, userNewValues);
+			return updatedUser;
+		}
+		public bool DeleteUser(string userName, int? userId)
+		{
+			if (userId is not null)
+			{
+				var userToDelete = userRepo.GetUserById((int)userId);
+				if (userToDelete is null) throw new EntityNotFoundException($"User with Id={userId} was not found!");
+				return userRepo.DeleteUser(userToDelete);
+
+			}
+			else if (userName is not null)
+			{
+				var userToDelete = userRepo.GetUserByUsername(userName);
+				if (userToDelete is null) throw new EntityNotFoundException($"User with username={userName} was not found!");
+				return userRepo.DeleteUser(userToDelete);
+			}
+			throw new EntityNotFoundException("Please provide Id or Username for the user to be deleted!");
 		}
 	}
 }
