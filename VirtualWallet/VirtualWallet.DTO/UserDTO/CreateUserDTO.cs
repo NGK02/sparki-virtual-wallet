@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DTO.CustomAttributes;
+using VirtualWallet.Dto.CustomAttributes;
 
-namespace VirtualWallet.DTO.UserDTO
+namespace VirtualWallet.Dto.UserDto
 {
-	public class CreateUserDTO
+	public class CreateUserDto
 	{
 
 		[Required]

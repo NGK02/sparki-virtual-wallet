@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VirtualWallet.DataAccess\VirtualWallet.DataAccess.csproj" />
-    <ProjectReference Include="..\VirtualWallet.DTO\VirtualWallet.DTO.csproj" />
+    <ProjectReference Include="..\VirtualWallet.Dto\VirtualWallet.Dto.csproj" />
     <ProjectReference Include="..\VirtualWalletServices\VirtualWallet.Business.csproj" />
   </ItemGroup>
 

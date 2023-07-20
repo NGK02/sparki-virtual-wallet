@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DTO.UserDTO;
+using VirtualWallet.Dto.UserDto;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -13,9 +13,8 @@ namespace VirtualWallet.Business.AutoMapper
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<CreateUserDTO, User>();
-			CreateMap<UpdateUserDTO, User>();
-			CreateMap<User, GetUserDTO>();
+			CreateMap<CreateUserDto, User>();
+			CreateMap<UpdateUserDto, User>();
 		}
 	}
 }

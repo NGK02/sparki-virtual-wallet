@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.Business", "V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.DataAccess", "VirtualWallet.DataAccess\VirtualWallet.DataAccess.csproj", "{443B64A8-6717-44C2-92AA-1594D8DA64FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.DTO", "VirtualWallet.DTO\VirtualWallet.DTO.csproj", "{D0E66981-5E67-45E4-843D-55FF26FFE244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualWallet.Dto", "VirtualWallet.DTO\VirtualWallet.Dto.csproj", "{D0E66981-5E67-45E4-843D-55FF26FFE244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

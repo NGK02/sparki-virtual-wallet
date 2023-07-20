@@ -5,7 +5,7 @@ using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DTO.UserDTO;
+using VirtualWallet.Dto.UserDto;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 
@@ -27,11 +27,11 @@ namespace VirtualWallet.Web.ApiControllers
 
 
 		[HttpPost("")]
-		public IActionResult CreateUser([FromBody] CreateUserDTO userDTO)
+		public IActionResult CreateUser([FromBody] CreateUserDto userDto)
 		{
 			try
 			{
-				User mappedUser = mapper.Map<User>(userDTO);
+				User mappedUser = mapper.Map<User>(userDto);
 				_ = userService.CreateUser(mappedUser);
 
 				return Ok("Registered Successfully!");
@@ -64,7 +64,7 @@ namespace VirtualWallet.Web.ApiControllers
 				string username = usernameAndPassword[0];
 				authManager.IsAuthenticated(credentials);
 				var user = userService.GetUserByUsername(username);
-				var mappedUser = mapper.Map<GetUserDTO>(user);
+				var mappedUser = mapper.Map<GetUserDto>(user);
 				return Ok(mappedUser);
 
 			}
@@ -87,7 +87,7 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPut("")]
-		public IActionResult EditUser([FromHeader] string credentials, [FromBody] UpdateUserDTO userValues)
+		public IActionResult EditUser([FromHeader] string credentials, [FromBody] UpdateUserDto userValues)
 		{
 			try
 			{

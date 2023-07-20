@@ -23,22 +23,19 @@ namespace VirtualWallet.DataAccess.Models
 		public string LastName { get; set; }
 
 		[Required]
-		[MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
-		[MaxLength(20, ErrorMessage = "The {0} must be no more than {1} characters long.")]
 		public string Username { get; set; }
 
 		[Required]
-		[EmailAddress]
 		public string Email { get; set; }
 
+		//[Required]
+		//[MinLength(8, ErrorMessage = "The {0} must be at least {1} characters long.")]
+		//[RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).+$", 
+		//	ErrorMessage = "{0} must contain at least one uppercase letter, one symbol, and one digit.")]
 		[Required]
-		[MinLength(8, ErrorMessage = "The {0} must be at least {1} characters long.")]
-		[RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).+$", 
-			ErrorMessage = "{0} must contain at least one uppercase letter, one symbol, and one digit.")]
 		public string Password { get; set; }
 
 		[Required]
-		[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a valid phone number.")]
 		public string PhoneNumber { get; set; }
 
 		public string ProfilePicPath { get; set; }

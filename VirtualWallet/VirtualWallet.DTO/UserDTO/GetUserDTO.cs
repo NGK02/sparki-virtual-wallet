@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.DTO.UserDTO
+namespace VirtualWallet.Dto.UserDto
 {
-	public class GetUserDTO
+	public class GetUserDto
 	{
 		public string FirstName { get; set; }
 
