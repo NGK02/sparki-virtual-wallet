@@ -18,12 +18,13 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IMapper mapper;
 		private readonly IUserService userService;
 		private readonly IAuthManager authManager;
-		public UserApiController(IMapper mapper,IUserService userService,IAuthManager authManager) 
-		{ 
+		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager)
+		{
 			this.mapper = mapper;
 			this.userService = userService;
 			this.authManager = authManager;
 		}
+
 
 		[HttpPost("")]
 		public IActionResult CreateUser([FromBody] CreateUserDTO userDTO)
@@ -52,16 +53,50 @@ namespace VirtualWallet.Web.ApiControllers
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
+
+		[HttpGet("")]
+		public IActionResult GetUserByUsername([FromHeader] string credentials)
+		{
+			try
+			{
+				authManager.AreCredentialNull(credentials);
+				string[] usernameAndPassword = credentials.Split(":");
+				string username = usernameAndPassword[0];
+				authManager.IsAuthenticated(credentials);
+				var user = userService.GetUserByUsername(username);
+				var mappedUser = mapper.Map<GetUserDTO>(user);
+				return Ok(mappedUser);
+
+			}
+			catch (EntityNotFoundException e)
+			{
+				return NotFound(e.Message);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return Unauthorized(e.Message);
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
+
 		[HttpPut("")]
 		public IActionResult EditUser([FromHeader] string credentials, [FromBody] UpdateUserDTO userValues)
 		{
-			string[] usernameAndPassword = credentials.Split(':');
-			string userName = usernameAndPassword[0];
 			try
 			{
+				authManager.AreCredentialNull(credentials);
+				string[] usernameAndPassword = credentials.Split(':');
+				string username = usernameAndPassword[0];
 				authManager.IsAuthenticated(credentials);
 				var mapped = mapper.Map<User>(userValues);
-				var updatedUser = userService.UpdateUser(userName, mapped);
+				var updatedUser = userService.UpdateUser(username, mapped);
 
 				return Ok("Updated Successfully!");
 
@@ -74,6 +109,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return Unauthorized(e.Message);
 			}
+			catch (UnauthorizedAccessException e)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+			}
 			catch (EmailAlreadyExistException e)
 			{
 				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
@@ -82,33 +121,38 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
-			//catch (Exception e)
-			//{
-			//	return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-			//}
+			catch (PhoneNumberAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
-		//[HttpGet("")]
-		//public IActionResult GetUserByUsername([FromHeader] string credentials)
-		//{
-		//	try
-		//	{
-		//		//authManager.AdminCheck(credentials);
-		//		//var usersDTO = userService.SearchBy(queryParams).Select(u => mapper.Map<GetUserDTO>(u));
-		//		//return Ok(usersDTO);
+		
 
-		//	}
-		//	//catch (EntityNotFoundException e)
-		//	//{
-		//	//	return NotFound(e.Message);
-		//	//}
-		//	catch (UnauthorizedAccessException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		return BadRequest(e.Message);
-		//	}
-		//}
+		[HttpDelete("")]
+		public IActionResult DeleteUser([FromHeader] string credentials)
+		{
+			try
+			{
+				authManager.AreCredentialNull(credentials);
+				string[] usernameAndPassword = credentials.Split(':');
+				string username = usernameAndPassword[0];
+				authManager.IsAuthenticated(credentials);
+				userService.DeleteUser(username, null);
+				return Ok("User Deleted!");
+
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return Unauthorized(e.Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
 	}
 }

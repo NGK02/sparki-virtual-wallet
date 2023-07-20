@@ -145,9 +145,11 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public bool DeleteUser(User user)
 		{
-			//TODO
-			//ще трябва да доуточним какво да трием на юзъра
-			throw new NotImplementedException();
+			//TODO тряба да се уточни какво друго ще се трие за юзъра
+			user.IsDeleted = true;
+			user.DeletedOn= DateTime.Now;
+			database.SaveChanges();
+			return true;
 		}
 		private IQueryable<User> GetUsersQuerable()
 		{

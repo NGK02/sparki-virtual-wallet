@@ -101,13 +101,7 @@ namespace VirtualWallet.Business.Services
 
 		public User UpdateUser(string username, User userNewValues)
 		{
-			if (userNewValues.Email != null)
-			{
-				if (userRepo.EmailExists(userNewValues.Email))
-				{
-					throw new EmailAlreadyExistException("Email already exist!");
-				}
-			}
+			_ = UserNewValuesValidator(userNewValues);
 			var userToUpdate = userRepo.GetUserByUsername(username);
 			if (userToUpdate is null)
 			{
@@ -123,13 +117,7 @@ namespace VirtualWallet.Business.Services
 
 		public User UpdateUser(int id, User userNewValues)
 		{
-			if (userNewValues.Email != null)
-			{
-				if (userRepo.EmailExists(userNewValues.Email))
-				{
-					throw new EmailAlreadyExistException("Email already exist!");
-				}
-			}
+			_ = UserNewValuesValidator(userNewValues);
 			var userToUpdate = userRepo.GetUserById(id);
 			if (userToUpdate is null)
 			{
@@ -141,6 +129,25 @@ namespace VirtualWallet.Business.Services
 			}
 			var updatedUser = userRepo.UpdateUser(id, userNewValues);
 			return updatedUser;
+		}
+		private bool UserNewValuesValidator(User userNewValues)
+		{
+			if (userNewValues.Email != null)
+			{
+				if (userRepo.EmailExists(userNewValues.Email))
+				{
+					throw new EmailAlreadyExistException("Email already exist!");
+				}
+			}			
+			if (userNewValues.PhoneNumber is not null)
+			{
+				if (userRepo.PhoneNumberExists(userNewValues.PhoneNumber))
+				{
+					throw new UsernameAlreadyExistException("Phonenumber already exist!");
+				}
+			}
+			return true;
+
 		}
 		public bool DeleteUser(string userName, int? userId)
 		{
