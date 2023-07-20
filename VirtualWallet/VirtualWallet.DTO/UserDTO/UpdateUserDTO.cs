@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualWallet.DTO.CustomAttributes;
+using VirtualWallet.Dto.CustomAttributes;
 
-namespace VirtualWallet.DTO.UserDTO
+namespace VirtualWallet.Dto.UserDto
 {
-	public class UpdateUserDTO
+	public class UpdateUserDto
 	{
 
 		public string FirstName { get; set; }

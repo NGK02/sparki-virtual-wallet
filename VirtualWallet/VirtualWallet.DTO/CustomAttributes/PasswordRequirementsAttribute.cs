@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.DTO.CustomAttributes
+namespace VirtualWallet.Dto.CustomAttributes
 {
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class PasswordRequirementsAttribute : ValidationAttribute
