@@ -11,7 +11,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
     {
         Card GetCardById(int cardId);
 
-        IEnumerable<Card> GetAllCards();
+        IEnumerable<Card> GetCards();
 
         void AddCard(Card card);
 

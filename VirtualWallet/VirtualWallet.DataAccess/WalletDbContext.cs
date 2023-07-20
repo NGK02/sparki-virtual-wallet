@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.DataAccess
 {
@@ -30,9 +31,9 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Balance> Balances { get; set; }
 
-        public DbSet<Card> Cards { get; set; }
+		public DbSet<Card> Cards { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
 			ConfigureMigration(builder);
@@ -65,12 +66,22 @@ namespace VirtualWallet.DataAccess
 				.WithMany(u => u.Incoming)
 				.OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<Blog>()
-            //.HasOne(e => e.Header)
-            //.WithOne(e => e.Blog)
-            //.HasForeignKey<BlogHeader>(e => e.BlogId)
-            //.IsRequired();
-        }
+			builder.Entity<Role>()
+				.Property(r => r.Name)
+				.HasConversion<string>()
+				.HasMaxLength(10);
+
+			builder.Entity<Currency>()
+				.Property(c => c.Code)
+				.HasConversion<string>()
+				.HasMaxLength(3);
+
+			//modelBuilder.Entity<Blog>()
+			//.HasOne(e => e.Header)
+			//.WithOne(e => e.Blog)
+			//.HasForeignKey<BlogHeader>(e => e.BlogId)
+			//.IsRequired();
+		}
 
 		protected void CreateSeed(ModelBuilder builder)
 		{
@@ -78,46 +89,46 @@ namespace VirtualWallet.DataAccess
 			{
 				new Role
 				{
-					Id = 1,
-					Name="Blocked"
+					Id = (int)RoleName.Blocked,
+					Name = RoleName.Blocked
 				},
 				new Role
 				{
-					Id = 2,
-					Name = "User"
+					Id = (int)RoleName.User,
+					Name = RoleName.User
 				},
 				new Role
 				{
-					Id = 3,
-					Name = "Admin"
+					Id = (int)RoleName.Admin,
+					Name = RoleName.Admin
 				}
 			};
 			IList<Currency> currencies = new List<Currency>
 			{
 				new Currency
 				{
-					Id = 1,
-					Name="USD"
+					Id = (int)CurrencyCode.USD,
+					Code = CurrencyCode.USD
 				},
 				new Currency
 				{
-					Id = 2,
-					Name="EUR"
+					Id = (int)CurrencyCode.EUR,
+					Code = CurrencyCode.EUR
 				},
 				new Currency
 				{
-					Id = 3,
-					Name="BGN"
+					Id = (int)CurrencyCode.JPY,
+					Code = CurrencyCode.JPY
 				},
 				new Currency
 				{
-					Id = 4,
-					Name="JPY"
+					Id = (int)CurrencyCode.CFH,
+					Code = CurrencyCode.CFH
 				},
 				new Currency
 				{
-					Id = 5,
-					Name="CFH"
+					Id = (int)CurrencyCode.BGN,
+					Code = CurrencyCode.BGN
 				},
 			};
 			IList<User> users = new List<User>
@@ -363,36 +374,36 @@ namespace VirtualWallet.DataAccess
 
 			IList<Card> cards = new List<Card>
 			{
-                new Card
-				{
-                    CardHolder = "Georgi Georgiev",
-                    CardNumber = 1234567890123456,
-                    CheckNumber = 123,
-                    ExpirationDate = new DateTime(2023, 12, 31),
-                    Id = 1,
-                    UserId = 1
-                },
 				new Card
 				{
-                    CardHolder = "Nikolai Barekov",
-                    CardNumber = 9876543210987654,
-                    CheckNumber = 456,
-                    ExpirationDate = new DateTime(2024, 12, 31),
-                    Id = 2,
-                    UserId = 2
-                },
+					CardHolder = "Georgi Georgiev",
+					CardNumber = 1234567890123456,
+					CheckNumber = 123,
+					ExpirationDate = new DateTime(2023, 12, 31),
+					Id = 1,
+					UserId = 1
+				},
 				new Card
 				{
-                    CardHolder = "Shtilian Uzunov",
-                    CardNumber = 1111222233334444,
-                    CheckNumber = 789,
-                    ExpirationDate = new DateTime(2022, 10, 31),
-                    Id = 3,
-                    UserId = 3
-                }
-            };
+					CardHolder = "Nikolai Barekov",
+					CardNumber = 9876543210987654,
+					CheckNumber = 456,
+					ExpirationDate = new DateTime(2024, 12, 31),
+					Id = 2,
+					UserId = 2
+				},
+				new Card
+				{
+					CardHolder = "Shtilian Uzunov",
+					CardNumber = 1111222233334444,
+					CheckNumber = 789,
+					ExpirationDate = new DateTime(2022, 10, 31),
+					Id = 3,
+					UserId = 3
+				}
+			};
 
-            builder.Entity<Role>().HasData(roles);
+			builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);

@@ -23,7 +23,7 @@ namespace VirtualWallet.DataAccess.Repositories
             return walletDbContext.Cards.Include(c => c.User).SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
         }
 
-        public IEnumerable<Card> GetAllCards()
+        public IEnumerable<Card> GetCards()
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted)

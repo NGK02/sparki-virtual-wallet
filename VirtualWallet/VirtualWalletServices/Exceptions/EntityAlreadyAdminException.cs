@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumSystem.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
-    public class EntityAlreadyAdminException:ApplicationException
-    {
-        public EntityAlreadyAdminException(string message) : base(message) { }
-    }
+	public class EntityAlreadyAdminException : ApplicationException
+	{
+		public EntityAlreadyAdminException(string message) : base(message) { }
+	}
 }

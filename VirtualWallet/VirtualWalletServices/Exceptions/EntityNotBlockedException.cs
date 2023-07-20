@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumSystem.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
-    public class EntityNotBlockedException:ApplicationException
-    {
-        public EntityNotBlockedException(string message):base(message) { }
+	public class EntityNotBlockedException : ApplicationException
+	{
+		public EntityNotBlockedException(string message) : base(message) { }
 
-    }
+	}
 }

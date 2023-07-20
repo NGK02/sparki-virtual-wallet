@@ -36,9 +36,9 @@ namespace VirtualWallet.Business.Services
             return card;
         }
 
-        public IEnumerable<Card> GetAllCards()
+        public IEnumerable<Card> GetCards()
         {
-            var cards = cardRepository.GetAllCards();
+            var cards = cardRepository.GetCards();
 
             if (!cards.Any() || cards == null)
             {
