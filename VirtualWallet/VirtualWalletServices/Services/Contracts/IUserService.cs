@@ -12,5 +12,7 @@ namespace VirtualWallet.Business.Services.Contracts
 		bool CreateUser(User mappedUser);
 
         User GetUserById(int userId);
-    }
+
+		User GetUserByUserName(string userName);
+	}
 }

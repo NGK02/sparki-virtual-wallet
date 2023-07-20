@@ -6,7 +6,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DTO.UserDTO;
-using ForumSystem.DataAccess.Exceptions;
+using System.Net;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -43,6 +43,41 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (PhoneNumberAlreadyExistException e)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
+		[HttpPut("")]
+		public IActionResult EditUser([FromHeader] string credentials, [FromBody] UpdateUserDTO userValues)
+		{
+			string[] usernameAndPassword = credentials.Split(':');
+			string userName = usernameAndPassword[0];
+			try
+			{
+				authManager.UserCheck(credentials);
+				var mapped = mapper.Map<User>(userValues);
+				var updatedUser = userService.UpdateUser(userName, mapped);
+
+				return Ok("Updated Successfully!");
+
+			}
+			catch (EntityNotFoundException e)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, e.Message);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return Unauthorized(e.Message);
+			}
+			catch (EmailAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			}
+			catch (UsernameAlreadyExistException e)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
 			catch (Exception e)
 			{

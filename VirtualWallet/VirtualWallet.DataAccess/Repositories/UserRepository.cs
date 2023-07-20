@@ -59,6 +59,11 @@ namespace VirtualWallet.DataAccess.Repositories
             return database.Users.SingleOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
 
+		public User GetUserByUsername(string username)
+		{
+			throw new NotImplementedException();
+		}
+
 		//public User GetUserByUsername(string username)
 		//{
 		//	return database.Users.SingleOrDefault(u => u.Username == username && u.IsDeleted == false);

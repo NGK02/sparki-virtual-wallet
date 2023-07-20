@@ -1,4 +1,4 @@
-﻿using ForumSystem.DataAccess.Exceptions;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,5 +47,9 @@ namespace VirtualWallet.Business.Services
             return originalUser;
         }
 
-    }
+		public User GetUserByUserName(string userName)
+		{
+			var originalUser=userRepo.
+		}
+	}
 }

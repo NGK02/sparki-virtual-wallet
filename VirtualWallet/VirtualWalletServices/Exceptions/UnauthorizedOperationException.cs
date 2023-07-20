@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumSystem.DataAccess.Exceptions
+namespace VirtualWallet.Business.Exceptions
 {
-    public class UnauthorizedOperationException : ApplicationException
-    {
-        public UnauthorizedOperationException(string message) : base(message) { }
-    }
+	public class UnauthorizedOperationException : ApplicationException
+	{
+		public UnauthorizedOperationException(string message) : base(message) { }
+	}
 }
