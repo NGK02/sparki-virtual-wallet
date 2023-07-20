@@ -21,15 +21,15 @@ namespace VirtualWallet.Business.Services
 
 		public bool CreateUser(User mappedUser)
 		{
-			if (userRepo.EmailExist(mappedUser.Email))
+			if (userRepo.EmailExists(mappedUser.Email))
 			{
 				throw new EmailAlreadyExistException("Email already exists!");
 			}
-			if (userRepo.UsernameExist(mappedUser.Username))
+			if (userRepo.UsernameExists(mappedUser.Username))
 			{
 				throw new UsernameAlreadyExistException("Username already exists!");
 			}
-			if (userRepo.UsernameExist(mappedUser.Username))
+			if (userRepo.UsernameExists(mappedUser.Username))
 			{
 				throw new PhoneNumberAlreadyExistException("Phonenumber already exists!");
 			}

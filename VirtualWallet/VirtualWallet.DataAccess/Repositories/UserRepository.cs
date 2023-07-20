@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VirtualWallet.DataAccess.Repositories
 {
@@ -36,32 +38,61 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-		public bool EmailExist(string email)
+		public bool EmailExists(string email)
 		{
-			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
+			bool result = database.Users.Any(u => u.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
 			return result;
 		}
 
-		public bool PhoneNumberExist(string phoneNumber)
+		public bool PhoneNumberExists(string phoneNumber)
 		{
-			bool result = database.Users.Any(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower());
+			bool result = database.Users.Any(u => u.PhoneNumber.Equals(phoneNumber, StringComparison.InvariantCultureIgnoreCase));
 			return result;
 		}
 
-		public bool UsernameExist(string userName)
+		public bool UsernameExists(string username)
 		{
-			bool result = database.Users.Any(u => u.Username.ToLower() == userName.ToLower());
+			bool result = database.Users.Any(u => u.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase));
 			return result;
 		}
 
         public User GetUserById(int Id)
         {
-            return database.Users.SingleOrDefault(u => u.Id == Id && u.IsDeleted == false);
+            return database.Users.FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
 
 		//public User GetUserByUsername(string username)
 		//{
 		//	return database.Users.SingleOrDefault(u => u.Username == username && u.IsDeleted == false);
 		//}
+
+		private List<User> GetUsers() 
+		{
+			var users = database.Users.Where(u => u.IsDeleted == false);
+			return users.ToList();
+		}
+
+		public User SearchBy(UserQueryParameters queryParams)
+		{
+			var users = GetUsers();
+			User user = null;
+
+			if (queryParams.Username is not null)
+			{
+				user = users.FirstOrDefault(u => u.Username.Equals(queryParams.Username, StringComparison.InvariantCultureIgnoreCase));
+			}
+
+			if (queryParams.Email is not null)
+			{
+				user = users.FirstOrDefault(u => u.Email.Equals(queryParams.Email, StringComparison.InvariantCultureIgnoreCase));
+			}
+
+			if (queryParams.PhoneNumber is not null)
+			{
+				user = users.FirstOrDefault(u => u.PhoneNumber.Equals(queryParams.PhoneNumber, StringComparison.InvariantCultureIgnoreCase));
+			}
+
+			return user;
+		}
 	}
 }

@@ -10,9 +10,9 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 	public interface IUserRepository
 	{
 		bool CreateUser(User user);
-		bool EmailExist(string email);
-		bool UsernameExist(string userName);
-		bool PhoneNumberExist(string phoneNumber);
+		bool EmailExists(string email);
+		bool UsernameExists(string userName);
+		bool PhoneNumberExists(string phoneNumber);
 
         User GetUserById(int userId);
     }

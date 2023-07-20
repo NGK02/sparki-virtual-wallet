@@ -20,19 +20,19 @@ namespace VirtualWallet.Business.Services
 
 		public User IsAuthenticated(string credentials)
 		{
-			//if (credentials is null) throw new UnauthenticatedOperationException("Please enter credentials!");
-			//string[] usernameAndPassword = credentials.Split(':');
-			//string userName = usernameAndPassword[0];
-			//string password = usernameAndPassword[1];
+			if (credentials is null) throw new UnauthenticatedOperationException("Please enter credentials!");
+			string[] usernameAndPassword = credentials.Split(':');
+			string userName = usernameAndPassword[0];
+			string password = usernameAndPassword[1];
 
-			//var user = userService.GetUserByUserName(userName);
-			//string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
-			//if (user.Password == loginPasswordToBASE64)
-			//{
-			//	return user;
-			//}
+			var user = userService.GetUserByUserName(userName);
+			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+			if (user.Password == loginPasswordToBASE64)
+			{
+				return user;
+			}
 
-			//throw new UnauthenticatedOperationException("Invalid username or password!");
+			throw new UnauthenticatedOperationException("Invalid username or password!");
 			throw new NotImplementedException();
 		}
 	}
