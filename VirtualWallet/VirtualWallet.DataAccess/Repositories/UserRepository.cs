@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VirtualWallet.DataAccess.Repositories
 {
@@ -36,37 +38,62 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-		public bool EmailExist(string email)
+		public bool EmailExists(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
 			return result;
 		}
 
-		public bool PhoneNumberExist(string phoneNumber)
+		public bool PhoneNumberExists(string phoneNumber)
 		{
-			bool result = database.Users.Any(u => u.PhoneNumber.ToLower() == phoneNumber.ToLower());
+			bool result = database.Users.Any(u => u.PhoneNumber == phoneNumber);
 			return result;
 		}
 
-		public bool UsernameExist(string userName)
+		public bool UsernameExists(string username)
 		{
-			bool result = database.Users.Any(u => u.Username.ToLower() == userName.ToLower());
+			bool result = database.Users.Any(u => u.Username.ToLower() == username.ToLower());
 			return result;
 		}
 
         public User GetUserById(int Id)
         {
-            return database.Users.SingleOrDefault(u => u.Id == Id && u.IsDeleted == false);
+            return GetUsers().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
 
 		public User GetUserByUsername(string username)
 		{
-			throw new NotImplementedException();
+			return GetUsers().FirstOrDefault(u => u.Username == username && u.IsDeleted == false);
 		}
 
-		//public User GetUserByUsername(string username)
-		//{
-		//	return database.Users.SingleOrDefault(u => u.Username == username && u.IsDeleted == false);
-		//}
+		private IQueryable<User> GetUsers()
+		{
+			var users = database.Users.Where(u => u.IsDeleted == false);
+			return users;
+		}
+
+		public User SearchBy(UserQueryParameters queryParams)
+		{
+			var users = GetUsers();
+			User user = null;
+
+			if (queryParams.Username is not null)
+			{
+				user = users.FirstOrDefault(u => u.Username.ToLower() == queryParams.Username.ToLower());
+			}
+
+			if (queryParams.Email is not null)
+			{
+				user = users.FirstOrDefault(u => u.Email.ToLower() == queryParams.Email.ToLower());
+			}
+
+			if (queryParams.PhoneNumber is not null)
+			{
+				user = users.FirstOrDefault(u => u.PhoneNumber == queryParams.PhoneNumber);
+			}
+
+			return user;
+		}
+
 	}
 }

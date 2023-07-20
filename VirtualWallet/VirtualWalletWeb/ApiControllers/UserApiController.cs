@@ -7,6 +7,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DTO.UserDTO;
 using System.Net;
+using VirtualWallet.Business.AuthManager;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -16,10 +17,12 @@ namespace VirtualWallet.Web.ApiControllers
 	{
 		private readonly IMapper mapper;
 		private readonly IUserService userService;
-		public UserApiController(IMapper mapper,IUserService userService) 
+		private readonly IAuthManager authManager;
+		public UserApiController(IMapper mapper,IUserService userService,IAuthManager authManager) 
 		{ 
 			this.mapper = mapper;
 			this.userService = userService;
+			this.authManager = authManager;
 		}
 
 		[HttpPost("")]
@@ -56,7 +59,7 @@ namespace VirtualWallet.Web.ApiControllers
 			string userName = usernameAndPassword[0];
 			try
 			{
-				authManager.UserCheck(credentials);
+				authManager.IsAuthenticated(credentials);
 				var mapped = mapper.Map<User>(userValues);
 				var updatedUser = userService.UpdateUser(userName, mapped);
 

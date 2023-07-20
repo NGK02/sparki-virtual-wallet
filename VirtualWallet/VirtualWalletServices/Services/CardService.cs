@@ -9,7 +9,7 @@ using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
-using ForumSystem.DataAccess.Exceptions;
+using VirtualWallet.Business.Exceptions;
 
 namespace VirtualWallet.Business.Services
 {
