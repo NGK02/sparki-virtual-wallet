@@ -40,36 +40,36 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public bool EmailExists(string email)
 		{
-			bool result = database.Users.Any(u => u.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
+			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
 			return result;
 		}
 
 		public bool PhoneNumberExists(string phoneNumber)
 		{
-			bool result = database.Users.Any(u => u.PhoneNumber.Equals(phoneNumber, StringComparison.InvariantCultureIgnoreCase));
+			bool result = database.Users.Any(u => u.PhoneNumber == phoneNumber);
 			return result;
 		}
 
 		public bool UsernameExists(string username)
 		{
-			bool result = database.Users.Any(u => u.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+			bool result = database.Users.Any(u => u.Username.ToLower() == username.ToLower());
 			return result;
 		}
 
         public User GetUserById(int Id)
         {
-            return database.Users.FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
+            return GetUsers().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
 
-		//public User GetUserByUsername(string username)
-		//{
-		//	return database.Users.SingleOrDefault(u => u.Username == username && u.IsDeleted == false);
-		//}
+		public User GetUserByUsername(string username)
+		{
+			return GetUsers().FirstOrDefault(u => u.Username == username && u.IsDeleted == false);
+		}
 
-		private List<User> GetUsers() 
+		private IQueryable<User> GetUsers()
 		{
 			var users = database.Users.Where(u => u.IsDeleted == false);
-			return users.ToList();
+			return users;
 		}
 
 		public User SearchBy(UserQueryParameters queryParams)
@@ -79,17 +79,17 @@ namespace VirtualWallet.DataAccess.Repositories
 
 			if (queryParams.Username is not null)
 			{
-				user = users.FirstOrDefault(u => u.Username.Equals(queryParams.Username, StringComparison.InvariantCultureIgnoreCase));
+				user = users.FirstOrDefault(u => u.Username.ToLower() == queryParams.Username.ToLower());
 			}
 
 			if (queryParams.Email is not null)
 			{
-				user = users.FirstOrDefault(u => u.Email.Equals(queryParams.Email, StringComparison.InvariantCultureIgnoreCase));
+				user = users.FirstOrDefault(u => u.Email.ToLower() == queryParams.Email.ToLower());
 			}
 
 			if (queryParams.PhoneNumber is not null)
 			{
-				user = users.FirstOrDefault(u => u.PhoneNumber.Equals(queryParams.PhoneNumber, StringComparison.InvariantCultureIgnoreCase));
+				user = users.FirstOrDefault(u => u.PhoneNumber == queryParams.PhoneNumber);
 			}
 
 			return user;

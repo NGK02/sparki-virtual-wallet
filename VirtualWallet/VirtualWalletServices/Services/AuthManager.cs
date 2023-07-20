@@ -25,7 +25,7 @@ namespace VirtualWallet.Business.Services
 			string userName = usernameAndPassword[0];
 			string password = usernameAndPassword[1];
 
-			var user = userService.GetUserByUserName(userName);
+			var user = userService.GetUserByUsername(userName);
 			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
 			if (user.Password == loginPasswordToBASE64)
 			{
