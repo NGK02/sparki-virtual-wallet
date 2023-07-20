@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ForumSystem.DataAccess.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
@@ -69,7 +69,7 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                var cards = cardService.GetAllCards();
+                var cards = cardService.GetCards();
 
                 return Ok(cards);
             }
