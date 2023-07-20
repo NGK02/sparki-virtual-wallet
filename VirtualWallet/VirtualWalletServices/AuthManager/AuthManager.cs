@@ -20,17 +20,29 @@ namespace VirtualWallet.Business.AuthManager
 
 		public void IsAdmin(string credentials)
 		{
-			throw new NotImplementedException();
+			var user = IsAuthenticated(credentials);
+			if (!IsAdmin(user))
+			{
+				throw new UnauthorizedAccessException("You'rе not admin!");
+			}
 		}
 
 		public bool IsAdmin(User user)
 		{
-			throw new NotImplementedException();
+			if (user.RoleId == 3)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		public bool IsAdmin(int roleId)
 		{
-			throw new NotImplementedException();
+			if (roleId == 3)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		public User IsAuthenticated(string credentials)
@@ -52,22 +64,41 @@ namespace VirtualWallet.Business.AuthManager
 
 		public User IsAuthenticated(string userName, string password)
 		{
-			throw new NotImplementedException();
+			var user = userService.GetUserByUserName(userName);
+			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+			if (user.Password == loginPasswordToBASE64)
+			{
+				return user;
+			}
+
+			throw new UnauthenticatedOperationException("Invalid username or password!");
 		}
 
 		public void IsBlocked(string credentials)
 		{
-			throw new NotImplementedException();
+			var user = IsAuthenticated(credentials);
+			if (!IsBlocked(user))
+			{
+				throw new UnauthorizedAccessException("You'rе blocked, can't perform this action");
+			}
 		}
 
 		public bool IsBlocked(User user)
 		{
-			throw new NotImplementedException();
+			if (user.RoleId == 1)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		public bool IsBlocked(int roleId)
 		{
-			throw new NotImplementedException();
+			if (roleId == 1)
+			{
+				return true;
+			}
+			return false;
 		}
 	}
 }
