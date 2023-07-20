@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.DTO.CardDto
+namespace VirtualWallet.Dto.CardDto
 {
-    public class CardDto
+    public class CardEntryDto
     {
         [Required]
         public DateTime ExpirationDate { get; set; }

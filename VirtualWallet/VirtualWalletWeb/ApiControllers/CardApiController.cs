@@ -4,7 +4,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DTO.CardDto;
+using VirtualWallet.Dto.CardDto;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -22,7 +22,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPost("{userId}")]
-        public IActionResult AddCard([FromBody] CardDto cardDto, int userId)
+        public IActionResult AddCard([FromBody] CardEntryDto cardDto, int userId)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPut("{cardId}")]
-        public IActionResult UpdateCard([FromBody] CardDto cardDto, int cardId)
+        public IActionResult UpdateCard([FromBody] CardEntryDto cardDto, int cardId)
         {
             try
             {
