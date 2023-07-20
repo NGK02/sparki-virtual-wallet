@@ -13,8 +13,8 @@ namespace VirtualWallet.Business.Services
 {
 	public class UserService:IUserService
 	{
-		private readonly IUserRepo userRepo;
-		public UserService(IUserRepo userRepo) 
+		private readonly IUserRepository userRepo;
+		public UserService(IUserRepository userRepo) 
 		{
 			this.userRepo = userRepo;
 		}

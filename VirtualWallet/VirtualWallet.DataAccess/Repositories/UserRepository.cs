@@ -9,11 +9,11 @@ using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.DataAccess.Repositories
 {
-	public class UserRepo : IUserRepo
+	public class UserRepository : IUserRepository
 	{
 		private readonly WalletDbContext database;
 
-		public UserRepo(WalletDbContext database)
+		public UserRepository(WalletDbContext database)
 		{
 			this.database = database;
 		}
@@ -36,11 +36,6 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-		public User GetUserByUsername(string username)
-		{
-			return database.Users.SingleOrDefault(u => u.Username == username);
-		}
-
 		public bool EmailExist(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
@@ -61,8 +56,12 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public User GetUserById(int Id)
         {
-            var userWithThatId = database.Users.FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
-            return userWithThatId;
+            return database.Users.SingleOrDefault(u => u.Id == Id && u.IsDeleted == false);
         }
-    }
+
+		//public User GetUserByUsername(string username)
+		//{
+		//	return database.Users.SingleOrDefault(u => u.Username == username && u.IsDeleted == false);
+		//}
+	}
 }

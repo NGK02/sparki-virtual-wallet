@@ -7,7 +7,7 @@ using VirtualWallet.DataAccess.Models;
 
 namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
-	public interface IUserRepo
+	public interface IUserRepository
 	{
 		bool CreateUser(User user);
 		bool EmailExist(string email);
