@@ -20,7 +20,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public Card GetCardById(int cardId)
         {
-            return walletDbContext.Cards.Include(c => c.User).FirstOrDefault(c => !c.IsDeleted && c.Id == cardId);
+            return walletDbContext.Cards.Include(c => c.User).SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
         }
 
         public IEnumerable<Card> GetCards()
@@ -45,6 +45,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public void UpdateCard(Card card, Card cardToUpdate)
         {
+            cardToUpdate.CardHolder = card.CardHolder;
             cardToUpdate.CardNumber = card.CardNumber;
             cardToUpdate.CheckNumber = card.CheckNumber;
             cardToUpdate.ExpirationDate = card.ExpirationDate;
