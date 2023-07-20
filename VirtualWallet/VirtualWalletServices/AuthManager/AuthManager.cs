@@ -19,6 +19,15 @@ namespace VirtualWallet.Business.AuthManager
 			this.userService = userService;
 		}
 
+		public bool AreCredentialNull(string credentials)
+		{
+			if (credentials is null)
+			{
+				throw new UnauthenticatedOperationException("Please provide credentials!");
+			}
+			return true;
+		}
+
 		public void IsAdmin(string credentials)
 		{
 			var user = IsAuthenticated(credentials);
