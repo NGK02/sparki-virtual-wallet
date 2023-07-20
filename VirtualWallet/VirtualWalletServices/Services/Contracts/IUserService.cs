@@ -19,7 +19,7 @@ namespace VirtualWallet.Business.Services.Contracts
 		User GetUserById(int userId);
 		public User GetUserByEmail(string email);
 
-		User GetUserByUserName(string userName);
+		User GetUserByUsername(string userName);
 
 		List<User> GetUsersByUsernameContains(string input);
 
