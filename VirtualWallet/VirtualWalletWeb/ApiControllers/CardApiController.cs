@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
@@ -12,33 +14,50 @@ namespace VirtualWallet.Web.ApiControllers
     [Route("api/cards")]
     public class CardApiController : ControllerBase
     {
+        private readonly IAuthManager authManager;
         private readonly ICardService cardService;
         private readonly IMapper mapper;
 
-        public CardApiController(ICardService cardService, IMapper mapper)
+        public CardApiController(IAuthManager authManager, ICardService cardService, IMapper mapper)
         {
+            this.authManager = authManager;
             this.cardService = cardService;
             this.mapper = mapper;
         }
 
-        [HttpPost("{userId}")]
-        public IActionResult AddCard([FromBody] CardEntryDto cardDto, int userId)
+        [HttpPost]
+        public IActionResult AddCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials)
         {
             try
             {
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                var card = mapper.Map<Card>(cardDto);
+                var card = mapper.Map<Card>(cardInfoDto);
 
-                cardService.AddCard(card, userId);
+                cardService.AddCard(card, username);
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
@@ -47,35 +66,31 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpDelete("{cardId}")]
-        public IActionResult DeleteCard(int cardId)
+        public IActionResult DeleteCard([FromHeader] string credentials, int cardId)
         {
             try
             {
-                cardService.DeleteCard(cardId);
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+
+                cardService.DeleteCard(cardId, username);
                 return NoContent();
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
-            catch (Exception ex)
+            catch (UnauthenticatedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
             }
-        }
-
-        [HttpGet]
-        public IActionResult GetAllCards()
-        {
-            try
+            catch (UnauthorizedOperationException ex)
             {
-                var cards = cardService.GetCards();
-
-                return Ok(cards);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
-            catch (EntityNotFoundException ex)
+            catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
@@ -84,17 +99,97 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet("{cardId}")]
-        public IActionResult GetCardById(int cardId)
+        public IActionResult GetCardById([FromHeader] string credentials, int cardId)
         {
             try
             {
-                var card = cardService.GetCardById(cardId);
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+                var card = cardService.GetCardById(cardId, username);
 
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetCards([FromHeader] string credentials)
+        {
+            try
+            {
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+                var cards = cardService.GetCards(username);
+
+                return Ok(cards);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("user")]
+        public IActionResult GetUserCards([FromHeader] string credentials)
+        {
+            try
+            {
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+                var cards = cardService.GetUserCards(username);
+
+                return Ok(cards);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
@@ -103,23 +198,38 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPut("{cardId}")]
-        public IActionResult UpdateCard([FromBody] CardEntryDto cardDto, int cardId)
+        public IActionResult UpdateCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int cardId)
         {
             try
             {
+                authManager.IsBlocked(credentials);
+                string username = credentials.Split(':')[0];
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                var card = mapper.Map<Card>(cardDto);
+                var card = mapper.Map<Card>(cardInfoDto);
 
-                cardService.UpdateCard(card, cardId);
+                cardService.UpdateCard(card, cardId, username);
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

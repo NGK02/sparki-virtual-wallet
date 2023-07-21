@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.Models
 {
     public class Card : Entity
     {
-		[Required]
+        [Required]
         public DateTime ExpirationDate { get; set; }
 
         [Required]
@@ -25,9 +26,10 @@ namespace VirtualWallet.DataAccess.Models
         public long CardNumber { get; set; }
 
         [Required]
-		[StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
-		public string CardHolder { get; set; }
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
+        public string CardHolder { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; } // Navigation property
     }
 }

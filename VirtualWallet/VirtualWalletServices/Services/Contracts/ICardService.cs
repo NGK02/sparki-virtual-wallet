@@ -9,14 +9,16 @@ namespace VirtualWallet.Business.Services.Contracts
 {
     public interface ICardService
     {
-        Card GetCardById(int cardId);
+        Card GetCardById(int cardId, string username);
 
-        IEnumerable<Card> GetCards();
+        IEnumerable<Card> GetCards(string username);
 
-        void AddCard(Card card, int userId);
+        IEnumerable<Card> GetUserCards(string username);
 
-        void DeleteCard(int cardId);
+        void AddCard(Card card, string username);
 
-        void UpdateCard(Card card, int cardId);
+        void DeleteCard(int cardId, string username);
+
+        void UpdateCard(Card card, int cardId, string username);
     }
 }

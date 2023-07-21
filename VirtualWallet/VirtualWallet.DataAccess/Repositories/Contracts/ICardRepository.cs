@@ -13,6 +13,8 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 
         IEnumerable<Card> GetCards();
 
+        IEnumerable<Card> GetUserCards(int userId);
+
         void AddCard(Card card);
 
         void DeleteCard(Card card);
