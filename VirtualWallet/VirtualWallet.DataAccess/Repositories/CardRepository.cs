@@ -47,6 +47,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public void DeleteCard(Card card)
         {
+            card.DeletedOn = DateTime.Now;
             card.IsDeleted = true;
             walletDbContext.SaveChanges();
         }

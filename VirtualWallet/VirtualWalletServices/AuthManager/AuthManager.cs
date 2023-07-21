@@ -87,7 +87,7 @@ namespace VirtualWallet.Business.AuthManager
 		public void IsBlocked(string credentials)
 		{
 			var user = IsAuthenticated(credentials);
-			if (!IsBlocked(user))
+			if (IsBlocked(user))
 			{
 				throw new UnauthorizedAccessException("You'rе blocked, can't perform this action");
 			}
@@ -95,12 +95,14 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsBlocked(User user)
 		{
-			if (user.RoleId == (int)RoleName.Blocked)
-			{
-				return true;
-			}
-			return false;
-		}
+			//if (user.RoleId == (int)RoleName.Blocked)
+			//{
+			//	return true;
+			//}
+			//return false;
+
+			return user.RoleId == (int)RoleName.Blocked;
+        }
 
 		public bool IsBlocked(int roleId)
 		{
