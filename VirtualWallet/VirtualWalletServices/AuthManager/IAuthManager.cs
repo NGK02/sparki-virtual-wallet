@@ -9,7 +9,7 @@ namespace VirtualWallet.Business.AuthManager
 {
 	public interface IAuthManager
 	{
-		bool AreCredentialNull(string credentials);
+		bool AreCredentialsNullOrEmpty(string credentials);
 		User IsAuthenticated(string credentials);
 
 		User IsAuthenticated(string userName, string password);

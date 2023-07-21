@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.Models
 {
-	public class Transaction : Entity
+	public class WalletTransaction : Entity
 	{
 		public int Id { get; set; }
 

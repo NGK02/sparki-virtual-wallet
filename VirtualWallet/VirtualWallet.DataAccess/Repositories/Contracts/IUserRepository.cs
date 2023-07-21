@@ -28,5 +28,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 		User SearchBy(UserQueryParameters queryParams);
 
 		bool DeleteUser(User user);
+
+		Balance CreateUserBalance(int walletId, int currencyId);
 	}
 }

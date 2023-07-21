@@ -11,7 +11,7 @@ using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.Business.AuthManager
 {
-    public class AuthManager:IAuthManager
+    public class AuthManager : IAuthManager
     {
 		private readonly IUserService userService;
 		public AuthManager(IUserService userService)
@@ -19,9 +19,9 @@ namespace VirtualWallet.Business.AuthManager
 			this.userService = userService;
 		}
 
-		public bool AreCredentialNull(string credentials)
+		public bool AreCredentialsNullOrEmpty(string credentials)
 		{
-			if (credentials is null)
+			if (string.IsNullOrEmpty(credentials))
 			{
 				throw new UnauthenticatedOperationException("Please provide credentials!");
 			}
@@ -57,7 +57,7 @@ namespace VirtualWallet.Business.AuthManager
 
 		public User IsAuthenticated(string credentials)
         {
-			if (credentials is null) throw new UnauthenticatedOperationException("Please enter credentials!");
+			AreCredentialsNullOrEmpty(credentials);
 			string[] usernameAndPassword = credentials.Split(':');
 			string userName = usernameAndPassword[0];
 			string password = usernameAndPassword[1];

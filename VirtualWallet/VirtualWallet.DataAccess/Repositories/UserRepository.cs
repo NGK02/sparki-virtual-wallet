@@ -38,7 +38,6 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-
 		public bool EmailExists(string email)
 		{
 			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
@@ -117,6 +116,7 @@ namespace VirtualWallet.DataAccess.Repositories
 			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
 			database.SaveChanges();
 		}
+		//Защо има три метода, и защо единия е с друго име?
 
 
 		public User SearchBy(UserQueryParameters queryParams)
@@ -153,8 +153,18 @@ namespace VirtualWallet.DataAccess.Repositories
 		}
 		private IQueryable<User> GetUsersQuerable()
 		{
-			var users = database.Users.Where(u => u.IsDeleted == false);
+			var users = database.Users.Where(u => u.IsDeleted == false)
+						.Include(u => u.Wallet).ThenInclude(w => w.Balances).ThenInclude(b => b.Currency)
+						.Include(u => u.Cards);
 			return users;
+		}
+
+		public Balance CreateUserBalance(int walletId, int currencyId)
+		{
+			var balance = new Balance { WalletId = walletId, CurrencyId = currencyId };
+			database.Balances.Add(balance);
+			database.SaveChanges();
+			return balance;
 		}
 	}
 }

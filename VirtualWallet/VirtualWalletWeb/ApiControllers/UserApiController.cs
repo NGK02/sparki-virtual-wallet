@@ -27,6 +27,7 @@ namespace VirtualWallet.Web.ApiControllers
 
 
 		[HttpPost("")]
+		//TODO: Authentication
 		public IActionResult CreateUser([FromBody] CreateUserDto userDto)
 		{
 			try
@@ -59,7 +60,7 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialNull(credentials);
+				authManager.AreCredentialsNullOrEmpty(credentials);
 				string[] usernameAndPassword = credentials.Split(":");
 				string username = usernameAndPassword[0];
 				authManager.IsAuthenticated(credentials);
@@ -91,7 +92,7 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialNull(credentials);
+				authManager.AreCredentialsNullOrEmpty(credentials);
 				string[] usernameAndPassword = credentials.Split(':');
 				string username = usernameAndPassword[0];
 				authManager.IsAuthenticated(credentials);
@@ -137,7 +138,7 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialNull(credentials);
+				authManager.AreCredentialsNullOrEmpty(credentials);
 				string[] usernameAndPassword = credentials.Split(':');
 				string username = usernameAndPassword[0];
 				authManager.IsAuthenticated(credentials);

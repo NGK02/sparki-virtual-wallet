@@ -42,9 +42,6 @@ namespace VirtualWallet.Business.Services
 			return true;
 		}
 
-
-
-
 		public User GetUserByEmail(string email)
 		{
 			var originalUser = userRepo.GetUserByEmail(email) ?? throw new EntityNotFoundException($"User with Email {email} was not found!");
@@ -130,25 +127,7 @@ namespace VirtualWallet.Business.Services
 			var updatedUser = userRepo.UpdateUser(id, userNewValues);
 			return updatedUser;
 		}
-		private bool UserNewValuesValidator(User userNewValues)
-		{
-			if (userNewValues.Email != null)
-			{
-				if (userRepo.EmailExists(userNewValues.Email))
-				{
-					throw new EmailAlreadyExistException("Email already exist!");
-				}
-			}			
-			if (userNewValues.PhoneNumber is not null)
-			{
-				if (userRepo.PhoneNumberExists(userNewValues.PhoneNumber))
-				{
-					throw new UsernameAlreadyExistException("Phonenumber already exist!");
-				}
-			}
-			return true;
 
-		}
 		public bool DeleteUser(string userName, int? userId)
 		{
 			if (userId is not null)
@@ -165,6 +144,38 @@ namespace VirtualWallet.Business.Services
 				return userRepo.DeleteUser(userToDelete);
 			}
 			throw new EntityNotFoundException("Please provide Id or Username for the user to be deleted!");
+		}
+
+		private bool UserNewValuesValidator(User userNewValues)
+		{
+			if (userNewValues.Email is not null)
+			{
+				if (userRepo.EmailExists(userNewValues.Email))
+				{
+					throw new EmailAlreadyExistException("Email already exist!");
+				}
+			}
+			if (userNewValues.PhoneNumber is not null)
+			{
+				if (userRepo.PhoneNumberExists(userNewValues.PhoneNumber))
+				{
+					throw new UsernameAlreadyExistException("Phonenumber already exist!");
+				}
+			}
+			return true;
+		}
+
+		public bool UserHasSufficientBalance(User user, int amount, int currencyId)
+		{
+			var balance = user.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == currencyId);
+			if (balance is not null)
+			{
+				if (balance.Amount >= amount)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

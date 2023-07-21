@@ -47,9 +47,9 @@ namespace VirtualWallet.DataAccess.Models
 		public int RoleId { get; set; } = 2;
 		public Role Role { get; set; }
 
-		public List<Transaction> Incoming { get; set; } = new List<Transaction>();
+		public List<WalletTransaction> Incoming { get; set; } = new List<WalletTransaction>();
 
-		public List<Transaction> Outgoing { get; set; } = new List<Transaction>();
+		public List<WalletTransaction> Outgoing { get; set; } = new List<WalletTransaction>();
 
         public List<Card> Cards { get; set; } = new List<Card>();
     }

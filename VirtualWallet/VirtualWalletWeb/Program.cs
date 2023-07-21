@@ -6,17 +6,26 @@ using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.Business.AuthManager;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAuthManager,AuthManager>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<ICardService, CardService>();
+
+builder.Services.AddScoped<IWalletTransactionRepository, WalletTransactionRepository>();
+builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>();
+
+builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
+{cfg.AddProfile(new AutoMapperProfile(provider.GetService<IUserService>()));
+}).CreateMapper());
 
 builder.Services.AddDbContext<WalletDbContext>(options =>
 {

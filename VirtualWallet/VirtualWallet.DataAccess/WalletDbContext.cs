@@ -25,7 +25,7 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Wallet> Wallets { get; set; }
 
-		public DbSet<Transaction> Transactions { get; set; }
+		public DbSet<WalletTransaction> WalletTransactions { get; set; }
 
 		public DbSet<Currency> Currencies { get; set; }
 
@@ -52,16 +52,16 @@ namespace VirtualWallet.DataAccess
 				.Property(b => b.Amount)
 				.HasPrecision(18, 2);
 
-			builder.Entity<Transaction>()
+			builder.Entity<WalletTransaction>()
 				.Property(t => t.Amount)
 				.HasPrecision(18, 2);
 
-			builder.Entity<Transaction>()
+			builder.Entity<WalletTransaction>()
 				.HasOne(t => t.Sender)
 				.WithMany(u => u.Outgoing)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			builder.Entity<Transaction>()
+			builder.Entity<WalletTransaction>()
 				.HasOne(t => t.Recipient)
 				.WithMany(u => u.Incoming)
 				.OnDelete(DeleteBehavior.NoAction);
