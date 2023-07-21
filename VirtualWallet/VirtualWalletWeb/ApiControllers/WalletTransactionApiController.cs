@@ -11,13 +11,13 @@ namespace VirtualWallet.Web.ApiControllers
 {
 	[ApiController]
 	[Route("api/transactions")]
-	public class TransactionApiController : ControllerBase
+	public class WalletTransactionApiController : ControllerBase
 	{
 		private IMapper mapper;
 		private IWalletTransactionService walletTransactionService;
 		private IAuthManager authManager;
 
-		public TransactionApiController(IMapper mapper, IWalletTransactionService walletTransactionService, IAuthManager authManager)
+		public WalletTransactionApiController(IMapper mapper, IWalletTransactionService walletTransactionService, IAuthManager authManager)
 		{ 
 			this.mapper = mapper;
 			this.walletTransactionService = walletTransactionService;
@@ -29,10 +29,11 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialsNullOrEmpty(credentials);
-				authManager.IsAuthenticated(credentials);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string senderUsername = splitCredentials[0];
+
 				var walletTransaction = mapper.Map<WalletTransaction>(transactionDto);
-				string senderUsername = credentials.Split(':')[0];
 				walletTransactionService.CreateTransaction(walletTransaction, senderUsername);
 				return StatusCode(StatusCodes.Status200OK, true);
 			}

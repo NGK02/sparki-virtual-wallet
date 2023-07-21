@@ -19,18 +19,19 @@ namespace VirtualWallet.Business.AuthManager
 			this.userService = userService;
 		}
 
-		public bool AreCredentialsNullOrEmpty(string credentials)
+		public string[] SplitCredentials(string credentials)
 		{
 			if (string.IsNullOrEmpty(credentials))
 			{
 				throw new UnauthenticatedOperationException("Please provide credentials!");
 			}
-			return true;
+			string[] splitCredentials = credentials.Split(':');
+			return splitCredentials;
 		}
 
-		public void IsAdmin(string credentials)
+		public void IsAdmin(string[] splitCredentials)
 		{
-			var user = IsAuthenticated(credentials);
+			var user = IsAuthenticated(splitCredentials);
 			if (!IsAdmin(user))
 			{
 				throw new UnauthorizedAccessException("You'rе not admin!");
@@ -55,12 +56,10 @@ namespace VirtualWallet.Business.AuthManager
 			return false;
 		}
 
-		public User IsAuthenticated(string credentials)
+		public User IsAuthenticated(string[] splitCredentials)
         {
-			AreCredentialsNullOrEmpty(credentials);
-			string[] usernameAndPassword = credentials.Split(':');
-			string userName = usernameAndPassword[0];
-			string password = usernameAndPassword[1];
+			string userName = splitCredentials[0];
+			string password = splitCredentials[1];
 
 			var user = userService.GetUserByUsername(userName);
 			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
@@ -72,21 +71,21 @@ namespace VirtualWallet.Business.AuthManager
 			throw new UnauthenticatedOperationException("Invalid username or password!");
 		}
 
-		public User IsAuthenticated(string userName, string password)
-		{
-			var user = userService.GetUserByUsername(userName);
-			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
-			if (user.Password == loginPasswordToBASE64)
-			{
-				return user;
-			}
+		//public User IsAuthenticated(string userName, string password)
+		//{
+		//	var user = userService.GetUserByUsername(userName);
+		//	string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+		//	if (user.Password == loginPasswordToBASE64)
+		//	{
+		//		return user;
+		//	}
 
-			throw new UnauthenticatedOperationException("Invalid username or password!");
-		}
+		//	throw new UnauthenticatedOperationException("Invalid username or password!");
+		//}
 
-		public void IsBlocked(string credentials)
+		public void IsBlocked(string[] splitCredentials)
 		{
-			var user = IsAuthenticated(credentials);
+			var user = IsAuthenticated(splitCredentials);
 			if (IsBlocked(user))
 			{
 				throw new UnauthorizedAccessException("You'rе blocked, can't perform this action");

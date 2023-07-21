@@ -60,10 +60,10 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialsNullOrEmpty(credentials);
-				string[] usernameAndPassword = credentials.Split(":");
-				string username = usernameAndPassword[0];
-				authManager.IsAuthenticated(credentials);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
 				var user = userService.GetUserByUsername(username);
 				var mappedUser = mapper.Map<GetUserDto>(user);
 				return Ok(mappedUser);
@@ -92,10 +92,10 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialsNullOrEmpty(credentials);
-				string[] usernameAndPassword = credentials.Split(':');
-				string username = usernameAndPassword[0];
-				authManager.IsAuthenticated(credentials);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
 				var mapped = mapper.Map<User>(userValues);
 				var updatedUser = userService.UpdateUser(username, mapped);
 
@@ -138,10 +138,10 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
-				authManager.AreCredentialsNullOrEmpty(credentials);
-				string[] usernameAndPassword = credentials.Split(':');
-				string username = usernameAndPassword[0];
-				authManager.IsAuthenticated(credentials);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
 				userService.DeleteUser(username, null);
 				return Ok("User Deleted!");
 

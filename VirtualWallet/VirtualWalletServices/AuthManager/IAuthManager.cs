@@ -9,18 +9,19 @@ namespace VirtualWallet.Business.AuthManager
 {
 	public interface IAuthManager
 	{
-		bool AreCredentialsNullOrEmpty(string credentials);
-		User IsAuthenticated(string credentials);
+		string[] SplitCredentials(string credentials);
 
-		User IsAuthenticated(string userName, string password);
+		User IsAuthenticated(string[] splitCredentials);
 
-		void IsAdmin(string credentials);
+		//User IsAuthenticated(string[] userName, string password);
+
+		void IsAdmin(string[] splitCredentials);
 
 		bool IsAdmin(User user);
 
 		bool IsAdmin(int roleId);
 
-		void IsBlocked(string credentials);
+		void IsBlocked(string[] splitCredentials);
 
 		bool IsBlocked(User user);
 
