@@ -83,6 +83,11 @@ namespace VirtualWallet.Business.Services
         {
             var user = userService.GetUserByUsername(username);
 
+            if (cardRepository.CardNumberExists(card.CardNumber))
+            {
+                throw new ArgumentException("Card with the given number already exists.");
+            }
+
             card.User = user;
             card.UserId = user.Id;
             user.Cards.Add(card);

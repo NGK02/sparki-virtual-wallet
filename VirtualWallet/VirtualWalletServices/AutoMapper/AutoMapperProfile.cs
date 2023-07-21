@@ -10,19 +10,20 @@ using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.Dto.UserDto;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.Dto.CardDto;
 
 namespace VirtualWallet.Business.AutoMapper
 {
 	public class AutoMapperProfile : Profile
 	{
-
 		private IUserService userService;
 
 		public AutoMapperProfile(IUserService userService)
 		{
 			this.userService = userService;
 
-			CreateMap<CreateUserDto, User>();
+            CreateMap<CardInfoDto, Card>();
+            CreateMap<CreateUserDto, User>();
 			CreateMap<UpdateUserDto, User>();
 
 			CreateMap<CreateTransactionDto, WalletTransaction>()

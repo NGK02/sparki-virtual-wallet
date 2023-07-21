@@ -9,6 +9,8 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
     public interface ICardRepository
     {
+        bool CardNumberExists(long cardNumber);
+
         Card GetCardById(int cardId);
 
         IEnumerable<Card> GetCards();

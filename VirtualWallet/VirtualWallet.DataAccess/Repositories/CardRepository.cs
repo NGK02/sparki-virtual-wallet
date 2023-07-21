@@ -18,6 +18,11 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
+        public bool CardNumberExists(long cardNumber)
+        {
+            return walletDbContext.Cards.Any(c => c.CardNumber == cardNumber);
+        }
+
         public Card GetCardById(int cardId)
         {
             return walletDbContext.Cards.Include(c => c.User).SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
