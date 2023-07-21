@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.CardDto
 {
-    public class CardEntryDto
+    public class CardInfoDto
     {
         [Required]
         public DateTime ExpirationDate { get; set; }

@@ -31,6 +31,14 @@ namespace VirtualWallet.DataAccess.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Card> GetUserCards(int userId)
+        {
+            return walletDbContext.Cards
+                .Where(c => !c.IsDeleted && c.UserId == userId)
+                .Include(c => c.User)
+                .ToList();
+        }
+
         public void AddCard(Card card)
         {
             walletDbContext.Cards.Add(card);
