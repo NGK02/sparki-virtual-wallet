@@ -30,10 +30,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
 
-                if (!ModelState.IsValid)
+				if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
@@ -70,10 +71,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
 
-                cardService.DeleteCard(cardId, username);
+				cardService.DeleteCard(cardId, username);
                 return NoContent();
             }
             catch (EntityNotFoundException ex)
@@ -103,10 +105,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
-                var card = cardService.GetCardById(cardId, username);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
 
+				var card = cardService.GetCardById(cardId, username);
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
@@ -136,9 +139,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
-                var cards = cardService.GetCards(username);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
+				var cards = cardService.GetCards(username);
 
                 return Ok(cards);
             }
@@ -169,9 +174,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
-                var cards = cardService.GetUserCards(username);
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
+				var cards = cardService.GetUserCards(username);
 
                 return Ok(cards);
             }
@@ -202,10 +209,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-                authManager.IsBlocked(credentials);
-                string username = credentials.Split(':')[0];
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
 
-                if (!ModelState.IsValid)
+				if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
