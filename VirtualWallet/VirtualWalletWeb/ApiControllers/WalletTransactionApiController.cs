@@ -6,6 +6,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.DataAccess.QueryParameters;
+using Microsoft.Extensions.Hosting;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -25,7 +26,7 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPost("")]
-		public IActionResult CreateWalletTransaction([FromBody] CreateTransactionDto transactionDto, [FromHeader] string credentials) 
+		public IActionResult CreateWalletTransaction([FromBody] CreateWalletTransactionDto transactionDto, [FromHeader] string credentials) 
 		{
 			try
 			{
@@ -59,30 +60,31 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		//[HttpGet("")]
-		//public IActionResult GetUserWalletTransactions([FromBody] WalletTransactionQueryParameters queryParameters, [FromHeader] string credentials)
-		//{
-		//	try
-		//	{
-		//		authManager.AreCredentialsNullOrEmpty(credentials);
-		//		authManager.IsAuthenticated(credentials);
-		//		string requesterUsername = credentials.Split(':')[0];
-		//		walletTransactionService.GetUserWalletTransactions(queryParameters, requesterUsername);
-		//		return StatusCode(StatusCodes.Status200OK, true);
-		//	}
-		//	catch (UnauthenticatedOperationException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-		//	}
-		//	catch (UnauthorizedOperationException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-		//	}
-		//	catch (EntityNotFoundException e)
-		//	{
-		//		return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-		//	}
-		//	throw new NotImplementedException();
-		//}
+		[HttpGet("user")]
+		public IActionResult GetUserWalletTransactions([FromBody] WalletTransactionQueryParameters queryParameters, [FromHeader] string credentials)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
+				var walletTransactions = walletTransactionService.GetUserWalletTransactions(queryParameters, username);
+				var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
+				return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (UnauthorizedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (EntityNotFoundException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+		}
 	}
 }

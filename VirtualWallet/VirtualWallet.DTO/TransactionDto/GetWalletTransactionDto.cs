@@ -4,21 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualWallet.DataAccess.Enums;
-using VirtualWallet.DataAccess.Models;
 
 namespace VirtualWallet.Dto.TransactionDto
 {
-	public class CreateTransactionDto
+	public class GetWalletTransactionDto
 	{
-		[Required]
+		public string SenderUsername { get; set; }
+
 		public string RecipientUsername { get; set; }
 
-		[Required]
 		public string CurrencyCode { get; set; }
 
-		//Transaction limit? Equated to USD?
-		[Required]
 		public string Amount { get; set; }
+
+		public DateTime CreatedOn { get; set; }
 	}
 }

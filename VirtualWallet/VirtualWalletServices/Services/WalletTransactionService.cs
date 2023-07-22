@@ -52,9 +52,10 @@ namespace VirtualWallet.Business.Services
 			return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
 		}
 
-		//public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string requesterUsername)
-		//{ 
-
-		//}
+		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		{
+			var user = userService.GetUserByUsername(username);
+			return walletTransactionRepo.GetUserWalletTransactions(queryParameters, user.Id);
+		}
 	}
 }
