@@ -120,7 +120,10 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		private IQueryable<WalletTransaction> GetWalletTransactionsQueryable()
 		{
-			return database.WalletTransactions.Where(t => t.IsDeleted == false);
+			return database.WalletTransactions.Where(wt => wt.IsDeleted == false)
+				.Include(wt => wt.Sender)
+				.Include(wt => wt.Recipient)
+				.Include(wt => wt.Currency);
 		}
 	}
 }
