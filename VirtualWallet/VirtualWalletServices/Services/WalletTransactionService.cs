@@ -9,6 +9,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.Business.Exceptions;
 
 namespace VirtualWallet.Business.Services
 {
@@ -52,9 +53,33 @@ namespace VirtualWallet.Business.Services
 			return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
 		}
 
-		//public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string requesterUsername)
-		//{ 
+		public WalletTransaction GetWalletTransactionById(int id, string username) 
+		{
+			var user = userService.GetUserByUsername(username);
+			var walletTransaction = walletTransactionRepo.GetWalletTransactionById(id);
+			if (walletTransaction is null)
+			{
+				throw new EntityNotFoundException("Transaction doesn't exist!");
+			}
+			if (walletTransaction.SenderId != user.Id & walletTransaction.RecipientId != user.Id & !authManager.IsAdmin(user))
+			{
+				throw new UnauthorizedOperationException("You aren't authorized to view this transaction!");
+			}
 
-		//}
+			return walletTransaction;
+		}
+
+		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		{
+			var user = userService.GetUserByUsername(username);
+			return walletTransactionRepo.GetUserWalletTransactions(queryParameters, user.Id);
+		}
+
+		public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		{
+			var user = userService.GetUserByUsername(username);
+			authManager.IsAdmin(user);
+			return walletTransactionRepo.GetWalletTransactions(queryParameters);
+		}
 	}
 }
