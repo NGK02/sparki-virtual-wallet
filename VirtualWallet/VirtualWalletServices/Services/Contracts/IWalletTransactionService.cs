@@ -13,5 +13,6 @@ namespace VirtualWallet.Business.Services.Contracts
 		public bool CreateTransaction(WalletTransaction walletTransaction, string senderUsername);
 
 		List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username);
+		List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters, string username);
 	}
 }

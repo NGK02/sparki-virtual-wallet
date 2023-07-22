@@ -57,5 +57,12 @@ namespace VirtualWallet.Business.Services
 			var user = userService.GetUserByUsername(username);
 			return walletTransactionRepo.GetUserWalletTransactions(queryParameters, user.Id);
 		}
+
+		public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		{
+			var user = userService.GetUserByUsername(username);
+			authManager.IsAdmin(user);
+			return walletTransactionRepo.GetWalletTransactions(queryParameters);
+		}
 	}
 }
