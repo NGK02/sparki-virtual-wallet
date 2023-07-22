@@ -13,9 +13,11 @@ namespace VirtualWallet.DataAccess.Models
 
 		public int UserId { get; set; }
 
-		[ForeignKey("UserId")]
-		public User User { get; set; }
-
 		public List<Balance> Balances { get; set; }
-	}
+
+        public List<Transfer> Transfers { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+    }
 }

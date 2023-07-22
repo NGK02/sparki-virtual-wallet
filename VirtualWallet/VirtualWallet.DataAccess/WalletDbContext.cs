@@ -33,7 +33,9 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Card> Cards { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<Transfer> Transfers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
 			ConfigureMigration(builder);
@@ -76,12 +78,40 @@ namespace VirtualWallet.DataAccess
 				.HasConversion<string>()
 				.HasMaxLength(3);
 
-			//modelBuilder.Entity<Blog>()
-			//.HasOne(e => e.Header)
-			//.WithOne(e => e.Blog)
-			//.HasForeignKey<BlogHeader>(e => e.BlogId)
-			//.IsRequired();
-		}
+            builder.Entity<Transfer>()
+				.Property(t => t.Amount)
+				.HasPrecision(18, 4);
+
+            builder.Entity<Transfer>()
+				.HasOne(t => t.Card)
+				.WithMany(c => c.Transfers)
+				.HasForeignKey(t => t.CardId)
+				.OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Transfer>()
+                .HasOne(t => t.CardCurrency)
+                .WithMany()
+                .HasForeignKey(t => t.CardCurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Transfer>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.Transfers)
+                .HasForeignKey(t => t.WalletId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Transfer>()
+                .HasOne(t => t.WalletCurrency)
+                .WithMany()
+                .HasForeignKey(t => t.WalletCurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //modelBuilder.Entity<Blog>()
+            //.HasOne(e => e.Header)
+            //.WithOne(e => e.Blog)
+            //.HasForeignKey<BlogHeader>(e => e.BlogId)
+            //.IsRequired();
+        }
 
 		protected void CreateSeed(ModelBuilder builder)
 		{
@@ -403,12 +433,33 @@ namespace VirtualWallet.DataAccess
 				}
 			};
 
-			builder.Entity<Role>().HasData(roles);
+			//IList<Transfer> transfers = new List<Transfer>
+			//{
+			//	new Transfer
+			//	{
+			//		Amount = 100.00m,
+   //                 CardCurrencyId = 1,
+   //                 CardId = 1,
+			//		WalletCurrencyId = 2,
+   //                 WalletId = 1
+   //             },
+			//	new Transfer
+			//	{
+   //                 Amount = 50.00m,
+   //                 CardCurrencyId = 1,
+   //                 CardId = 2,
+   //                 WalletCurrencyId = 2,
+   //                 WalletId = 2
+   //             }
+			//};
+
+            builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);
 			builder.Entity<Balance>().HasData(balances);
 			builder.Entity<Card>().HasData(cards);
-		}
-	}
+            //builder.Entity<Transfer>().HasData(transfers);
+        }
+    }
 }
