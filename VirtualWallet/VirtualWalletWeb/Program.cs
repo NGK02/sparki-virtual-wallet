@@ -20,6 +20,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<ICardService, CardService>();
 
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
 builder.Services.AddScoped<IWalletTransactionRepository, WalletTransactionRepository>();
 builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>();
 

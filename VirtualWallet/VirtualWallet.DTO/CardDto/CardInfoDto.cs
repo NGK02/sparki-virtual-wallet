@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.Dto.CardDto
 {
@@ -23,5 +24,8 @@ namespace VirtualWallet.Dto.CardDto
         [Required]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
         public string CardHolder { get; set; }
+
+        [Required]
+        public string CurrencyCode { get; set; }
     }
 }

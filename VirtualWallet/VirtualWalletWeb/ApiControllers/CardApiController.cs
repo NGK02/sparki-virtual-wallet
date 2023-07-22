@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.CardDto;
 
@@ -16,12 +18,14 @@ namespace VirtualWallet.Web.ApiControllers
     {
         private readonly IAuthManager authManager;
         private readonly ICardService cardService;
+        private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
 
-        public CardApiController(IAuthManager authManager, ICardService cardService, IMapper mapper)
+        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, IMapper mapper)
         {
             this.authManager = authManager;
             this.cardService = cardService;
+            this.currencyService = currencyService;
             this.mapper = mapper;
         }
 
@@ -31,6 +35,7 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
 				var splitCredentials = authManager.SplitCredentials(credentials);
+
 				authManager.IsAuthenticated(splitCredentials);
 				string username = splitCredentials[0];
 
@@ -39,7 +44,16 @@ namespace VirtualWallet.Web.ApiControllers
                     return BadRequest(ModelState);
                 }
 
-                var card = mapper.Map<Card>(cardInfoDto);
+                var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
+
+                var card = new Card
+                {
+                    CardHolder = cardInfoDto.CardHolder,
+                    CardNumber = cardInfoDto.CardNumber,
+                    CheckNumber = cardInfoDto.CheckNumber,
+                    Currency = currency,
+                    ExpirationDate = cardInfoDto.ExpirationDate
+                };
 
                 cardService.AddCard(card, username);
                 return Ok(card);
@@ -71,11 +85,12 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+                var splitCredentials = authManager.SplitCredentials(credentials);
 
-				cardService.DeleteCard(cardId, username);
+                authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+
+                cardService.DeleteCard(cardId, username);
                 return NoContent();
             }
             catch (EntityNotFoundException ex)
@@ -105,11 +120,12 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+                var splitCredentials = authManager.SplitCredentials(credentials);
 
-				var card = cardService.GetCardById(cardId, username);
+                authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+                var card = cardService.GetCardById(cardId, username);
+
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
@@ -139,11 +155,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+                var splitCredentials = authManager.SplitCredentials(credentials);
 
-				var cards = cardService.GetCards(username);
+                authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+                var cards = cardService.GetCards(username);
 
                 return Ok(cards);
             }
@@ -174,11 +190,11 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+                var splitCredentials = authManager.SplitCredentials(credentials);
 
-				var cards = cardService.GetUserCards(username);
+                authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+                var cards = cardService.GetUserCards(username);
 
                 return Ok(cards);
             }
@@ -209,16 +225,26 @@ namespace VirtualWallet.Web.ApiControllers
         {
             try
             {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+                var splitCredentials = authManager.SplitCredentials(credentials);
 
-				if (!ModelState.IsValid)
+                authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+
+                if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                var card = mapper.Map<Card>(cardInfoDto);
+                var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
+
+                var card = new Card
+                {
+                    CardHolder = cardInfoDto.CardHolder,
+                    CardNumber = cardInfoDto.CardNumber,
+                    CheckNumber = cardInfoDto.CheckNumber,
+                    Currency = currency,
+                    ExpirationDate = cardInfoDto.ExpirationDate
+                };
 
                 cardService.UpdateCard(card, cardId, username);
                 return Ok(card);
