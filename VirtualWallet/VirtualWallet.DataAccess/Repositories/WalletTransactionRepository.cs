@@ -52,12 +52,18 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
+		public WalletTransaction GetWalletTransactionById(int id)
+		{
+			var walletTransaction = GetWalletTransactionsQueryable().FirstOrDefault(wt => wt.Id == id);
+			return walletTransaction;
+		}
+
 		public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters)
 		{
-			var transactions = GetWalletTransactionsQueryable();
-			transactions = FilterBy(queryParameters, transactions);
-			transactions = SortBy(queryParameters, transactions);
-			return transactions.ToList();
+			var walletTransactions = GetWalletTransactionsQueryable();
+			walletTransactions = FilterBy(queryParameters, walletTransactions);
+			walletTransactions = SortBy(queryParameters, walletTransactions);
+			return walletTransactions.ToList();
 		}
 
 		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, int id)
@@ -68,54 +74,54 @@ namespace VirtualWallet.DataAccess.Repositories
 			return userTransactions.ToList();
 		}
 
-		private IQueryable<WalletTransaction> FilterBy(WalletTransactionQueryParameters queryParameters, IQueryable<WalletTransaction> transactions)
+		private IQueryable<WalletTransaction> FilterBy(WalletTransactionQueryParameters queryParameters, IQueryable<WalletTransaction> walletTransactions)
 		{
 			if (!string.IsNullOrEmpty(queryParameters.SenderUsername))
 			{
-				transactions = transactions.Where(t => t.Sender.Username.ToLower() == queryParameters.SenderUsername.ToLower());
+				walletTransactions = walletTransactions.Where(t => t.Sender.Username.ToLower() == queryParameters.SenderUsername.ToLower());
 			}
 
 			if (!string.IsNullOrEmpty(queryParameters.RecipientUsername))
 			{
-				transactions = transactions.Where(t => t.Recipient.Username.ToLower() == queryParameters.RecipientUsername.ToLower());
+				walletTransactions = walletTransactions.Where(t => t.Recipient.Username.ToLower() == queryParameters.RecipientUsername.ToLower());
 			}
 
 			if (queryParameters.MaxDate.HasValue)
 			{
 				DateTime maxDate = queryParameters.MaxDate.Value.Date;
-				transactions = transactions.Where(t => t.CreatedOn.Date <= maxDate);
+				walletTransactions = walletTransactions.Where(t => t.CreatedOn.Date <= maxDate);
 			}
 
 			if (queryParameters.MinDate.HasValue)
 			{
 				DateTime minDate = queryParameters.MinDate.Value.Date;
-				transactions = transactions.Where(t => t.CreatedOn.Date >= minDate);
+				walletTransactions = walletTransactions.Where(t => t.CreatedOn.Date >= minDate);
 			}
 
-			return transactions;
+			return walletTransactions;
 		}
 
-		private IQueryable<WalletTransaction> SortBy(WalletTransactionQueryParameters queryParameters, IQueryable<WalletTransaction> transactions)
+		private IQueryable<WalletTransaction> SortBy(WalletTransactionQueryParameters queryParameters, IQueryable<WalletTransaction> walletTransactions)
 		{
 			if (!string.IsNullOrEmpty(queryParameters.SortBy))
 			{
 
 				if (queryParameters.SortBy.Equals("date", StringComparison.InvariantCultureIgnoreCase))
 				{
-					transactions = transactions.OrderBy(t => t.CreatedOn);
+					walletTransactions = walletTransactions.OrderBy(t => t.CreatedOn);
 				}
 				if (queryParameters.SortBy.Equals("amount", StringComparison.InvariantCultureIgnoreCase))
 				{
-					transactions = transactions.OrderBy(t => t.Amount);
+					walletTransactions = walletTransactions.OrderBy(t => t.Amount);
 				}
 
 				if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
 				{
-					transactions.Reverse();
+					walletTransactions.Reverse();
 				}
 			}
 
-			return transactions;
+			return walletTransactions;
 		}
 
 		private IQueryable<WalletTransaction> GetWalletTransactionsQueryable()

@@ -125,5 +125,36 @@ namespace VirtualWallet.Web.ApiControllers
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
 		}
+
+		[HttpGet("{id}")]
+		public IActionResult GetWalletTransactionById(int id, [FromHeader] string credentials)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+
+				var walletTransaction = walletTransactionService.GetWalletTransactionById(id, username);
+				var walletTransactionMapped = mapper.Map<GetWalletTransactionDto>(walletTransaction);
+				return StatusCode(StatusCodes.Status200OK, walletTransactionMapped);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (UnauthorizedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (EntityNotFoundException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (AutoMapperMappingException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
+			}
+		}
 	}
 }

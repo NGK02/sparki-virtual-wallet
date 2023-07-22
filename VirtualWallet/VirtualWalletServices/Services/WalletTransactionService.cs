@@ -9,6 +9,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.Business.Exceptions;
 
 namespace VirtualWallet.Business.Services
 {
@@ -50,6 +51,22 @@ namespace VirtualWallet.Business.Services
 				recipientBalance = userRepository.CreateUserBalance(walletTransaction.Recipient.WalletId, walletTransaction.CurrencyId);
 			}
 			return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
+		}
+
+		public WalletTransaction GetWalletTransactionById(int id, string username) 
+		{
+			var user = userService.GetUserByUsername(username);
+			var walletTransaction = walletTransactionRepo.GetWalletTransactionById(id);
+			if (walletTransaction is null)
+			{
+				throw new EntityNotFoundException("Transaction doesn't exist!");
+			}
+			if (walletTransaction.SenderId != user.Id & walletTransaction.RecipientId != user.Id & !authManager.IsAdmin(user))
+			{
+				throw new UnauthorizedOperationException("You aren't authorized to view this transaction!");
+			}
+
+			return walletTransaction;
 		}
 
 		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
