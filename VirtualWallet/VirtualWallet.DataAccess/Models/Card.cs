@@ -19,7 +19,9 @@ namespace VirtualWallet.DataAccess.Models
 
         public int Id { get; set; }
 
-        public int UserId { get; set; } // Foreign key
+        public int UserId { get; set; }
+
+        public List<Transfer> Transfers { get; set; }
 
         [Required]
         [RegularExpression(@"^\d{16}$", ErrorMessage = "The {0} must be a 16-digit number.")]
@@ -30,6 +32,6 @@ namespace VirtualWallet.DataAccess.Models
         public string CardHolder { get; set; }
 
         [JsonIgnore]
-        public User User { get; set; } // Navigation property
+        public User User { get; set; }
     }
 }
