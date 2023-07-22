@@ -89,21 +89,15 @@ namespace VirtualWallet.DataAccess
 				.OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Transfer>()
-                .HasOne(t => t.CardCurrency)
+                .HasOne(t => t.Currency)
                 .WithMany()
-                .HasForeignKey(t => t.CardCurrencyId)
+                .HasForeignKey(t => t.CurrencyId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Transfer>()
                 .HasOne(t => t.Wallet)
                 .WithMany(w => w.Transfers)
                 .HasForeignKey(t => t.WalletId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<Transfer>()
-                .HasOne(t => t.WalletCurrency)
-                .WithMany()
-                .HasForeignKey(t => t.WalletCurrencyId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             //modelBuilder.Entity<Blog>()
@@ -409,6 +403,7 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Georgi Georgiev",
 					CardNumber = 1234567890123456,
 					CheckNumber = 123,
+					CurrencyId = 1,
 					ExpirationDate = new DateTime(2023, 12, 31),
 					Id = 1,
 					UserId = 1
@@ -418,7 +413,8 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Nikolai Barekov",
 					CardNumber = 9876543210987654,
 					CheckNumber = 456,
-					ExpirationDate = new DateTime(2024, 12, 31),
+                    CurrencyId = 2,
+                    ExpirationDate = new DateTime(2024, 12, 31),
 					Id = 2,
 					UserId = 2
 				},
@@ -427,31 +423,32 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Shtilian Uzunov",
 					CardNumber = 1111222233334444,
 					CheckNumber = 789,
-					ExpirationDate = new DateTime(2022, 10, 31),
+                    CurrencyId = 3,
+                    ExpirationDate = new DateTime(2022, 10, 31),
 					Id = 3,
 					UserId = 3
 				}
 			};
 
-			//IList<Transfer> transfers = new List<Transfer>
-			//{
-			//	new Transfer
-			//	{
-			//		Amount = 100.00m,
-   //                 CardCurrencyId = 1,
-   //                 CardId = 1,
-			//		WalletCurrencyId = 2,
-   //                 WalletId = 1
-   //             },
-			//	new Transfer
-			//	{
-   //                 Amount = 50.00m,
-   //                 CardCurrencyId = 1,
-   //                 CardId = 2,
-   //                 WalletCurrencyId = 2,
-   //                 WalletId = 2
-   //             }
-			//};
+			IList<Transfer> transfers = new List<Transfer>
+			{
+				new Transfer
+				{
+					Amount = 100.00m,
+					CardId = 1,
+					CurrencyId = 3,
+					Id = 1,
+					WalletId = 1
+				},
+				new Transfer
+				{
+					Amount = 50.00m,
+					CardId = 2,
+					CurrencyId = 5,
+					Id = 2,
+					WalletId = 2
+				}
+			};
 
             builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
@@ -459,7 +456,7 @@ namespace VirtualWallet.DataAccess
 			builder.Entity<Wallet>().HasData(wallets);
 			builder.Entity<Balance>().HasData(balances);
 			builder.Entity<Card>().HasData(cards);
-            //builder.Entity<Transfer>().HasData(transfers);
+            builder.Entity<Transfer>().HasData(transfers);
         }
     }
 }

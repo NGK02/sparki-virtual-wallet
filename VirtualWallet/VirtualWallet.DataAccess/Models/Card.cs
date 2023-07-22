@@ -10,12 +10,16 @@ namespace VirtualWallet.DataAccess.Models
 {
     public class Card : Entity
     {
+        public Currency Currency { get; set; }
+
         [Required]
         public DateTime ExpirationDate { get; set; }
 
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
+
+        public int CurrencyId { get; set; }
 
         public int Id { get; set; }
 
