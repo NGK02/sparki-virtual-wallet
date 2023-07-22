@@ -19,14 +19,12 @@ namespace VirtualWallet.Web.ApiControllers
         private readonly IAuthManager authManager;
         private readonly ICardService cardService;
         private readonly ICurrencyService currencyService;
-        private readonly IMapper mapper;
 
-        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, IMapper mapper)
+        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService)
         {
             this.authManager = authManager;
             this.cardService = cardService;
             this.currencyService = currencyService;
-            this.mapper = mapper;
         }
 
         [HttpPost]

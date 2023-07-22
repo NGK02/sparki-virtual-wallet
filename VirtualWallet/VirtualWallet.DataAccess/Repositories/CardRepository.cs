@@ -25,13 +25,19 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public Card GetCardById(int cardId)
         {
-            return walletDbContext.Cards.Include(c => c.User).SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
+            return walletDbContext.Cards
+                .Include(c => c.Currency)
+                .Include(c => c.Transfers)
+                .Include(c => c.User)
+                .SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
         }
 
         public IEnumerable<Card> GetCards()
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted)
+                .Include(c => c.Currency)
+                .Include(c => c.Transfers)
                 .Include(c => c.User)
                 .ToList();
         }
@@ -40,6 +46,8 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted && c.UserId == userId)
+                .Include(c => c.Currency)
+                .Include(c => c.Transfers)
                 .Include(c => c.User)
                 .ToList();
         }
@@ -62,6 +70,7 @@ namespace VirtualWallet.DataAccess.Repositories
             cardToUpdate.CardHolder = card.CardHolder;
             cardToUpdate.CardNumber = card.CardNumber;
             cardToUpdate.CheckNumber = card.CheckNumber;
+            cardToUpdate.Currency = card.Currency;
             cardToUpdate.ExpirationDate = card.ExpirationDate;
             walletDbContext.SaveChanges();
         }
