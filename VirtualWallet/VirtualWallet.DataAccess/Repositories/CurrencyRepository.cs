@@ -23,5 +23,10 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return walletDbContext.Currencies.Include(c => c.Code).SingleOrDefault(c => c.Code == currencyCode);
         }
+
+        public Currency GetCurrencyById(int currencyId)
+        {
+            return walletDbContext.Currencies.Include(c => c.Code).SingleOrDefault(c => c.Id == currencyId);
+        }
     }
 }

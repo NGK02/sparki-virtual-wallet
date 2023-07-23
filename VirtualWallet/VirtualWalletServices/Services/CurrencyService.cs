@@ -7,6 +7,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.Dto.CardDto;
 
@@ -33,6 +34,18 @@ namespace VirtualWallet.Business.Services
             if (currency == null)
             {
                 throw new EntityNotFoundException("Currency with the provided code was not found in the database.");
+            }
+
+            return currency;
+        }
+
+        public Currency GetCurrencyById(int currencyId)
+        {
+            var currency = currencyRepository.GetCurrencyById(currencyId);
+
+            if (currency == null)
+            {
+                throw new EntityNotFoundException($"Currency with ID {currencyId} not found.");
             }
 
             return currency;
