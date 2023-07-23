@@ -7,6 +7,7 @@ using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.Business.AuthManager;
 using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,7 @@ builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
 {cfg.AddProfile(new AutoMapperProfile(provider.GetService<IUserService>()));
 }).CreateMapper());
 
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WalletDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -51,7 +53,11 @@ if (!app.Environment.IsDevelopment())
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
-
+if (app.Environment.IsDevelopment())
+{
+	app.UseSwagger();
+	app.UseSwaggerUI();
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

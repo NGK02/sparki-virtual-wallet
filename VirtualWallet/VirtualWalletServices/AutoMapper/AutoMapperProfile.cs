@@ -25,6 +25,7 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<CardInfoDto, Card>();
             CreateMap<CreateUserDto, User>();
 			CreateMap<UpdateUserDto, User>();
+			CreateMap<User, GetUserDto>();
 
 			CreateMap<CreateWalletTransactionDto, WalletTransaction>()
 				//TODO: Изкарване в методи и повече контрол над exception и формат.
