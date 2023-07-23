@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.Models
@@ -13,10 +14,13 @@ namespace VirtualWallet.DataAccess.Models
 
 		public int UserId { get; set; }
 
-		public List<Balance> Balances { get; set; }
+        [JsonIgnore]
+        public List<Balance> Balances { get; set; }
 
+        [JsonIgnore]
         public List<Transfer> Transfers { get; set; }
 
+        [JsonIgnore]
         [ForeignKey("UserId")]
         public User User { get; set; }
     }

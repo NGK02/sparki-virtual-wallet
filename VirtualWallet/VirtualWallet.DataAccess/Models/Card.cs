@@ -25,6 +25,7 @@ namespace VirtualWallet.DataAccess.Models
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public List<Transfer> Transfers { get; set; }
 
         [Required]

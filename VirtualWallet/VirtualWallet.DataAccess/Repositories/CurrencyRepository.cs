@@ -21,12 +21,12 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public Currency GetCurrencyByCode(CurrencyCode currencyCode)
         {
-            return walletDbContext.Currencies.Include(c => c.Code).SingleOrDefault(c => c.Code == currencyCode);
+            return walletDbContext.Currencies.SingleOrDefault(c => c.Code == currencyCode);
         }
 
         public Currency GetCurrencyById(int currencyId)
         {
-            return walletDbContext.Currencies.Include(c => c.Code).SingleOrDefault(c => c.Id == currencyId);
+            return walletDbContext.Currencies.SingleOrDefault(c => c.Id == currencyId);
         }
     }
 }
