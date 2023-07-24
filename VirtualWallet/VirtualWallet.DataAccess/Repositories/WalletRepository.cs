@@ -18,6 +18,13 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
+        public void UpdateWallet(Wallet wallet, Wallet walletToUpdate)
+        {
+            walletToUpdate.Balances = wallet.Balances;
+
+            walletDbContext.SaveChanges();
+        }
+
         public Wallet GetWalletById(int walletId)
         {
             return walletDbContext.Wallets

@@ -49,6 +49,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public void AddTransfer(Transfer transfer)
         {
+            transfer.CreatedOn = DateTime.Now;
             walletDbContext.Transfers.Add(transfer);
 
             walletDbContext.SaveChanges();

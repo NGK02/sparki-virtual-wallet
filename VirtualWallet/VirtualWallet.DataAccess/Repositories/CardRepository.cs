@@ -20,7 +20,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public bool CardNumberExists(long cardNumber)
         {
-            return walletDbContext.Cards.Any(c => c.CardNumber == cardNumber);
+            return walletDbContext.Cards.Any(c => !c.IsDeleted && c.CardNumber == cardNumber);
         }
 
         public Card GetCardById(int cardId)
@@ -54,6 +54,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public void AddCard(Card card)
         {
+            card.CreatedOn = DateTime.Now;
             walletDbContext.Cards.Add(card);
             walletDbContext.SaveChanges();
         }

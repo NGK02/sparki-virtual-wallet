@@ -9,6 +9,12 @@ namespace VirtualWallet.Business.Services.Contracts
 {
     public interface IWalletService
     {
+        void AddWalletDeposit(string username, Transfer walletDeposit);
+
+        void AddWalletWithdrawal(string username, Transfer walletWithdrawal);
+
+        void UpdateWallet(int walletId, string username, Wallet wallet);
+
         Wallet GetWalletById(int walletId, string username);
     }
 }

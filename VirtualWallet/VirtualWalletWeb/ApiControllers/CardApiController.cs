@@ -36,12 +36,6 @@ namespace VirtualWallet.Web.ApiControllers
 
 				authManager.IsAuthenticated(splitCredentials);
 				string username = splitCredentials[0];
-
-				if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
@@ -227,12 +221,6 @@ namespace VirtualWallet.Web.ApiControllers
 
                 authManager.IsAuthenticated(splitCredentials);
                 string username = splitCredentials[0];
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
