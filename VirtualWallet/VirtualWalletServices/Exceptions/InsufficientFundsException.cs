@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Business.Exceptions
 {
-    internal class InsufficientFundsException
+    public class InsufficientFundsException : ApplicationException
     {
+        public InsufficientFundsException(string message) : base(message) { }
     }
 }

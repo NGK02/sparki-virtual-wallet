@@ -61,11 +61,6 @@ namespace VirtualWallet.Business.Services
             decimal amountToWithdraw = walletWithdrawal.Amount;
             decimal availableBalance = withdrawalBalance.Amount;
 
-            if (amountToWithdraw <= 0)
-            {
-                throw new InvalidTransactionException("Withdrawal amount must be greater than 0.");
-            }
-
             if (amountToWithdraw > availableBalance)
             {
                 throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {withdrawalBalance.Currency.Code}");
