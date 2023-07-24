@@ -11,8 +11,8 @@ using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.Business.AuthManager
 {
-    public class AuthManager : IAuthManager
-    {
+	public class AuthManager : IAuthManager
+	{
 		private readonly IUserService userService;
 		public AuthManager(IUserService userService)
 		{
@@ -57,18 +57,25 @@ namespace VirtualWallet.Business.AuthManager
 		}
 
 		public User IsAuthenticated(string[] splitCredentials)
-        {
+		{
 			string userName = splitCredentials[0];
 			string password = splitCredentials[1];
-
-			var user = userService.GetUserByUsername(userName);
-			string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
-			if (user.Password == loginPasswordToBASE64)
+			try
 			{
-				return user;
-			}
+				var user = userService.GetUserByUsername(userName);
 
-			throw new UnauthenticatedOperationException("Invalid username or password!");
+				string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+				if (user.Password == loginPasswordToBASE64)
+				{
+					return user;
+				}
+
+				throw new UnauthenticatedOperationException("Invalid username or password!");
+			}
+			catch (EntityNotFoundException)
+			{
+				throw new UnauthenticatedOperationException("Invalid username or password!");
+			}
 		}
 
 		//public User IsAuthenticated(string userName, string password)
@@ -101,7 +108,7 @@ namespace VirtualWallet.Business.AuthManager
 			//return false;
 
 			return user.RoleId == (int)RoleName.Blocked;
-        }
+		}
 
 		public bool IsBlocked(int roleId)
 		{

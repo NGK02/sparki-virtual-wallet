@@ -45,6 +45,8 @@ namespace VirtualWallet.DataAccess.Models
 		public Wallet Wallet { get; set; }
 
 		public int RoleId { get; set; } = 2;
+
+		[JsonIgnore]
 		public Role Role { get; set; }
 
 		public List<WalletTransaction> Incoming { get; set; } = new List<WalletTransaction>();

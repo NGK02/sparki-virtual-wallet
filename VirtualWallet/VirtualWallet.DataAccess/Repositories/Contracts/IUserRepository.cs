@@ -30,5 +30,9 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 		bool DeleteUser(User user);
 
 		Balance CreateUserBalance(int walletId, int currencyId);
+
+		public bool BlockUser(User user);
+
+		public bool UnBlockUser(User user);
 	}
 }
