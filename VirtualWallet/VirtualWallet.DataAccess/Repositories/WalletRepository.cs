@@ -18,6 +18,36 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
+        public bool WalletOwnerExists(int userId)
+        {
+            return walletDbContext.Wallets.Any(w => !w.IsDeleted && userId == w.UserId);
+        }
+
+        public IEnumerable<Wallet> GetWallets()
+        {
+            return walletDbContext.Wallets
+                .Where(w => !w.IsDeleted)
+                .Include(w => w.Balances)
+                .Include(w => w.Transfers)
+                .Include(w => w.User)
+                .ToList();
+        }
+
+        public void AddWallet(Wallet wallet)
+        {
+            wallet.CreatedOn = DateTime.Now;
+            walletDbContext.Wallets.Add(wallet);
+
+            walletDbContext.SaveChanges();
+        }
+
+        public void DeleteWallet(Wallet wallet)
+        {
+            wallet.DeletedOn = DateTime.Now;
+            wallet.IsDeleted = true;
+            walletDbContext.SaveChanges();
+        }
+
         public void UpdateWallet(Wallet wallet, Wallet walletToUpdate)
         {
             walletToUpdate.Balances = wallet.Balances;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
@@ -40,7 +41,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public bool EmailExists(string email)
 		{
-			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower() && u.IsDeleted==false);
+			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower() && u.IsDeleted == false);
 			return result;
 		}
 
@@ -61,10 +62,10 @@ namespace VirtualWallet.DataAccess.Repositories
 			return GetUsersQuerable().ToList();
 		}
 
-        public User GetUserById(int Id)
-        {
-            return GetUsersQuerable().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
-        }
+		public User GetUserById(int Id)
+		{
+			return GetUsersQuerable().FirstOrDefault(u => u.Id == Id && u.IsDeleted == false);
+		}
 
 		public User GetUserByUsername(string username)
 		{
@@ -142,20 +143,45 @@ namespace VirtualWallet.DataAccess.Repositories
 			return user;
 		}
 
+		//public List<User> AdminSearchBy(UserQueryParameters queryParams)
+		//{
+		//	var users = GetUsersQuerable();
+
+		//	if (queryParams.Username is not null)
+		//	{
+		//		users = users.Where(u => u.Username.ToLower() == queryParams.Username.ToLower());
+		//	}
+
+		//	if (queryParams.Email is not null)
+		//	{
+		//		users = users.FirstOrDefault(u => u.Email.ToLower() == queryParams.Email.ToLower());
+		//	}
+
+		//	if (queryParams.PhoneNumber is not null)
+		//	{
+		//		users = users.FirstOrDefault(u => u.PhoneNumber == queryParams.PhoneNumber);
+		//	}
+
+		//	return users.ToList();
+		//}
+
 
 		public bool DeleteUser(User user)
 		{
 			//TODO тряба да се уточни какво друго ще се трие за юзъра
 			user.IsDeleted = true;
-			user.DeletedOn= DateTime.Now;
+			user.DeletedOn = DateTime.Now;
 			database.SaveChanges();
 			return true;
 		}
 		private IQueryable<User> GetUsersQuerable()
 		{
 			var users = database.Users.Where(u => u.IsDeleted == false)
-						.Include(u => u.Wallet).ThenInclude(w => w.Balances).ThenInclude(b => b.Currency)
-						.Include(u => u.Cards);
+										.Include(u => u.Wallet)
+											.ThenInclude(w => w.Balances)
+											.ThenInclude(b => b.Currency)
+										.Include(u => u.Cards)
+										.Include(u => u.Role);
 			return users;
 		}
 
@@ -165,6 +191,20 @@ namespace VirtualWallet.DataAccess.Repositories
 			database.Balances.Add(balance);
 			database.SaveChanges();
 			return balance;
+		}
+
+		public bool BlockUser(User user)
+		{
+			user.RoleId = (int)RoleName.Blocked;
+			database.SaveChanges();
+			return true;
+		}
+
+		public bool UnBlockUser(User user)
+		{
+			user.RoleId = (int)RoleName.User;
+			database.SaveChanges();
+			return true;
 		}
 	}
 }
