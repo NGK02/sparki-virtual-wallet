@@ -40,19 +40,19 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public bool EmailExists(string email)
 		{
-			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower());
+			bool result = database.Users.Any(u => u.Email.ToLower() == email.ToLower() && u.IsDeleted==false);
 			return result;
 		}
 
 		public bool PhoneNumberExists(string phoneNumber)
 		{
-			bool result = database.Users.Any(u => u.PhoneNumber == phoneNumber);
+			bool result = database.Users.Any(u => u.PhoneNumber == phoneNumber && u.IsDeleted == false);
 			return result;
 		}
 
 		public bool UsernameExists(string username)
 		{
-			bool result = database.Users.Any(u => u.Username.ToLower() == username.ToLower());
+			bool result = database.Users.Any(u => u.Username.ToLower() == username.ToLower() && u.IsDeleted == false);
 			return result;
 		}
 

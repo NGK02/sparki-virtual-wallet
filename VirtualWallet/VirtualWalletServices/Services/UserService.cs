@@ -30,7 +30,7 @@ namespace VirtualWallet.Business.Services
 			{
 				throw new UsernameAlreadyExistException("Username already exists!");
 			}
-			if (userRepo.UsernameExists(mappedUser.Username))
+			if (userRepo.PhoneNumberExists(mappedUser.PhoneNumber))
 			{
 				throw new PhoneNumberAlreadyExistException("Phonenumber already exists!");
 			}
