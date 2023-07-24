@@ -33,7 +33,7 @@ namespace VirtualWallet.Business.Services
 			}
 		}
 
-		public async Task<decimal> GetExchangeRateAndExchangedResult(string from, string to,string amount)
+		public async Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to,string amount)
 		{
 			using (var client = new HttpClient())
 			{
@@ -44,8 +44,10 @@ namespace VirtualWallet.Business.Services
 					var stringResult = await response.Content.ReadAsStringAsync();
 					JObject data = JObject.Parse(stringResult);
 					decimal conversionRate = (decimal)data["conversion_rate"];
-					decimal conversionResul = (decimal)
-					return conversionRate;
+					decimal conversionResult = (decimal)data["conversion_result"];
+					var result = Tuple.Create(conversionRate, conversionResult);
+					return result;
+
 				}
 				catch (HttpRequestException httpRequestException)
 				{
