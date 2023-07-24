@@ -9,6 +9,14 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
     public interface IWalletRepository
     {
+        bool WalletOwnerExists(int userId);
+
+        IEnumerable<Wallet> GetWallets();
+
+        void AddWallet(Wallet wallet);
+
+        void DeleteWallet(Wallet wallet);
+
         void UpdateWallet(Wallet wallet, Wallet walletToUpdate);
 
         Wallet GetWalletById(int walletId);

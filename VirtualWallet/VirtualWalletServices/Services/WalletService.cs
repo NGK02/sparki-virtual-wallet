@@ -27,6 +27,39 @@ namespace VirtualWallet.Business.Services
             this.walletRepository = walletRepository;
         }
 
+        public IEnumerable<Wallet> GetWallets(string username)
+        {
+            var user = userService.GetUserByUsername(username);
+
+            if (!authManager.IsAdmin(user))
+            {
+                throw new UnauthorizedOperationException("Only admins can access all wallets.");
+            }
+
+            var wallets = walletRepository.GetWallets();
+
+            if (!wallets.Any() || wallets == null)
+            {
+                throw new EntityNotFoundException("No wallets found.");
+            }
+
+            return wallets;
+        }
+
+        public void AddWallet(string username, Wallet wallet)
+        {
+            var user = userService.GetUserByUsername(username);
+
+            if (walletRepository.WalletOwnerExists(user.Id))
+            {
+                throw new ArgumentException("Wallet for the given user already exists.");
+            }
+
+            wallet.User = user;
+            wallet.UserId = user.Id;
+            walletRepository.AddWallet(wallet);
+        }
+
         public void AddWalletDeposit(string username, Transfer walletDeposit)
         {
             var wallet = GetWalletById(walletDeposit.WalletId, username);
@@ -72,6 +105,12 @@ namespace VirtualWallet.Business.Services
             walletWithdrawal.IsCardSender = false;
 
             transferService.AddTransfer(username, walletWithdrawal);
+        }
+
+        public void DeleteWallet(int walletId, string username)
+        {
+            var walletToDelete = GetWalletById(walletId, username);
+            walletRepository.DeleteWallet(walletToDelete);
         }
 
         public void UpdateWallet(int walletId, string username, Wallet wallet)
