@@ -142,6 +142,28 @@ namespace VirtualWallet.DataAccess.Repositories
 			return user;
 		}
 
+		//public List<User> AdminSearchBy(UserQueryParameters queryParams)
+		//{
+		//	var users = GetUsersQuerable();
+
+		//	if (queryParams.Username is not null)
+		//	{
+		//		users = users.Where(u => u.Username.ToLower() == queryParams.Username.ToLower());
+		//	}
+
+		//	if (queryParams.Email is not null)
+		//	{
+		//		users = users.FirstOrDefault(u => u.Email.ToLower() == queryParams.Email.ToLower());
+		//	}
+
+		//	if (queryParams.PhoneNumber is not null)
+		//	{
+		//		users = users.FirstOrDefault(u => u.PhoneNumber == queryParams.PhoneNumber);
+		//	}
+
+		//	return users.ToList();
+		//}
+
 
 		public bool DeleteUser(User user)
 		{
@@ -154,8 +176,11 @@ namespace VirtualWallet.DataAccess.Repositories
 		private IQueryable<User> GetUsersQuerable()
 		{
 			var users = database.Users.Where(u => u.IsDeleted == false)
-						.Include(u => u.Wallet).ThenInclude(w => w.Balances).ThenInclude(b => b.Currency)
-						.Include(u => u.Cards);
+										.Include(u => u.Wallet)
+											.ThenInclude(w => w.Balances)
+											.ThenInclude(b => b.Currency)
+										.Include(u => u.Cards)
+										.Include(u=>u.Role);
 			return users;
 		}
 
