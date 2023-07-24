@@ -9,6 +9,8 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
     public interface IWalletRepository
     {
+        void UpdateWallet(Wallet wallet, Wallet walletToUpdate);
+
         Wallet GetWalletById(int walletId);
     }
 }

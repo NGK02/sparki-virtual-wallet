@@ -15,14 +15,69 @@ namespace VirtualWallet.Business.Services
     public class WalletService : IWalletService
     {
         private readonly IAuthManager authManager;
+        private readonly ITransferService transferService;
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
 
-        public WalletService(IAuthManager authManager, IUserService userService, IWalletRepository walletRepository)
+        public WalletService(IAuthManager authManager, ITransferService transferService, IUserService userService, IWalletRepository walletRepository)
         {
             this.authManager = authManager;
+            this.transferService = transferService;
             this.userService = userService;
             this.walletRepository = walletRepository;
+        }
+
+        public void AddWalletDeposit(string username, Transfer walletDeposit)
+        {
+            var wallet = GetWalletById(walletDeposit.WalletId, username);
+
+            var depositBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletDeposit.CurrencyId);
+
+            if (depositBalance == null)
+            {
+                depositBalance = new Balance { CurrencyId = walletDeposit.CurrencyId };
+                wallet.Balances.Add(depositBalance);
+            }
+
+            depositBalance.Amount += walletDeposit.Amount;
+            UpdateWallet(walletDeposit.WalletId, username, wallet);
+            walletDeposit.IsCardSender = true;
+
+            transferService.AddTransfer(username, walletDeposit);
+        }
+
+        public void AddWalletWithdrawal(string username, Transfer walletWithdrawal)
+        {
+            var wallet = GetWalletById(walletWithdrawal.WalletId, username);
+            var withdrawalBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletWithdrawal.CurrencyId);
+
+            if (withdrawalBalance == null)
+            {
+                withdrawalBalance = new Balance { CurrencyId = walletWithdrawal.CurrencyId };
+
+                wallet.Balances.Add(withdrawalBalance);
+            }
+
+            decimal amountToWithdraw = walletWithdrawal.Amount;
+            decimal availableBalance = withdrawalBalance.Amount;
+
+            if (amountToWithdraw > availableBalance)
+            {
+                throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {withdrawalBalance.Currency.Code}");
+            }
+
+            withdrawalBalance.Amount -= walletWithdrawal.Amount;
+
+            UpdateWallet(walletWithdrawal.WalletId, username, wallet);
+            walletWithdrawal.IsCardSender = false;
+
+            transferService.AddTransfer(username, walletWithdrawal);
+        }
+
+        public void UpdateWallet(int walletId, string username, Wallet wallet)
+        {
+            var walletToUpdate = GetWalletById(walletId, username);
+            walletRepository.UpdateWallet(wallet, walletToUpdate);
         }
 
         public Wallet GetWalletById(int walletId, string username)
