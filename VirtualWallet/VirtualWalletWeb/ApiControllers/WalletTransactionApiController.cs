@@ -7,6 +7,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.DataAccess.QueryParameters;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -38,10 +39,10 @@ namespace VirtualWallet.Web.ApiControllers
 				walletTransactionService.CreateTransaction(walletTransaction, senderUsername);
 				return StatusCode(StatusCodes.Status200OK, true);
 			}
-			catch (ArgumentException)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, "Input is not in the correct format!");
-			}
+			//catch (ArgumentException)
+			//{
+			//	return StatusCode(StatusCodes.Status400BadRequest, "Input is not in the correct format!");
+			//}
 			catch (UnauthenticatedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
@@ -61,6 +62,10 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (AutoMapperMappingException e)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
+			}
+			catch (DbUpdateException)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error when completing transaction!");
 			}
 		}
 
