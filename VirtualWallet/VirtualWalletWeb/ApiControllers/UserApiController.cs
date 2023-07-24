@@ -8,6 +8,7 @@ using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
+using VirtualWallet.Dto.UserDTO;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -18,11 +19,13 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IMapper mapper;
 		private readonly IUserService userService;
 		private readonly IAuthManager authManager;
-		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager)
+		private readonly IWalletService walletService;
+		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager,IWalletService walletService)
 		{
 			this.mapper = mapper;
 			this.userService = userService;
 			this.authManager = authManager;
+			this.walletService = walletService;
 		}
 
 
@@ -152,6 +155,26 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (Exception e)
 			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
+
+		[HttpPut("exchange")]
+		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				var user = authManager.IsAuthenticated(splitCredentials);
+				string username = splitCredentials[0];
+				var result =  await walletService.ExchangeCurrencyAsync(user, excahngeValues);
+				return Ok(result);
+
+
+			}
+			catch (Exception e )
+			{
+
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
