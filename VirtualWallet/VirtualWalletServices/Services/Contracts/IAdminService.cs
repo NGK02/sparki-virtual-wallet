@@ -12,9 +12,9 @@ namespace VirtualWallet.Business.Services.Contracts
 	{
 		List<User> GetUsers(UserQueryParameters queryParameters);
 
-		bool BlockUser(int? id, string email);
+		bool BlockUser(int? id, string username);
 
-		bool UnBlockUser(int? id, string email);
+		bool UnBlockUser(int? id, string username);
 
 	}
 }
