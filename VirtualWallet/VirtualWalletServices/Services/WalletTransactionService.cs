@@ -31,7 +31,10 @@ namespace VirtualWallet.Business.Services
 		public bool CreateTransaction(WalletTransaction walletTransaction, string senderUsername)
 		{
 			var sender = userService.GetUserByUsername(senderUsername);
-			authManager.IsBlocked(sender);
+			if (authManager.IsBlocked(sender) || authManager.IsAdmin(sender))
+			{
+				throw new UnauthorizedAccessException("You can't make transactions!");
+			}
 			walletTransaction.Sender = sender;
 			PrepareTransaction(walletTransaction);
 			return walletTransactionRepo.CreateTransaction(walletTransaction);

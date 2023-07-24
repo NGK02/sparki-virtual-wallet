@@ -32,18 +32,10 @@ namespace VirtualWallet.DataAccess.Repositories
 			//Тук може би е по-подходящо да се използва SqlTransaction?
 			using (TransactionScope transactionScope = new TransactionScope())
 			{
-				try
-				{
-					senderBalance.Amount -= walletTransactionAmount;
-					recipientBalance.Amount += walletTransactionAmount;
-					database.SaveChanges();
-					transactionScope.Complete();
-				}
-				catch (DbUpdateException)
-				{
-					//TODO: Custom exception here.
-					throw new InvalidOperationException("Transaction failed due to database error!");
-				}
+				senderBalance.Amount -= walletTransactionAmount;
+				recipientBalance.Amount += walletTransactionAmount;
+				database.SaveChanges();
+				transactionScope.Complete();
 				//catch (OverflowException)
 				//{
 				//	throw new InvalidOperationException("Too much money?");
