@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.Dto.UserDTO;
 
 namespace VirtualWallet.Business.Services.Contracts
 {
@@ -22,5 +23,8 @@ namespace VirtualWallet.Business.Services.Contracts
         void UpdateWallet(int walletId, string username, Wallet wallet);
 
         Wallet GetWalletById(int walletId, string username);
-    }
+
+		Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues);
+
+	}
 }

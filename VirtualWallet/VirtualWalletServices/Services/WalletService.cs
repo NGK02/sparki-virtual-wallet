@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper.Execution;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Dto.UserDTO;
 
 namespace VirtualWallet.Business.Services
 {
@@ -18,13 +21,18 @@ namespace VirtualWallet.Business.Services
         private readonly ITransferService transferService;
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
+        private readonly ICurrencyService currencyService;
+        private readonly CurrencyExchangeService exhcangeService;
 
-        public WalletService(IAuthManager authManager, ITransferService transferService, IUserService userService, IWalletRepository walletRepository)
+
+		public WalletService(IAuthManager authManager, ITransferService transferService, IUserService userService, IWalletRepository walletRepository,ICurrencyService currencyService, CurrencyExchangeService exchangeService)
         {
             this.authManager = authManager;
             this.transferService = transferService;
             this.userService = userService;
             this.walletRepository = walletRepository;
+            this.currencyService = currencyService;
+            this.exhcangeService = exchangeService;
         }
 
         public IEnumerable<Wallet> GetWallets(string username)
@@ -137,5 +145,19 @@ namespace VirtualWallet.Business.Services
 
             return wallet;
         }
-    }
+
+        public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
+        {
+            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
+			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+
+            decimal rate = await exhcangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
+			//_ = decimal.TryParse(rate, out decimal number);
+
+            decimal newAmount = excahngeValues.Amount * rate;
+
+            return newAmount;
+
+		}
+	}
 }

@@ -35,6 +35,8 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IWalletTransactionRepository, WalletTransactionRepository>();
 builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>();
 
+builder.Services.AddScoped< CurrencyExchangeService,CurrencyExchangeService>();
+
 builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
 {cfg.AddProfile(new AutoMapperProfile(provider.GetService<IUserService>()));
 }).CreateMapper());
