@@ -11,45 +11,42 @@ namespace VirtualWallet.DataAccess.Repositories
 {
     public class CardRepository : ICardRepository
     {
+        private readonly IQueryable<Card> cards;
         private readonly WalletDbContext walletDbContext;
 
         public CardRepository(WalletDbContext walletDbContext)
         {
+            cards = GetQueryableCards();
             this.walletDbContext = walletDbContext;
         }
 
-        public bool CardNumberExists(long cardNumber)
-        {
-            return walletDbContext.Cards.Any(c => !c.IsDeleted && c.CardNumber == cardNumber);
-        }
-
-        public Card GetCardById(int cardId)
-        {
-            return walletDbContext.Cards
-                .Include(c => c.Currency)
-                .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
-        }
-
-        public IEnumerable<Card> GetCards()
+        private IQueryable<Card> GetQueryableCards()
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted)
                 .Include(c => c.Currency)
                 .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .ToList();
+                .Include(c => c.User);
+        }
+
+        public bool CardNumberExists(long cardNumber)
+        {
+            return cards.Any(c => c.CardNumber == cardNumber);
+        }
+
+        public Card GetCardById(int cardId)
+        {
+            return cards.SingleOrDefault(c => c.Id == cardId);
+        }
+
+        public IEnumerable<Card> GetCards()
+        {
+            return cards.ToList();
         }
 
         public IEnumerable<Card> GetUserCards(int userId)
         {
-            return walletDbContext.Cards
-                .Where(c => !c.IsDeleted && c.UserId == userId)
-                .Include(c => c.Currency)
-                .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .ToList();
+            return cards.Where(c => c.UserId == userId).ToList();
         }
 
         public void AddCard(Card card)
