@@ -19,6 +19,7 @@ namespace VirtualWallet.DataAccess.Models
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
 
+        [Required]
         public int CurrencyId { get; set; }
 
         public int Id { get; set; }
