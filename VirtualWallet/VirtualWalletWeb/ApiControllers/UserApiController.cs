@@ -159,24 +159,54 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpPut("exchange")]
-		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
-		{
-			try
+        //[HttpPut("exchange")]
+        //public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
+        //{
+        //	try
+        //	{
+        //		var splitCredentials = authManager.SplitCredentials(credentials);
+        //		var user = authManager.IsAuthenticated(splitCredentials);
+
+        //		string username = splitCredentials[0];
+        //		var result =  await walletService.ExchangeCurrencyAsync(user, excahngeValues);
+
+        //		return Ok(result);
+        //	}
+        //	catch (Exception e )
+        //	{
+
+        //		return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //	}
+        //}
+
+        [HttpPut("exchange")]
+        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
+        {
+            try
+            {
+                var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
+
+                string username = splitCredentials[0];
+				//var result = await walletService.ExchangeCurrencyAsync(user, excahngeValues);
+
+				var wallet = walletService.ExchangeFunds(excahngeValues, user.WalletId, username);
+
+                return Ok(wallet);
+            }
+            catch (InsufficientFundsException ex)
 			{
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				var user = authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
-				var result =  await walletService.ExchangeCurrencyAsync(user, excahngeValues);
-				return Ok(result);
-
-
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
-			catch (Exception e )
-			{
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception e)
+            {
 
-				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-			}
-		}
-	}
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+    }
 }

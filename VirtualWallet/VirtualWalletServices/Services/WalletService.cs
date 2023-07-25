@@ -23,9 +23,16 @@ namespace VirtualWallet.Business.Services
         private readonly IWalletRepository walletRepository;
         private readonly ICurrencyService currencyService;
         private readonly CurrencyExchangeService exhcangeService;
+        private readonly IWalletTransactionService walletTransactionService;
 
 
-		public WalletService(IAuthManager authManager, ITransferService transferService, IUserService userService, IWalletRepository walletRepository,ICurrencyService currencyService, CurrencyExchangeService exchangeService)
+		public WalletService(IAuthManager authManager,
+            ITransferService transferService,
+            IUserService userService,
+            IWalletRepository walletRepository,
+            ICurrencyService currencyService,
+            CurrencyExchangeService exchangeService,
+            IWalletTransactionService walletTransactionService)
         {
             this.authManager = authManager;
             this.transferService = transferService;
@@ -33,6 +40,7 @@ namespace VirtualWallet.Business.Services
             this.walletRepository = walletRepository;
             this.currencyService = currencyService;
             this.exhcangeService = exchangeService;
+            this.walletTransactionService = walletTransactionService;
         }
 
         public IEnumerable<Wallet> GetWallets(string username)
@@ -121,6 +129,51 @@ namespace VirtualWallet.Business.Services
             walletRepository.DeleteWallet(walletToDelete);
         }
 
+        // this does not count as a transaction!!
+        // a transaction is user to user
+        // this is a single user exchanging their funds - don't add transaction to db
+        public Wallet ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username)
+        {
+            var wallet = GetWalletById(walletId, username);
+
+            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
+            var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+
+            var fromBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == fromCurrency.Id);
+
+            // tova e taka samo dokato go izmislq lol
+            if (fromBalance == null)
+            {
+                // this is a temporary exception - need a proper one
+                throw new ArgumentException($"You cannot transfer {excahngeValues.Amount} {fromCurrency.Code} because you do not have such balance");
+                // maybe prompt user to create a new balance and transfer money to it from another balance that has sufficient funds
+            }
+
+            var toBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == toCurrency.Id);
+
+            if (toBalance == null)
+            {
+                toBalance = new Balance { CurrencyId = toCurrency.Id };
+
+                wallet.Balances.Add(toBalance);
+            }
+
+            // proceed to make the exchange only if there's sufficient funding
+            if (fromBalance.Amount < excahngeValues.Amount)
+            {
+                throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromBalance.Currency.Code}");
+            }
+
+            fromBalance.Amount -= excahngeValues.Amount;
+            var exchangedAmount = ExchangeCurrencyAsync(userService.GetUserByUsername(username), excahngeValues).Result;
+
+            toBalance.Amount += exchangedAmount;
+
+            UpdateWallet(walletId, username, wallet);
+
+            return wallet;
+        }
+
         public void UpdateWallet(int walletId, string username, Wallet wallet)
         {
             var walletToUpdate = GetWalletById(walletId, username);
@@ -146,6 +199,8 @@ namespace VirtualWallet.Business.Services
             return wallet;
         }
 
+        // do not call directly from controller!!
+        // gets called from ExchangeFunds which is the public 'gateway'
         public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
         {
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
