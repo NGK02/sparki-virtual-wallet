@@ -103,7 +103,7 @@ namespace VirtualWallet.DataAccess
 				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.Entity<Exchange>()
-				.HasOne(e => e.From)
+				.HasOne(e => e.FromCurrency)
 				.WithMany(c => c.Exchanges)
 				.HasForeignKey(e => e.FromCurrencyId)
 				.OnDelete(DeleteBehavior.NoAction);

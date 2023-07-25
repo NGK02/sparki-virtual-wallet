@@ -177,9 +177,9 @@ namespace VirtualWallet.Business.Services
             var exchange = new Exchange 
             { 
                 FromCurrencyId= fromCurrency.Id,
-                From = fromCurrency,
+                FromCurrency = fromCurrency,
                 ToCurrencyId= toCurrency.Id,
-                To = toCurrency,
+                ToCurrency = toCurrency,
                 Amount = excahngeValues.Amount,
                 ExchangedAmout=exchangedAmount.Item2,
                 Wallet=wallet,
