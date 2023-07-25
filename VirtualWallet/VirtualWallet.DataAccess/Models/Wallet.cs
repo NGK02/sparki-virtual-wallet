@@ -15,13 +15,16 @@ namespace VirtualWallet.DataAccess.Models
 		public int UserId { get; set; }
 
         [JsonIgnore]
-        public List<Balance> Balances { get; set; }
+        public List<Balance> Balances { get; set; } = new List<Balance>();
 
         [JsonIgnore]
-        public List<Transfer> Transfers { get; set; }
+        public List<Transfer> Transfers { get; set; } = new List<Transfer> ();
 
         [JsonIgnore]
         [ForeignKey("UserId")]
         public User User { get; set; }
-    }
+
+		[JsonIgnore]
+        public List<Exchange> Exchanges { get; set; } = new List<Exchange>();
+	}
 }

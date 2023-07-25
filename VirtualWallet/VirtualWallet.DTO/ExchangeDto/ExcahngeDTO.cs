@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.Dto.UserDTO
+namespace VirtualWallet.Dto.ExchangeDto
 {
-	public class ExcahngeDTO
-	{
-		[Required]
-		public string From { get; set; }
+    public class ExcahngeDTO
+    {
+        [Required]
+        public string From { get; set; }
 
         [Required]
         public string To { get; set; }
@@ -19,5 +19,5 @@ namespace VirtualWallet.Dto.UserDTO
         [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
         public decimal Amount { get; set; }
 
-	}
+    }
 }

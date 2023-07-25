@@ -33,9 +33,11 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Card> Cards { get; set; }
 
-        public DbSet<Transfer> Transfers { get; set; }
+		public DbSet<Transfer> Transfers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+		public DbSet<Exchange> Exchanges { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
 			ConfigureMigration(builder);
@@ -78,34 +80,61 @@ namespace VirtualWallet.DataAccess
 				.HasConversion<string>()
 				.HasMaxLength(3);
 
-            builder.Entity<Transfer>()
+			builder.Entity<Transfer>()
 				.Property(t => t.Amount)
 				.HasPrecision(18, 4);
 
-            builder.Entity<Transfer>()
+			builder.Entity<Transfer>()
 				.HasOne(t => t.Card)
 				.WithMany(c => c.Transfers)
 				.HasForeignKey(t => t.CardId)
 				.OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Transfer>()
-                .HasOne(t => t.Currency)
-                .WithMany()
-                .HasForeignKey(t => t.CurrencyId)
-                .OnDelete(DeleteBehavior.NoAction);
+			builder.Entity<Transfer>()
+				.HasOne(t => t.Currency)
+				.WithMany()
+				.HasForeignKey(t => t.CurrencyId)
+				.OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Transfer>()
-                .HasOne(t => t.Wallet)
-                .WithMany(w => w.Transfers)
-                .HasForeignKey(t => t.WalletId)
-                .OnDelete(DeleteBehavior.NoAction);
+			builder.Entity<Transfer>()
+				.HasOne(t => t.Wallet)
+				.WithMany(w => w.Transfers)
+				.HasForeignKey(t => t.WalletId)
+				.OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<Blog>()
-            //.HasOne(e => e.Header)
-            //.WithOne(e => e.Blog)
-            //.HasForeignKey<BlogHeader>(e => e.BlogId)
-            //.IsRequired();
-        }
+			builder.Entity<Exchange>()
+				.HasOne(e => e.From)
+				.WithMany(c => c.Exchanges)
+				.HasForeignKey(e => e.FromCurrencyId)
+				.OnDelete(DeleteBehavior.NoAction);
+
+			builder.Entity<Exchange>()
+				.Property(t => t.Amount)
+				.HasPrecision(18, 4);
+
+			builder.Entity<Exchange>()
+				.Property(t => t.Rate)
+				.HasPrecision(18, 4);
+
+			builder.Entity<Exchange>()
+				.Property(t => t.ExchangedAmout)
+				.HasPrecision(18, 4);
+			//builder.Entity<Exchange>()
+			//	.HasOne(e => e.To)
+			//	.WithMany(c => c.Exchanges)
+			//	.HasForeignKey(e => e.ToCurrencyId)
+			//	.OnDelete(DeleteBehavior.NoAction);
+
+			//builder.Entity<Currency>()
+			//	.HasMany(c=>c.Exchanges)
+			//	.WithOne(e=>e.)
+
+			//modelBuilder.Entity<Blog>()
+			//.HasOne(e => e.Header)
+			//.WithOne(e => e.Blog)
+			//.HasForeignKey<BlogHeader>(e => e.BlogId)
+			//.IsRequired();
+		}
 
 		protected void CreateSeed(ModelBuilder builder)
 		{
@@ -413,8 +442,8 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Nikolai Barekov",
 					CardNumber = 9876543210987654,
 					CheckNumber = 456,
-                    CurrencyId = 2,
-                    ExpirationDate = new DateTime(2024, 12, 31),
+					CurrencyId = 2,
+					ExpirationDate = new DateTime(2024, 12, 31),
 					Id = 2,
 					UserId = 2
 				},
@@ -423,8 +452,8 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Shtilian Uzunov",
 					CardNumber = 1111222233334444,
 					CheckNumber = 789,
-                    CurrencyId = 3,
-                    ExpirationDate = new DateTime(2022, 10, 31),
+					CurrencyId = 3,
+					ExpirationDate = new DateTime(2022, 10, 31),
 					Id = 3,
 					UserId = 3
 				}
@@ -450,13 +479,13 @@ namespace VirtualWallet.DataAccess
 				}
 			};
 
-            builder.Entity<Role>().HasData(roles);
+			builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);
 			builder.Entity<Balance>().HasData(balances);
 			builder.Entity<Card>().HasData(cards);
-            builder.Entity<Transfer>().HasData(transfers);
-        }
-    }
+			builder.Entity<Transfer>().HasData(transfers);
+		}
+	}
 }

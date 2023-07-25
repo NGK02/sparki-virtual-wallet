@@ -11,7 +11,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
-using VirtualWallet.Dto.UserDTO;
+using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Business.Services
 {
@@ -22,8 +22,9 @@ namespace VirtualWallet.Business.Services
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
         private readonly ICurrencyService currencyService;
-        private readonly CurrencyExchangeService exhcangeService;
+        private readonly CurrencyExchangeService currencyExchangeService;
         private readonly IWalletTransactionService walletTransactionService;
+        private readonly IExchangeService exchangeService;
 
 
 		public WalletService(IAuthManager authManager,
@@ -31,16 +32,18 @@ namespace VirtualWallet.Business.Services
             IUserService userService,
             IWalletRepository walletRepository,
             ICurrencyService currencyService,
-            CurrencyExchangeService exchangeService,
-            IWalletTransactionService walletTransactionService)
+            CurrencyExchangeService currencyExchangeService,
+            IWalletTransactionService walletTransactionService,
+            IExchangeService exchangeService)
         {
             this.authManager = authManager;
             this.transferService = transferService;
             this.userService = userService;
             this.walletRepository = walletRepository;
             this.currencyService = currencyService;
-            this.exhcangeService = exchangeService;
+            this.currencyExchangeService = currencyExchangeService;
             this.walletTransactionService = walletTransactionService;
+            this.exchangeService = exchangeService;
         }
 
         public IEnumerable<Wallet> GetWallets(string username)
@@ -165,12 +168,24 @@ namespace VirtualWallet.Business.Services
             }
 
             fromBalance.Amount -= excahngeValues.Amount;
-            var exchangedAmount = ExchangeCurrencyAsync(userService.GetUserByUsername(username), excahngeValues).Result;
+            var exchangedAmount = currencyExchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString()).Result;
 
-            toBalance.Amount += exchangedAmount;
+            toBalance.Amount += exchangedAmount.Item2;
 
             UpdateWallet(walletId, username, wallet);
 
+            var exchange = new Exchange 
+            { 
+                FromCurrencyId= fromCurrency.Id,
+                From = fromCurrency,
+                ToCurrencyId= toCurrency.Id,
+                To = toCurrency,
+                Amount = excahngeValues.Amount,
+                ExchangedAmout=exchangedAmount.Item2,
+                Wallet=wallet,
+                Rate= exchangedAmount.Item1
+			};
+            exchangeService.AddExchange(username, exchange);
             return wallet;
         }
 
@@ -206,8 +221,7 @@ namespace VirtualWallet.Business.Services
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
 			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
 
-            decimal rate = await exhcangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
-			//_ = decimal.TryParse(rate, out decimal number);
+            decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
 
             decimal newAmount = excahngeValues.Amount * rate;
 

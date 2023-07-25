@@ -8,11 +8,11 @@ using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
-using VirtualWallet.Dto.UserDTO;
+using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Web.ApiControllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("api/users")]
 	public class UserApiController : ControllerBase
 	{
@@ -159,26 +159,6 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-        //[HttpPut("exchange")]
-        //public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
-        //{
-        //	try
-        //	{
-        //		var splitCredentials = authManager.SplitCredentials(credentials);
-        //		var user = authManager.IsAuthenticated(splitCredentials);
-
-        //		string username = splitCredentials[0];
-        //		var result =  await walletService.ExchangeCurrencyAsync(user, excahngeValues);
-
-        //		return Ok(result);
-        //	}
-        //	catch (Exception e )
-        //	{
-
-        //		return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-        //	}
-        //}
-
         [HttpPut("exchange")]
         public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
         {
@@ -188,10 +168,9 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 string username = splitCredentials[0];
-				//var result = await walletService.ExchangeCurrencyAsync(user, excahngeValues);
 
 				var wallet = walletService.ExchangeFunds(excahngeValues, user.WalletId, username);
-
+				
                 return Ok(wallet);
             }
             catch (InsufficientFundsException ex)
@@ -202,11 +181,10 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
-            catch (Exception e)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
     }
 }
