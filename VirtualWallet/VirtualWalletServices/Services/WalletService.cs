@@ -223,17 +223,17 @@ namespace VirtualWallet.Business.Services
 
         // do not call directly from controller!!
         // gets called from ExchangeFunds which is the public 'gateway'
-  //      public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
-  //      {
-  //          var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
-		//	var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+        public async Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues)
+        {
+            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
+            var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
 
-  //          decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
+            decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
 
-  //          decimal newAmount = excahngeValues.Amount * rate;
+            decimal newAmount = excahngeValues.Amount * rate;
 
-  //          return newAmount;
+            return newAmount;
 
-		//}
-	}
+        }
+    }
 }
