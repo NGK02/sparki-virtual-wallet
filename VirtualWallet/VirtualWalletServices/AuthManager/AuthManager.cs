@@ -29,6 +29,18 @@ namespace VirtualWallet.Business.AuthManager
 			return splitCredentials;
 		}
 
+		/// <summary>
+		/// Check if logged user ID matches the content creator ID or logged user is Admin.
+		/// </summary>
+		public bool IsContentCreatorOrAdmin(User user, int contentCreatorId)
+		{
+			if (user.Id != contentCreatorId && user.RoleId != (int)RoleName.Admin)
+			{
+				throw new UnauthorizedAccessException("Not Authorized to do this!");
+			}
+			return true;
+		}
+
 		public void IsAdmin(string[] splitCredentials)
 		{
 			var user = IsAuthenticated(splitCredentials);
