@@ -41,12 +41,12 @@ namespace VirtualWallet.DataAccess.Repositories
             walletDbContext.SaveChanges();
         }
 
-        public void DeleteWallet(Wallet wallet)
-        {
-            wallet.DeletedOn = DateTime.Now;
-            wallet.IsDeleted = true;
-            walletDbContext.SaveChanges();
-        }
+        //public void DeleteWallet(Wallet wallet)
+        //{
+        //    wallet.DeletedOn = DateTime.Now;
+        //    wallet.IsDeleted = true;
+        //    walletDbContext.SaveChanges();
+        //}
 
         public void UpdateWallet(Wallet wallet, Wallet walletToUpdate)
         {

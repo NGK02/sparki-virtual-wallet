@@ -15,8 +15,6 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 
         void AddWallet(Wallet wallet);
 
-        void DeleteWallet(Wallet wallet);
-
         void UpdateWallet(Wallet wallet, Wallet walletToUpdate);
 
         Wallet GetWalletById(int walletId);
