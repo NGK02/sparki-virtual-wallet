@@ -176,7 +176,7 @@ namespace VirtualWallet.Web.ApiControllers
 				authManager.IsContentCreatorOrAdmin(loggedUser, id);
 				string username = splitCredentials[0];
 
-				var wallet = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, username);
+				var wallet = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, id);
 
 				return Ok(wallet);
 			}

@@ -46,9 +46,9 @@ namespace VirtualWallet.Business.Services
             this.exchangeService = exchangeService;
         }
 
-        public IEnumerable<Wallet> GetWallets(string username)
+        public IEnumerable<Wallet> GetWallets(int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user))
             {
@@ -65,9 +65,9 @@ namespace VirtualWallet.Business.Services
             return wallets;
         }
 
-        public void AddWallet(string username, Wallet wallet)
+        public void AddWallet(int userId, Wallet wallet)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (walletRepository.WalletOwnerExists(user.Id))
             {
@@ -79,9 +79,9 @@ namespace VirtualWallet.Business.Services
             walletRepository.AddWallet(wallet);
         }
 
-        public void AddWalletDeposit(string username, Transfer walletDeposit)
+        public void AddWalletDeposit(int userId, Transfer walletDeposit)
         {
-            var wallet = GetWalletById(walletDeposit.WalletId, username);
+            var wallet = GetWalletById(walletDeposit.WalletId, userId);
 
             var depositBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletDeposit.CurrencyId);
 
@@ -92,15 +92,15 @@ namespace VirtualWallet.Business.Services
             }
 
             depositBalance.Amount += walletDeposit.Amount;
-            UpdateWallet(walletDeposit.WalletId, username, wallet);
+            UpdateWallet(walletDeposit.WalletId, userId, wallet);
             walletDeposit.IsCardSender = true;
 
-            transferService.AddTransfer(username, walletDeposit);
+            transferService.AddTransfer(userId, walletDeposit);
         }
 
-        public void AddWalletWithdrawal(string username, Transfer walletWithdrawal)
+        public void AddWalletWithdrawal(int userId, Transfer walletWithdrawal)
         {
-            var wallet = GetWalletById(walletWithdrawal.WalletId, username);
+            var wallet = GetWalletById(walletWithdrawal.WalletId, userId);
             var withdrawalBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletWithdrawal.CurrencyId);
 
             if (withdrawalBalance == null)
@@ -120,24 +120,24 @@ namespace VirtualWallet.Business.Services
 
             withdrawalBalance.Amount -= walletWithdrawal.Amount;
 
-            UpdateWallet(walletWithdrawal.WalletId, username, wallet);
+            UpdateWallet(walletWithdrawal.WalletId, userId, wallet);
             walletWithdrawal.IsCardSender = false;
 
-            transferService.AddTransfer(username, walletWithdrawal);
+            transferService.AddTransfer(userId, walletWithdrawal);
         }
 
-        public void DeleteWallet(int walletId, string username)
+        public void DeleteWallet(int walletId, int userId)
         {
-            var walletToDelete = GetWalletById(walletId, username);
+            var walletToDelete = GetWalletById(walletId, userId);
             walletRepository.DeleteWallet(walletToDelete);
         }
 
         // this does not count as a transaction!!
         // a transaction is user to user
         // this is a single user exchanging their funds - don't add transaction to db
-        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username)
+        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId)
         {
-            var wallet = GetWalletById(walletId, username);
+            var wallet = GetWalletById(walletId, userId);
 
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
             var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
@@ -173,7 +173,7 @@ namespace VirtualWallet.Business.Services
 
             toBalance.Amount += exchangedAmount.Item2;
 
-            UpdateWallet(walletId, username, wallet);
+            UpdateWallet(walletId, userId, wallet);
 
             var exchange = new Exchange 
             { 
@@ -186,17 +186,17 @@ namespace VirtualWallet.Business.Services
                 Wallet=wallet,
                 Rate= exchangedAmount.Item1
 			};
-            exchangeService.AddExchange(username, exchange);
+            exchangeService.AddExchange(userId, exchange);
             return wallet;
         }
 
-        public void UpdateWallet(int walletId, string username, Wallet wallet)
+        public void UpdateWallet(int walletId, int userId, Wallet wallet)
         {
-            var walletToUpdate = GetWalletById(walletId, username);
+            var walletToUpdate = GetWalletById(walletId, userId);
             walletRepository.UpdateWallet(wallet, walletToUpdate);
         }
 
-        public Wallet GetWalletById(int walletId, string username)
+        public Wallet GetWalletById(int walletId, int userId)
         {
             var wallet = walletRepository.GetWalletById(walletId);
 
@@ -205,7 +205,7 @@ namespace VirtualWallet.Business.Services
                 throw new EntityNotFoundException($"Wallet with ID {walletId} not found.");
             }
 
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
             {

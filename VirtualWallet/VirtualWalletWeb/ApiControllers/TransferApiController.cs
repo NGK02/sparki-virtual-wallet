@@ -16,31 +16,29 @@ namespace VirtualWallet.Web.ApiControllers
         private readonly ICardService cardService;
         private readonly ICurrencyService currencyService;
         private readonly ITransferService transferService;
-        private readonly IUserService userService;
         private readonly IWalletService walletService;
 
-        public TransferApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, ITransferService transferService, IUserService userService, IWalletService walletService)
+        public TransferApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, ITransferService transferService, IWalletService walletService)
         {
             this.authManager = authManager;
             this.cardService = cardService;
             this.currencyService = currencyService;
             this.transferService = transferService;
-            this.userService = userService;
             this.walletService = walletService;
         }
 
         [HttpPost]
-        public IActionResult AddTransfer([FromBody] TransferInfoDto transferInfoDto, [FromHeader] string credentials)
+        public IActionResult AddTransfer([FromBody] TransferInfoDto transferInfoDto, [FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var card = cardService.GetCardById(transferInfoDto.CardId, username);
+                authManager.IsContentCreatorOrAdmin(user, userId);
+                var card = cardService.GetCardById(transferInfoDto.CardId, userId);
                 var currency = currencyService.GetCurrencyById(transferInfoDto.CurrencyId);
-                var wallet = walletService.GetWalletById(transferInfoDto.WalletId, username);
+                var wallet = walletService.GetWalletById(transferInfoDto.WalletId, userId);
 
                 var transfer = new Transfer
                 {
@@ -56,9 +54,9 @@ namespace VirtualWallet.Web.ApiControllers
                 card.Transfers.Add(transfer);
                 wallet.Transfers.Add(transfer);
 
-                transferService.AddTransfer(username, transfer);
+                transferService.AddTransfer(userId, transfer);
 
-                return Ok(transfer);
+                return StatusCode(201, transfer);
             }
             catch (EntityNotFoundException ex)
             {
@@ -83,15 +81,15 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpDelete("{transferId}")]
-        public IActionResult DeleteTransfer([FromHeader] string credentials, int transferId)
+        public IActionResult DeleteTransfer([FromHeader] string credentials, int transferId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                transferService.DeleteTransfer(transferId, username);
+                authManager.IsContentCreatorOrAdmin(user, userId);
+                transferService.DeleteTransfer(transferId, userId);
 
                 return NoContent();
             }
@@ -118,15 +116,15 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet("{transferId}")]
-        public IActionResult GetTransferById([FromHeader] string credentials, int transferId)
+        public IActionResult GetTransferById([FromHeader] string credentials, int transferId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var transfer = transferService.GetTransferById(transferId, username);
+                authManager.IsContentCreatorOrAdmin(user, userId);
+                var transfer = transferService.GetTransferById(transferId, userId);
 
                 return Ok(transfer);
             }
@@ -152,51 +150,51 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
+        //[HttpGet]
+        //public IActionResult GetTransfers([FromHeader] string credentials, int userId)
+        //{
+        //    try
+        //    {
+        //        var splitCredentials = authManager.SplitCredentials(credentials);
+        //        var user = authManager.IsAuthenticated(splitCredentials);
+
+        //        authManager.IsContentCreatorOrAdmin(user, userId);
+        //        var transfers = transferService.GetTransfers(userId);
+
+        //        return Ok(transfers);
+        //    }
+        //    catch (EntityNotFoundException ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+        //    }
+        //    catch (UnauthenticatedOperationException ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+        //    }
+        //    catch (UnauthorizedOperationException ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
+
         [HttpGet]
-        public IActionResult GetTransfers([FromHeader] string credentials)
+        public IActionResult GetWalletTransfers([FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var transfers = transferService.GetTransfers(username);
-
-                return Ok(transfers);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet("wallet")]
-        public IActionResult GetWalletTransfers([FromHeader] string credentials)
-        {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var transfers = transferService.GetWalletTransfers(username);
+                authManager.IsContentCreatorOrAdmin(user, userId);
+                var transfers = transferService.GetWalletTransfers(userId);
 
                 return Ok(transfers);
             }

@@ -19,9 +19,9 @@ namespace VirtualWallet.Business.Services
 			this.userRepository = userRepository;
 		}
 
-		public bool AddExchange(string username, Exchange exchange)
+		public bool AddExchange(int userId, Exchange exchange)
 		{
-			var user = userRepository.GetUserByUsername(username);
+			var user = userRepository.GetUserById(userId);
 			exchange.Wallet = user.Wallet;
 			exchangeRepository.AddExchange(exchange);
 			return true;
