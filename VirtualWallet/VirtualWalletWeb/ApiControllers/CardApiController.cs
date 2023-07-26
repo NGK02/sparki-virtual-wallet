@@ -19,12 +19,14 @@ namespace VirtualWallet.Web.ApiControllers
         private readonly IAuthManager authManager;
         private readonly ICardService cardService;
         private readonly ICurrencyService currencyService;
+        private readonly IUserService userService;
 
-        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService)
+        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, IUserService userService)
         {
             this.authManager = authManager;
             this.cardService = cardService;
             this.currencyService = currencyService;
+            this.userService = userService;
         }
 
         [HttpPost]
@@ -139,40 +141,6 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
-        [HttpGet("all")]
-        public IActionResult GetCards([FromHeader] string credentials, int userId)
-        {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-
-                authManager.IsAuthenticated(splitCredentials);
-                var cards = cardService.GetCards(userId);
-
-                return Ok(cards);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
         [HttpGet]
         public IActionResult GetUserCards([FromHeader] string credentials, int userId)
         {
@@ -181,6 +149,10 @@ namespace VirtualWallet.Web.ApiControllers
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
+                string username = splitCredentials[0];
+                var user = userService.GetUserByUsername(username);
+
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 var cards = cardService.GetUserCards(userId);
 
                 return Ok(cards);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
+using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories;
@@ -17,11 +18,13 @@ namespace VirtualWallet.Web.ApiControllers
 	{
 		private readonly IAuthManager authManager;
 		private readonly IAdminService adminService;
+		private readonly ICardService cardService;
 		private readonly IMapper mapper;
-		public AdminApiController(IAuthManager authManager, IAdminService adminService, IMapper mapper)
+		public AdminApiController(IAuthManager authManager, IAdminService adminService, ICardService cardService, IMapper mapper)
 		{
 			this.authManager = authManager;
 			this.adminService = adminService;
+			this.cardService = cardService;
 			this.mapper = mapper;
 		}
 
@@ -99,7 +102,41 @@ namespace VirtualWallet.Web.ApiControllers
 
 		}
 
-		[HttpGet("users")]
+        [HttpGet("cards")]
+        public IActionResult GetCards([FromHeader] string credentials, int userId)
+        {
+            try
+            {
+                var splitCredentials = authManager.SplitCredentials(credentials);
+
+                authManager.IsAuthenticated(splitCredentials);
+                var cards = cardService.GetCards(userId);
+
+                return Ok(cards);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("users")]
 		public IActionResult GetAllUsers(string credentials, [FromQuery] UserQueryParameters userParameters)
 		{
 			try
