@@ -9,21 +9,23 @@ using VirtualWallet.Dto.TransferDto;
 namespace VirtualWallet.Web.ApiControllers
 {
     [ApiController]
-    [Route("api/transfers")]
+    [Route("api/users/{userId}/transfers")]
     public class TransferApiController : ControllerBase
     {
         private readonly IAuthManager authManager;
         private readonly ICardService cardService;
         private readonly ICurrencyService currencyService;
         private readonly ITransferService transferService;
+        private readonly IUserService userService;
         private readonly IWalletService walletService;
 
-        public TransferApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, ITransferService transferService, IWalletService walletService)
+        public TransferApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, ITransferService transferService, IUserService userService, IWalletService walletService)
         {
             this.authManager = authManager;
             this.cardService = cardService;
             this.currencyService = currencyService;
             this.transferService = transferService;
+            this.userService = userService;
             this.walletService = walletService;
         }
 
