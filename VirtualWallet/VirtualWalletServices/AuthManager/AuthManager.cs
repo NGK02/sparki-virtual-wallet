@@ -36,18 +36,19 @@ namespace VirtualWallet.Business.AuthManager
 		{
 			if (user.Id != contentCreatorId && user.RoleId != (int)RoleName.Admin)
 			{
-				throw new UnauthorizedAccessException("Not Authorized to do this!");
+				throw new UnauthorizedOperationException("Not Authorized to do this!");
 			}
 			return true;
 		}
 
-		public void IsAdmin(string[] splitCredentials)
+		public User IsAdmin(string[] splitCredentials)
 		{
 			var user = IsAuthenticated(splitCredentials);
 			if (!IsAdmin(user))
 			{
-				throw new UnauthorizedAccessException("You'rе not admin!");
+				throw new UnauthorizedOperationException("You'rе not admin!");
 			}
+			return user;
 		}
 
 		public bool IsAdmin(User user)

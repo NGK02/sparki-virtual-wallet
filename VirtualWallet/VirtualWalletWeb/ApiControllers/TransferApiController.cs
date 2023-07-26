@@ -150,41 +150,6 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
-        //[HttpGet]
-        //public IActionResult GetTransfers([FromHeader] string credentials, int userId)
-        //{
-        //    try
-        //    {
-        //        var splitCredentials = authManager.SplitCredentials(credentials);
-        //        var user = authManager.IsAuthenticated(splitCredentials);
-
-        //        authManager.IsContentCreatorOrAdmin(user, userId);
-        //        var transfers = transferService.GetTransfers(userId);
-
-        //        return Ok(transfers);
-        //    }
-        //    catch (EntityNotFoundException ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-        //    }
-        //    catch (UnauthenticatedOperationException ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-        //    }
-        //    catch (UnauthorizedOperationException ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-        //    }
-        //    catch (ArgumentException ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
-        //}
-
         [HttpGet]
         public IActionResult GetWalletTransfers([FromHeader] string credentials, int userId)
         {

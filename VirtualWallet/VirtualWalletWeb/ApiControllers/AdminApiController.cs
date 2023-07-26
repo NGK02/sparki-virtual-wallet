@@ -19,13 +19,19 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IAuthManager authManager;
 		private readonly IAdminService adminService;
 		private readonly ICardService cardService;
+		private readonly ITransferService transferService;
 		private readonly IMapper mapper;
-		public AdminApiController(IAuthManager authManager, IAdminService adminService, ICardService cardService, IMapper mapper)
+		public AdminApiController(IAuthManager authManager,
+								IAdminService adminService,
+								ICardService cardService,
+								ITransferService transferService,
+								IMapper mapper)
 		{
 			this.authManager = authManager;
 			this.adminService = adminService;
 			this.cardService = cardService;
 			this.mapper = mapper;
+			this.transferService = transferService;
 		}
 
 		[HttpPut("block")]
@@ -102,40 +108,73 @@ namespace VirtualWallet.Web.ApiControllers
 
 		}
 
-        [HttpGet("cards")]
-        public IActionResult GetAllCards([FromHeader] string credentials, int userId)
-        {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAdmin(splitCredentials);
-				var cards = cardService.GetCards(userId);
+		[HttpGet("cards")]
+		public IActionResult GetAllCards([FromHeader] string credentials)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				var user = authManager.IsAdmin(splitCredentials);
+				var cards = cardService.GetCards(user.Id);
 
-                return Ok(cards);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+				return Ok(cards);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+			}
+			catch (UnauthenticatedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
 
-        [HttpGet("users")]
+		[HttpGet("transfers")]
+		public IActionResult GetAllTransfers([FromHeader] string credentials)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				var user = authManager.IsAdmin(splitCredentials);
+				var transfers = transferService.GetTransfers(user.Id);
+
+				return Ok(transfers);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+			}
+			catch (UnauthenticatedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
+
+		[HttpGet("users")]
 		public IActionResult GetAllUsers(string credentials, [FromQuery] UserQueryParameters userParameters)
 		{
 			try
