@@ -11,12 +11,10 @@ namespace VirtualWallet.DataAccess.Repositories
 {
     public class CardRepository : ICardRepository
     {
-        private readonly IQueryable<Card> cards;
         private readonly WalletDbContext walletDbContext;
 
         public CardRepository(WalletDbContext walletDbContext)
         {
-            cards = GetQueryableCards();
             this.walletDbContext = walletDbContext;
         }
 
@@ -31,22 +29,22 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public bool CardNumberExists(long cardNumber)
         {
-            return cards.Any(c => c.CardNumber == cardNumber);
+            return GetQueryableCards().Any(c => c.CardNumber == cardNumber);
         }
 
         public Card GetCardById(int cardId)
         {
-            return cards.SingleOrDefault(c => c.Id == cardId);
+            return GetQueryableCards().SingleOrDefault(c => c.Id == cardId);
         }
 
         public IEnumerable<Card> GetCards()
         {
-            return cards.ToList();
+            return GetQueryableCards().ToList();
         }
 
         public IEnumerable<Card> GetUserCards(int userId)
         {
-            return cards.Where(c => c.UserId == userId).ToList();
+            return GetQueryableCards().Where(c => c.UserId == userId).ToList();
         }
 
         public void AddCard(Card card)

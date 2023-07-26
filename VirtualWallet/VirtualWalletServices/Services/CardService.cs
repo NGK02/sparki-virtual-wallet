@@ -27,88 +27,86 @@ namespace VirtualWallet.Business.Services
             this.userService = userService;
         }
 
-        public Card GetCardById(int cardId, string username)
+        public Card GetCardById(int cardId, int userId)
         {
             var card = cardRepository.GetCardById(cardId);
 
             if (card == null)
             {
-                throw new EntityNotFoundException($"Card with ID {cardId} not found.");
+                throw new EntityNotFoundException("Requested card not found.");
             }
 
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
-            if (!authManager.IsAdmin(user) && card.UserId != user.Id)
+            if (!authManager.IsAdmin(user) && card.UserId != userId)
             {
-                throw new UnauthorizedOperationException("Only an admin or the card's owner can access card details.");
+                throw new UnauthorizedOperationException("Access to card denied.");
             }
 
             return card;
         }
 
-        public IEnumerable<Card> GetCards(string username)
+        public IEnumerable<Card> GetCards(int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user))
             {
-                throw new UnauthorizedOperationException("Only admins can access all cards.");
+                throw new UnauthorizedOperationException("Access to all cards is restricted.");
             }
 
             var cards = cardRepository.GetCards();
 
             if (!cards.Any() || cards == null)
             {
-                throw new EntityNotFoundException("No cards found.");
+                throw new EntityNotFoundException("No cards available.");
             }
 
             return cards;
         }
 
-        public IEnumerable<Card> GetUserCards(string username)
+        public IEnumerable<Card> GetUserCards(int userId)
         {
-            var user = userService.GetUserByUsername(username);
-
-            var cards = cardRepository.GetUserCards(user.Id);
+            var cards = cardRepository.GetUserCards(userId);
 
             if (!cards.Any() || cards == null)
             {
-                throw new EntityNotFoundException("No cards found.");
+                throw new EntityNotFoundException("No cards available.");
             }
 
             return cards;
         }
 
-        public void AddCard(Card card, string username)
+        public void AddCard(Card card, int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (cardRepository.CardNumberExists(card.CardNumber))
             {
-                throw new ArgumentException("Card with the given number already exists.");
+                throw new ArgumentException("A card with the provided number already exists.");
             }
 
             card.User = user;
-            card.UserId = user.Id;
+            card.UserId = userId;
             user.Cards.Add(card);
 
             cardRepository.AddCard(card);
         }
 
-        public void DeleteCard(int cardId, string username)
+        public void DeleteCard(int cardId, int userId)
         {
-            var cardToDelete = GetCardById(cardId, username);
+            var cardToDelete = GetCardById(cardId, userId);
 
             cardRepository.DeleteCard(cardToDelete);
         }
 
-        public void UpdateCard(Card card, int cardId, string username)
+        public void UpdateCard(Card card, int cardId, int userId)
         {
-            var cardToUpdate = GetCardById(cardId, username);
+            var cardToUpdate = GetCardById(cardId, userId);
 
             if (card.ExpirationDate < DateTime.Now)
             {
-                throw new ArgumentException("Expiration date must be in the future.");
+                throw new ArgumentException("Invalid expiration date.");
             }
 
             cardRepository.UpdateCard(card, cardToUpdate);
