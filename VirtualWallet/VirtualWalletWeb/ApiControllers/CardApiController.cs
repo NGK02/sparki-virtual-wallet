@@ -13,7 +13,7 @@ using VirtualWallet.Dto.CardDto;
 namespace VirtualWallet.Web.ApiControllers
 {
     [ApiController]
-    [Route("api/cards")]
+    [Route("api/users/{userId}/cards")]
     public class CardApiController : ControllerBase
     {
         private readonly IAuthManager authManager;
@@ -28,14 +28,13 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPost]
-        public IActionResult AddCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials)
+        public IActionResult AddCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int userId)
         {
             try
             {
 				var splitCredentials = authManager.SplitCredentials(credentials);
 
 				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
@@ -44,11 +43,12 @@ namespace VirtualWallet.Web.ApiControllers
                     CardNumber = cardInfoDto.CardNumber,
                     CheckNumber = cardInfoDto.CheckNumber,
                     Currency = currency,
+                    CurrencyId = currency.Id,
                     ExpirationDate = cardInfoDto.ExpirationDate
                 };
 
-                cardService.AddCard(card, username);
-                return Ok(card);
+                cardService.AddCard(card, userId);
+                return StatusCode(201, card);
             }
             catch (EntityNotFoundException ex)
             {
@@ -73,16 +73,14 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpDelete("{cardId}")]
-        public IActionResult DeleteCard([FromHeader] string credentials, int cardId)
+        public IActionResult DeleteCard([FromHeader] string credentials, int cardId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-
-                cardService.DeleteCard(cardId, username);
+                cardService.DeleteCard(cardId, userId);
                 return NoContent();
             }
             catch (EntityNotFoundException ex)
@@ -108,15 +106,14 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet("{cardId}")]
-        public IActionResult GetCardById([FromHeader] string credentials, int cardId)
+        public IActionResult GetCardById([FromHeader] string credentials, int cardId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var card = cardService.GetCardById(cardId, username);
+                var card = cardService.GetCardById(cardId, userId);
 
                 return Ok(card);
             }
@@ -142,16 +139,15 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
-        [HttpGet]
-        public IActionResult GetCards([FromHeader] string credentials)
+        [HttpGet("all")]
+        public IActionResult GetCards([FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var cards = cardService.GetCards(username);
+                var cards = cardService.GetCards(userId);
 
                 return Ok(cards);
             }
@@ -177,16 +173,15 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
-        [HttpGet("user")]
-        public IActionResult GetUserCards([FromHeader] string credentials)
+        [HttpGet]
+        public IActionResult GetUserCards([FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var cards = cardService.GetUserCards(username);
+                var cards = cardService.GetUserCards(userId);
 
                 return Ok(cards);
             }
@@ -213,14 +208,13 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPut("{cardId}")]
-        public IActionResult UpdateCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int cardId)
+        public IActionResult UpdateCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int cardId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
 
                 authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
@@ -229,10 +223,11 @@ namespace VirtualWallet.Web.ApiControllers
                     CardNumber = cardInfoDto.CardNumber,
                     CheckNumber = cardInfoDto.CheckNumber,
                     Currency = currency,
+                    CurrencyId = currency.Id,
                     ExpirationDate = cardInfoDto.ExpirationDate
                 };
 
-                cardService.UpdateCard(card, cardId, username);
+                cardService.UpdateCard(card, cardId, userId);
                 return Ok(card);
             }
             catch (EntityNotFoundException ex)
