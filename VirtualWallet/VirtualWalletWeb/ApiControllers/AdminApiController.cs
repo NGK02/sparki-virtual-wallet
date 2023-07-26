@@ -103,14 +103,13 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
         [HttpGet("cards")]
-        public IActionResult GetCards([FromHeader] string credentials, int userId)
+        public IActionResult GetAllCards([FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
-
-                authManager.IsAuthenticated(splitCredentials);
-                var cards = cardService.GetCards(userId);
+				authManager.IsAdmin(splitCredentials);
+				var cards = cardService.GetCards(userId);
 
                 return Ok(cards);
             }

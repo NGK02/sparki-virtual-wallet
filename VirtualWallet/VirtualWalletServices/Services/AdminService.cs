@@ -81,7 +81,7 @@ namespace VirtualWallet.Business.Services
 			}
 			else
 			{
-				throw new ArgumentNullException("Please privide Id or email of the user!");
+				throw new ArgumentNullException("Please privide Id or Username of the user!");
 			}
 		}
 	}
