@@ -52,7 +52,7 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return Unauthorized(e.Message);
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
@@ -89,7 +89,7 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return Unauthorized(e.Message);
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
@@ -192,7 +192,7 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return Unauthorized(e.Message);
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
