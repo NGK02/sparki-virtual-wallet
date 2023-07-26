@@ -22,7 +22,7 @@ namespace VirtualWallet.Business.Services.Contracts
 
         void UpdateWallet(int walletId, string username, Wallet wallet);
 
-        Wallet ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username);
+        Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username);
 
         Wallet GetWalletById(int walletId, string username);
 

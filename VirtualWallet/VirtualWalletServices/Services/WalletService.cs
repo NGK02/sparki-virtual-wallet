@@ -135,7 +135,7 @@ namespace VirtualWallet.Business.Services
         // this does not count as a transaction!!
         // a transaction is user to user
         // this is a single user exchanging their funds - don't add transaction to db
-        public Wallet ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username)
+        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username)
         {
             var wallet = GetWalletById(walletId, username);
 
@@ -168,7 +168,8 @@ namespace VirtualWallet.Business.Services
             }
 
             fromBalance.Amount -= excahngeValues.Amount;
-            var exchangedAmount = currencyExchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString()).Result;
+            var exchangedAmount = await currencyExchangeService
+                .GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
 
             toBalance.Amount += exchangedAmount.Item2;
 
