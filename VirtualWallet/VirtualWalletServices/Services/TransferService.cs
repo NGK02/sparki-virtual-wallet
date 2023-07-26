@@ -25,75 +25,75 @@ namespace VirtualWallet.Business.Services
             this.userService = userService;
         }
 
-        public IEnumerable<Transfer> GetTransfers(string username)
+        public IEnumerable<Transfer> GetTransfers(int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user))
             {
-                throw new UnauthorizedOperationException("Only admins can access all transfers.");
+                throw new UnauthorizedOperationException("Access to all transfers is restricted.");
             }
 
             var transfers = transferRepository.GetTransfers();
 
             if (!transfers.Any() || transfers == null)
             {
-                throw new EntityNotFoundException("No transfers found.");
+                throw new EntityNotFoundException("No transfers available.");
             }
 
             return transfers;
         }
 
-        public IEnumerable<Transfer> GetWalletTransfers(string username)
+        public IEnumerable<Transfer> GetWalletTransfers(int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             var transfers = transferRepository.GetWalletTransfers(user.WalletId);
 
             if (!transfers.Any() || transfers == null)
             {
-                throw new EntityNotFoundException("No transfers found.");
+                throw new EntityNotFoundException("No transfers available.");
             }
 
             return transfers;
         }
 
-        public Transfer GetTransferById(int transferId, string username)
+        public Transfer GetTransferById(int transferId, int userId)
         {
             var transfer = transferRepository.GetTransferById(transferId);
 
             if (transfer == null)
             {
-                throw new EntityNotFoundException($"Transfer with ID {transferId} not found.");
+                throw new EntityNotFoundException("Requested transfer not found.");
             }
 
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
-            if (!authManager.IsAdmin(user) && transfer.Wallet.UserId != user.Id)
+            if (!authManager.IsAdmin(user) && transfer.Wallet.UserId != userId)
             {
-                throw new UnauthorizedOperationException("Only an admin or the transfer's sender can access transfer details.");
+                throw new UnauthorizedOperationException("Access to transfer denied.");
             }
 
             return transfer;
         }
 
-        public void AddTransfer(string username, Transfer transfer)
+        public void AddTransfer(int userId, Transfer transfer)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             transferRepository.AddTransfer(transfer);
         }
 
-        public void DeleteTransfer(int transferId, string username)
+        public void DeleteTransfer(int transferId, int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user))
             {
-                throw new UnauthorizedOperationException("Only an admin can delete transfer details.");
+                throw new UnauthorizedOperationException("Insufficient privileges to delete transfer details.");
             }
 
-            var transferToDelete = GetTransferById(transferId, username);
+            var transferToDelete = GetTransferById(transferId, userId);
 
             transferRepository.DeleteTransfer(transferToDelete);
         }

@@ -11,13 +11,11 @@ namespace VirtualWallet.DataAccess.Repositories
 {
     public class TransferRepository : ITransferRepository
     {
-        private readonly IQueryable<Transfer> transfers;
         private readonly WalletDbContext walletDbContext;
 
         public TransferRepository(WalletDbContext walletDbContext)
         {
             this.walletDbContext = walletDbContext;
-            transfers = GetQueryableTransfers();
         }
 
         private IQueryable<Transfer> GetQueryableTransfers()
@@ -31,17 +29,17 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public IEnumerable<Transfer> GetTransfers()
         {
-            return transfers.ToList();
+            return GetQueryableTransfers().ToList();
         }
 
         public IEnumerable<Transfer> GetWalletTransfers(int walletId)
         {
-            return transfers.Where(t => t.WalletId == walletId).ToList();
+            return GetQueryableTransfers().Where(t => t.WalletId == walletId).ToList();
         }
 
         public Transfer GetTransferById(int transferId)
         {
-            return transfers.SingleOrDefault(t => t.Id == transferId);
+            return GetQueryableTransfers().SingleOrDefault(t => t.Id == transferId);
         }
 
         public void AddTransfer(Transfer transfer)

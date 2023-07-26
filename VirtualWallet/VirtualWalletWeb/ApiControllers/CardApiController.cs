@@ -35,8 +35,9 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
 				var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-				authManager.IsAuthenticated(splitCredentials);
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
@@ -80,8 +81,9 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 cardService.DeleteCard(cardId, userId);
                 return NoContent();
             }
@@ -113,8 +115,9 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 var card = cardService.GetCardById(cardId, userId);
 
                 return Ok(card);
@@ -147,10 +150,7 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
-
-                authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var user = userService.GetUserByUsername(username);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 var cards = cardService.GetUserCards(userId);
@@ -185,8 +185,9 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
+                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsAuthenticated(splitCredentials);
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
 
                 var card = new Card
