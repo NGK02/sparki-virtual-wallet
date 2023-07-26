@@ -67,6 +67,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error when completing transaction!");
 			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
 
 		[HttpGet("user")]
@@ -98,38 +102,13 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
-		}
-
-		[HttpGet("")]
-		public IActionResult GetWalletTransactions([FromBody] WalletTransactionQueryParameters queryParameters, [FromHeader] string credentials)
-		{
-			try
+			catch (Exception e)
 			{
-				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAdmin(splitCredentials);
-				string username = splitCredentials[0];
-
-				var walletTransactions = walletTransactionService.GetWalletTransactions(queryParameters, username);
-				var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
-				return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
-			}
-			catch (UnauthenticatedOperationException e)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-			}
-			catch (UnauthorizedOperationException e)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-			}
-			catch (EntityNotFoundException e)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
-			}
-			catch (AutoMapperMappingException e)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
+
+		
 
 		[HttpGet("{id}")]
 		public IActionResult GetWalletTransactionById(int id, [FromHeader] string credentials)
@@ -160,6 +139,11 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
+
 	}
 }

@@ -8,6 +8,7 @@ using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories;
+using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.Dto.UserDto;
 
 namespace VirtualWallet.Web.ApiControllers
@@ -20,11 +21,13 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IAdminService adminService;
 		private readonly ICardService cardService;
 		private readonly ITransferService transferService;
+		private readonly IWalletTransactionService walletTransactionService;
 		private readonly IMapper mapper;
 		public AdminApiController(IAuthManager authManager,
 								IAdminService adminService,
 								ICardService cardService,
 								ITransferService transferService,
+								IWalletTransactionService walletTransactionService,
 								IMapper mapper)
 		{
 			this.authManager = authManager;
@@ -32,6 +35,7 @@ namespace VirtualWallet.Web.ApiControllers
 			this.cardService = cardService;
 			this.mapper = mapper;
 			this.transferService = transferService;
+			this.walletTransactionService= walletTransactionService;
 		}
 
 		[HttpPut("block")]
@@ -171,6 +175,40 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (Exception ex)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
+		[HttpGet("transactions")]
+		public IActionResult GetAllWalletTransactions([FromHeader] string credentials,[FromQuery] WalletTransactionQueryParameters queryParameters)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				authManager.IsAdmin(splitCredentials);
+				string username = splitCredentials[0];
+
+				var walletTransactions = walletTransactionService.GetWalletTransactions(queryParameters, username);
+				var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
+				return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (UnauthorizedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (EntityNotFoundException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
+			catch (AutoMapperMappingException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
 
