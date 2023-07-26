@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.TransferDto
 {
-    public class TransferInfoDto
+    public class CreateTransferDto
     {
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]

@@ -11,7 +11,7 @@ namespace VirtualWallet.Business.Services.Contracts
     {
         IEnumerable<Transfer> GetTransfers(int userId);
 
-        IEnumerable<Transfer> GetWalletTransfers(int userId);
+        IEnumerable<Transfer> GetUserTransfers(int userId);
 
         Transfer GetTransferById(int transferId, int userId);
 

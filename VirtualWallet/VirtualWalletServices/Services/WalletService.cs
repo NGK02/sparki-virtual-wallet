@@ -127,11 +127,11 @@ namespace VirtualWallet.Business.Services
             transferService.AddTransfer(userId, walletWithdrawal);
         }
 
-        public void DeleteWallet(int walletId, int userId)
-        {
-            var walletToDelete = GetWalletById(walletId, userId);
-            walletRepository.DeleteWallet(walletToDelete);
-        }
+        //public void DeleteWallet(int walletId, int userId)
+        //{
+        //    var walletToDelete = GetWalletById(walletId, userId);
+        //    walletRepository.DeleteWallet(walletToDelete);
+        //}
 
         // this does not count as a transaction!!
         // a transaction is user to user
@@ -191,13 +191,13 @@ namespace VirtualWallet.Business.Services
             return wallet;
         }
 
-        public void UpdateWallet(int walletId, string username, Wallet wallet)
+        public void UpdateWallet(int walletId, int userId, Wallet wallet)
         {
-            var walletToUpdate = GetWalletById(walletId, username);
+            var walletToUpdate = GetWalletById(walletId, userId);
             walletRepository.UpdateWallet(wallet, walletToUpdate);
         }
 
-        public Wallet GetWalletById(int walletId, string username)
+        public Wallet GetWalletById(int walletId, int userId)
         {
             var wallet = walletRepository.GetWalletById(walletId);
 
@@ -206,7 +206,7 @@ namespace VirtualWallet.Business.Services
                 throw new EntityNotFoundException($"Wallet with ID {walletId} not found.");
             }
 
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
             {

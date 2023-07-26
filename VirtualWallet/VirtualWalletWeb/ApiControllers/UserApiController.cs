@@ -20,12 +20,14 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IUserService userService;
 		private readonly IAuthManager authManager;
 		private readonly IWalletService walletService;
-		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager, IWalletService walletService)
+		private readonly IExchangeService exchangeService;
+		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager, IWalletService walletService, IExchangeService exchangeService)
 		{
 			this.mapper = mapper;
 			this.userService = userService;
 			this.authManager = authManager;
 			this.walletService = walletService;
+			this.exchangeService = exchangeService;
 		}
 
 
@@ -166,7 +168,7 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpPut("{id}/exchange")]
+		[HttpPut("{id}/exchanges")]
 		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] ExcahngeDTO excahngeValues)
 		{
 			try
@@ -199,6 +201,41 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (Exception e)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
+		}
+
+		[HttpGet("{id}/exchanges")]
+		public IActionResult GetUserExchanges([FromHeader] string credentials, int id)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				var user = authManager.IsAuthenticated(splitCredentials);
+
+				authManager.IsContentCreatorOrAdmin(user, id);
+				var exchanges = exchangeService.GetUserExchanges(id);
+
+				return Ok(exchanges);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+			}
+			catch (UnauthenticatedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 			}
 		}
 	}

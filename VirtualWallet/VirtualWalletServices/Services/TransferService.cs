@@ -44,11 +44,11 @@ namespace VirtualWallet.Business.Services
             return transfers;
         }
 
-        public IEnumerable<Transfer> GetWalletTransfers(int userId)
+        public IEnumerable<Transfer> GetUserTransfers(int userId)
         {
             var user = userService.GetUserById(userId);
 
-            var transfers = transferRepository.GetWalletTransfers(user.WalletId);
+            var transfers = transferRepository.GetUserTransfers(user.WalletId);
 
             if (!transfers.Any() || transfers == null)
             {

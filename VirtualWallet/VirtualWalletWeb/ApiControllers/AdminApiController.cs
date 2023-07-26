@@ -178,7 +178,7 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 		[HttpGet("transactions")]
-		public IActionResult GetAllWalletTransactions([FromHeader] string credentials,[FromQuery] WalletTransactionQueryParameters queryParameters)
+		public IActionResult GetAllWalletTransactions([FromHeader] string credentials, [FromQuery] WalletTransactionQueryParameters queryParameters)
 		{
 			try
 			{

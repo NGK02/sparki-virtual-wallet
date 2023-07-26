@@ -11,5 +11,6 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 	{
 		 bool AddExchange(Exchange exchange);
 
+		public IEnumerable<Exchange> GetUserExchanges(int walletId);
 	}
 }

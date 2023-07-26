@@ -28,7 +28,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPost]
-        public IActionResult AddTransfer([FromBody] TransferInfoDto transferInfoDto, [FromHeader] string credentials, int userId)
+        public IActionResult AddTransfer([FromBody] CreateTransferDto transferInfoDto, [FromHeader] string credentials, int userId)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet("{transferId}")]
-        public IActionResult GetTransferById([FromHeader] string credentials, int transferId, int userId)
+        public IActionResult GetUserTransferById([FromHeader] string credentials, int transferId, int userId)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet]
-        public IActionResult GetWalletTransfers([FromHeader] string credentials, int userId)
+        public IActionResult GetUserTransfers([FromHeader] string credentials, int userId)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var transfers = transferService.GetWalletTransfers(userId);
+                var transfers = transferService.GetUserTransfers(userId);
 
                 return Ok(transfers);
             }

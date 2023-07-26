@@ -18,7 +18,7 @@ namespace VirtualWallet.Business.Services.Contracts
 
         void AddWalletWithdrawal(int userId, Transfer walletWithdrawal);
 
-        void UpdateWallet(int walletId, string username, Wallet wallet);
+        void UpdateWallet(int walletId, int userId, Wallet wallet);
 
         Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId);
 
