@@ -11,6 +11,7 @@ namespace VirtualWallet.Dto.TransactionDto
 {
 	public class CreateWalletTransactionDto
 	{
+	//TODO В ПДФ пише да може да се ипращат пари username,email and phonenumber
 		[Required]
 		public string RecipientUsername { get; set; }
 

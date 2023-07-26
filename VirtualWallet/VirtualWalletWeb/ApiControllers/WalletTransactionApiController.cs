@@ -67,6 +67,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error when completing transaction!");
 			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
 
 		[HttpGet("user")]
@@ -97,6 +101,10 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (AutoMapperMappingException e)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
+			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
 
@@ -129,6 +137,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
 
 		[HttpGet("{id}")]
@@ -160,6 +172,11 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
+			catch (Exception e)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+			}
 		}
+
 	}
 }
