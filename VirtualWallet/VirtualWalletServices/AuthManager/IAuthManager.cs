@@ -15,6 +15,8 @@ namespace VirtualWallet.Business.AuthManager
 
 		//User IsAuthenticated(string[] userName, string password);
 
+		public bool IsContentCreatorOrAdmin(User user, int contentCreatorId);
+
 		void IsAdmin(string[] splitCredentials);
 
 		bool IsAdmin(User user);

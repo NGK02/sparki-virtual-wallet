@@ -58,16 +58,17 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpGet("")]
-		public IActionResult GetUserByUsername([FromHeader] string credentials)
+		[HttpGet("{id}")]
+		public IActionResult GetUserByUsername([FromHeader] string credentials,int id)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
 				authManager.IsAuthenticated(splitCredentials);
 				string username = splitCredentials[0];
-
 				var user = userService.GetUserByUsername(username);
+
+
 				var mappedUser = mapper.Map<GetUserDto>(user);
 				return Ok(mappedUser);
 
@@ -78,7 +79,7 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
 			catch (UnauthorizedAccessException e)
 			{
@@ -111,7 +112,7 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden,e.Message);
 			}
 			catch (UnauthorizedAccessException e)
 			{
@@ -151,7 +152,11 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
 			catch (Exception e)
 			{
