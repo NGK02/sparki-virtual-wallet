@@ -18,38 +18,33 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
-        public bool CardNumberExists(long cardNumber)
-        {
-            return walletDbContext.Cards.Any(c => !c.IsDeleted && c.CardNumber == cardNumber);
-        }
-
-        public Card GetCardById(int cardId)
-        {
-            return walletDbContext.Cards
-                .Include(c => c.Currency)
-                .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .SingleOrDefault(c => !c.IsDeleted && c.Id == cardId);
-        }
-
-        public IEnumerable<Card> GetCards()
+        private IQueryable<Card> GetQueryableCards()
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted)
                 .Include(c => c.Currency)
                 .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .ToList();
+                .Include(c => c.User);
+        }
+
+        public bool CardNumberExists(long cardNumber)
+        {
+            return GetQueryableCards().Any(c => c.CardNumber == cardNumber);
+        }
+
+        public Card GetCardById(int cardId)
+        {
+            return GetQueryableCards().SingleOrDefault(c => c.Id == cardId);
+        }
+
+        public IEnumerable<Card> GetCards()
+        {
+            return GetQueryableCards().ToList();
         }
 
         public IEnumerable<Card> GetUserCards(int userId)
         {
-            return walletDbContext.Cards
-                .Where(c => !c.IsDeleted && c.UserId == userId)
-                .Include(c => c.Currency)
-                .Include(c => c.Transfers)
-                .Include(c => c.User)
-                .ToList();
+            return GetQueryableCards().Where(c => c.UserId == userId).ToList();
         }
 
         public void AddCard(Card card)

@@ -18,33 +18,28 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
-        public IEnumerable<Transfer> GetTransfers()
+        private IQueryable<Transfer> GetQueryableTransfers()
         {
             return walletDbContext.Transfers
                 .Where(t => !t.IsDeleted)
                 .Include(t => t.Card)
                 .Include(t => t.Currency)
-                .Include(t => t.Wallet)
-                .ToList();
+                .Include(t => t.Wallet);
+        }
+
+        public IEnumerable<Transfer> GetTransfers()
+        {
+            return GetQueryableTransfers().ToList();
         }
 
         public IEnumerable<Transfer> GetWalletTransfers(int walletId)
         {
-            return walletDbContext.Transfers
-                .Where(t => !t.IsDeleted && t.WalletId == walletId)
-                .Include(t => t.Card)
-                .Include(t => t.Currency)
-                .Include(t => t.Wallet)
-                .ToList();
+            return GetQueryableTransfers().Where(t => t.WalletId == walletId).ToList();
         }
 
         public Transfer GetTransferById(int transferId)
         {
-            return walletDbContext.Transfers
-                .Include(t => t.Card)
-                .Include(t => t.Currency)
-                .Include(t => t.Wallet)
-                .SingleOrDefault(t => !t.IsDeleted && t.Id == transferId);
+            return GetQueryableTransfers().SingleOrDefault(t => t.Id == transferId);
         }
 
         public void AddTransfer(Transfer transfer)

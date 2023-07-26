@@ -12,7 +12,7 @@ using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Web.ApiControllers
 {
-    [ApiController]
+	[ApiController]
 	[Route("api/users")]
 	public class UserApiController : ControllerBase
 	{
@@ -20,7 +20,7 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IUserService userService;
 		private readonly IAuthManager authManager;
 		private readonly IWalletService walletService;
-		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager,IWalletService walletService)
+		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager, IWalletService walletService)
 		{
 			this.mapper = mapper;
 			this.userService = userService;
@@ -30,7 +30,6 @@ namespace VirtualWallet.Web.ApiControllers
 
 
 		[HttpPost("")]
-		//TODO: Authentication
 		public IActionResult CreateUser([FromBody] CreateUserDto userDto)
 		{
 			try
@@ -58,16 +57,15 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpGet("")]
-		public IActionResult GetUserByUsername([FromHeader] string credentials)
+		[HttpGet("{id}")]
+		public IActionResult GetUserById([FromHeader] string credentials, [FromRoute] int id)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
+				_ = authManager.IsAuthenticated(splitCredentials);
 				string username = splitCredentials[0];
-
-				var user = userService.GetUserByUsername(username);
+				var user = userService.GetUserById(id);
 				var mappedUser = mapper.Map<GetUserDto>(user);
 				return Ok(mappedUser);
 
@@ -78,9 +76,9 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
@@ -90,15 +88,15 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpPut("")]
-		public IActionResult EditUser([FromHeader] string credentials, [FromBody] UpdateUserDto userValues)
+		[HttpPut("{id}")]
+		public IActionResult EditUser([FromHeader] string credentials,[FromRoute] int id, [FromBody] UpdateUserDto userValues)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
+				var loggedUser = authManager.IsAuthenticated(splitCredentials);
+				authManager.IsContentCreatorOrAdmin(loggedUser, id);
 				string username = splitCredentials[0];
-
 				var mapped = mapper.Map<User>(userValues);
 				var updatedUser = userService.UpdateUser(username, mapped);
 
@@ -111,9 +109,9 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
@@ -134,24 +132,33 @@ namespace VirtualWallet.Web.ApiControllers
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
-		
 
-		[HttpDelete("")]
-		public IActionResult DeleteUser([FromHeader] string credentials)
+
+		[HttpDelete("{id}")]
+		public IActionResult DeleteUser([FromHeader] string credentials, [FromRoute] int id)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
+				var loggedUser=authManager.IsAuthenticated(splitCredentials);
+				authManager.IsContentCreatorOrAdmin(loggedUser, id);
 				string username = splitCredentials[0];
 
 				userService.DeleteUser(username, null);
 				return Ok("User Deleted!");
 
 			}
+			catch (EntityNotFoundException e)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, e.Message);
+			}
 			catch (UnauthenticatedOperationException e)
 			{
-				return Unauthorized(e.Message);
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			}
+			catch (UnauthorizedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
 			catch (Exception e)
 			{
@@ -159,32 +166,40 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-        [HttpPut("exchange")]
-        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromBody] ExcahngeDTO excahngeValues)
-        {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
+		[HttpPut("{id}/exchange")]
+		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] ExcahngeDTO excahngeValues)
+		{
+			try
+			{
+				var splitCredentials = authManager.SplitCredentials(credentials);
+				var loggedUser = authManager.IsAuthenticated(splitCredentials);
+				authManager.IsContentCreatorOrAdmin(loggedUser, id);
+				string username = splitCredentials[0];
 
-                string username = splitCredentials[0];
+				var wallet = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, id);
 
-				var wallet = walletService.ExchangeFunds(excahngeValues, user.WalletId, username);
-				
-                return Ok(wallet);
-            }
-            catch (InsufficientFundsException ex)
+				return Ok(wallet);
+			}
+			catch (InsufficientFundsException ex)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+			}
+			catch (UnauthorizedOperationException e)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+			}
 			catch (Exception e)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
 			}
 		}
-    }
+	}
 }

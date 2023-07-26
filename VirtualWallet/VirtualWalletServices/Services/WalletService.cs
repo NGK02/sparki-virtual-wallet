@@ -47,9 +47,9 @@ namespace VirtualWallet.Business.Services
             this.exchangeService = exchangeService;
         }
 
-        public IEnumerable<Wallet> GetWallets(string username)
+        public IEnumerable<Wallet> GetWallets(int userId)
         {
-            var user = userService.GetUserByUsername(username);
+            var user = userService.GetUserById(userId);
 
             if (!authManager.IsAdmin(user))
             {
@@ -66,48 +66,23 @@ namespace VirtualWallet.Business.Services
             return wallets;
         }
 
-		public Wallet GetWalletById(int walletId, string username)
-		{
-			var wallet = walletRepository.GetWalletById(walletId);
-
-			if (wallet == null)
-			{
-				throw new EntityNotFoundException($"Wallet with ID {walletId} not found.");
-			}
-
-			var user = userService.GetUserByUsername(username);
-
-			if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
-			{
-				throw new UnauthorizedOperationException("Only an admin or the wallet's owner can access wallet details.");
-			}
-
-			return wallet;
-		}
-
-		public void AddWallet(string username, Wallet wallet)
-		{
-			var user = userService.GetUserByUsername(username);
-
-			if (walletRepository.WalletOwnerExists(user.Id))
-			{
-				throw new ArgumentException("Wallet for the given user already exists.");
-			}
-
-			wallet.User = user;
-			wallet.UserId = user.Id;
-			walletRepository.AddWallet(wallet);
-		}
-
-		public void UpdateWallet(int walletId, string username, Wallet wallet)
-		{
-			var walletToUpdate = GetWalletById(walletId, username);
-			walletRepository.UpdateWallet(wallet, walletToUpdate);
-		}
-
-        public void AddWalletDeposit(string username, Transfer walletDeposit)
+        public void AddWallet(int userId, Wallet wallet)
         {
-            var wallet = GetWalletById(walletDeposit.WalletId, username);
+            var user = userService.GetUserById(userId);
+
+            if (walletRepository.WalletOwnerExists(user.Id))
+            {
+                throw new ArgumentException("Wallet for the given user already exists.");
+            }
+
+            wallet.User = user;
+            wallet.UserId = user.Id;
+            walletRepository.AddWallet(wallet);
+        }
+
+        public void AddWalletDeposit(int userId, Transfer walletDeposit)
+        {
+            var wallet = GetWalletById(walletDeposit.WalletId, userId);
 
             var depositBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletDeposit.CurrencyId);
 
@@ -118,15 +93,15 @@ namespace VirtualWallet.Business.Services
             }
 
             depositBalance.Amount += walletDeposit.Amount;
-            UpdateWallet(walletDeposit.WalletId, username, wallet);
+            UpdateWallet(walletDeposit.WalletId, userId, wallet);
             walletDeposit.IsCardSender = true;
 
-            transferService.AddTransfer(username, walletDeposit);
+            transferService.AddTransfer(userId, walletDeposit);
         }
 
-        public void AddWalletWithdrawal(string username, Transfer walletWithdrawal)
+        public void AddWalletWithdrawal(int userId, Transfer walletWithdrawal)
         {
-            var wallet = GetWalletById(walletWithdrawal.WalletId, username);
+            var wallet = GetWalletById(walletWithdrawal.WalletId, userId);
             var withdrawalBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletWithdrawal.CurrencyId);
 
             if (withdrawalBalance == null)
@@ -146,24 +121,24 @@ namespace VirtualWallet.Business.Services
 
             withdrawalBalance.Amount -= walletWithdrawal.Amount;
 
-            UpdateWallet(walletWithdrawal.WalletId, username, wallet);
+            UpdateWallet(walletWithdrawal.WalletId, userId, wallet);
             walletWithdrawal.IsCardSender = false;
 
-            transferService.AddTransfer(username, walletWithdrawal);
+            transferService.AddTransfer(userId, walletWithdrawal);
         }
 
-        //public void DeleteWallet(int walletId, string username)
-        //{
-        //    var walletToDelete = GetWalletById(walletId, username);
-        //    walletRepository.DeleteWallet(walletToDelete);
-        //}
+        public void DeleteWallet(int walletId, int userId)
+        {
+            var walletToDelete = GetWalletById(walletId, userId);
+            walletRepository.DeleteWallet(walletToDelete);
+        }
 
         // this does not count as a transaction!!
         // a transaction is user to user
         // this is a single user exchanging their funds - don't add transaction to db
-        public Wallet ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, string username)
+        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId)
         {
-            var wallet = GetWalletById(walletId, username);
+            var wallet = GetWalletById(walletId, userId);
 
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
             var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
@@ -193,18 +168,13 @@ namespace VirtualWallet.Business.Services
                 throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromBalance.Currency.Code}");
             }
 
-			var exchangedAmount = currencyExchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From, excahngeValues.To, excahngeValues.Amount.ToString()).Result;
+            fromBalance.Amount -= excahngeValues.Amount;
+            var exchangedAmount = await currencyExchangeService
+                .GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
 
-			using (TransactionScope transactionScope = new TransactionScope())
-			{
-				fromBalance.Amount -= excahngeValues.Amount;
+            toBalance.Amount += exchangedAmount.Item2;
 
-				toBalance.Amount += exchangedAmount.Item2;
-
-				UpdateWallet(walletId, username, wallet);
-				transactionScope.Complete();
-                //Как работи TransactionScope с предаване на контрол към друг метод.
-			}
+            UpdateWallet(walletId, userId, wallet);
 
             var exchange = new Exchange 
             { 
@@ -217,16 +187,41 @@ namespace VirtualWallet.Business.Services
                 Wallet=wallet,
                 Rate= exchangedAmount.Item1
 			};
-            exchangeService.AddExchange(username, exchange);
+            exchangeService.AddExchange(userId, exchange);
+            return wallet;
+        }
+
+        public void UpdateWallet(int walletId, string username, Wallet wallet)
+        {
+            var walletToUpdate = GetWalletById(walletId, username);
+            walletRepository.UpdateWallet(wallet, walletToUpdate);
+        }
+
+        public Wallet GetWalletById(int walletId, string username)
+        {
+            var wallet = walletRepository.GetWalletById(walletId);
+
+            if (wallet == null)
+            {
+                throw new EntityNotFoundException($"Wallet with ID {walletId} not found.");
+            }
+
+            var user = userService.GetUserByUsername(username);
+
+            if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
+            {
+                throw new UnauthorizedOperationException("Only an admin or the wallet's owner can access wallet details.");
+            }
+
             return wallet;
         }
 
         // do not call directly from controller!!
         // gets called from ExchangeFunds which is the public 'gateway'
-        public async Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues)
+        public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
         {
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
-            var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
 
             decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
 
@@ -234,6 +229,6 @@ namespace VirtualWallet.Business.Services
 
             return newAmount;
 
-        }
-    }
+		}
+	}
 }

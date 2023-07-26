@@ -9,14 +9,14 @@ namespace VirtualWallet.Business.Services.Contracts
 {
     public interface ITransferService
     {
-        IEnumerable<Transfer> GetTransfers(string username);
+        IEnumerable<Transfer> GetTransfers(int userId);
 
-        IEnumerable<Transfer> GetWalletTransfers(string username);
+        IEnumerable<Transfer> GetWalletTransfers(int userId);
 
-        Transfer GetTransferById(int transferId, string username);
+        Transfer GetTransferById(int transferId, int userId);
 
-        void AddTransfer(string username, Transfer transfer);
+        void AddTransfer(int userId, Transfer transfer);
 
-        void DeleteTransfer(int transferId, string username);
+        void DeleteTransfer(int transferId, int userId);
     }
 }

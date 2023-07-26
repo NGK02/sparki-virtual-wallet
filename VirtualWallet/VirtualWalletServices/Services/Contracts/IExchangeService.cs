@@ -9,6 +9,6 @@ namespace VirtualWallet.Business.Services.Contracts
 {
 	public interface IExchangeService
 	{
-		bool AddExchange(string username,Exchange exchange);
+		bool AddExchange(int userId, Exchange exchange);
 	}
 }
