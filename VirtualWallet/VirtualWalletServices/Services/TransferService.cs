@@ -25,6 +25,45 @@ namespace VirtualWallet.Business.Services
             this.userService = userService;
         }
 
+        private void TransferFromWallet(Transfer transfer)
+        {
+            var wallet = transfer.Wallet;
+
+            var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+
+            if (balance == null)
+            {
+                throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{transfer.Currency.Code}'.");
+            }
+
+            decimal amountToWithdraw = transfer.Amount;
+            decimal availableBalance = balance.Amount;
+
+            if (amountToWithdraw > availableBalance)
+            {
+                throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {balance.Currency.Code}.");
+            }
+
+            balance.Amount -= transfer.Amount;
+            transferRepository.AddTransfer(transfer);
+        }
+
+        private void TransferToWallet(Transfer transfer)
+        {
+            var wallet = transfer.Wallet;
+
+            var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+
+            if (balance == null)
+            {
+                balance = new Balance { CurrencyId = transfer.CurrencyId };
+                wallet.Balances.Add(balance);
+            }
+
+            balance.Amount += transfer.Amount;
+            transferRepository.AddTransfer(transfer);
+        }
+
         public IEnumerable<Transfer> GetTransfers(int userId)
         {
             var user = userService.GetUserById(userId);
@@ -77,11 +116,16 @@ namespace VirtualWallet.Business.Services
             return transfer;
         }
 
-        public void AddTransfer(int userId, Transfer transfer)
+        public void AddTransfer(Transfer transfer)
         {
-            var user = userService.GetUserById(userId);
-
-            transferRepository.AddTransfer(transfer);
+            if (transfer.HasCardSender)
+            {
+                TransferToWallet(transfer);
+            }
+            else
+            {
+                TransferFromWallet(transfer);
+            }
         }
 
         public void DeleteTransfer(int transferId, int userId)

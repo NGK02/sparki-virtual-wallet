@@ -9,12 +9,13 @@ namespace VirtualWallet.DataAccess.Models
 {
     public class Transfer : Entity
     {
-        public bool IsCardRecipient => !IsCardSender;
+        [Required]
+        public bool HasCardSender { get; set; }
 
-        public bool IsCardSender { get; set; }
-
+        [Required]
         public Card Card { get; set; }
 
+        [Required]
         public Currency Currency { get; set; }
 
         [Required]
@@ -32,6 +33,7 @@ namespace VirtualWallet.DataAccess.Models
         [Required]
         public int WalletId { get; set; }
 
+        [Required]
         public Wallet Wallet { get; set; }
     }
 }

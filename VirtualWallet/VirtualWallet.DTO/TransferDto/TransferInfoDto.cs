@@ -10,6 +10,9 @@ namespace VirtualWallet.Dto.TransferDto
     public class TransferInfoDto
     {
         [Required]
+        public bool HasCardSender { get; set; }
+
+        [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
         public decimal Amount { get; set; }
 

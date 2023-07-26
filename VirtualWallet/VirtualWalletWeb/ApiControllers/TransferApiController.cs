@@ -47,6 +47,7 @@ namespace VirtualWallet.Web.ApiControllers
                     CardId = transferInfoDto.CardId,
                     Currency = currency,
                     CurrencyId = transferInfoDto.CurrencyId,
+                    HasCardSender = transferInfoDto.HasCardSender,
                     Wallet = wallet,
                     WalletId = transferInfoDto.WalletId
                 };
@@ -54,7 +55,7 @@ namespace VirtualWallet.Web.ApiControllers
                 card.Transfers.Add(transfer);
                 wallet.Transfers.Add(transfer);
 
-                transferService.AddTransfer(userId, transfer);
+                transferService.AddTransfer(transfer);
 
                 return StatusCode(201, transfer);
             }
@@ -91,7 +92,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 transferService.DeleteTransfer(transferId, userId);
 
-                return NoContent();
+                return Ok("Transfer deleted successfully.");
             }
             catch (EntityNotFoundException ex)
             {
