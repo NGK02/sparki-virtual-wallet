@@ -12,7 +12,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
-using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Dto.CreateExcahngeDto;
 
 namespace VirtualWallet.Business.Services
 {
@@ -22,7 +22,6 @@ namespace VirtualWallet.Business.Services
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
         private readonly ICurrencyService currencyService;
-        private readonly CurrencyExchangeService currencyExchangeService;
         private readonly IExchangeService exchangeService;
 
 
@@ -30,14 +29,12 @@ namespace VirtualWallet.Business.Services
             IUserService userService,
             IWalletRepository walletRepository,
             ICurrencyService currencyService,
-            CurrencyExchangeService currencyExchangeService,
             IExchangeService exchangeService)
         {
             this.authManager = authManager;
             this.userService = userService;
             this.walletRepository = walletRepository;
             this.currencyService = currencyService;
-            this.currencyExchangeService = currencyExchangeService;
             this.exchangeService = exchangeService;
         }
 
@@ -83,7 +80,7 @@ namespace VirtualWallet.Business.Services
         // this does not count as a transaction!!
         // a transaction is user to user
         // this is a single user exchanging their funds - don't add transaction to db
-        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId)
+        public async Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int walletId, int userId)
         {
             var wallet = GetWalletById(walletId, userId);
 
@@ -116,8 +113,8 @@ namespace VirtualWallet.Business.Services
             }
 
             fromBalance.Amount -= excahngeValues.Amount;
-            var exchangedAmount = await currencyExchangeService
-                .GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
+            var exchangedAmount = await exchangeService
+				.GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
 
             toBalance.Amount += exchangedAmount.Item2;
 
@@ -135,7 +132,7 @@ namespace VirtualWallet.Business.Services
                 Rate= exchangedAmount.Item1
 			};
             exchangeService.AddExchange(userId, exchange);
-            return wallet;
+            return exchange;
         }
 
         public void UpdateWallet(int userId, int walletId, Wallet wallet)
@@ -165,18 +162,19 @@ namespace VirtualWallet.Business.Services
 
         // do not call directly from controller!!
         // gets called from ExchangeFunds which is the public 'gateway'
-        public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
-        {
-            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
-			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+  //      public async Task<decimal> ExchangeCurrencyAsync(User user,CreateExcahngeDto excahngeValues)
+  //      {
+  //          var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
+		//	var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
 
-            decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
+  //          decimal rate = await exchangeService
+  //              .GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
 
-            decimal newAmount = excahngeValues.Amount * rate;
+  //          decimal newAmount = excahngeValues.Amount * rate;
 
-            return newAmount;
+  //          return newAmount;
 
-		}
+		//}
 
         public Balance CreateWalletBalance(int walletId, int currencyId)
         {

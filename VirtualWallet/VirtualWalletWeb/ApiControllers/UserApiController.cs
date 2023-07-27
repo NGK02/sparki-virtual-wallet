@@ -8,6 +8,7 @@ using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
+using VirtualWallet.Dto.CreateExcahngeDto;
 using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Web.ApiControllers
@@ -84,6 +85,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
 			catch (Exception e)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -91,7 +96,7 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult EditUser([FromHeader] string credentials,[FromRoute] int id, [FromBody] UpdateUserDto userValues)
+		public IActionResult EditUser([FromHeader] string credentials, [FromRoute] int id, [FromBody] UpdateUserDto userValues)
 		{
 			try
 			{
@@ -129,6 +134,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status403Forbidden, e.Message);
 			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
 			catch (Exception e)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -142,7 +151,7 @@ namespace VirtualWallet.Web.ApiControllers
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				var loggedUser=authManager.IsAuthenticated(splitCredentials);
+				var loggedUser = authManager.IsAuthenticated(splitCredentials);
 				authManager.IsContentCreatorOrAdmin(loggedUser, id);
 				string username = splitCredentials[0];
 
@@ -169,7 +178,7 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPut("{id}/exchanges")]
-		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] ExcahngeDTO excahngeValues)
+		public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExcahngeDto excahngeValues)
 		{
 			try
 			{
@@ -178,15 +187,11 @@ namespace VirtualWallet.Web.ApiControllers
 				authManager.IsContentCreatorOrAdmin(loggedUser, id);
 				string username = splitCredentials[0];
 
-				var wallet = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, id);
-
-				return Ok(wallet);
+				var exchange = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, id);
+				var GetExchange = mapper.Map<GetExchangeDto>(exchange);
+				return Ok(GetExchange);
 			}
 			catch (InsufficientFundsException ex)
-			{
-				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-			}
-			catch (ArgumentException ex)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
@@ -197,6 +202,10 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
 			catch (Exception e)
 			{
@@ -213,7 +222,7 @@ namespace VirtualWallet.Web.ApiControllers
 				var user = authManager.IsAuthenticated(splitCredentials);
 
 				authManager.IsContentCreatorOrAdmin(user, id);
-				var exchanges = exchangeService.GetUserExchanges(id);
+				var exchanges = exchangeService.GetUserExchanges(id).Select(e => mapper.Map<GetExchangeDto>(e));
 
 				return Ok(exchanges);
 			}

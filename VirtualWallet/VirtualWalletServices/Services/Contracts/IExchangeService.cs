@@ -12,5 +12,8 @@ namespace VirtualWallet.Business.Services.Contracts
 		bool AddExchange(int userId, Exchange exchange);
 
 		IEnumerable<Exchange> GetUserExchanges(int userId);
+
+		Task<decimal> GetExchangeRate(string from, string to);
+		Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to, string amount);
 	}
 }
