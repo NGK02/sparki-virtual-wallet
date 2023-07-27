@@ -97,13 +97,17 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
 			}
+			catch (EntityAlreadyUnBlockedException e)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+			}
 			catch (ArgumentNullException e)
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
 			}
-			catch (EntityAlreadyUnBlockedException e)
+			catch (ArgumentException ex)
 			{
-				return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
 			catch (Exception e)
 			{
@@ -206,6 +210,10 @@ namespace VirtualWallet.Web.ApiControllers
 			{
 				return StatusCode(StatusCodes.Status400BadRequest, e.GetBaseException().Message);
 			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+			}
 			catch (Exception e)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -233,6 +241,10 @@ namespace VirtualWallet.Web.ApiControllers
 			catch (UnauthorizedOperationException e)
 			{
 				return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+			}
+			catch (ArgumentException ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 			}
 			catch (Exception e)
 			{
