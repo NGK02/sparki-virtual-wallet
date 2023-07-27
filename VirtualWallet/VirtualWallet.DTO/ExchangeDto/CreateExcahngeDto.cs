@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.Dto.ExchangeDto
+namespace VirtualWallet.Dto.CreateExcahngeDto
 {
-    public class ExcahngeDTO
+    public class CreateExcahngeDto
     {
         [Required]
         public string From { get; set; }

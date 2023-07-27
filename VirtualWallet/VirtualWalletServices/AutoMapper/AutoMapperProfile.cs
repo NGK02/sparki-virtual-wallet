@@ -12,6 +12,7 @@ using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.TransferDto;
+using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -44,6 +45,11 @@ namespace VirtualWallet.Business.AutoMapper
 			CreateMap<CreateTransferDto, Transfer>();
 			CreateMap<Transfer, GetTransferDto>()
 				.ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
+
+			CreateMap<Exchange, GetExchangeDto>()
+				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
+				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
+
 		}
 	}
 }
