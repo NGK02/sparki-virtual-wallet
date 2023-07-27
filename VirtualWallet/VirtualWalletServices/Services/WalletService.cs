@@ -22,7 +22,6 @@ namespace VirtualWallet.Business.Services
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
         private readonly ICurrencyService currencyService;
-        private readonly CurrencyExchangeService currencyExchangeService;
         private readonly IExchangeService exchangeService;
 
 
@@ -30,14 +29,12 @@ namespace VirtualWallet.Business.Services
             IUserService userService,
             IWalletRepository walletRepository,
             ICurrencyService currencyService,
-            CurrencyExchangeService currencyExchangeService,
             IExchangeService exchangeService)
         {
             this.authManager = authManager;
             this.userService = userService;
             this.walletRepository = walletRepository;
             this.currencyService = currencyService;
-            this.currencyExchangeService = currencyExchangeService;
             this.exchangeService = exchangeService;
         }
 
@@ -116,8 +113,8 @@ namespace VirtualWallet.Business.Services
             }
 
             fromBalance.Amount -= excahngeValues.Amount;
-            var exchangedAmount = await currencyExchangeService
-                .GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
+            var exchangedAmount = await exchangeService
+				.GetExchangeRateAndExchangedResult(excahngeValues.From,excahngeValues.To,excahngeValues.Amount.ToString());
 
             toBalance.Amount += exchangedAmount.Item2;
 
@@ -165,18 +162,19 @@ namespace VirtualWallet.Business.Services
 
         // do not call directly from controller!!
         // gets called from ExchangeFunds which is the public 'gateway'
-        public async Task<decimal> ExchangeCurrencyAsync(User user,CreateExcahngeDto excahngeValues)
-        {
-            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
-			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
+  //      public async Task<decimal> ExchangeCurrencyAsync(User user,CreateExcahngeDto excahngeValues)
+  //      {
+  //          var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
+		//	var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());
 
-            decimal rate = await currencyExchangeService.GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
+  //          decimal rate = await exchangeService
+  //              .GetExchangeRate(excahngeValues.From.ToUpper(), excahngeValues.To.ToUpper());
 
-            decimal newAmount = excahngeValues.Amount * rate;
+  //          decimal newAmount = excahngeValues.Amount * rate;
 
-            return newAmount;
+  //          return newAmount;
 
-		}
+		//}
 
         public Balance CreateWalletBalance(int walletId, int currencyId)
         {

@@ -26,7 +26,7 @@ namespace VirtualWallet.Business.Services.Contracts
 
         Balance CreateWalletBalance(int walletId, int currencyId);
 
-		Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
+		//Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
 
 	}
 }
