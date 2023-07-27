@@ -75,6 +75,10 @@ namespace VirtualWallet.DataAccess.Repositories
 		{
 			return GetUsersQuerable().FirstOrDefault(u => u.Email == email && u.IsDeleted == false);
 		}
+		public User GetUserByPhoneNumber(string phoneNumber)
+		{
+			return GetUsersQuerable().FirstOrDefault(u => u.PhoneNumber == phoneNumber && u.IsDeleted == false);
+		}
 
 		public int GetUsersCount()
 		{
