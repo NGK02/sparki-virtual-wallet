@@ -32,7 +32,7 @@ namespace VirtualWallet.DataAccess.Repositories
             return GetQueryableTransfers().ToList();
         }
 
-        public IEnumerable<Transfer> GetUserTransfers(int walletId)
+        public IEnumerable<Transfer> GetWalletTransfers(int walletId)
         {
             return GetQueryableTransfers().Where(t => t.WalletId == walletId).ToList();
         }
@@ -54,7 +54,6 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             transfer.DeletedOn = DateTime.Now;
             transfer.IsDeleted = true;
-
             walletDbContext.SaveChanges();
         }
     }

@@ -5,7 +5,6 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.Dto.TransferDto;
 
 namespace VirtualWallet.Web.ApiControllers
@@ -15,29 +14,31 @@ namespace VirtualWallet.Web.ApiControllers
     public class TransferApiController : ControllerBase
     {
         private readonly IAuthManager authManager;
-        private readonly ITransferService transferService;
         private readonly IMapper mapper;
+        private readonly ITransferService transferService;
 
-        public TransferApiController(IAuthManager authManager, ITransferService transferService, IMapper mapper)
+        public TransferApiController(IAuthManager authManager, IMapper mapper, ITransferService transferService)
         {
             this.authManager = authManager;
-            this.transferService = transferService;
             this.mapper = mapper;
+            this.transferService = transferService;
         }
 
         [HttpPost]
-        public IActionResult CreateTransfer([FromBody] CreateTransferDto createTransferDto, [FromHeader] string credentials, int userId)
+        public IActionResult AddTransfer([FromBody] CreateTransferDto createTransferDto, [FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAuthenticated(splitCredentials);
+
                 authManager.IsContentCreatorOrAdmin(user, userId);
-
 				var transfer = mapper.Map<Transfer>(createTransferDto);
-				transferService.AddTransfer(transfer, userId);
 
-                return StatusCode(201, transfer);
+				transferService.AddTransfer(userId, transfer);
+                var mappedTransfer = mapper.Map<GetTransferDto>(transfer);
+
+                return StatusCode(201, mappedTransfer);
             }
             catch (EntityNotFoundException ex)
             {
@@ -97,16 +98,16 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpGet("{transferId}")]
-        public IActionResult GetUserTransferById([FromHeader] string credentials, int transferId, int userId)
+        public IActionResult GetTransferById([FromHeader] string credentials, int transferId, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAuthenticated(splitCredentials);
-                authManager.IsContentCreatorOrAdmin(user, userId);
 
+                authManager.IsContentCreatorOrAdmin(user, userId);
                 var mappedTransfer = mapper.Map<GetTransferDto>(transferService.GetTransferById(transferId, userId));
-   
+
                 return Ok(mappedTransfer);
             }
             catch (EntityNotFoundException ex)

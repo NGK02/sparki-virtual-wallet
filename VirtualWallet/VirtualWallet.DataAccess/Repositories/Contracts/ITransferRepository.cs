@@ -11,7 +11,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
     {
         IEnumerable<Transfer> GetTransfers();
 
-        IEnumerable<Transfer> GetUserTransfers(int walletId);
+        IEnumerable<Transfer> GetWalletTransfers(int walletId);
 
         Transfer GetTransferById(int transferId);
 
