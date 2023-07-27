@@ -12,7 +12,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
-using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Dto.CreateExcahngeDto;
 
 namespace VirtualWallet.Business.Services
 {
@@ -83,7 +83,7 @@ namespace VirtualWallet.Business.Services
         // this does not count as a transaction!!
         // a transaction is user to user
         // this is a single user exchanging their funds - don't add transaction to db
-        public async Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId)
+        public async Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int walletId, int userId)
         {
             var wallet = GetWalletById(walletId, userId);
 
@@ -135,7 +135,7 @@ namespace VirtualWallet.Business.Services
                 Rate= exchangedAmount.Item1
 			};
             exchangeService.AddExchange(userId, exchange);
-            return wallet;
+            return exchange;
         }
 
         public void UpdateWallet(int userId, int walletId, Wallet wallet)
@@ -165,7 +165,7 @@ namespace VirtualWallet.Business.Services
 
         // do not call directly from controller!!
         // gets called from ExchangeFunds which is the public 'gateway'
-        public async Task<decimal> ExchangeCurrencyAsync(User user,ExcahngeDTO excahngeValues)
+        public async Task<decimal> ExchangeCurrencyAsync(User user,CreateExcahngeDto excahngeValues)
         {
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From.ToUpper());
 			var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To.ToUpper());

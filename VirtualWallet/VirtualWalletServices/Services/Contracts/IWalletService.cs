@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Dto.CreateExcahngeDto;
 
 namespace VirtualWallet.Business.Services.Contracts
 {
@@ -20,13 +20,13 @@ namespace VirtualWallet.Business.Services.Contracts
 
         void UpdateWallet(int userId, int walletId, Wallet wallet);
 
-        Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId);
+        Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int walletId, int userId);
 
         Wallet GetWalletById(int walletId, int userId);
 
         Balance CreateWalletBalance(int walletId, int currencyId);
 
-		Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues);
+		Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
 
 	}
 }
