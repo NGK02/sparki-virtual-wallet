@@ -39,13 +39,13 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPut("block")]
-		public IActionResult BlockUser([FromHeader] string credentials, [FromQuery] int? id, string username)
+		public IActionResult BlockUser([FromHeader] string credentials, [FromQuery] int? id, string username,string email,string phoneNumber)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
 				authManager.IsAdmin(splitCredentials);
-				adminService.BlockUser(id, username);
+				adminService.BlockUser(id, username,email,phoneNumber);
 				return Ok("User blocked successfully!");
 			}
 			catch (EntityNotFoundException e)
@@ -76,13 +76,13 @@ namespace VirtualWallet.Web.ApiControllers
 		}
 
 		[HttpPut("unblock")]
-		public IActionResult UnBlockUser(string credentials, [FromQuery] int? id, string username)
+		public IActionResult UnBlockUser(string credentials, [FromQuery] int? id, string username, string email, string phoneNumber)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
 				authManager.IsAdmin(splitCredentials);
-				adminService.UnBlockUser(id, username);
+				adminService.UnBlockUser(id, username, email, phoneNumber);
 				return Ok("User unblocked successfully!");
 			}
 			catch (EntityNotFoundException e)

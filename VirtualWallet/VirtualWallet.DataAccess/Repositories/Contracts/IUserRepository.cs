@@ -19,6 +19,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 		List<User> GetUsers();
 		User GetUserById(int userId);
 		User GetUserByUsername(string username);
+		User GetUserByPhoneNumber(string phoneNumber);
 		User GetUserByEmail(string email);
 		int GetUsersCount();
 
