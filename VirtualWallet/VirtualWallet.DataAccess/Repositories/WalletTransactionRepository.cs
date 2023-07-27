@@ -20,11 +20,11 @@ namespace VirtualWallet.DataAccess.Repositories
 			this.database = database;
 		}
 
-		public bool CreateTransaction(WalletTransaction walletTransaction)
+		public WalletTransaction CreateTransaction(WalletTransaction walletTransaction)
 		{
 			database.WalletTransactions.Add(walletTransaction);
 			database.SaveChanges();
-			return true;
+			return walletTransaction;
 		}
 
 		public bool CompleteTransaction(Balance senderBalance, Balance recipientBalance, decimal walletTransactionAmount)

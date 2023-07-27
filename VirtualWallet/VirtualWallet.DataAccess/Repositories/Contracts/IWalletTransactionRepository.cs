@@ -10,7 +10,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
 	public interface IWalletTransactionRepository
 	{
-		bool CreateTransaction(WalletTransaction walletTransaction);
+		WalletTransaction CreateTransaction(WalletTransaction walletTransaction);
 		bool CompleteTransaction(Balance senderBalance, Balance recipientBalance, decimal walletTransactionAmount);
 
 		WalletTransaction GetWalletTransactionById(int id);

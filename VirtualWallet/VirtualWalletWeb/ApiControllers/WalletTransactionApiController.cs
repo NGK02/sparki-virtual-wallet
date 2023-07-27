@@ -8,6 +8,7 @@ using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.DataAccess.QueryParameters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -32,12 +33,12 @@ namespace VirtualWallet.Web.ApiControllers
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string senderUsername = splitCredentials[0];
+				var sender = authManager.IsAuthenticated(splitCredentials);
+				authManager.IsAdminOrBlocked(sender);
 
-				var walletTransaction = mapper.Map<WalletTransaction>(transactionDto);
-				walletTransactionService.CreateTransaction(walletTransaction, senderUsername);
-				return StatusCode(StatusCodes.Status200OK, true);
+				var walletTransactionEntryData = mapper.Map<WalletTransaction>(transactionDto);
+				var walletTransactionDto = mapper.Map<GetWalletTransactionDto>(walletTransactionService.CreateTransaction(walletTransactionEntryData, sender));
+				return StatusCode(StatusCodes.Status200OK, walletTransactionDto);
 			}
 			//catch (ArgumentException)
 			//{
@@ -73,16 +74,16 @@ namespace VirtualWallet.Web.ApiControllers
 			}
 		}
 
-		[HttpGet("user")]
-		public IActionResult GetUserWalletTransactions([FromBody] WalletTransactionQueryParameters queryParameters, [FromHeader] string credentials)
+		[HttpGet("users/{userId}")]
+		public IActionResult GetUserWalletTransactions([FromQuery] WalletTransactionQueryParameters queryParameters, [FromHeader] string credentials, int userId)
 		{
 			try
 			{
 				var splitCredentials = authManager.SplitCredentials(credentials);
-				authManager.IsAuthenticated(splitCredentials);
-				string username = splitCredentials[0];
+				var user = authManager.IsAuthenticated(splitCredentials);
+				authManager.IsContentCreatorOrAdmin(user, userId);
 
-				var walletTransactions = walletTransactionService.GetUserWalletTransactions(queryParameters, username);
+				var walletTransactions = walletTransactionService.GetUserWalletTransactions(queryParameters, userId);
 				var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
 				return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
 			}
@@ -110,7 +111,7 @@ namespace VirtualWallet.Web.ApiControllers
 
 		
 
-		[HttpGet("{id}")]
+		[HttpGet("{transactionId}")]
 		public IActionResult GetWalletTransactionById(int id, [FromHeader] string credentials)
 		{
 			try

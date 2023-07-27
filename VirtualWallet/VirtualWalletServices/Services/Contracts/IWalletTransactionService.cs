@@ -10,10 +10,10 @@ namespace VirtualWallet.Business.Services.Contracts
 {
 	public interface IWalletTransactionService
 	{
-		bool CreateTransaction(WalletTransaction walletTransaction, string senderUsername);
+		WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender);
 
 		WalletTransaction GetWalletTransactionById(int id, string username);
-		List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username);
-		List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters, string username);
+		List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, int userId);
+		List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters);
 	}
 }
