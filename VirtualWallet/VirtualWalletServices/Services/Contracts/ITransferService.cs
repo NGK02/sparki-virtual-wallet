@@ -15,8 +15,8 @@ namespace VirtualWallet.Business.Services.Contracts
 
         Transfer GetTransferById(int transferId, int userId);
 
-        void CreateTransfer(int userId, Transfer transfer);
+        void AddTransfer(Transfer transfer, int userId);
 
-        void DeleteTransfer(int transferId, int userId);
+		void DeleteTransfer(int transferId, int userId);
     }
 }

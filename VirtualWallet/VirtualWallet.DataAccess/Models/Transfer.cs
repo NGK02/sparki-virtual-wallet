@@ -9,18 +9,18 @@ namespace VirtualWallet.DataAccess.Models
 {
     public class Transfer : Entity
     {
-		public int Id { get; set; }
-		public bool IsCardRecipient => !IsCardSender;
+        public int Id { get; set; }
 
-        public bool IsCardSender { get; set; }
+        [Required]
+        public bool HasCardSender { get; set; }
 
 		[Required]
 		public int CardId { get; set; }
-		public Card Card { get; set; }
+        public Card Card { get; set; }
 
-		[Required]
-		public int CurrencyId { get; set; }
-		public Currency Currency { get; set; }
+        [Required]
+        public int CurrencyId { get; set; }
+        public Currency Currency { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
@@ -28,7 +28,6 @@ namespace VirtualWallet.DataAccess.Models
 
         [Required]
         public int WalletId { get; set; }
-
         public Wallet Wallet { get; set; }
     }
 }

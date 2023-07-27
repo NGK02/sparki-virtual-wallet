@@ -42,7 +42,7 @@ namespace VirtualWallet.DataAccess.Repositories
             return GetQueryableTransfers().SingleOrDefault(t => t.Id == transferId);
         }
 
-        public void AddTransfer(Transfer transfer)
+		public void AddTransfer(Transfer transfer)
         {
             transfer.CreatedOn = DateTime.Now;
             walletDbContext.Transfers.Add(transfer);

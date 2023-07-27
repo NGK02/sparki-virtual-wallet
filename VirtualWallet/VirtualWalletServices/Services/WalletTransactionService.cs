@@ -17,15 +17,15 @@ namespace VirtualWallet.Business.Services
 	{
 		private readonly IWalletTransactionRepository walletTransactionRepo;
 		private readonly IUserService userService;
-		private readonly IUserRepository userRepository;
+		private readonly IWalletService walletService;
 		private readonly IAuthManager authManager;
 
-		public WalletTransactionService(IWalletTransactionRepository walletTransactionRepo, IUserService userService, IAuthManager authManager, IUserRepository userRepository)
+		public WalletTransactionService(IWalletTransactionRepository walletTransactionRepo, IUserService userService, IAuthManager authManager, IWalletService walletService)
 		{ 
 			this.walletTransactionRepo = walletTransactionRepo;
 			this.userService = userService;
 			this.authManager = authManager;
-			this.userRepository = userRepository;
+			this.walletService = walletService;
 		}
 
 		public bool CreateTransaction(WalletTransaction walletTransaction, string senderUsername)
@@ -51,7 +51,7 @@ namespace VirtualWallet.Business.Services
 			var recipientBalance = walletTransaction.Recipient.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
 			if (recipientBalance is null)
 			{
-				recipientBalance = userRepository.CreateUserBalance(walletTransaction.Recipient.WalletId, walletTransaction.CurrencyId);
+				recipientBalance = walletService.CreateWalletBalance(walletTransaction.Recipient.WalletId, walletTransaction.CurrencyId);
 			}
 			return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
 		}

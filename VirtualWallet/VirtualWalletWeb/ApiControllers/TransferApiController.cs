@@ -35,7 +35,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(user, userId);
 
 				var transfer = mapper.Map<Transfer>(createTransferDto);
-				transferService.CreateTransfer(userId, transfer);
+				transferService.AddTransfer(transfer, userId);
 
                 return StatusCode(201, transfer);
             }
@@ -72,7 +72,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 transferService.DeleteTransfer(transferId, userId);
 
-                return NoContent();
+                return Ok("Transfer deleted successfully.");
             }
             catch (EntityNotFoundException ex)
             {

@@ -164,14 +164,6 @@ namespace VirtualWallet.DataAccess.Repositories
 			return users;
 		}
 
-		public Balance CreateUserBalance(int walletId, int currencyId)
-		{
-			var balance = new Balance { WalletId = walletId, CurrencyId = currencyId };
-			database.Balances.Add(balance);
-			database.SaveChanges();
-			return balance;
-		}
-
 		public bool BlockUser(User user)
 		{
 			user.RoleId = (int)RoleName.Blocked;

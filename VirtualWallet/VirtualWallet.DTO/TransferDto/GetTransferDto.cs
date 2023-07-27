@@ -10,7 +10,7 @@ namespace VirtualWallet.Dto.TransferDto
 	{
 		public int WalletId { get; set; }
 
-		public bool IsCardSender { get; set; }
+		public bool HasCardSender { get; set; }
 
 		public int CardId { get; set; }
 

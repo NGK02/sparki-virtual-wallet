@@ -19,31 +19,25 @@ namespace VirtualWallet.Business.Services
     public class WalletService : IWalletService
     {
         private readonly IAuthManager authManager;
-        private readonly ITransferService transferService;
         private readonly IUserService userService;
         private readonly IWalletRepository walletRepository;
         private readonly ICurrencyService currencyService;
         private readonly CurrencyExchangeService currencyExchangeService;
-        private readonly IWalletTransactionService walletTransactionService;
         private readonly IExchangeService exchangeService;
 
 
 		public WalletService(IAuthManager authManager,
-            ITransferService transferService,
             IUserService userService,
             IWalletRepository walletRepository,
             ICurrencyService currencyService,
             CurrencyExchangeService currencyExchangeService,
-            IWalletTransactionService walletTransactionService,
             IExchangeService exchangeService)
         {
             this.authManager = authManager;
-            this.transferService = transferService;
             this.userService = userService;
             this.walletRepository = walletRepository;
             this.currencyService = currencyService;
             this.currencyExchangeService = currencyExchangeService;
-            this.walletTransactionService = walletTransactionService;
             this.exchangeService = exchangeService;
         }
 
@@ -80,58 +74,11 @@ namespace VirtualWallet.Business.Services
             walletRepository.AddWallet(wallet);
         }
 
-        public void AddWalletDeposit(int userId, Transfer walletDeposit)
+        public void DeleteWallet(int walletId, int userId)
         {
-            var wallet = GetWalletById(walletDeposit.WalletId, userId);
-
-            var depositBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletDeposit.CurrencyId);
-
-            if (depositBalance == null)
-            {
-                depositBalance = new Balance { CurrencyId = walletDeposit.CurrencyId };
-                wallet.Balances.Add(depositBalance);
-            }
-
-            depositBalance.Amount += walletDeposit.Amount;
-            UpdateWallet(walletDeposit.WalletId, userId, wallet);
-            walletDeposit.IsCardSender = true;
-
-            transferService.CreateTransfer(userId, walletDeposit);
+            var walletToDelete = GetWalletById(walletId, userId);
+            //walletRepository.DeleteWallet(walletToDelete);
         }
-
-        public void AddWalletWithdrawal(int userId, Transfer walletWithdrawal)
-        {
-            var wallet = GetWalletById(walletWithdrawal.WalletId, userId);
-            var withdrawalBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == walletWithdrawal.CurrencyId);
-
-            if (withdrawalBalance == null)
-            {
-                withdrawalBalance = new Balance { CurrencyId = walletWithdrawal.CurrencyId };
-
-                wallet.Balances.Add(withdrawalBalance);
-            }
-
-            decimal amountToWithdraw = walletWithdrawal.Amount;
-            decimal availableBalance = withdrawalBalance.Amount;
-
-            if (amountToWithdraw > availableBalance)
-            {
-                throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {withdrawalBalance.Currency.Code}");
-            }
-
-            withdrawalBalance.Amount -= walletWithdrawal.Amount;
-
-            UpdateWallet(walletWithdrawal.WalletId, userId, wallet);
-            walletWithdrawal.IsCardSender = false;
-
-            transferService.CreateTransfer(userId, walletWithdrawal);
-        }
-
-        //public void DeleteWallet(int walletId, int userId)
-        //{
-        //    var walletToDelete = GetWalletById(walletId, userId);
-        //    walletRepository.DeleteWallet(walletToDelete);
-        //}
 
         // this does not count as a transaction!!
         // a transaction is user to user
@@ -191,7 +138,7 @@ namespace VirtualWallet.Business.Services
             return wallet;
         }
 
-        public void UpdateWallet(int walletId, int userId, Wallet wallet)
+        public void UpdateWallet(int userId, int walletId, Wallet wallet)
         {
             var walletToUpdate = GetWalletById(walletId, userId);
             walletRepository.UpdateWallet(wallet, walletToUpdate);
@@ -230,5 +177,10 @@ namespace VirtualWallet.Business.Services
             return newAmount;
 
 		}
+
+        public Balance CreateWalletBalance(int walletId, int currencyId)
+        {
+            return walletRepository.CreateWalletBalance(walletId, currencyId);
+        }
 	}
 }

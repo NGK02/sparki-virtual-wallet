@@ -83,7 +83,7 @@ namespace VirtualWallet.Web.ApiControllers
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 cardService.DeleteCard(cardId, userId);
-                return Ok("Card Deleted Successful!");
+                return Ok("Card deleted successfully.");
             }
             catch (EntityNotFoundException ex)
             {

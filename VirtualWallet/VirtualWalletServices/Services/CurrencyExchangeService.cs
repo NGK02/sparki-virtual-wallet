@@ -39,7 +39,7 @@ namespace VirtualWallet.Business.Services
 		/// <summary>
 		/// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
 		/// </summary>
-		public async Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to,string amount)
+		public async Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to, string amount)
 		{//В документацията пише ,че може да хрърли ексепшън!
 			using (var client = new HttpClient())
 			{

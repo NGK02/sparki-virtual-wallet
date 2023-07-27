@@ -18,5 +18,5 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
         void AddTransfer(Transfer transfer);
 
         void DeleteTransfer(Transfer transfer);
-    }
+	}
 }

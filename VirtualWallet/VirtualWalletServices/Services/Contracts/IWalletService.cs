@@ -14,17 +14,19 @@ namespace VirtualWallet.Business.Services.Contracts
 
         void AddWallet(int userId, Wallet wallet);
 
-        void AddWalletDeposit(int userId, Transfer walletDeposit);
+        //void AddWalletDeposit(int userId, Transfer walletDeposit);
 
-        void AddWalletWithdrawal(int userId, Transfer walletWithdrawal);
+        //void AddWalletWithdrawal(int userId, Transfer walletWithdrawal);
 
-        void UpdateWallet(int walletId, int userId, Wallet wallet);
+        void UpdateWallet(int userId, int walletId, Wallet wallet);
 
         Task<Wallet> ExchangeFunds(ExcahngeDTO excahngeValues, int walletId, int userId);
 
         Wallet GetWalletById(int walletId, int userId);
 
-		//Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues);
+        Balance CreateWalletBalance(int walletId, int currencyId);
+
+		Task<decimal> ExchangeCurrencyAsync(User user, ExcahngeDTO excahngeValues);
 
 	}
 }

@@ -23,14 +23,13 @@ namespace VirtualWallet.DataAccess.Repositories
             return walletDbContext.Wallets.Any(w => !w.IsDeleted && userId == w.UserId);
         }
 
-        public IEnumerable<Wallet> GetWallets()
+        private IQueryable<Wallet> GetWalletsQueryable()
         {
             return walletDbContext.Wallets
                 .Where(w => !w.IsDeleted)
                 .Include(w => w.Balances)
                 .Include(w => w.Transfers)
-                .Include(w => w.User)
-                .ToList();
+                .Include(w => w.User);
         }
 
         public void AddWallet(Wallet wallet)
@@ -57,11 +56,20 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public Wallet GetWalletById(int walletId)
         {
-            return walletDbContext.Wallets
-                .Include(w => w.Balances)
-                .Include(w => w.Transfers)
-                .Include(w => w.User)
-                .SingleOrDefault(w => !w.IsDeleted && w.Id == walletId);
+            return GetWalletsQueryable().FirstOrDefault(w => w.Id == walletId);
         }
-    }
+
+		public IEnumerable<Wallet> GetWallets()
+		{
+			return GetWalletsQueryable().ToList();
+		}
+
+		public Balance CreateWalletBalance(int walletId, int currencyId)
+		{
+			var balance = new Balance { WalletId = walletId, CurrencyId = currencyId };
+			walletDbContext.Balances.Add(balance);
+			walletDbContext.SaveChanges();
+			return balance;
+		}
+	}
 }
