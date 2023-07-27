@@ -9,7 +9,6 @@ using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
-using VirtualWallet.Dto.CardDto;
 
 namespace VirtualWallet.Business.Services
 {
@@ -24,7 +23,7 @@ namespace VirtualWallet.Business.Services
 
         public Currency GetCurrencyByCode(string currencyCode)
         {
-            if (!Enum.TryParse<CurrencyCode>(currencyCode, out var code))
+            if (!Enum.TryParse<CurrencyCode>(currencyCode.ToUpper(), out var code))
             {
                 throw new ArgumentException("Invalid currency code.");
             }

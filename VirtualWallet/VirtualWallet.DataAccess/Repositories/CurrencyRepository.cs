@@ -19,14 +19,19 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
+        private IQueryable<Currency> GetQueryableCurrencies()
+        {
+            return walletDbContext.Currencies.Include(c => c.Exchanges);
+        }
+
         public Currency GetCurrencyByCode(CurrencyCode currencyCode)
         {
-            return walletDbContext.Currencies.SingleOrDefault(c => c.Code == currencyCode);
+            return GetQueryableCurrencies().SingleOrDefault(c => c.Code == currencyCode);
         }
 
         public Currency GetCurrencyById(int currencyId)
         {
-            return walletDbContext.Currencies.SingleOrDefault(c => c.Id == currencyId);
+            return GetQueryableCurrencies().SingleOrDefault(c => c.Id == currencyId);
         }
     }
 }
