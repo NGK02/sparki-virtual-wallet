@@ -10,13 +10,15 @@ namespace VirtualWallet.Business.Services
 	public class TransferService : ITransferService
 	{
 		private readonly IAuthManager authManager;
+		private readonly ICurrencyService currencyService;
 		private readonly ITransferRepository transferRepository;
 		private readonly IUserService userService;
 		private readonly IWalletService walletService;
 
-		public TransferService(IAuthManager authManager, ITransferRepository transferRepository, IUserService userService, IWalletService walletService)
+		public TransferService(IAuthManager authManager, ICurrencyService currencyService, ITransferRepository transferRepository, IUserService userService, IWalletService walletService)
 		{
 			this.authManager = authManager;
+			this.currencyService = currencyService;
 			this.transferRepository = transferRepository;
 			this.userService = userService;
 			this.walletService = walletService;
@@ -29,10 +31,11 @@ namespace VirtualWallet.Business.Services
                 var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
                 var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+                var currency = currencyService.GetCurrencyById(transfer.CurrencyId);
 
                 if (balance == null)
                 {
-                    throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{transfer.Currency.Code}'.");
+                    throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{currency.Code}'.");
                 }
 
                 decimal amountToWithdraw = transfer.Amount;
