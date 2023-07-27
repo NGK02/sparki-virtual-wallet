@@ -77,7 +77,7 @@ namespace VirtualWallet.Business.Services
             return transfer;
         }
 
-        public void AddTransfer(int userId, Transfer transfer)
+        public void CreateTransfer(int userId, Transfer transfer)
         {
             var user = userService.GetUserById(userId);
 

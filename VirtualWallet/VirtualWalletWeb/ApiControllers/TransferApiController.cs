@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.Dto.TransactionDto;
 using VirtualWallet.Dto.TransferDto;
 
 namespace VirtualWallet.Web.ApiControllers
@@ -13,48 +15,27 @@ namespace VirtualWallet.Web.ApiControllers
     public class TransferApiController : ControllerBase
     {
         private readonly IAuthManager authManager;
-        private readonly ICardService cardService;
-        private readonly ICurrencyService currencyService;
         private readonly ITransferService transferService;
-        private readonly IWalletService walletService;
+        private readonly IMapper mapper;
 
-        public TransferApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService, ITransferService transferService, IWalletService walletService)
+        public TransferApiController(IAuthManager authManager, ITransferService transferService, IMapper mapper)
         {
             this.authManager = authManager;
-            this.cardService = cardService;
-            this.currencyService = currencyService;
             this.transferService = transferService;
-            this.walletService = walletService;
+            this.mapper = mapper;
         }
 
         [HttpPost]
-        public IActionResult AddTransfer([FromBody] CreateTransferDto transferInfoDto, [FromHeader] string credentials, int userId)
+        public IActionResult CreateTransfer([FromBody] CreateTransferDto createTransferDto, [FromHeader] string credentials, int userId)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAuthenticated(splitCredentials);
-
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var card = cardService.GetCardById(transferInfoDto.CardId, userId);
-                var currency = currencyService.GetCurrencyById(transferInfoDto.CurrencyId);
-                var wallet = walletService.GetWalletById(transferInfoDto.WalletId, userId);
 
-                var transfer = new Transfer
-                {
-                    Amount = transferInfoDto.Amount,
-                    Card = card,
-                    CardId = transferInfoDto.CardId,
-                    Currency = currency,
-                    CurrencyId = transferInfoDto.CurrencyId,
-                    Wallet = wallet,
-                    WalletId = transferInfoDto.WalletId
-                };
-
-                card.Transfers.Add(transfer);
-                wallet.Transfers.Add(transfer);
-
-                transferService.AddTransfer(userId, transfer);
+				var transfer = mapper.Map<Transfer>(createTransferDto);
+				transferService.CreateTransfer(userId, transfer);
 
                 return StatusCode(201, transfer);
             }
@@ -122,11 +103,11 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAuthenticated(splitCredentials);
-
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var transfer = transferService.GetTransferById(transferId, userId);
 
-                return Ok(transfer);
+                var mappedTransfer = mapper.Map<GetTransferDto>(transferService.GetTransferById(transferId, userId));
+   
+                return Ok(mappedTransfer);
             }
             catch (EntityNotFoundException ex)
             {
@@ -159,9 +140,9 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var transfers = transferService.GetUserTransfers(userId);
+                var mappedTransfers = transferService.GetUserTransfers(userId).Select(t => mapper.Map<GetTransferDto>(t)).ToList();
 
-                return Ok(transfers);
+                return Ok(mappedTransfers);
             }
             catch (EntityNotFoundException ex)
             {

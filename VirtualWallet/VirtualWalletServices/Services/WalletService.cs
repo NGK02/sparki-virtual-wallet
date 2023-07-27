@@ -96,7 +96,7 @@ namespace VirtualWallet.Business.Services
             UpdateWallet(walletDeposit.WalletId, userId, wallet);
             walletDeposit.IsCardSender = true;
 
-            transferService.AddTransfer(userId, walletDeposit);
+            transferService.CreateTransfer(userId, walletDeposit);
         }
 
         public void AddWalletWithdrawal(int userId, Transfer walletWithdrawal)
@@ -124,7 +124,7 @@ namespace VirtualWallet.Business.Services
             UpdateWallet(walletWithdrawal.WalletId, userId, wallet);
             walletWithdrawal.IsCardSender = false;
 
-            transferService.AddTransfer(userId, walletWithdrawal);
+            transferService.CreateTransfer(userId, walletWithdrawal);
         }
 
         //public void DeleteWallet(int walletId, int userId)
