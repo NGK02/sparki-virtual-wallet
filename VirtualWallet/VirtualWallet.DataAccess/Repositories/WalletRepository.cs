@@ -18,12 +18,7 @@ namespace VirtualWallet.DataAccess.Repositories
             this.walletDbContext = walletDbContext;
         }
 
-        public bool WalletOwnerExists(int userId)
-        {
-            return walletDbContext.Wallets.Any(w => !w.IsDeleted && userId == w.UserId);
-        }
-
-        private IQueryable<Wallet> GetWalletsQueryable()
+        private IQueryable<Wallet> GetQueryableWallets()
         {
             return walletDbContext.Wallets
                 .Where(w => !w.IsDeleted)
@@ -32,44 +27,23 @@ namespace VirtualWallet.DataAccess.Repositories
                 .Include(w => w.User);
         }
 
-        public void AddWallet(Wallet wallet)
+        public Balance CreateWalletBalance(int currencyId, int walletId)
         {
-            wallet.CreatedOn = DateTime.Now;
-            walletDbContext.Wallets.Add(wallet);
-
+            var balance = new Balance { CurrencyId = currencyId, WalletId = walletId };
+            walletDbContext.Balances.Add(balance);
             walletDbContext.SaveChanges();
+
+            return balance;
         }
 
-        //public void DeleteWallet(Wallet wallet)
-        //{
-        //    wallet.DeletedOn = DateTime.Now;
-        //    wallet.IsDeleted = true;
-        //    walletDbContext.SaveChanges();
-        //}
-
-        public void UpdateWallet(Wallet wallet, Wallet walletToUpdate)
+        public IEnumerable<Wallet> GetWallets()
         {
-            walletToUpdate.Balances = wallet.Balances;
-
-            walletDbContext.SaveChanges();
+            return GetQueryableWallets().ToList();
         }
 
         public Wallet GetWalletById(int walletId)
         {
-            return GetWalletsQueryable().FirstOrDefault(w => w.Id == walletId);
+            return GetQueryableWallets().FirstOrDefault(w => w.Id == walletId);
         }
-
-		public IEnumerable<Wallet> GetWallets()
-		{
-			return GetWalletsQueryable().ToList();
-		}
-
-		public Balance CreateWalletBalance(int walletId, int currencyId)
-		{
-			var balance = new Balance { WalletId = walletId, CurrencyId = currencyId };
-			walletDbContext.Balances.Add(balance);
-			walletDbContext.SaveChanges();
-			return balance;
-		}
 	}
 }

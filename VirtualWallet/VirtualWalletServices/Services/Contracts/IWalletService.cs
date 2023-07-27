@@ -10,23 +10,14 @@ namespace VirtualWallet.Business.Services.Contracts
 {
     public interface IWalletService
     {
+        Balance CreateWalletBalance(int currencyId, int walletId);
+
         IEnumerable<Wallet> GetWallets(int userId);
 
-        void AddWallet(int userId, Wallet wallet);
+        // Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
 
-        //void AddWalletDeposit(int userId, Transfer walletDeposit);
+        Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId);
 
-        //void AddWalletWithdrawal(int userId, Transfer walletWithdrawal);
-
-        void UpdateWallet(int userId, int walletId, Wallet wallet);
-
-        Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int walletId, int userId);
-
-        Wallet GetWalletById(int walletId, int userId);
-
-        Balance CreateWalletBalance(int walletId, int currencyId);
-
-		//Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
-
+        Wallet GetWalletById(int userId, int walletId);
 	}
 }
