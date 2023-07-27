@@ -10,6 +10,7 @@ using VirtualWallet.Business.AuthManager;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.Business.Exceptions;
+using System.Transactions;
 
 namespace VirtualWallet.Business.Services
 {
@@ -28,19 +29,14 @@ namespace VirtualWallet.Business.Services
 			this.walletService = walletService;
 		}
 
-		public bool CreateTransaction(WalletTransaction walletTransaction, string senderUsername)
+		public WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender)
 		{
-			var sender = userService.GetUserByUsername(senderUsername);
-			if (authManager.IsBlocked(sender) || authManager.IsAdmin(sender))
-			{
-				throw new UnauthorizedAccessException("You can't make transactions!");
-			}
 			walletTransaction.Sender = sender;
 			PrepareTransaction(walletTransaction);
 			return walletTransactionRepo.CreateTransaction(walletTransaction);
 		}
 
-		public bool PrepareTransaction(WalletTransaction walletTransaction)
+		private void PrepareTransaction(WalletTransaction walletTransaction)
 		{
 			var senderBalance = walletTransaction.Sender.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
 			if (senderBalance is null || senderBalance.Amount < walletTransaction.Amount)
@@ -48,18 +44,20 @@ namespace VirtualWallet.Business.Services
 				//Custom exception here?
 				throw new InvalidOperationException("You don't have sufficient funds!");
 			}
-			var recipientBalance = walletTransaction.Recipient.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
+			var recipient = userService.GetUserById(walletTransaction.RecipientId);
+			var recipientBalance = recipient.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
 			if (recipientBalance is null)
 			{
-				recipientBalance = walletService.CreateWalletBalance(walletTransaction.Recipient.WalletId, walletTransaction.CurrencyId);
+				recipientBalance = walletService.CreateWalletBalance(recipient.WalletId, walletTransaction.CurrencyId);
 			}
-			return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
+			walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
 		}
 
 		public WalletTransaction GetWalletTransactionById(int id, string username) 
 		{
 			var user = userService.GetUserByUsername(username);
 			var walletTransaction = walletTransactionRepo.GetWalletTransactionById(id);
+
 			if (walletTransaction is null)
 			{
 				throw new EntityNotFoundException("Transaction doesn't exist!");
@@ -72,16 +70,13 @@ namespace VirtualWallet.Business.Services
 			return walletTransaction;
 		}
 
-		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		public List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, int userId)
 		{
-			var user = userService.GetUserByUsername(username);
-			return walletTransactionRepo.GetUserWalletTransactions(queryParameters, user.Id);
+			return walletTransactionRepo.GetUserWalletTransactions(queryParameters, userId);
 		}
 
-		public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters, string username)
+		public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters)
 		{
-			var user = userService.GetUserByUsername(username);
-			authManager.IsAdmin(user);
 			return walletTransactionRepo.GetWalletTransactions(queryParameters);
 		}
 	}

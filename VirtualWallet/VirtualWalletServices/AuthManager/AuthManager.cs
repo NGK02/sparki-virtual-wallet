@@ -45,6 +45,15 @@ namespace VirtualWallet.Business.AuthManager
 			return true;
 		}
 
+		public bool IsAdminOrBlocked(User user)
+		{
+			if (IsBlocked(user) || IsAdmin(user))
+			{
+				throw new UnauthorizedAccessException("You can't make transactions!");
+			}
+			return false;
+		}
+
 		public User IsAdmin(string[] splitCredentials)
 		{
 			var user = IsAuthenticated(splitCredentials);

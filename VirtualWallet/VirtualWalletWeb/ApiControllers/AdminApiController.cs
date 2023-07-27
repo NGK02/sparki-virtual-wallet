@@ -190,7 +190,7 @@ namespace VirtualWallet.Web.ApiControllers
 				authManager.IsAdmin(splitCredentials);
 				string username = splitCredentials[0];
 
-				var walletTransactions = walletTransactionService.GetWalletTransactions(queryParameters, username);
+				var walletTransactions = walletTransactionService.GetWalletTransactions(queryParameters);
 				var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
 				return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
 			}

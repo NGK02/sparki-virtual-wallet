@@ -11,15 +11,13 @@ namespace VirtualWallet.Dto.TransactionDto
 {
 	public class CreateWalletTransactionDto
 	{
-	//TODO В ПДФ пише да може да се ипращат пари username,email and phonenumber
 		[Required]
-		public string RecipientUsername { get; set; }
+		public int RecipientId { get; set; }
 
 		[Required]
-		public string CurrencyCode { get; set; }
+		public int CurrencyId { get; set; }
 
-		//Transaction limit? Equated to USD?
 		[Required]
-		public string Amount { get; set; }
+		public decimal Amount { get; set; }
 	}
 }
