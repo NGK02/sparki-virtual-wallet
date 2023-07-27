@@ -22,48 +22,52 @@ namespace VirtualWallet.Business.Services
 			this.walletService = walletService;
 		}
 
-		private void TransferFromWallet(Transfer transfer, int userId)
+		private void TransferFromWallet(int userId, Transfer transfer)
 		{
-			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
-			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+            using (TransactionScope transactionScope = new TransactionScope())
+            {
+                var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
-			if (balance == null)
-			{
-				throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{transfer.Currency.Code}'.");
-			}
+                var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 
-			decimal amountToWithdraw = transfer.Amount;
-			decimal availableBalance = balance.Amount;
+                if (balance == null)
+                {
+                    throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{transfer.Currency.Code}'.");
+                }
 
-			if (amountToWithdraw > availableBalance)
-			{
-				throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {balance.Currency.Code}.");
-			}
+                decimal amountToWithdraw = transfer.Amount;
+                decimal availableBalance = balance.Amount;
 
-			balance.Amount -= transfer.Amount;
-			transferRepository.AddTransfer(transfer);
+                if (amountToWithdraw > availableBalance)
+                {
+                    throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {balance.Currency.Code}.");
+                }
+
+                balance.Amount -= transfer.Amount;
+                transferRepository.AddTransfer(transfer);
+
+                transactionScope.Complete();
+            }
 		}
 
-		private void TransferToWallet(Transfer transfer, int userId)
+		private void TransferToWallet(int userId, Transfer transfer)
 		{
-			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
-			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+            using (TransactionScope transactionScope = new TransactionScope())
+            {
+                var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
-			if (balance == null)
-			{
-				balance = walletService.CreateWalletBalance(wallet.Id, transfer.CurrencyId);
-			}
+                var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 
-			using (TransactionScope transactionScope = new TransactionScope())
-			{
-				balance.Amount += transfer.Amount;
-				transferRepository.AddTransfer(transfer);
-				transactionScope.Complete();
-				//catch (OverflowException)
-				//{
-				//	throw new InvalidOperationException("Too much money?");
-				//}
-			}
+                if (balance == null)
+                {
+                    balance = walletService.CreateWalletBalance(wallet.Id, transfer.CurrencyId);
+                }
+
+                balance.Amount += transfer.Amount;
+                transferRepository.AddTransfer(transfer);
+
+                transactionScope.Complete();
+            }
 		}
 
 		public IEnumerable<Transfer> GetTransfers(int userId)
@@ -89,7 +93,7 @@ namespace VirtualWallet.Business.Services
 		{
 			var user = userService.GetUserById(userId);
 
-			var transfers = transferRepository.GetUserTransfers(user.WalletId);
+			var transfers = transferRepository.GetWalletTransfers(user.WalletId);
 
 			if (!transfers.Any() || transfers == null)
 			{
@@ -118,15 +122,15 @@ namespace VirtualWallet.Business.Services
 			return transfer;
 		}
 
-		public void AddTransfer(Transfer transfer, int userId)
+		public void AddTransfer(int userId, Transfer transfer)
 		{
 			if (transfer.HasCardSender)
 			{
-				TransferToWallet(transfer, userId);
+				TransferToWallet(userId, transfer);
 			}
 			else
 			{
-				TransferFromWallet(transfer, userId);
+				TransferFromWallet(userId, transfer);
 			}
 		}
 
