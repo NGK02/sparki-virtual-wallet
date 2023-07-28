@@ -79,5 +79,10 @@ namespace VirtualWallet.Business.Services
 		{
 			return walletTransactionRepo.GetWalletTransactions(queryParameters);
 		}
-	}
+
+        public int GetTransactionsCount()
+        {
+            return walletTransactionRepo.GetTransactionsCount();
+        }
+    }
 }
