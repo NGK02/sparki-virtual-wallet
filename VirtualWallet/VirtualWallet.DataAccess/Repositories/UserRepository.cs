@@ -82,7 +82,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public int GetUsersCount()
 		{
-			throw new NotImplementedException();
+			return database.Users.Where(u => u.IsDeleted == false).Count();
 		}
 
 		public User UpdateUser(string userName, User userNewValues)

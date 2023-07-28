@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewControllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

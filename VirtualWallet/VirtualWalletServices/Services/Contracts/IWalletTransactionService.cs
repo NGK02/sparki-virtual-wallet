@@ -10,6 +10,7 @@ namespace VirtualWallet.Business.Services.Contracts
 {
 	public interface IWalletTransactionService
 	{
+		int GetTransactionsCount();
 		WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender);
 
 		WalletTransaction GetWalletTransactionById(int id, string username);

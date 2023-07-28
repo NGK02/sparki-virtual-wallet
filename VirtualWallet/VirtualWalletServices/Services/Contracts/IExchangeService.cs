@@ -13,7 +13,14 @@ namespace VirtualWallet.Business.Services.Contracts
 
 		IEnumerable<Exchange> GetUserExchanges(int userId);
 
-		Task<decimal> GetExchangeRate(string from, string to);
-		Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to, string amount);
+        /// <summary>
+        /// Retruns conversion rate.
+        /// </summary>
+        Task<decimal> GetExchangeRate(string from, string to);
+
+        /// <summary>
+        /// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
+        /// </summary>
+        Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to, string amount);
 	}
 }

@@ -62,7 +62,7 @@ namespace VirtualWallet.Business.Services
 
 		public int GetUsersCount()
 		{
-			throw new NotImplementedException();
+			return userRepo.GetUsersCount();
 		}
 
 		public List<User> GetUsers()
