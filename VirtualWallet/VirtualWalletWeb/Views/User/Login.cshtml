@@ -1,0 +1,37 @@
+﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.Login
+
+
+<div >
+	<div >Welcome back</div>
+	<div >Please enter your Username and password.</div>
+
+	<form  asp-controller="User" asp-action="Login" method="post">
+
+		<div>
+			@if (this.ViewData["ErrorMessage"] is not null)
+			{
+				<p>@this.ViewData["ErrorMessage"]</p>
+			}
+		</div>
+
+		<div >
+			<input asp-for="Username"  type="text" placeholder=" " />
+			<span asp-validation-for="Username" ></span><br>
+			<div ></div>
+			<label asp-for="Username" >Username</label>
+		</div>
+
+		<div >
+			<input asp-for="Password"  type="password" placeholder=" " />
+			<span asp-validation-for="Password" ></span><br>
+			<div ></div>
+			<label asp-for="Password" >Password</label>
+		</div>
+
+		<form asp-controller="User" asp-action="Login" method="post">
+			<div >
+				<button type="submit" >Login</button>
+			</div>
+		</form>
+	</form>
+</div>
