@@ -21,7 +21,7 @@ namespace VirtualWallet.Dto.UserDto
 		[Required]
 		[MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
 		[MaxLength(20, ErrorMessage = "The {0} must be no more than {1} characters long.")]
-		public string UserName { get; set; }
+		public string Username { get; set; }
 
 		[Required]
 		[EmailAddress(ErrorMessage = "Invalid {0}!")]
