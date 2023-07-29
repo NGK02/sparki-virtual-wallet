@@ -1,53 +1,59 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparki</title>
-    <link href="~/main.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sparki</title>
+	<link href="~/main.css" rel="stylesheet" />
+	<script>
+		// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+		if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+	</script>
+
 </head>
-<body>
-    <header>
-        <div class="w-96 h-24 py-6 flex-col justify-start items-center inline-flex">
-            <div class="h-14 px-6 flex-col justify-start items-start flex">
-                <div class="self-stretch justify-between items-center gap-96 inline-flex">
-                    <div class="justify-start items-center gap-10 flex">
-                        <div class="w-24 h-14 bg-gray-900"></div>
-                        <div class="justify-start items-center gap-8 flex">
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">Menu item 1</div>
-                            </div>
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">Menu item 2</div>
-                            </div>
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">Menu item 3</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="h-6 justify-end items-start gap-3 flex">
-                        <div class="justify-start items-center gap-6 flex">
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">Log in</div>
-                            </div>
-                        </div>
-                        <div class="justify-start items-center gap-6 flex">
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">/</div>
-                            </div>
-                        </div>
-                        <div class="justify-start items-center gap-6 flex">
-                            <div class="rounded-md justify-start items-center flex">
-                                <div class="text-gray-900 text-base font-medium leading-normal">Sign up</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <main>
-        @RenderBody()
-    </main>
+
+<body class="bg-white dark:bg-gray-900">
+	<nav class="bg-transparent">
+		<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+			<a href="/Home/Index" class="flex items-center">
+				<img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
+				<img src="~/assets/smalllogo2white.png" class="h-7 mr-3 hidden dark:block" alt="Sparki logo" />
+			</a>
+
+			<svg class="h-6 w-6 cursor-pointer md:hidden block text-gray-500" id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+			</svg>
+
+			<div class="hidden w-full md:block md:w-auto" id="menu">
+				<ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+					<li>
+						<a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">API</a>
+					</li>
+					<li>
+						<a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Log in</a>
+					</li>
+					<li>
+						<a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign up</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<main>
+		@RenderBody()
+	</main>
+
+	<script>
+		const button = document.querySelector('#menu-button'); // Hamburger Icon
+		const menu = document.querySelector('#menu'); // Menu
+
+		button.addEventListener('click', () => {
+			menu.classList.toggle('hidden');
+		});
+	</script>
 </body>
 </html>
