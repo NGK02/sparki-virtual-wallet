@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.DataAccess.Models
 {
@@ -44,7 +45,7 @@ namespace VirtualWallet.DataAccess.Models
 
 		public Wallet Wallet { get; set; }
 
-		public int RoleId { get; set; } = 2;
+		public int RoleId { get; set; } = (int)RoleName.User;
 
 		[JsonIgnore]
 		public Role Role { get; set; }
@@ -53,6 +54,6 @@ namespace VirtualWallet.DataAccess.Models
 
 		public List<WalletTransaction> Outgoing { get; set; } = new List<WalletTransaction>();
 
-        public List<Card> Cards { get; set; } = new List<Card>();
-    }
+		public List<Card> Cards { get; set; } = new List<Card>();
+	}
 }

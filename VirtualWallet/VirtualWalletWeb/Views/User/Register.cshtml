@@ -1,0 +1,69 @@
+﻿@model VirtualWallet.Dto.UserDto.CreateUserDto
+<div >
+	<div >Welcome</div>
+	<div >Let's create your account!</div>
+
+	<form  method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register">
+
+		<div>
+			@if (this.ViewData["ErrorMessage"] is not null)
+			{
+				<p>@this.ViewData["ErrorMessage"]</p>
+			}
+		</div>
+
+		<div>
+			<div >
+				<label asp-for="FirstName" >First Name</label>
+				<div></div>
+				<input asp-for="FirstName"  class="basic-form-input" type="text" placeholder=" " />
+				<span asp-validation-for="FirstName" ></span><br>
+			</div>
+
+			<div>
+				<label asp-for="LastName">Last Name</label>
+				<div></div>
+				<input asp-for="LastName" type="text" placeholder=" " />
+				<span asp-validation-for="LastName"></span><br>
+			</div>
+		</div>
+
+		<div >
+			<label asp-for="Email">Email</label>
+			<div></div>
+			<input asp-for=Email  type="text" placeholder=" " />
+			<span asp-validation-for="Email"></span><br>
+		</div>
+
+		<div >
+			<label asp-for="Username">Username</label>
+			<div></div>
+			<input asp-for="Username" type="text" placeholder=" " />
+			<span asp-validation-for="Username"></span><br>
+		</div>
+
+		<div>
+			<label asp-for="Password">Password</label>
+			<div></div>
+			<input asp-for="Password" type="password" placeholder=" " />
+			<span asp-validation-for="Password"></span><br>
+		</div>
+
+		<div>
+			<label asp-for="PhoneNumber">Phone</label>
+			<div></div>
+			<input asp-for=PhoneNumber  type="text" placeholder=" " />
+			<span asp-validation-for="PhoneNumber"></span><br>
+		</div>
+
+		@*<div class="input-container">
+			<input class="photo-input" asp-for=ProfilePic accept="image/*" />
+			<div class="basic-form-submit basic-form-upload-pic">Upload photo</div>
+		</div>*@
+		<form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register">
+			<div class="input-container">
+				<button type="submit" class="basic-form-submit">Register</button>
+			</div>
+		</form>
+	</form>
+</div>
