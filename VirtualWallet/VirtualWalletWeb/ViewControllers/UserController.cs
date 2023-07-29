@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VirtualWallet.Business.AuthManager;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.ViewModels.UserViewModels;
 
@@ -42,13 +43,26 @@ namespace VirtualWallet.Web.ViewControllers
                 return RedirectToAction("Index", "Home");
 
             }
-            catch (Exception)
-            {
+			catch (EntityNotFoundException)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = "Invalid username or password!";
+				return View(filledLoginForm);
+			}
+			catch (UnauthenticatedOperationException e)
+			{
+				this.Response.StatusCode = StatusCodes.Status403Forbidden;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View(filledLoginForm);
+			}
+			catch (Exception e)
+			{
+				this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
 
-                throw;
-            }
 
-
-        }
+		}
     }
 }
