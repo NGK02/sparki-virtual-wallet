@@ -5,6 +5,7 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.CardDto;
+using VirtualWallet.Dto.ViewModels.CardViewModels;
 
 namespace VirtualWallet.Web.ViewControllers
 {
@@ -51,11 +52,11 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Create(CardInfoDto cardInfoDto)
+        public IActionResult SubmitCardForm(CreateCardViewModel createCardViewModel)
         {
             try
             {
-                return View();
+                return View("Temp", createCardViewModel);
             }
             catch (EntityNotFoundException ex)
             {
