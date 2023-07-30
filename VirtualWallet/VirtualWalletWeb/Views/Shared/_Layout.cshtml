@@ -16,7 +16,8 @@
 
 </head>
 
-<body class="bg-white dark:bg-neutral-900">
+<body class="flex flex-col min-h-screen bg-white dark:bg-neutral-900">
+
 	<nav class="bg-transparent">
 		<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 			<a href="/Home/Index" class="flex items-center">
@@ -29,7 +30,7 @@
 			<svg class="h-6 w-6 cursor-pointer md:hidden block text-neutral-500
 						rounded-lg md:hidden hover:bg-neutral-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-200
 						dark:hover:bg-neutral-700"
-						id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				 id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 			</svg>
 
@@ -56,15 +57,54 @@
 			</div>
 		</div>
 	</nav>
+
 	<main>
 		@RenderBody()
 	</main>
 
-	<footer>
-		<ul>
-			<li class="relative">
-				<img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
-				<img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
+	<footer class="flex flex-wrap items-center justify-center mt-auto min-h-fit pt-4 pb-4">
+		<ul class="flex flex-row text-xs">
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">C-Sharp</span>
+					<img src="~/assets/footericons/csharplogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/csharplogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">HTML</span>
+					<img src="~/assets/footericons/htmlLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/htmlLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">CSS</span>
+					<img src="~/assets/footericons/csslogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/csslogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">ASP.NET MVC</span>
+					<img src="~/assets/footericons/mvcLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/mvcLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">Tailwind CSS</span>
+					<img src="~/assets/footericons/tailwindLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/tailwindLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">JavaScript</span>
+					<img src="~/assets/footericons/javascriptLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/javascriptLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
 			</li>
 		</ul>
 	</footer>
