@@ -1,82 +1,147 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isLogged = this.Context.Session.Keys.Contains("LoggedUser");
+    string userName = Context.Session.GetString("LoggedUser");
+
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<script src="https://cdn.tailwindcss.com"></script>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Sparki</title>
-	<link href="~/main.css" rel="stylesheet" />
-	<script>
-		// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-		if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-			document.documentElement.classList.add('dark');
-		} else {
-			document.documentElement.classList.remove('dark')
-		}
-	</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sparki</title>
+    <link href="~/main.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
 
 </head>
 
-<body class="bg-white dark:bg-neutral-900">
-	<nav class="bg-transparent">
-		<div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-			<a href="/Home/Index" class="flex items-center">
-				<div class="relative">
-					<img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
-					<img src="~/assets/smalllogo2white.png" class="h-7 mr-3 hidden dark:block" alt="Sparki logo" />
-					<img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
-				</div>
-			</a>
-			<svg class="h-6 w-6 cursor-pointer md:hidden block text-neutral-500
-						rounded-lg md:hidden hover:bg-neutral-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-200
-						dark:hover:bg-neutral-700"
-						id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-			</svg>
+<body class="grid grid-rows-[auto_1fr_auto] min-h-screen bg-white dark:bg-neutral-900 font-montserrat">
 
-			<div class="hidden w-full md:block md:w-auto" id="menu">
-				<ul class="font-semibold flex flex-col p-4 md:p-0 mt-4 border bg-neutral-50 border-neutral-100 rounded-lg md:flex-row
+    <nav class="h-fit bg-transparent">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="/Home/Index" class="flex items-center">
+                <div class="relative">
+                    <img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
+                    <img src="~/assets/smalllogo2white.png" class="h-7 mr-3 hidden dark:block" alt="Sparki logo" />
+                    <img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
+                </div>
+            </a>
+            <svg class="h-6 w-6 cursor-pointer md:hidden block text-neutral-500
+						rounded-lg md:hidden hover:bg-neutral-200 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-200
+						dark:hover:bg-neutral-700"
+                 id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+
+            <div class="hidden w-full md:block md:w-auto" id="menu">
+                <ul class="font-semibold flex flex-col p-4 md:p-0 mt-4 border bg-neutral-200 border-neutral-100 rounded-lg md:flex-row
 							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
 							dark:bg-neutral-800 dark:border-neutral-700 dark:md:bg-transparent">
-					<li>
-						<a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-100
+                    <li>
+                        <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-white
 											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">API</a>
-					</li>
-					<li>
-						<a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-100
+                    </li>
+                    @if (isLogged)
+                    {
+                        <li>
+                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-white
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">Log in</a>
-					</li>
-					<li>
-						<a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-100
+											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">@userName</a>
+                        </li>
+
+                        <li>
+                            <a href="http://localhost:7275/User/Logout" class="block py-2 pl-3 pr-4 text-red-500 rounded hover:bg-neutral-300
+											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-white
+											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign out</a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-white
+											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign in</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-white
 											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign up</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<main>
-		@RenderBody()
-	</main>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-	<footer>
-		<ul>
-			<li class="relative">
-				<img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
-				<img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
-			</li>
-		</ul>
-	</footer>
+    <main>
+        @RenderBody()
+    </main>
 
-	<script>
-		const button = document.querySelector('#menu-button'); // Hamburger Icon
-		const menu = document.querySelector('#menu'); // Menu
+    <footer class="flex flex-wrap items-center justify-center mt-auto min-h-fit pt-4 pb-4">
+        <ul class="flex flex-row text-xs">
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">C-Sharp</span>
+                    <img src="~/assets/footericons/csharplogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/csharplogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">HTML</span>
+                    <img src="~/assets/footericons/htmlLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/htmlLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">CSS</span>
+                    <img src="~/assets/footericons/csslogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/csslogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">ASP.NET MVC</span>
+                    <img src="~/assets/footericons/mvcLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/mvcLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">Tailwind CSS</span>
+                    <img src="~/assets/footericons/tailwindLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/tailwindLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+            <li>
+                <div class="group">
+                    <span class="align-top absolute h-fit bottom-12 p-1 opacity-0 text-center bg-neutral-500 text-white rounded group-hover:opacity-100 transition duration-300">JavaScript</span>
+                    <img src="~/assets/footericons/javascriptLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+                    <img src="~/assets/footericons/javascriptLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+                </div>
+            </li>
+        </ul>
+    </footer>
 
-		button.addEventListener('click', () => {
-			menu.classList.toggle('hidden');
-		});
-	</script>
+    <script>
+        const button = document.querySelector('#menu-button'); // Hamburger Icon
+        const menu = document.querySelector('#menu'); // Menu
+
+        button.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>
