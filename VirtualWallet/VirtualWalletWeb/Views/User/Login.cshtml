@@ -48,18 +48,30 @@
 				<div class="InputWithLabelMobile self-stretch h-16 flex-col justify-start items-start gap-1 flex">
 					<div class="Label text-gray-700 text-sm font-medium leading-tight">Username</div>
 					<div class="FormFieldsTextInput self-stretch px-3 py-2 bg-white rounded-md shadow border border-gray-300 justify-start items-center inline-flex">
-						<div class="Placeholder text-sm font-normal leading-tight">you@example.com</div>
+						<div class="Placeholder text-sm font-normal leading-tight">
+							<input asp-for="Username" type="text" placeholder=" " />
+							<span asp-validation-for="Username"></span><br>
+						</div>
 					</div>
 				</div>
 				<div class="InputWithLabelMobile self-stretch h-16 flex-col justify-start items-start gap-1 flex">
 					<div class="Label text-gray-700 text-sm font-medium leading-tight">Password</div>
 					<div class="FormFieldsTextInput self-stretch px-3 py-2 bg-white rounded-md shadow border border-gray-300 justify-start items-center inline-flex">
-						<div class="Placeholder text-sm font-normal leading-tight">you@example.com</div>
+						<div class="Placeholder text-sm font-normal leading-tight">
+							<input asp-for="Password" type="password" placeholder=" " />
+							<span asp-validation-for="Password"></span><br>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="Button self-stretch px-4 py-2 bg-slate-500 rounded-md shadow justify-center items-center inline-flex">
-				<div class="Text text-white text-sm font-medium leading-tight">Sign in</div>
+			<div class="Button self-stretch px-4 py-2 bg-purple-500 rounded-md shadow justify-center items-center inline-flex">
+				<div class="Text text-white text-sm font-medium leading-tight">
+					<form asp-controller="User" asp-action="Login" method="post">
+						<div>
+							<button type="submit">Sign in</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
