@@ -56,7 +56,13 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                return View("Temp", createCardViewModel);
+                if (ModelState.IsValid)
+                {
+                    return View("Temp", createCardViewModel);
+
+                }
+
+                return View("Create", createCardViewModel);
             }
             catch (EntityNotFoundException ex)
             {
