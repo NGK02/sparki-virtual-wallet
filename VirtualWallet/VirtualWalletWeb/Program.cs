@@ -18,6 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IAuthManager,AuthManager>();
+builder.Services.AddScoped<IImageManager,ImageManager>();
 builder.Services.AddScoped<IAuthManagerMVC, AuthManagerMVC>();
 
 builder.Services.AddScoped<IUserService, UserService>();
