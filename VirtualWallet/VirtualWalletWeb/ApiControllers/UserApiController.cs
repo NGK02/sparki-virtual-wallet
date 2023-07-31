@@ -46,15 +46,10 @@ namespace VirtualWallet.Web.ApiControllers
             try
             {
                 User mappedUser = mapper.Map<User>(userDto);
-                if (userDto.ProfilePic is null)
-                {
-                    userDto.ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
-                    mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(userDto.ProfilePic);
-                }
-                else if (userDto.ProfilePic is not null)
-                {
-                    mappedUser.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(userDto.ProfilePic);
-                }
+
+                var ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
+                mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(ProfilePic);
+
                 _ = userService.CreateUser(mappedUser);
 
                 return Ok("Registered Successfully!");
@@ -122,11 +117,6 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(loggedUser, id);
                 string username = splitCredentials[0];
                 var mapped = mapper.Map<User>(userValues);
-                if (userValues.ProfilePic is not null)
-                {
-                    mapped.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(userValues.ProfilePic);
-                    imageManager.DeleteProfilePicFromRoot(loggedUser.ProfilePicPath);
-                }
                 var updatedUser = userService.UpdateUser(username, mapped);
 
                 return Ok("Updated Successfully!");
