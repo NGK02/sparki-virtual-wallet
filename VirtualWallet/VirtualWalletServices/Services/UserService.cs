@@ -82,6 +82,7 @@ namespace VirtualWallet.Business.Services
 				   queryParams.PhoneNumber is null &
 				   queryParams.Email is null)
 			{
+				//TODO Тук ще е по добре да връщам всички юзъри!!!!!
 				throw new InvalidOperationException("Please provide search parameters!");
 			}
 			else
