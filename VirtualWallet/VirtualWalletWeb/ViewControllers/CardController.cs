@@ -104,34 +104,49 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpGet("Card/Edit/{cardId}")]
         public IActionResult Edit(int cardId)
         {
-            if (!authManagerMVC.isLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+                var card = cardService.GetCardById(cardId, userId);
+
+                if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", card.UserId))
+                {
+                    HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return View("Error");
+                }
+
+                string month = card.ExpirationDate.ToString("MM");
+                string year = card.ExpirationDate.ToString("yyyy");
+
+                var model = new EditCardViewModel
+                {
+                    CardHolder = card.CardHolder,
+                    CardNumber = card.CardNumber,
+                    CheckNumber = card.CheckNumber,
+                    CurrencyCode = card.Currency.Code.ToString(),
+                    ExpirationMonth = month,
+                    ExpirationYear = year
+                };
+
+                return View(model);
             }
-
-            int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-            var card = cardService.GetCardById(cardId, userId);
-
-            if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", card.UserId))
+            catch (EntityNotFoundException ex)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                return View("Error");
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
-
-            string month = card.ExpirationDate.ToString("MM");
-            string year = card.ExpirationDate.ToString("yyyy");
-
-            var model = new EditCardViewModel
+            catch (UnauthorizedOperationException ex)
             {
-                CardHolder = card.CardHolder,
-                CardNumber = card.CardNumber,
-                CheckNumber = card.CheckNumber,
-                CurrencyCode = card.Currency.Code.ToString(),
-                ExpirationMonth = month,
-                ExpirationYear = year
-            };
-
-            return View(model);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost("Card/Edit/{cardId}")]
