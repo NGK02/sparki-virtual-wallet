@@ -101,8 +101,8 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpGet("Card/Edit/{cardId}")]
-        public IActionResult Edit(int cardId)
+        [HttpGet("Card/Update/{cardId}")]
+        public IActionResult Update(int cardId)
         {
             try
             {
@@ -149,8 +149,8 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Card/Edit/{cardId}")]
-        public IActionResult Edit(EditCardViewModel model, int cardId)
+        [HttpPost("Card/Update/{cardId}")]
+        public IActionResult Update(EditCardViewModel model, int cardId)
         {
             try
             {
