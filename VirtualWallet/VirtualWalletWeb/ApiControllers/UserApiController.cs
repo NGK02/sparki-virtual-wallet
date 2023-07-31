@@ -122,6 +122,10 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(loggedUser, id);
                 string username = splitCredentials[0];
                 var mapped = mapper.Map<User>(userValues);
+                if (userValues.ProfilePic is not null)
+                {
+                    mapped.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(userValues.ProfilePic);
+                }
                 var updatedUser = userService.UpdateUser(username, mapped);
 
                 return Ok("Updated Successfully!");
