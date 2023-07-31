@@ -145,37 +145,7 @@
                 init() {
                     console.log('Component mounted');
                 },
-                format() {
-                    if (this.cardNumber.length > 18) {
-                        return;
-                    }
-                    this.cardNumber = this.cardNumber.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
-                },
-                get isValid() {
-                    if (this.cardholder.length < 5) {
-                        return false;
-                    }
-                    if (this.cardNumber === '') {
-                        return false;
-                    }
-                    if (this.expired.month === '' && this.expired.year === '') {
-                        return false;
-                    }
-                    if (this.securityCode.length !== 3) {
-                        return false;
-                    }
-                    return true;
-                },
-                onSubmit() {
-                    //alert(`You did it ${this.cardholder}.`);
-                    if (this.isValid) {
-                        // Redirect to the specified URL when the form is valid
-                        window.location.href = '@Url.Action("SubmitCardForm", "Card")'; // Replace "Card" with your actual controller name
-                    } else {
-                        // If the form is not valid, show an error message or take appropriate action
-                        alert("Please fill in all required fields correctly.");
-                    }
-                },
+                card: 'front',
                 cardholder: '',
                 cardNumber: '',
                 expired: {
@@ -183,7 +153,6 @@
                     year: '',
                 },
                 securityCode: '',
-                card: 'front',
             }));
         });
     </script>
