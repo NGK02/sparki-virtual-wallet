@@ -66,7 +66,7 @@ namespace VirtualWallet.Web.Helper
 
         public string UploadOriginalProfilePicInRoot(IFormFile originalPic)
         {
-            string folder = "Assets/originalProfilePics/";
+            string folder = "Assets/OriginalProfilePics/";
             folder += Guid.NewGuid().ToString() + "_" + originalPic.FileName;
 
 

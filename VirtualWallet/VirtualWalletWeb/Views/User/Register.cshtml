@@ -1,6 +1,7 @@
-﻿@model VirtualWallet.Dto.UserDto.CreateUserDto
+﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.RegisterUser
 
-<div class="h-full flex items-center justify-center px-4">
+
+<div class="h-full flex items-center justify-center  px-4">
 
 	<form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register"
 		  class="flex mx-auto justify-center max-w-xl w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
@@ -72,7 +73,7 @@
 			<input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50
 						focus:outline focus:outline-purple-400"
-				   asp-for="Password" type="text" placeholder=" ">
+				   asp-for="Password" type="password" placeholder=" ">
 			<div class="text-sm font-normal text-red-600 leading-tight">
 				<span asp-validation-for="Password"></span>
 			</div>
@@ -80,11 +81,9 @@
 
 		<button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
 			<div class="text-neutral-50 text-sm font-medium">
-				<form asp-controller="User" asp-action="Login" method="post">
 					<div class="text-sm">
 						<span>Sign up</span>
 					</div>
-				</form>
 			</div>
 		</button>
 

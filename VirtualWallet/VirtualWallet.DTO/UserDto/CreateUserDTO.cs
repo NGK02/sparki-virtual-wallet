@@ -40,7 +40,5 @@ namespace VirtualWallet.Dto.UserDto
 		[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a valid phone number.")]
 		public string PhoneNumber { get; set; }
 
-		public IFormFile ProfilePic { get; set; }
-
 	}
 }
