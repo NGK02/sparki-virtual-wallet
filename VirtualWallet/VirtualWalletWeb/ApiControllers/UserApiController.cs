@@ -10,6 +10,7 @@ using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Dto.CreateExcahngeDto;
 using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Web.Helper.Contracts;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -22,13 +23,20 @@ namespace VirtualWallet.Web.ApiControllers
 		private readonly IAuthManager authManager;
 		private readonly IWalletService walletService;
 		private readonly IExchangeService exchangeService;
-		public UserApiController(IMapper mapper, IUserService userService, IAuthManager authManager, IWalletService walletService, IExchangeService exchangeService)
+		private readonly IImageManager imageManager;
+		public UserApiController(IMapper mapper,
+								IUserService userService,
+								IAuthManager authManager, 
+								IWalletService walletService,
+								IExchangeService exchangeService,
+								IImageManager imageManager)
 		{
 			this.mapper = mapper;
 			this.userService = userService;
 			this.authManager = authManager;
 			this.walletService = walletService;
 			this.exchangeService = exchangeService;
+			this.imageManager = imageManager;
 		}
 
 
@@ -37,6 +45,11 @@ namespace VirtualWallet.Web.ApiControllers
 		{
 			try
 			{
+				if (userDto.ProfilePic is null)
+				{
+					userDto.ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
+					userDto.ProfilePicPath=imageManager.UploadGeneratedProfilePicInRoot(userDto.ProfilePic);
+				}
 				User mappedUser = mapper.Map<User>(userDto);
 				_ = userService.CreateUser(mappedUser);
 
