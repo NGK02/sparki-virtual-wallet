@@ -32,6 +32,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="relative"
                      x-show="card === 'back'"
                      x-transition:enter="transition ease-out duration-300"
@@ -45,6 +46,7 @@
                         </div>
                     </div>
                 </div>
+
                 <ul class="flex">
                     <li class="mx-2">
                         <img class="w-16" src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/computop.png" alt="" />
@@ -57,103 +59,83 @@
                     </li>
                 </ul>
             </header>
-            <main class="mt-4 p-4">
-                <h1 class="text-xl font-semibold text-gray-700 text-center">
-                    Payment card details
-                </h1>
-                @*<div class="">
-                    
-                </div>*@
 
-                <form method="post" asp-action="SubmitCardForm" asp-controller="Card" class="space-y-4">
-                    <div class="my-3">
-                        <input type="text" class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                               placeholder="Card holder" maxlength="22" x-model="cardholder" asp-for="CardHolder" />
-                        @*<input type="text"
-                        class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                        placeholder="Card holder" maxlength="22" x-model="cardholder" />*@
+            <main class="h-full flex items-center justify-center">
+                <form method="post" asp-action="SubmitCardForm" asp-controller="Card" class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex dark:bg-neutral-800 dark:border-puerple-400">
+                    <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-white">Card details</div>
+
+                    <div class="w-full mb-4 flex-col justify-start items-start flex">
+                        <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
+                               placeholder="Card holder" maxlength="30" x-model="cardholder" asp-for="CardHolder" />
+
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                            <span asp-validation-for="CardHolder"></span>
+                        </div>
                     </div>
-                    <div class="my-3">
-                        <input type="text" class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
+
+                    <div class="w-full mb-4 flex-col justify-start items-start flex">
+                        <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
                                placeholder="Card number" maxlength="16" x-model="cardNumber" asp-for="CardNumber" />
 
-
-                        @*<input type="text" class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                               placeholder="Card number" x-model="cardNumber" maxlength="16" asp-for="CardNumber" />*@
-                        @*<input type="text"
-                        class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                        placeholder="Card number" x-model="cardNumber" x-on:keydown="format()" x-on:keyup="isValid()" maxlength="19" />*@
-                    </div>
-                    <div class="my-3 flex flex-col">
-                        <div class="mb-2">
-                            <label for="" class="text-gray-700">Expiry date</label>
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                            <span asp-validation-for="CardNumber"></span>
                         </div>
+                    </div>
+
+                    <div class="w-full mb-4 flex-col justify-start items-start flex">
+                        <div class="text-gray-700 text-xs font-medium dark:text-neutral-400">Expiry date</div>
+
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <input type="text" name="expirationMonth"
-                                   class="form-input appearance-none block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                                   placeholder="MM" x-model="expired.month" asp-for="ExpirationMonth" />
-                            @*<select name="" id=""
-                                    class="form-select appearance-none block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                                    x-model="expired.month" asp-for="ExpirationMonth">
-                                <option value="" selected disabled>MM</option>
-                                <option value="01" selected="@(Model.ExpirationMonth == "01")">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                            </select>*@
-                            <input type="text" name="expirationYear"
-                                   class="form-input appearance-none block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                                   placeholder="YY" x-model="expired.year" asp-for="ExpirationYear" />
-                            @*<select name="" id=""
-                                    class="form-select appearance-none block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                                    x-model="expired.year" asp-for="ExpirationYear">
-                                <option value="" selected disabled>YY</option>
-                                <option value="2021" selected="@(Model.ExpirationYear == "2021")">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                            </select>*@
-                            <input type="text" class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                                   placeholder="Security code" maxlength="3" x-model="securityCode" x-on:focus="card = 'back'"
-                                   x-on:blur="card = 'front'" asp-for="CheckNumber" />
-                            @*<input type="text"
-                            class="block w-full col-span-2 px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                            placeholder="Security code" maxlength="3" x-model="securityCode" x-on:focus="card = 'back'"
-                            x-on:blur="card = 'front'" />*@
+                            <div class="col-span-1 sm:col-span-2">
+                                <input type="text" name="expirationMonth"
+                                       class="form-input appearance-none block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
+                                       placeholder="MM" x-model="expired.month" asp-for="ExpirationMonth" />
+
+                                <div class="text-sm font-normal text-red-600 leading-tight">
+                                    <span asp-validation-for="ExpirationMonth"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-span-1 sm:col-span-2">
+                                <input type="text" name="expirationYear"
+                                       class="form-input appearance-none block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
+                                       placeholder="YYYY" x-model="expired.year" asp-for="ExpirationYear" />
+
+                                <div class="text-sm font-normal text-red-600 leading-tight">
+                                    <span asp-validation-for="ExpirationYear"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="my-3">
-                        <input type="text" class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                               placeholder="Currency" maxlength="3" x-model="currency" asp-for="CurrencyCode" />
-                        @*<input type="text"
-                        class="block w-full px-5 py-2 border rounded-lg bg-white shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                        placeholder="Currency"
-                        x-model="currency" />*@
+
+                    <div class="w-full mb-4 flex-col justify-start items-start flex">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <div class="col-span-1 sm:col-span-2">
+                                <input type="text" class="block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
+                                       placeholder="Security code" maxlength="3" x-model="securityCode" x-on:focus="card = 'back'"
+                                       x-on:blur="card = 'front'" asp-for="CheckNumber" />
+
+                                <div class="text-sm font-normal text-red-600 leading-tight">
+                                    <span asp-validation-for="CheckNumber"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-span-1 sm:col-span-2">
+                                <input type="text" class="block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
+                                       placeholder="Currency" maxlength="3" x-model="currency" asp-for="CurrencyCode" />
+
+                                <div class="text-sm font-normal text-red-600 leading-tight">
+                                    <span asp-validation-for="CurrencyCode"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="submit-button px-4 py-3 rounded-full bg-blue-300 text-blue-900 focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
-                        Add card
+                    <button type="submit" class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300">
+                        <div class="text-white text-sm font-medium">Add card</div>
                     </button>
                 </form>
             </main>
-            @*<footer class="mt-6 p-4">
-                <button type="button"
-                        class="submit-button px-4 py-3 rounded-full bg-blue-300 text-blue-900 focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
-                        x-bind:disabled="!isValid" x-on:click="onSubmit()"
-                        asp-action="Create" asp-controller="Card" asp-route-createCardViewModel="@Model">
-                    Add card
-                </button>
-            </footer>*@
         </div>
     </div>
 
