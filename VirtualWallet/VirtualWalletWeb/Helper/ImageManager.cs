@@ -63,5 +63,32 @@ namespace VirtualWallet.Web.Helper
             }
             return "/" + folder;
         }
+
+        public string UploadOriginalProfilePicInRoot(IFormFile originalPic)
+        {
+            string folder = "Assets/originalProfilePics/";
+            folder += Guid.NewGuid().ToString() + "_" + originalPic.FileName;
+
+
+            string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder);
+
+            using (FileStream fileStream = new FileStream(serverFolder, FileMode.Create))
+            {
+                originalPic.CopyToAsync(fileStream);
+            }
+            return "/" + folder;
+        }
+
+        public bool DeleteProfilePicFromRoot(string fileName)
+        {
+            string path = webHostEnvironment.WebRootPath + fileName;
+            if (File.Exists(path))
+            {
+
+                File.Delete(path);
+                return true;
+            }
+            return false;
+        }
     }
 }
