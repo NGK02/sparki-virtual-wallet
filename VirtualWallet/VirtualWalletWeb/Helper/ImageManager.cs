@@ -78,5 +78,17 @@ namespace VirtualWallet.Web.Helper
             }
             return "/" + folder;
         }
+
+        public bool DeleteProfilePicFromRoot(string fileName)
+        {
+            string path = webHostEnvironment.WebRootPath + fileName;
+            if (File.Exists(path))
+            {
+
+                File.Delete(path);
+                return true;
+            }
+            return false;
+        }
     }
 }

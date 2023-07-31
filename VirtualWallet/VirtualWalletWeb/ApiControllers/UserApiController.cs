@@ -125,6 +125,7 @@ namespace VirtualWallet.Web.ApiControllers
                 if (userValues.ProfilePic is not null)
                 {
                     mapped.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(userValues.ProfilePic);
+                    imageManager.DeleteProfilePicFromRoot(loggedUser.ProfilePicPath);
                 }
                 var updatedUser = userService.UpdateUser(username, mapped);
 
@@ -176,6 +177,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(loggedUser, id);
                 string username = splitCredentials[0];
 
+                imageManager.DeleteProfilePicFromRoot(loggedUser.ProfilePicPath);
                 userService.DeleteUser(username, null);
                 return Ok("User Deleted!");
 
