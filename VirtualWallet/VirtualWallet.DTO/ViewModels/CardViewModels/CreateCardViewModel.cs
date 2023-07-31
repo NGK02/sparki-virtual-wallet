@@ -10,12 +10,6 @@ namespace VirtualWallet.Dto.ViewModels.CardViewModels
     public class CreateCardViewModel
     {
         [Required]
-        public string ExpirationMonth { get; set; }
-
-        [Required]
-        public string ExpirationYear { get; set; }
-
-        [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
 
@@ -29,5 +23,11 @@ namespace VirtualWallet.Dto.ViewModels.CardViewModels
 
         [Required]
         public string CurrencyCode { get; set; }
+
+        [Required]
+        public string ExpirationMonth { get; set; }
+
+        [Required]
+        public string ExpirationYear { get; set; }
     }
 }
