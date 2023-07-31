@@ -42,8 +42,5 @@ namespace VirtualWallet.Dto.UserDto
 
 		public IFormFile ProfilePic { get; set; }
 
-		public string ProfilePicPath { get; set; }
-
-
 	}
 }

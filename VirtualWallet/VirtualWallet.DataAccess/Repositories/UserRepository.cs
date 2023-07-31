@@ -88,30 +88,14 @@ namespace VirtualWallet.DataAccess.Repositories
 		public User UpdateUser(string userName, User userNewValues)
 		{
 			var userToUpdate = database.Users.FirstOrDefault(u => u.Username == userName);
-			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
-			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
-			userToUpdate.Email = userNewValues.Email ?? userToUpdate.Email;
-			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
-			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
-			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
-			if (userNewValues.ProfilePicPath == "Delete") { userToUpdate.ProfilePicPath = null; }
-			database.SaveChanges();
-			return userToUpdate;
-		}
+            return Update(userToUpdate, userNewValues);
+        }
 		public User UpdateUser(int id, User userNewValues)
 		{
 			var userToUpdate = database.Users.FirstOrDefault(u => u.Id == id);
-			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
-			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
-			userToUpdate.Email = userNewValues.Email ?? userToUpdate.Email;
-			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
-			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
-			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
-			if (userNewValues.ProfilePicPath == "Delete") { userToUpdate.ProfilePicPath = null; }
-			database.SaveChanges();
-			return userToUpdate;
+			return Update(userToUpdate, userNewValues);
 		}
-		private void Update(User userToUpdate, User userNewValues)
+		private User Update(User userToUpdate, User userNewValues)
 		{
 			userToUpdate.FirstName = userNewValues.FirstName ?? userToUpdate.FirstName;
 			userToUpdate.LastName = userNewValues.LastName ?? userToUpdate.LastName;
@@ -119,12 +103,13 @@ namespace VirtualWallet.DataAccess.Repositories
 			userToUpdate.Password = userNewValues.Password ?? userToUpdate.Password;
 			userToUpdate.PhoneNumber = userNewValues.PhoneNumber ?? userToUpdate.PhoneNumber;
 			userToUpdate.ProfilePicPath = userNewValues.ProfilePicPath ?? userToUpdate.ProfilePicPath;
-			database.SaveChanges();
-		}
-		//Защо има три метода, и защо единия е с друго име?
+            if (userNewValues.ProfilePicPath == "Delete") { userToUpdate.ProfilePicPath = null; }
+            database.SaveChanges();
+            return userToUpdate;
+        }
 
 
-		public User SearchBy(UserQueryParameters queryParams)
+        public User SearchBy(UserQueryParameters queryParams)
 		{
 			var users = GetUsersQuerable();
 			User user = null;
@@ -154,6 +139,7 @@ namespace VirtualWallet.DataAccess.Repositories
 			//TODO тряба да се уточни какво друго ще се трие за юзъра
 			user.IsDeleted = true;
 			user.DeletedOn = DateTime.Now;
+			user.ProfilePicPath = null;
 			database.SaveChanges();
 			return true;
 		}
