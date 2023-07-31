@@ -8,12 +8,17 @@ using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.Business.AuthManager;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using VirtualWallet.Web.Helper.Contracts;
+using VirtualWallet.Web.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IAuthManager,AuthManager>();
+builder.Services.AddScoped<IAuthManagerMVC, AuthManagerMVC>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
