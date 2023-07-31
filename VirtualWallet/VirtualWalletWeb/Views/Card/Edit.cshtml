@@ -1,4 +1,4 @@
-﻿@model VirtualWallet.Dto.ViewModels.CardViewModels.CreateCardViewModel
+﻿@model VirtualWallet.Dto.ViewModels.CardViewModels.EditCardViewModel
 
 <head>
     <meta charset="UTF-8" />
@@ -20,7 +20,7 @@
                      x-transition:enter-end="opacity-100 transform scale-100">
                     <img class="w-full h-auto" src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/svg-cards/card-visa-front.png"
                          alt="front credit card">
-                    <div class="front bg-transparent text-lg w-full text-neutral-50 px-12 absolute left-0 bottom-12">
+                    <div class="front bg-transparent text-lg w-full text-white px-12 absolute left-0 bottom-12">
                         <p class="number mb-5 sm:text-xl" x-text="cardNumber !== '' ? cardNumber : '0000 0000 0000 0000'"></p>
                         <div class="flex flex-row justify-between">
                             <p x-text="cardholder !== '' ? cardholder : 'Card holder'"></p>
@@ -40,7 +40,7 @@
                      x-transition:enter-end="opacity-100 transform scale-100">
                     <img class="w-full h-auto" src="https://www.computop-paygate.com/Templates/imagesaboutYou_desktop/images/svg-cards/card-visa-back.png"
                          alt="">
-                    <div class="bg-transparent text-neutral-50 text-xl w-full flex justify-end absolute bottom-20 px-8  sm:bottom-24 right-0 sm:px-12">
+                    <div class="bg-transparent text-white text-xl w-full flex justify-end absolute bottom-20 px-8  sm:bottom-24 right-0 sm:px-12">
                         <div class="border border-white w-16 h-9 flex justify-center items-center">
                             <p x-text="securityCode !== '' ? securityCode : 'code'"></p>
                         </div>
@@ -61,12 +61,12 @@
             </header>
 
             <main class="h-full flex items-center justify-center">
-                <form method="post" asp-action="SubmitCardForm" asp-controller="Card" class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex dark:bg-neutral-800 dark:border-puerple-400">
+                <form method="post" asp-action="Edit" asp-controller="Card" class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex dark:bg-neutral-800 dark:border-puerple-400">
                     <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-white">Card details</div>
 
                     <div class="w-full mb-4 flex-col justify-start items-start flex">
                         <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                               placeholder="Card holder" maxlength="30" x-model="cardholder" asp-for="CardHolder" />
+                               placeholder="@Model.CardHolder" maxlength="30" x-model="cardholder" asp-for="CardHolder" />
 
                         <div class="text-sm font-normal text-red-600 leading-tight">
                             <span asp-validation-for="CardHolder"></span>
@@ -75,7 +75,7 @@
 
                     <div class="w-full mb-4 flex-col justify-start items-start flex">
                         <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                               placeholder="Card number" maxlength="16" x-model="cardNumber" asp-for="CardNumber" />
+                               placeholder="@Model.CardNumber" maxlength="16" x-model="cardNumber" asp-for="CardNumber" />
 
                         <div class="text-sm font-normal text-red-600 leading-tight">
                             <span asp-validation-for="CardNumber"></span>
@@ -89,7 +89,7 @@
                             <div class="col-span-1 sm:col-span-2">
                                 <input type="text" name="expirationMonth"
                                        class="form-input appearance-none block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                                       placeholder="MM" x-model="expired.month" asp-for="ExpirationMonth" />
+                                       placeholder="@Model.ExpirationMonth" x-model="expired.month" asp-for="ExpirationMonth" />
 
                                 <div class="text-sm font-normal text-red-600 leading-tight">
                                     <span asp-validation-for="ExpirationMonth"></span>
@@ -99,7 +99,7 @@
                             <div class="col-span-1 sm:col-span-2">
                                 <input type="text" name="expirationYear"
                                        class="form-input appearance-none block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                                       placeholder="YYYY" x-model="expired.year" asp-for="ExpirationYear" />
+                                       placeholder="@Model.ExpirationYear" x-model="expired.year" asp-for="ExpirationYear" />
 
                                 <div class="text-sm font-normal text-red-600 leading-tight">
                                     <span asp-validation-for="ExpirationYear"></span>
@@ -112,7 +112,7 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             <div class="col-span-1 sm:col-span-2">
                                 <input type="text" class="block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                                       placeholder="Security code" maxlength="3" x-model="securityCode" x-on:focus="card = 'back'"
+                                       placeholder="@Model.CheckNumber" maxlength="3" x-model="securityCode" x-on:focus="card = 'back'"
                                        x-on:blur="card = 'front'" asp-for="CheckNumber" />
 
                                 <div class="text-sm font-normal text-red-600 leading-tight">
@@ -122,7 +122,7 @@
 
                             <div class="col-span-1 sm:col-span-2">
                                 <input type="text" class="block w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-white focus:outline focus:outline-purple-400"
-                                       placeholder="Currency" maxlength="3" x-model="currency" asp-for="CurrencyCode" />
+                                       placeholder="@Model.CurrencyCode" maxlength="3" x-model="currency" asp-for="CurrencyCode" />
 
                                 <div class="text-sm font-normal text-red-600 leading-tight">
                                     <span asp-validation-for="CurrencyCode"></span>
@@ -132,7 +132,7 @@
                     </div>
 
                     <button type="submit" class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300">
-                        <div class="text-white text-sm font-medium">Add card</div>
+                        <div class="text-white text-sm font-medium">Edit card</div>
                     </button>
                 </form>
             </main>

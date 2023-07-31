@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.ViewModels.CardViewModels
 {
-    public class CreateCardViewModel
+    public class EditCardViewModel
     {
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
