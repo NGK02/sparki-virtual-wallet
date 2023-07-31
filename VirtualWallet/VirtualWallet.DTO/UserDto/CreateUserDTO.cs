@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,11 @@ namespace VirtualWallet.Dto.UserDto
 	{
 
 		[Required]
+		[DisplayName("First name")]
 		public string FirstName { get; set; }
 
 		[Required]
+		[DisplayName("Last name")]
 		public string LastName { get; set; }
 
 		[Required]
@@ -32,6 +35,7 @@ namespace VirtualWallet.Dto.UserDto
 		public string Password { get; set; }
 
 		[Required]
+		[DisplayName("Phone number")]
 		[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Please enter a valid phone number.")]
 		public string PhoneNumber { get; set; }
 
