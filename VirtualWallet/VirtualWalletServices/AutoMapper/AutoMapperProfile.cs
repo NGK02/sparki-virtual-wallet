@@ -13,6 +13,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Dto.ViewModels.UserViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -27,7 +28,8 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<CardInfoDto, Card>();
 
             CreateMap<CreateUserDto, User>();
-			CreateMap<UpdateUserDto, User>();
+            CreateMap<RegisterUser, User>();
+            CreateMap<UpdateUserDto, User>();
 			CreateMap<User, GetUserDto>()
 				.ForMember(guDto=>guDto.CardsCount, opt=> opt.MapFrom(u=>u.Cards.Count))
 				.ForMember(guDto => guDto.Role, opt=> opt.MapFrom(u=>u.Role.Name.ToString()));
