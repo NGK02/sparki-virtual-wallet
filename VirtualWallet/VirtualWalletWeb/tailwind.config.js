@@ -5,6 +5,9 @@ module.exports = {
     content: ["./views/**/*.cshtml"],
     theme: {
         extend: {
+            animation: {
+                'spin-slow': 'spin 5s linear infinite',
+            },
             fontFamily: {
                 'montserrat': ['Montserrat', 'sans-serif'],
             },
