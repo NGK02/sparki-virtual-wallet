@@ -24,8 +24,5 @@ namespace VirtualWallet.Dto.CardDto
         [Required]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
         public string CardHolder { get; set; }
-
-        [Required]
-        public string CurrencyCode { get; set; }
     }
 }

@@ -10,7 +10,12 @@ namespace VirtualWallet.DataAccess.Models
 {
     public class Card : Entity
     {
-        public Currency Currency { get; set; }
+        public int Id { get; set; }
+
+        public int UserId { get; set; }
+
+        [JsonIgnore]
+        public User User { get; set; }
 
         [Required]
         public DateTime ExpirationDate { get; set; }
@@ -18,13 +23,6 @@ namespace VirtualWallet.DataAccess.Models
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
-
-        [Required]
-        public int CurrencyId { get; set; }
-
-        public int Id { get; set; }
-
-        public int UserId { get; set; }
 
         [JsonIgnore]
         public List<Transfer> Transfers { get; set; }
@@ -36,8 +34,5 @@ namespace VirtualWallet.DataAccess.Models
         [Required]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
         public string CardHolder { get; set; }
-
-        [JsonIgnore]
-        public User User { get; set; }
     }
 }

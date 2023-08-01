@@ -22,7 +22,6 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return walletDbContext.Cards
                 .Where(c => !c.IsDeleted)
-                .Include(c => c.Currency)
                 .Include(c => c.Transfers)
                 .Include(c => c.User);
         }
@@ -66,7 +65,6 @@ namespace VirtualWallet.DataAccess.Repositories
             cardToUpdate.CardHolder = card.CardHolder;
             cardToUpdate.CardNumber = card.CardNumber;
             cardToUpdate.CheckNumber = card.CheckNumber;
-            cardToUpdate.Currency = card.Currency;
             cardToUpdate.ExpirationDate = card.ExpirationDate;
             walletDbContext.SaveChanges();
         }

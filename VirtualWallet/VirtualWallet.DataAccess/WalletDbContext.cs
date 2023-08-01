@@ -432,7 +432,6 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Georgi Georgiev",
 					CardNumber = 1234567890123456,
 					CheckNumber = 123,
-					CurrencyId = 1,
 					ExpirationDate = new DateTime(2023, 12, 31),
 					Id = 1,
 					UserId = 1
@@ -442,7 +441,6 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Nikolai Barekov",
 					CardNumber = 9876543210987654,
 					CheckNumber = 456,
-					CurrencyId = 2,
 					ExpirationDate = new DateTime(2024, 12, 31),
 					Id = 2,
 					UserId = 2
@@ -452,7 +450,6 @@ namespace VirtualWallet.DataAccess
 					CardHolder = "Shtilian Uzunov",
 					CardNumber = 1111222233334444,
 					CheckNumber = 789,
-					CurrencyId = 3,
 					ExpirationDate = new DateTime(2022, 10, 31),
 					Id = 3,
 					UserId = 3
