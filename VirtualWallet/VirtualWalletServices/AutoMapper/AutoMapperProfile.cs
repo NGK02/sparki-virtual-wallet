@@ -29,7 +29,10 @@ namespace VirtualWallet.Business.AutoMapper
 
             CreateMap<CreateUserDto, User>();
             CreateMap<RegisterUser, User>();
+
             CreateMap<UpdateUserDto, User>();
+			CreateMap<EditUser, User>();
+
 			CreateMap<User, GetUserDto>()
 				.ForMember(guDto=>guDto.CardsCount, opt=> opt.MapFrom(u=>u.Cards.Count))
 				.ForMember(guDto => guDto.Role, opt=> opt.MapFrom(u=>u.Role.Name.ToString()));

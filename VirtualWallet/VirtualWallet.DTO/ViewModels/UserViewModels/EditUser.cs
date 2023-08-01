@@ -31,5 +31,7 @@ namespace VirtualWallet.Dto.ViewModels.UserViewModels
         public string PhoneNumber { get; set; }
 
         public IFormFile ProfilePic { get; set; }
-    }
+
+		public string OldProfilePicPath { get; set; }
+	}
 }
