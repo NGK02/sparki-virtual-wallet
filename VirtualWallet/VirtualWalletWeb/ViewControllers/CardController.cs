@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.ViewModels.CardViewModels;
 using VirtualWallet.Web.Helper.Contracts;
 
@@ -13,17 +13,15 @@ namespace VirtualWallet.Web.ViewControllers
 {
     public class CardController : Controller
     {
-        private readonly IAuthManager authManager;
         private readonly IAuthManagerMVC authManagerMVC;
         private readonly ICardService cardService;
-        private readonly ICurrencyService currencyService;
+        private readonly IMapper mapper;
 
-        public CardController(IAuthManager authManager, IAuthManagerMVC authManagerMVC, ICardService cardService, ICurrencyService currencyService)
+        public CardController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper)
         {
-            this.authManager = authManager;
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
-            this.currencyService = currencyService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -38,7 +36,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Add(CreateCardViewModel model)
+        public IActionResult Add(CardViewModel model)
         {
             try
             {
@@ -54,50 +52,45 @@ namespace VirtualWallet.Web.ViewControllers
                     return View(model);
                 }
 
-                // Consider moving the currency assignment logic to the service layer
-                var currency = currencyService.GetCurrencyByCode(model.CurrencyCode);
-
-                string date = $"{model.ExpirationMonth}-{model.ExpirationYear}";
-
-                // Move the date parsing logic to a separate method or a utility class
-                if (!DateTime.TryParseExact(date, "MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime expirationDate))
-                {
-                    throw new ArgumentException("Invalid expiration date format.");
-                }
-
-                // Use AutoMapper
-                var card = new Card
-                {
-                    CardHolder = model.CardHolder,
-                    CardNumber = model.CardNumber,
-                    CheckNumber = model.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
-                    ExpirationDate = expirationDate
-                };
+                var card = mapper.Map<Card>(model);
 
                 cardService.AddCard(card, userId);
                 return RedirectToAction("Index", "Home");
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (UnauthorizedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
         }
 
@@ -116,41 +109,53 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", card.UserId))
                 {
-                    HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    Response.StatusCode = StatusCodes.Status403Forbidden;
                     return View("Error");
                 }
 
-                string month = card.ExpirationDate.ToString("MM");
-                string year = card.ExpirationDate.ToString("yyyy");
-
-                var model = new EditCardViewModel
-                {
-                    CardHolder = card.CardHolder,
-                    CardNumber = card.CardNumber,
-                    CheckNumber = card.CheckNumber,
-                    CurrencyCode = card.Currency.Code.ToString(),
-                    ExpirationMonth = month,
-                    ExpirationYear = year
-                };
+                var model = mapper.Map<CardViewModel>(card);
 
                 return View(model);
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (UnauthorizedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (ArgumentException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
         }
 
         [HttpPost("Card/Update/{cardId}")]
-        public IActionResult Update(EditCardViewModel model, int cardId)
+        public IActionResult Update(CardViewModel model, int cardId)
         {
             try
             {
@@ -166,50 +171,45 @@ namespace VirtualWallet.Web.ViewControllers
                     return View(model);
                 }
 
-                // Consider moving the currency assignment logic to the service layer
-                var currency = currencyService.GetCurrencyByCode(model.CurrencyCode);
-
-                string date = $"{model.ExpirationMonth}-{model.ExpirationYear}";
-
-                // Move the date parsing logic to a separate method or a utility class
-                if (!DateTime.TryParseExact(date, "MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime expirationDate))
-                {
-                    throw new ArgumentException("Invalid expiration date format.");
-                }
-
-                // Use AutoMapper
-                var card = new Card
-                {
-                    CardHolder = model.CardHolder,
-                    CardNumber = model.CardNumber,
-                    CheckNumber = model.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
-                    ExpirationDate = expirationDate
-                };
+                var card = mapper.Map<Card>(model);
 
                 cardService.UpdateCard(card, cardId, userId);
                 return RedirectToAction("Index", "Home");
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (UnauthorizedOperationException ex)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
             }
         }
     }

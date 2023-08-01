@@ -13,6 +13,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.Dto.ExchangeDto;
+using VirtualWallet.Dto.ViewModels.CardViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -23,6 +24,13 @@ namespace VirtualWallet.Business.AutoMapper
 		public AutoMapperProfile(IUserService userService)
 		{
 			this.userService = userService;
+
+            CreateMap<Card, CardViewModel>()
+				.ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
+				.ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
+
+            CreateMap<CardViewModel, Card>()
+				.ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => ParseDate(src.ExpirationMonth + "-" + src.ExpirationYear)));
 
             CreateMap<CardInfoDto, Card>();
 
@@ -48,5 +56,15 @@ namespace VirtualWallet.Business.AutoMapper
 				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
 
 		}
-	}
+
+        private DateTime ParseDate(string date)
+        {
+            if (!DateTime.TryParseExact(date, "MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime expirationDate))
+            {
+                throw new ArgumentException("Invalid expiration date format.");
+            }
+
+            return expirationDate;
+        }
+    }
 }

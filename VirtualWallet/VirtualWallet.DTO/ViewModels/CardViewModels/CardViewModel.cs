@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.ViewModels.CardViewModels
 {
-    public class CreateCardViewModel
+    public class CardViewModel
     {
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
@@ -20,9 +20,6 @@ namespace VirtualWallet.Dto.ViewModels.CardViewModels
         [Required]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
         public string CardHolder { get; set; }
-
-        [Required]
-        public string CurrencyCode { get; set; }
 
         [Required]
         public string ExpirationMonth { get; set; }

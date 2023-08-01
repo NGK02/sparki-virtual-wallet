@@ -43,8 +43,6 @@ namespace VirtualWallet.Web.ApiControllers
                     CardHolder = cardInfoDto.CardHolder,
                     CardNumber = cardInfoDto.CardNumber,
                     CheckNumber = cardInfoDto.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
                     ExpirationDate = cardInfoDto.ExpirationDate
                 };
 
@@ -193,8 +191,6 @@ namespace VirtualWallet.Web.ApiControllers
                     CardHolder = cardInfoDto.CardHolder,
                     CardNumber = cardInfoDto.CardNumber,
                     CheckNumber = cardInfoDto.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
                     ExpirationDate = cardInfoDto.ExpirationDate
                 };
 
