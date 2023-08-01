@@ -56,15 +56,15 @@ namespace VirtualWallet.Web.ApiControllers
             }
             catch (EmailAlreadyExistException e)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (UsernameAlreadyExistException e)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (PhoneNumberAlreadyExistException e)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (Exception e)
             {
@@ -136,15 +136,11 @@ namespace VirtualWallet.Web.ApiControllers
             }
             catch (EmailAlreadyExistException e)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-            }
-            catch (UsernameAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (PhoneNumberAlreadyExistException e)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (ArgumentException ex)
             {
