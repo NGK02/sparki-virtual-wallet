@@ -138,5 +138,12 @@ namespace VirtualWallet.Web.ViewControllers
                 return View("Error");
             }
         }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            var editUser =new EditUser();
+            return View(editUser);
+        }
     }
 }
