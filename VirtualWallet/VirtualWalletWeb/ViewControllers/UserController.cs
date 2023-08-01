@@ -81,11 +81,11 @@ namespace VirtualWallet.Web.ViewControllers
 		[HttpGet]
 		public IActionResult Register()
 		{
-			var registerUser = new CreateUserDto();
+			var registerUser = new RegisterUser();
 			return View(registerUser);
 		}
 		[HttpPost]
-		public IActionResult Register(CreateUserDto filledForm)
+		public IActionResult Register(RegisterUser filledForm)
 		{
 			try
 			{
