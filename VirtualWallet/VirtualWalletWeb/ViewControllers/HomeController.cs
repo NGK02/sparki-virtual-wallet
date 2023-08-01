@@ -24,5 +24,10 @@ namespace VirtualWallet.Web.ViewControllers
             HomePageViewModel.transactionsCount = transactionsCount;
             return View(HomePageViewModel);
         }
+
+        public IActionResult Successful()
+        {
+            return View();
+        }
     }
 }
