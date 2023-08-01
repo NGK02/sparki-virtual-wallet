@@ -1,5 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+	string error = (string)this.ViewData["ErrorMessage"];
 }
+<div id="body" class="h-full flex items-center justify-center 
+					bg-gradient-to-b from-neutral-50 via-purple-400 to-neutral-50 
+					dark:bg-gradient-to-b dark:from-neutral-900 dark:via-purple-400 dark:to-neutral-900">
+	<div class="h-fit w-fit text-neutral-950 dark:text-neutral-50 text-center mb-32">
+		<div class="text-6xl">ERROR</div>
+		<h1 class="text-4xl">@this.Context.Response.StatusCode</h1>
+		<hr class="border-neutral-900 dark:border-neutral-50">
+		<div class="text-2xl">@error</div>
+	</div>
+
+	<div class="astronaut absolute top-1/2 w-24 animate-spin-slow">
+		<img src="~/assets/skullastronautbw.png" alt="" class="src">
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+
+			var body = document.getElementById('body')
+				setInterval(createStar, 100);
+			function createStar() {
+				var right = Math.random() * 500;
+				var top = Math.random() * (window.innerHeight - 5)
+				var star = document.createElement("div");
+				if (document.documentElement.classList.contains('dark'))
+				{
+					star.classList.add("starDark") 
+				}
+				else
+				{
+					star.classList.add("star")
+				}
+				body.appendChild(star);
+				setInterval(runStar, 10);
+				star.style.top = top + "px";
+				function runStar() {
+					if (right >= screen.width) {
+						star.remove();
+					}
+					right += 3;
+					star.style.right = right + "px";
+				}
+			}
+		})
+	</script>
+</div>
+
+<style>
+	.starDark {
+		position: absolute;
+		width: 3px;
+		height: 3px;
+		background: #fff;
+		right: 0;
+	}
+
+	.star {
+		position: absolute;
+		width: 3px;
+		height: 3px;
+		background: black;
+		right: 0;
+	}
+</style>
