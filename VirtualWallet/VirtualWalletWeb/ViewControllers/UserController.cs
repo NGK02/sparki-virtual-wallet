@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
 using VirtualWallet.Dto.ViewModels.UserViewModels;
+using VirtualWallet.Web.Helper;
+using VirtualWallet.Web.Helper.Contracts;
 
 namespace VirtualWallet.Web.ViewControllers
 {
@@ -14,14 +17,20 @@ namespace VirtualWallet.Web.ViewControllers
 		private readonly IUserService userService;
 		private readonly IMapper mapper;
 		private readonly IAuthManager authManager;
+		private readonly IImageManager imageManager;
+		private readonly IAuthManagerMVC authManagerMVC;
 
 		public UserController(IUserService userService,
 								IAuthManager authManager,
-								IMapper mapper)
+								IMapper mapper,
+								IImageManager imageManager,
+								IAuthManagerMVC authManagerMVC)
 		{
 			this.userService = userService;
 			this.authManager = authManager;
 			this.mapper = mapper;
+			this.imageManager = imageManager;
+			this.authManagerMVC = authManagerMVC;
 		}
 		[HttpGet]
 		public IActionResult Login()
@@ -93,8 +102,20 @@ namespace VirtualWallet.Web.ViewControllers
 				{
 					return View(filledForm);
 				}
+
 				var user = mapper.Map<User>(filledForm);
+
+				if (filledForm.ProfilePic is null)
+				{
+					filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
+					user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
+				}
+				else
+				{
+					user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic);
+				}
 				userService.CreateUser(user);
+				//TODO Redirect to Email validation page then Successfull page
 				return RedirectToAction("Index", "Home");
 
 			}
@@ -115,6 +136,109 @@ namespace VirtualWallet.Web.ViewControllers
 				this.Response.StatusCode = StatusCodes.Status409Conflict;
 				this.ViewData["ErrorMessage"] = e.Message;
 				return View(filledForm);
+			}
+			catch (Exception e)
+			{
+				this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+		}
+
+		[HttpGet]
+		public IActionResult EditUser([FromRoute] int id)
+		{
+			try
+			{
+
+				if (!authManagerMVC.isLogged("LoggedUser"))
+				{
+					return RedirectToAction("Login", "User");
+				}
+				if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", id))
+				{
+					this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+					this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+					return View("Error");
+				}
+				if (id == 0)
+				{
+					this.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+					this.ViewData["ErrorMessage"] = "Please provide ID for User!";
+					return View("Error");
+				}
+				var editUser = new EditUser();
+				var user = userService.GetUserById(id);
+				editUser.OldProfilePicPath = user.ProfilePicPath;
+				return View(editUser);
+
+			}
+			catch (EntityNotFoundException e)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+			catch (Exception e)
+			{
+				this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+		}
+
+		[HttpPost]
+		public IActionResult EditUser([FromRoute] int id, EditUser editedUser)
+		{
+			try
+			{
+				if (!authManagerMVC.isLogged("LoggedUser"))
+				{
+					return RedirectToAction("Login", "User");
+				}
+				if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", id))
+				{
+					this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+					this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+					return View("Error");
+				}
+				if (!this.ModelState.IsValid)
+				{
+					return View(editedUser);
+				}
+				if (editedUser.FirstName is null &&
+					editedUser.LastName is null &&
+					editedUser.Password is null &&
+					editedUser.Email is null &&
+					editedUser.PhoneNumber is null &&
+					editedUser.ProfilePic is null)
+				{
+					this.ViewData["ErrorMessage"] = "There's nothing filled!";
+					return View(editedUser);
+				}
+				var newUserValues = mapper.Map<User>(editedUser);
+
+				if (editedUser.ProfilePic is not null)
+				{
+					newUserValues.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(editedUser.ProfilePic);
+					imageManager.DeleteProfilePicFromRoot(editedUser.OldProfilePicPath);
+				}
+				userService.UpdateUser(id, newUserValues);
+				//TODO Redirect to Successfull page
+				return RedirectToAction("Index", "Home");
+
+			}
+			catch (EmailAlreadyExistException e)
+			{
+				this.Response.StatusCode = StatusCodes.Status409Conflict;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+			catch (PhoneNumberAlreadyExistException e)
+			{
+				this.Response.StatusCode = StatusCodes.Status409Conflict;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
 			}
 			catch (Exception e)
 			{

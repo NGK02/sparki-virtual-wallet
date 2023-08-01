@@ -14,6 +14,8 @@ using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CardViewModels;
+using VirtualWallet.Dto.ViewModels.TransferViewModels;
+using VirtualWallet.Dto.ViewModels.UserViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -35,10 +37,17 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<CardViewModel, Card>()
 				.ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => ParseDate(src.ExpirationMonth + "-" + src.ExpirationYear)));
 
+            CreateMap<Transfer, TransferViewModel>();
+            CreateMap<TransferViewModel, Transfer>();
+
             CreateMap<CardInfoDto, Card>();
 
             CreateMap<CreateUserDto, User>();
-			CreateMap<UpdateUserDto, User>();
+            CreateMap<RegisterUser, User>();
+
+            CreateMap<UpdateUserDto, User>();
+			CreateMap<EditUser, User>();
+
 			CreateMap<User, GetUserDto>()
 				.ForMember(guDto=>guDto.CardsCount, opt=> opt.MapFrom(u=>u.Cards.Count))
 				.ForMember(guDto => guDto.Role, opt=> opt.MapFrom(u=>u.Role.Name.ToString()));
