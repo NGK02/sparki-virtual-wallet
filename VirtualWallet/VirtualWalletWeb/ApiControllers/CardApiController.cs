@@ -9,6 +9,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.CardDto;
+using VirtualWallet.Dto.TransferDto;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -18,13 +19,13 @@ namespace VirtualWallet.Web.ApiControllers
     {
         private readonly IAuthManager authManager;
         private readonly ICardService cardService;
-        private readonly ICurrencyService currencyService;
+        private readonly IMapper mapper;
 
-        public CardApiController(IAuthManager authManager, ICardService cardService, ICurrencyService currencyService)
+        public CardApiController(IAuthManager authManager, ICardService cardService, IMapper mapper)
         {
             this.authManager = authManager;
             this.cardService = cardService;
-            this.currencyService = currencyService;
+            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -36,20 +37,10 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
-
-                var card = new Card
-                {
-                    CardHolder = cardInfoDto.CardHolder,
-                    CardNumber = cardInfoDto.CardNumber,
-                    CheckNumber = cardInfoDto.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
-                    ExpirationDate = cardInfoDto.ExpirationDate
-                };
+                var card = mapper.Map<Card>(cardInfoDto);
 
                 cardService.AddCard(card, userId);
-                return StatusCode(201, card);
+                return StatusCode(201, cardInfoDto);
             }
             catch (EntityNotFoundException ex)
             {
@@ -117,8 +108,9 @@ namespace VirtualWallet.Web.ApiControllers
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 var card = cardService.GetCardById(cardId, userId);
+                var cardInfoDto = mapper.Map<CardInfoDto>(card);
 
-                return Ok(card);
+                return Ok(cardInfoDto);
             }
             catch (EntityNotFoundException ex)
             {
@@ -151,7 +143,7 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var cards = cardService.GetUserCards(userId);
+                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<CardInfoDto>(c)).ToList();
 
                 return Ok(cards);
             }
@@ -186,17 +178,7 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, userId);
-                var currency = currencyService.GetCurrencyByCode(cardInfoDto.CurrencyCode);
-
-                var card = new Card
-                {
-                    CardHolder = cardInfoDto.CardHolder,
-                    CardNumber = cardInfoDto.CardNumber,
-                    CheckNumber = cardInfoDto.CheckNumber,
-                    Currency = currency,
-                    CurrencyId = currency.Id,
-                    ExpirationDate = cardInfoDto.ExpirationDate
-                };
+                var card = mapper.Map<Card>(cardInfoDto);
 
                 cardService.UpdateCard(card, cardId, userId);
                 return Ok(card);
