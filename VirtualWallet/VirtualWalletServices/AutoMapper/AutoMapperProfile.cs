@@ -25,6 +25,9 @@ namespace VirtualWallet.Business.AutoMapper
 		{
 			this.userService = userService;
 
+            CreateMap<Card, CardInfoDto>();
+            CreateMap<CardInfoDto, Card>();
+
             CreateMap<Card, CardViewModel>()
 				.ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
 				.ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
