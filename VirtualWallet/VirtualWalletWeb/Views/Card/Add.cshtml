@@ -6,9 +6,7 @@
 	<script defer src="https://unpkg.com/alpinejs@3.2.2/dist/cdn.min.js"></script>
 </head>
 
-
 <div class="h-full flex items-center justify-center">
-
 	<form method="post" asp-action="Add" asp-controller="Card" x-data="creditCard"
 		  class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex sm:w-96 dark:bg-neutral-800 dark:border-puerple-400">
 
@@ -26,7 +24,7 @@
 					<div class="flex flex-row justify-between">
 						<p class="text-sm" x-text="cardholder !== '' ? cardholder : 'Card holder'"></p>
 						<div class="text-sm">
-							<span x-text="expired.month !== '' ? expired.year : '00'"></span>
+							<span x-text="expired.month !== '' ? expired.month : '00'"></span>
 							<span>/</span>
 							<span x-text="expired.year !== '' ? expired.year : '0000'"></span>
 						</div>
