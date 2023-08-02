@@ -21,6 +21,11 @@ namespace VirtualWallet.Business.Services
             this.currencyRepository = currencyRepository;
         }
 
+        public IEnumerable<Currency> GetCurrencies()
+        {
+            return currencyRepository.GetCurrencies();
+        }
+
         public Currency GetCurrencyByCode(string currencyCode)
         {
             if (!Enum.TryParse<CurrencyCode>(currencyCode.ToUpper(), out var code))
