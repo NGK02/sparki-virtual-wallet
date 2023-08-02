@@ -20,40 +20,75 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
-        private readonly IWalletService walletService;
 
-        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper, ITransferService transferService, ICurrencyService currencyService, IWalletService walletService)
+        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, ICurrencyService currencyService, IMapper mapper, ITransferService transferService)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
+            this.currencyService = currencyService;
             this.mapper = mapper;
             this.transferService = transferService;
-            this.currencyService = currencyService;
-            this.walletService = walletService;
         }
 
         [HttpGet("Transfer/Add")]
         public IActionResult Add()
         {
-            if (!authManagerMVC.isLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
+                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                ViewData["Cards"] = cards;
+
+                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                ViewData["Currencies"] = currencies;
+
+                var model = new TransferViewModel();
+                ViewData["TransferViewModel"] = model;
+
+                model.WalletId = userId;
+                return View(model);
             }
+            catch (EntityNotFoundException ex)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
 
-            int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-            var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
-            ViewData["Cards"] = cards;
+                return View("Error");
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
 
-            var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
-            ViewData["Currencies"] = currencies;
+                return View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
 
+                return View("Error");
+            }
+            catch (ArgumentException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
 
-            var transferViewModel = new TransferViewModel();
-            ViewData["TransferViewModel"] = transferViewModel;
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = ex.Message;
 
-            transferViewModel.WalletId = userId;
-
-            return View(transferViewModel);
+                return View("Error");
+            }
         }
 
         [HttpPost("Transfer/Add")]
@@ -61,25 +96,23 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                //if (!authManagerMVC.isLogged("LoggedUser"))
-                //{
-                //    return RedirectToAction("Login", "User");
-                //}
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
 
-                //int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
 
-                //if (!ModelState.IsValid)
-                //{
-                //    return View(model);
-                //}
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
 
-                //var transfer = mapper.Map<Transfer>(model);
+                var transfer = mapper.Map<Transfer>(model);
 
-                //transferService.AddTransfer(userId, transfer);
+                transferService.AddTransfer(userId, transfer);
 
-                //return RedirectToAction("Index", "Home");
-
-                return View("Temp", model);
+                return RedirectToAction("Index", "Home");
             }
             catch (EntityNotFoundException ex)
             {
