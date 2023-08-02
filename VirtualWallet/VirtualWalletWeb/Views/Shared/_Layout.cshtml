@@ -46,57 +46,45 @@
             </svg>
 
             <div class="hidden w-full md:block md:w-auto" id="menu">
-                <ul class="items-center font-semibold flex flex-col p-4 md:p-0 mt-4 border bg-neutral-200 border-neutral-100 rounded-lg md:flex-row
+                <ul class="font-semibold flex flex-col p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
 							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
-							dark:bg-neutral-800 dark:border-neutral-700 dark:md:bg-transparent">
-                    <li>
-                        <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+							dark:bg-neutral-800 dark:md:bg-transparent">
+                    <li class="items-center text-center">
+                        <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">API</a>
+											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">API</a>
                     </li>
                     @if (isLogged)
                     {
-                        <li>
-                            <button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+                        <li class="items-center">
+                            <button class="w-full block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
+											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
                                 @userName
                             </button>
-                            <div class="absolute border-2 border-purple-400 bg-gray-200 hidden flex-col rounded mt-1 p-2 text-sm w-32" id="dropdown">
-                                <a asp-controller="User" asp-action="Dashboard" asp-route-id="@loggedUserId" method="post" class="px-2 py-1 hover:bg-purple-300 rounded">Dashboard</a>
-                                <a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="px-2 py-1 hover:bg-purple-300 rounded">Edit Profile</a>
+                            <div class="absolute border border-purple-400 text-neutral-900 bg-neutral-200 hidden flex-col rounded mt-1 p-2 text-sm w-32 dark:bg-neutral-800 dark:text-neutral-50" id="dropdown">
+                                <a asp-controller="User" asp-action="Dashboard" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Dashboard</a>
+                                <a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Edit Profile</a>
                                 <hr class=" border-1 border-purple-400 dark:border-purple-400 ">
-                                <a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-300 rounded">Sign out</a>
+                                <a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-400 rounded">Sign out</a>
                             </div>
-                            <script>
-                                window.addEventListener('DOMContentLoaded', () => {
-                                    const menuBtn = document.querySelector('#menu-btn')
-                                    const dropdown = document.querySelector('#dropdown')
-
-                                    menuBtn.addEventListener('click', () => {
-                                        dropdown.classList.toggle('hidden')
-                                        dropdown.classList.toggle('flex')
-                                    })
-
-                                })
-                            </script>
                         </li>
-                        <li class="">
-                            <img class="object-cover w-9 h- rounded-full" src="@loggedUserProfilePicPath">
+                        <li>
+                            <img class="object-cover w-9 mt-4 mx-auto rounded-full md:mx-0 md:mt-0" src="@loggedUserProfilePicPath">
                         </li>
                            
                     }
                     else
                     {
-                        <li>
-                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+                        <li class="items-center text-center">
+                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign in</a>
+											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign in</a>
                         </li>
-                        <li>
-                            <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+                        <li class="items-center text-center">
+                            <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign up</a>
+											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign up</a>
                         </li>
                     }
                 </ul>
@@ -162,6 +150,18 @@
         button.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.querySelector('#menu-btn')
+            const dropdown = document.querySelector('#dropdown')
+
+            menuBtn.addEventListener('click', () => {
+                dropdown.classList.toggle('hidden')
+                dropdown.classList.toggle('flex')
+            })
+
+        })
     </script>
 </body>
 </html>
