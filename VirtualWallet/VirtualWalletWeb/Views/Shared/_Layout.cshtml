@@ -1,6 +1,9 @@
-﻿@{
+﻿
+@{
     bool isLogged = this.Context.Session.Keys.Contains("LoggedUser");
     string userName = Context.Session.GetString("LoggedUser");
+    int? loggedUserId = Context.Session.GetInt32("userId");
+    string loggedUserProfilePicPath = Context.Session.GetString("profilePicPath");
 
 }
 <!DOCTYPE html>
@@ -43,7 +46,7 @@
             </svg>
 
             <div class="hidden w-full md:block md:w-auto" id="menu">
-                <ul class="font-semibold flex flex-col p-4 md:p-0 mt-4 border bg-neutral-200 border-neutral-100 rounded-lg md:flex-row
+                <ul class="items-center font-semibold flex flex-col p-4 md:p-0 mt-4 border bg-neutral-200 border-neutral-100 rounded-lg md:flex-row
 							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
 							dark:bg-neutral-800 dark:border-neutral-700 dark:md:bg-transparent">
                     <li>
@@ -59,10 +62,11 @@
 											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
                                 @userName
                             </button>
-                            <div class="bg-gray-200 hidden flex-col rounded mt-1 p-2 text-sm w-32" id="dropdown">
-                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Posts</a>
-                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Profile</a>
-                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Settings</a>
+                            <div class="absolute border-2 border-purple-400 bg-gray-200 hidden flex-col rounded mt-1 p-2 text-sm w-32" id="dropdown">
+                                <a asp-controller="User" asp-action="Dashboard" asp-route-id="@loggedUserId" method="post" class="px-2 py-1 hover:bg-purple-300 rounded">Dashboard</a>
+                                <a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="px-2 py-1 hover:bg-purple-300 rounded">Edit Profile</a>
+                                <hr class=" border-1 border-purple-400 dark:border-purple-400 ">
+                                <a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-300 rounded">Sign out</a>
                             </div>
                             <script>
                                 window.addEventListener('DOMContentLoaded', () => {
@@ -77,14 +81,10 @@
                                 })
                             </script>
                         </li>
-
-                        <li>
-                            <a href="http://localhost:7275/User/Logout" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
-											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign out</a>
+                        <li class="">
+                            <img class="object-cover w-9 h- rounded-full" src="@loggedUserProfilePicPath">
                         </li>
-                       
-
+                           
                     }
                     else
                     {
