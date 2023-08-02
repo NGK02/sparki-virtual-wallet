@@ -16,6 +16,7 @@ using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CardViewModels;
 using VirtualWallet.Dto.ViewModels.TransferViewModels;
 using VirtualWallet.Dto.ViewModels.UserViewModels;
+using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -26,6 +27,12 @@ namespace VirtualWallet.Business.AutoMapper
 		public AutoMapperProfile(IUserService userService)
 		{
 			this.userService = userService;
+
+            CreateMap<Currency, CurrencyViewModel>();
+            CreateMap<CurrencyViewModel, Currency>().ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<Card, SelectCardViewModel>();
+            CreateMap<SelectCardViewModel, Card>().ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<Card, CardInfoDto>();
             CreateMap<CardInfoDto, Card>();

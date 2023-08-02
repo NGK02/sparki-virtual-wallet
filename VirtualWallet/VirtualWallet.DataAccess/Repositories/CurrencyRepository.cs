@@ -33,5 +33,10 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return GetQueryableCurrencies().SingleOrDefault(c => c.Id == currencyId);
         }
+
+        public IEnumerable<Currency> GetCurrencies()
+        {
+            return GetQueryableCurrencies().ToList();
+        }
     }
 }
