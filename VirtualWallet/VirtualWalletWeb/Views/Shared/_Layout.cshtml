@@ -46,18 +46,18 @@
             </svg>
 
             <div class="hidden w-full md:block md:w-auto" id="menu">
-                <ul class="font-semibold flex flex-col p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
+                <ul class="font-semibold flex flex-col items-center p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
 							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
 							dark:bg-neutral-800 dark:md:bg-transparent">
-                    <li class="items-center text-center">
+                    <li>
                         <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">API</a>
                     </li>
                     @if (isLogged)
                     {
-                        <li class="items-center">
-                            <button class="w-full block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+                        <li>
+                            <button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
                                 @userName
@@ -70,18 +70,18 @@
                             </div>
                         </li>
                         <li>
-                            <img class="object-cover w-9 mt-4 mx-auto rounded-full md:mx-0 md:mt-0" src="@loggedUserProfilePicPath">
+                            <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
                         </li>
                            
                     }
                     else
                     {
-                        <li class="items-center text-center">
+                        <li>
                             <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign in</a>
                         </li>
-                        <li class="items-center text-center">
+                        <li>
                             <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign up</a>
