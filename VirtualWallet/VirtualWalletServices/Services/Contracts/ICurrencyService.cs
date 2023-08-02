@@ -13,5 +13,7 @@ namespace VirtualWallet.Business.Services.Contracts
         Currency GetCurrencyByCode(string currencyCode);
 
         Currency GetCurrencyById(int currencyId);
+
+        IEnumerable<Currency> GetCurrencies();
     }
 }

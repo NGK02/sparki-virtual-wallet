@@ -7,6 +7,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.ViewModels.CardViewModels;
+using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.TransferViewModels;
 using VirtualWallet.Web.Helper.Contracts;
 
@@ -16,15 +17,17 @@ namespace VirtualWallet.Web.ViewControllers
     {
         private readonly IAuthManagerMVC authManagerMVC;
         private readonly ICardService cardService;
+        private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
 
-        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper, ITransferService transferService)
+        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper, ITransferService transferService, ICurrencyService currencyService)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
             this.mapper = mapper;
             this.transferService = transferService;
+            this.currencyService = currencyService;
         }
 
         [HttpGet("Transfer/Add")]
@@ -38,6 +41,10 @@ namespace VirtualWallet.Web.ViewControllers
             int userId = HttpContext.Session.GetInt32("userId") ?? 0;
             var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
             ViewData["Cards"] = cards;
+
+            var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+            ViewData["Currencies"] = currencies;
+
 
             var transferViewModel = new TransferViewModel();
             ViewData["TransferViewModel"] = transferViewModel;

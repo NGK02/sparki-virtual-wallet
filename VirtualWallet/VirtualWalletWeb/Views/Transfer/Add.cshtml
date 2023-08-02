@@ -43,10 +43,22 @@
         <input type="text" class="form-input mt-1 block w-full" name="amount" x-model="amount">
     </div>
 
+    <!-- Currency Selection -->
     <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium">Select Currency</label>
+        <select class="form-select mt-1 block w-full" asp-for="CurrencyId">
+            <option value="" disabled selected>Select a currency</option>
+            @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
+            {
+                <option value="@currency.Id">@currency.Code.ToString().ToUpper()</option>
+            }
+        </select>
+    </div>
+
+    @*<div class="mb-4">
         <label class="block text-gray-700 text-sm font-medium">Currency ID</label>
         <input type="text" class="form-input mt-1 block w-full" name="currencyId" x-model="currencyId">
-    </div>
+    </div>*@
 
     <div class="mb-4">
         <label class="block text-gray-700 text-sm font-medium">Wallet ID</label>
