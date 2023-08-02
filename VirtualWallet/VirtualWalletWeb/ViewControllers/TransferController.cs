@@ -20,14 +20,16 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
+        private readonly IWalletService walletService;
 
-        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper, ITransferService transferService, ICurrencyService currencyService)
+        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper, ITransferService transferService, ICurrencyService currencyService, IWalletService walletService)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
             this.mapper = mapper;
             this.transferService = transferService;
             this.currencyService = currencyService;
+            this.walletService = walletService;
         }
 
         [HttpGet("Transfer/Add")]
@@ -48,6 +50,8 @@ namespace VirtualWallet.Web.ViewControllers
 
             var transferViewModel = new TransferViewModel();
             ViewData["TransferViewModel"] = transferViewModel;
+
+            transferViewModel.WalletId = userId;
 
             return View(transferViewModel);
         }
