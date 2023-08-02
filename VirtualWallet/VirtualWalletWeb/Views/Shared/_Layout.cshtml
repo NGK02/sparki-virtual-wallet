@@ -54,9 +54,28 @@
                     @if (isLogged)
                     {
                         <li>
-                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
+                            <button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-neutral-300
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
-											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">@userName</a>
+											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
+                                @userName
+                            </button>
+                            <div class="bg-gray-200 hidden flex-col rounded mt-1 p-2 text-sm w-32" id="dropdown">
+                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Posts</a>
+                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Profile</a>
+                                <a href="#" class="px-2 py-1 hover:bg-blue-300 rounded">Settings</a>
+                            </div>
+                            <script>
+                                window.addEventListener('DOMContentLoaded', () => {
+                                    const menuBtn = document.querySelector('#menu-btn')
+                                    const dropdown = document.querySelector('#dropdown')
+
+                                    menuBtn.addEventListener('click', () => {
+                                        dropdown.classList.toggle('hidden')
+                                        dropdown.classList.toggle('flex')
+                                    })
+
+                                })
+                            </script>
                         </li>
 
                         <li>
@@ -64,6 +83,7 @@
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign out</a>
                         </li>
+                       
 
                     }
                     else
