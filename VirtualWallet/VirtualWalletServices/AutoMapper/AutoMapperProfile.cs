@@ -27,6 +27,9 @@ namespace VirtualWallet.Business.AutoMapper
 		{
 			this.userService = userService;
 
+            CreateMap<Card, SelectCardViewModel>();
+            CreateMap<SelectCardViewModel, Card>().ForMember(dest => dest.Id, opt => opt.Ignore());
+
             CreateMap<Card, CardInfoDto>();
             CreateMap<CardInfoDto, Card>();
 
