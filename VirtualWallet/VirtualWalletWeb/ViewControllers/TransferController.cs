@@ -30,7 +30,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.transferService = transferService;
         }
 
-        [HttpGet("Transfer/Add")]
+        [HttpGet]
         public IActionResult Add()
         {
             try
@@ -57,6 +57,13 @@ namespace VirtualWallet.Web.ViewControllers
             catch (EntityNotFoundException ex)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 ViewData["ErrorMessage"] = ex.Message;
 
                 return View("Error");
@@ -91,7 +98,7 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Transfer/Add")]
+        [HttpPost]
         public IActionResult Add(TransferViewModel model)
         {
             try
@@ -117,6 +124,13 @@ namespace VirtualWallet.Web.ViewControllers
             catch (EntityNotFoundException ex)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 ViewData["ErrorMessage"] = ex.Message;
 
                 return View("Error");
