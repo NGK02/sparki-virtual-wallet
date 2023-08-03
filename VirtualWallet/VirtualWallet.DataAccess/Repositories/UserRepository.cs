@@ -169,5 +169,12 @@ namespace VirtualWallet.DataAccess.Repositories
 			database.SaveChanges();
 			return true;
 		}
-	}
+
+        public void ConfirmUser(User userToConfirm, User userNewValues)
+        {
+            userToConfirm.ConfirmationToken = userNewValues.ConfirmationToken ?? userToConfirm.ConfirmationToken;
+            userToConfirm.IsConfirmed = userNewValues.IsConfirmed;
+            database.SaveChanges();
+        }
+    }
 }

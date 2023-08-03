@@ -22,5 +22,17 @@ namespace VirtualWallet.Business.Services
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
         }
+
+        public static string GenerateConfirmationToken(int length = 32)
+        {
+            const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var result = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(validChars[random.Next(validChars.Length)]);
+            }
+            return result.ToString();
+        }
     }
 }

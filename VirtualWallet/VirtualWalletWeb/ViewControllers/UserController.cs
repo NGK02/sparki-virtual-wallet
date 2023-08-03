@@ -117,16 +117,23 @@ namespace VirtualWallet.Web.ViewControllers
                 {
                     user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic);
                 }
+
+                EmailSender emailSender = new EmailSender();
+
+                // Generate confirmation token and store it in the database
+                string confirmationToken = EmailSender.GenerateConfirmationToken();
+                user.ConfirmationToken = confirmationToken;
+                user.IsConfirmed = false; // Set IsConfirmed to false initially
                 userService.CreateUser(user);
 
                 // send confirmation email
-                // this is still being implemented
-                // will probably separate the logic a little bit
                 string emailSubject = "Registration Confirmation";
                 string toUser = $"{user.FirstName} {user.LastName}";
-                string emailMessage = $"Dear {user.FirstName}, this is a (test) confirmation message.";
 
-                EmailSender emailSender = new EmailSender();
+                // TODO edit url path and action that handles email confirmation
+                string emailMessage = $"Dear {user.FirstName}, please confirm your registration by clicking the link below:\n\n" + 
+                    $"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
+                
                 emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
                 // end of email verification section
 
@@ -150,6 +157,38 @@ namespace VirtualWallet.Web.ViewControllers
                 this.Response.StatusCode = StatusCodes.Status409Conflict;
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View(filledForm);
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            try
+            {
+                var user = userService.GetUserById(int.Parse(userId));
+
+                // If the user or token is invalid or the account is already confirmed, show an error message
+                if (user == null || user.IsConfirmed || token != user.ConfirmationToken)
+                {
+                    return View("Error");
+                }
+
+                user.IsConfirmed = true;
+                userService.ConfirmUser(user, int.Parse(userId));
+
+                return View("Confirmation");
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
             }
             catch (Exception e)
             {
