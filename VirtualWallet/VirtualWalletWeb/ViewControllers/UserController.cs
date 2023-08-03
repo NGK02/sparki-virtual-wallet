@@ -53,6 +53,11 @@ namespace VirtualWallet.Web.ViewControllers
             {
                 var user = authManager.IsAuthenticated(new string[] { filledLoginForm.Username, filledLoginForm.Password });
 
+                if (!user.IsConfirmed)
+                {
+                    throw new UnauthenticatedOperationException("You have to confirm your account registration first before you log in.");
+                }
+
                 this.HttpContext.Session.SetString("LoggedUser", filledLoginForm.Username);
                 this.HttpContext.Session.SetInt32("userId", user.Id);
                 this.HttpContext.Session.SetInt32("roleId", user.RoleId);
@@ -110,8 +115,8 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (filledForm.ProfilePic is null)
                 {
-                    filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
-                    user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
+                    //filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
+                    //user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
                 }
                 else
                 {
