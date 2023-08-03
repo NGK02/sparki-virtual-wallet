@@ -1,8 +1,8 @@
-﻿
-@{
+﻿@{
     bool isLogged = this.Context.Session.Keys.Contains("LoggedUser");
     string userName = Context.Session.GetString("LoggedUser");
     int? loggedUserId = Context.Session.GetInt32("userId");
+    bool isAdmin = Context.Session.GetInt32("roleId") == (int)RoleName.Admin;
     string loggedUserProfilePicPath = Context.Session.GetString("profilePicPath");
 
 }
@@ -49,6 +49,15 @@
                 <ul class="font-semibold flex flex-col items-center p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
 							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
 							dark:bg-neutral-800 dark:md:bg-transparent">
+                    @if (isLogged && isAdmin)
+                    {
+                        <li>
+                            <a href="http://localhost:7275/Admin/SearchUser" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
+											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Admin Panel</a>
+                        </li>
+
+                    }
                     <li>
                         <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
@@ -72,7 +81,7 @@
                         <li>
                             <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
                         </li>
-                           
+
                     }
                     else
                     {

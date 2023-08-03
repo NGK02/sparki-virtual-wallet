@@ -1,4 +1,7 @@
 ﻿@model VirtualWallet.Dto.ViewModels.AdminViewModels.SearchUser
+@{
+    string defaultProfilePicPath = "/Assets/pfp.jpg";
+}
 
 <div class="h-full flex flex-col items-center justify-center px-4">
 
@@ -49,12 +52,21 @@
 
 
 
-    <section class="container px-4 mx-auto mt-20">
-        <div class="flex items-center gap-x-3">
-            <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">100 users found</span>
-        </div>
+    <section class="container px-4 mx-auto mt-20 ">
+        @if (this.Model.users.Count == 1)
+        {
+            <div class="flex items-center gap-x-3">
+                <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">1 users found</span>
+            </div>
+        }
+        else if (true)
+        {
+            <div class="flex items-center gap-x-3">
+                <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">@this.Model.users.Count users found</span>
+            </div>
+        }
 
-        <div class="flex flex-col mt-6 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 rounded-3xl inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div class="flex flex-col mt-6 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 rounded-2xl inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <table class="min-w-full divide-y border-2 border-purple-400  dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-800">
                     <tr>
@@ -78,38 +90,82 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200  dark:divide-gray-700 dark:bg-gray-900">
-                    <tr>
-                        <td class="flex flex-row px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                            <img class="object-cover w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="">
-                            <div class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                Arthur Melooooooooooo
-                            </div>
-                        </td>
+                    @foreach (var user in this.Model.users)
+                    {
+                        if (user.Id == Context.Session.GetInt32("userId"))
+                        {
+                            continue;
+                        }
 
-                        <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">arthurko</td>
+                        <tr>
+                            <td class="flex flex-row px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath??@defaultProfilePicPath">
+                                <div class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                    @user.FirstName @user.LastName
+                                </div>
+                            </td>
 
-                        <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">authurmelo@example.com</td>
+                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Username</td>
 
-                        <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">8435235476</td>
+                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Email</td>
 
-                        <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">5 transactions</td>
+                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.PhoneNumber</td>
+                            @if (@user.Incoming.Count + user.Outgoing.Count == 1)
+                            {
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">1 transaction</td>
+                            }
+                            else
+                            {
+                                int alluserTransction = @user.Incoming.Count + user.Outgoing.Count;
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@alluserTransction transactions</td>
+                            }
 
-                        <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">5 cards</td>
+                            @if (user.Cards.Count == 1)
+                            {
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Card</td>
+                            }
+                            else
+                            {
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Cards</td>
 
-                        <td class="px-4 py-4 text-sm font-inter text-gray-700 whitespace-nowrap">
-                            <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                <h2 class="text-sm font-normal text-emerald-500">Active</h2>
-                            </div>
-                        </td>
+                            }
 
-                        <td class="px-4 py-4 text-base font-inter  whitespace-nowrap items-center">
-                            <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-red-400 dark:bg-red-300">
-                                Block
-                            </button>
-                        </td>
+                            <td class="px-4 py-4 text-sm font-inter text-gray-700 whitespace-nowrap">
+                                @if (user.RoleId == (int)RoleName.User)
+                                {
+                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-gray-800">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                        <h2 class="text-sm font-normal text-emerald-500">Active</h2>
+                                    </div>
+                                }
+                                else if (user.RoleId == (int)RoleName.Blocked)
+                                {
+                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-gray-800">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
+                                        <h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
+                                    </div>
+                                }
+                            </td>
 
-                    </tr>
+
+                            <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
+                                @if (user.RoleId == (int)RoleName.User)
+                                {
+                                    <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
+                                        <a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
+                                    </button>
+                                }
+                                else if (user.RoleId == (int)RoleName.Blocked)
+                                {
+                                    <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
+                                        <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
+                                    </button>
+
+                                }
+                            </td>
+
+                        </tr>
+                    }
                 </tbody>
             </table>
 
@@ -148,5 +204,7 @@
         </a>
         </div>*@
     </section>
+
+
 
 </div>
