@@ -1,13 +1,14 @@
 ﻿@model VirtualWallet.Dto.ViewModels.TransferViewModels.TransferViewModel
 
-<div class="h-full flex items-center justify-center px-4">
-    <form class="bg-white shadow-md rounded-lg px-8 py-6 w-96" asp-controller="Transfer" asp-action="Add" method="post">
+<div class="h-full flex flex-col items-center justify-center px-4">
+    <form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border-2 flex-col justify-center items-center inline-flex
+				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Transfer" asp-action="Add" method="post">
 
         <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-neutral-50">Transfer Details</div>
 
         <!-- Direction Selection -->
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-medium">Transfer Direction</label>
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
+            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
             <div class="mt-2">
                 <label class="inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked>
@@ -21,9 +22,9 @@
         </div>
 
         <!-- Card Selection -->
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-medium">Select Card</label>
-            <select class="form-select mt-1 block w-full" asp-for="CardId">
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
+            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Select Card</label>
+            <select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50 hover:bg-purple-300 dark:hover:bg-purple-800" asp-for="CardId">
                 <option value="" disabled selected>Select a card</option>
                 @foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
                 {
@@ -32,15 +33,17 @@
             </select>
         </div>
 
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-medium">Amount</label>
-            <input type="text" class="form-input mt-1 block w-full" name="amount" x-model="amount">
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
+            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Amount</label>
+            <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400" name="amount" x-model="amount">
         </div>
 
         <!-- Currency Selection -->
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-medium">Select Currency</label>
-            <select class="form-select mt-1 block w-full" asp-for="CurrencyId">
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
+            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Select Currency</label>
+            <select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50 hover:bg-purple-300 dark:hover:bg-purple-800" asp-for="CurrencyId">
                 <option value="" disabled selected>Select a currency</option>
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
                 {
@@ -50,10 +53,16 @@
         </div>
 
         <!-- Wallet ID (Hidden Input) -->
-        <div class="mb-4">
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
             <input type="hidden" asp-for="WalletId" />
         </div>
 
-        <button type="submit" class="w-full px-4 py-2 bg-purple-500 text-white font-medium rounded hover:bg-purple-400 transition">Submit Transfer</button>
+        <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
+            <div class="text-neutral-50 text-sm font-medium">
+                <div class="text-sm">
+                    <span>Submit Transfer</span>
+                </div>
+            </div>
+        </button>
     </form>
 </div>

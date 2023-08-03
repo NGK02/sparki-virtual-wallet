@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
+using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
@@ -117,7 +118,18 @@ namespace VirtualWallet.Web.ViewControllers
                     user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic);
                 }
                 userService.CreateUser(user);
-                //TODO Redirect to Email validation page then Successfull page
+
+                // send confirmation email
+                // this is still being implemented
+                // will probably separate the logic a little bit
+                string emailSubject = "Registration Confirmation";
+                string toUser = $"{user.FirstName} {user.LastName}";
+                string emailMessage = $"Dear {user.FirstName}, this is a (test) confirmation message.";
+
+                EmailSender emailSender = new EmailSender();
+                emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
+                // end of email verification section
+
                 return RedirectToAction("Index", "Home");
 
             }
