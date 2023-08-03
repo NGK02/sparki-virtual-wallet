@@ -51,128 +51,131 @@
     </form>
 
 
-
-    <section class="container px-4 mx-auto mt-20 ">
-        @if (this.Model.users.Count == 1)
-        {
-            <div class="flex items-center gap-x-3">
-                <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">1 users found</span>
-            </div>
-        }
-        else if (true)
-        {
-            <div class="flex items-center gap-x-3">
-                <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">@this.Model.users.Count users found</span>
-            </div>
-        }
-
-        <div class="flex flex-col mt-6 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 rounded-2xl inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <table class="min-w-full divide-y border-2 border-purple-400  dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-800">
-                    <tr>
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Name</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Username</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Email address</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Phone number</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Transactions count:</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Registered cards</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Status</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Block/UnBlock</th>
+    @if (this.Model.users.Count != 0)
+    {
 
 
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200  dark:divide-gray-700 dark:bg-gray-900">
-                    @foreach (var user in this.Model.users)
-                    {
-                        if (user.Id == Context.Session.GetInt32("userId"))
-                        {
-                            continue;
-                        }
+        <section class="container px-4 mx-auto mt-20 ">
+            @if (this.Model.users.Count == 1)
+            {
+                <div class="flex items-center gap-x-3">
+                    <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">1 users found</span>
+                </div>
+            }
+            else if (true)
+            {
+                <div class="flex items-center gap-x-3">
+                    <span class="px-3 py-1 text-sm border-2 border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-gray-800 dark:text-purple-400">@this.Model.users.Count users found</span>
+                </div>
+            }
 
+            <div class="flex flex-col mt-6 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 rounded-2xl inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <table class="min-w-full divide-y border-2 border-purple-400  dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-800">
                         <tr>
-                            <td class="flex flex-row px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath??@defaultProfilePicPath">
-                                <div class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                    @user.FirstName @user.LastName
-                                </div>
-                            </td>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Name</th>
 
-                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Username</td>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Username</th>
 
-                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Email</td>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Email address</th>
 
-                            <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.PhoneNumber</td>
-                            @if (@user.Incoming.Count + user.Outgoing.Count == 1)
-                            {
-                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">1 transaction</td>
-                            }
-                            else
-                            {
-                                int alluserTransction = @user.Incoming.Count + user.Outgoing.Count;
-                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@alluserTransction transactions</td>
-                            }
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Phone number</th>
 
-                            @if (user.Cards.Count == 1)
-                            {
-                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Card</td>
-                            }
-                            else
-                            {
-                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Cards</td>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Transactions count:</th>
 
-                            }
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Registered cards</th>
 
-                            <td class="px-4 py-4 text-sm font-inter text-gray-700 whitespace-nowrap">
-                                @if (user.RoleId == (int)RoleName.User)
-                                {
-                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-gray-800">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                        <h2 class="text-sm font-normal text-emerald-500">Active</h2>
-                                    </div>
-                                }
-                                else if (user.RoleId == (int)RoleName.Blocked)
-                                {
-                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-gray-800">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
-                                        <h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
-                                    </div>
-                                }
-                            </td>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Status</th>
 
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-gray-500 dark:text-gray-400">Block/UnBlock</th>
 
-                            <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
-                                @if (user.RoleId == (int)RoleName.User)
-                                {
-                                    <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
-                                        <a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
-                                    </button>
-                                }
-                                else if (user.RoleId == (int)RoleName.Blocked)
-                                {
-                                    <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
-                                        <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
-                                    </button>
-
-                                }
-                            </td>
 
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200  dark:divide-gray-700 dark:bg-gray-900">
+                        @foreach (var user in this.Model.users)
+                        {
+                            if (user.Id == Context.Session.GetInt32("userId"))
+                            {
+                                continue;
+                            }
 
-        </div>
+                            <tr>
+                                <td class="flex flex-row px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                                    <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath??@defaultProfilePicPath">
+                                    <div class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                        @user.FirstName @user.LastName
+                                    </div>
+                                </td>
+
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Username</td>
+
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Email</td>
+
+                                <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.PhoneNumber</td>
+                                @if (@user.Incoming.Count + user.Outgoing.Count == 1)
+                                {
+                                    <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">1 transaction</td>
+                                }
+                                else
+                                {
+                                    int alluserTransction = @user.Incoming.Count + user.Outgoing.Count;
+                                    <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@alluserTransction transactions</td>
+                                }
+
+                                @if (user.Cards.Count == 1)
+                                {
+                                    <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Card</td>
+                                }
+                                else
+                                {
+                                    <td class="text-center px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">@user.Cards.Count Cards</td>
+
+                                }
+
+                                <td class="px-4 py-4 text-sm font-inter text-gray-700 whitespace-nowrap">
+                                    @if (user.RoleId == (int)RoleName.User)
+                                    {
+                                        <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-gray-800">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                            <h2 class="text-sm font-normal text-emerald-500">Active</h2>
+                                        </div>
+                                    }
+                                    else if (user.RoleId == (int)RoleName.Blocked)
+                                    {
+                                        <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-gray-800">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
+                                            <h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
+                                        </div>
+                                    }
+                                </td>
 
 
-        @*<div class="flex items-center justify-between mt-6">
+                                <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
+                                    @if (user.RoleId == (int)RoleName.User)
+                                    {
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
+                                            <a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
+                                        </button>
+                                    }
+                                    else if (user.RoleId == (int)RoleName.Blocked)
+                                    {
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-400 hover:bg-purple-300 " type="submit">
+                                            <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
+                                        </button>
+
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            @*<div class="flex items-center justify-between mt-6">
         <a href="#" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
@@ -203,8 +206,9 @@
         </svg>
         </a>
         </div>*@
-    </section>
+        </section>
 
 
 
+    }
 </div>
