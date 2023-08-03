@@ -5,7 +5,9 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.Dto.CardDto;
 using VirtualWallet.Dto.ViewModels.CardViewModels;
+using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.TransferViewModels;
 using VirtualWallet.Web.Helper.Contracts;
 
@@ -14,29 +16,22 @@ namespace VirtualWallet.Web.ViewControllers
     public class TransferController : Controller
     {
         private readonly IAuthManagerMVC authManagerMVC;
+        private readonly ICardService cardService;
+        private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
 
-        public TransferController(IAuthManagerMVC authManagerMVC, IMapper mapper, ITransferService transferService)
+        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, ICurrencyService currencyService, IMapper mapper, ITransferService transferService)
         {
             this.authManagerMVC = authManagerMVC;
+            this.cardService = cardService;
+            this.currencyService = currencyService;
             this.mapper = mapper;
             this.transferService = transferService;
         }
 
-        [HttpGet("Transfer/Add")]
+        [HttpGet]
         public IActionResult Add()
-        {
-            if (!authManagerMVC.isLogged("LoggedUser"))
-            {
-                return RedirectToAction("Login", "User");
-            }
-
-            return View();
-        }
-
-        [HttpPost("Transfer/Add")]
-        public IActionResult Add(TransferViewModel model)
         {
             try
             {
@@ -47,20 +42,28 @@ namespace VirtualWallet.Web.ViewControllers
 
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
 
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                ViewData["Cards"] = cards;
 
-                var transfer = mapper.Map<Transfer>(model);
+                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                ViewData["Currencies"] = currencies;
 
-                transferService.AddTransfer(userId, transfer);
+                var model = new TransferViewModel();
+                ViewData["TransferViewModel"] = model;
 
-                return RedirectToAction("Index", "Home");
+                model.WalletId = userId;
+                return View(model);
             }
             catch (EntityNotFoundException ex)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 ViewData["ErrorMessage"] = ex.Message;
 
                 return View("Error");
@@ -95,8 +98,8 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Transfer/Delete/{transferId}")]
-        public IActionResult Delete(int transferId)
+        [HttpPost]
+        public IActionResult Add(TransferViewModel model)
         {
             try
             {
@@ -105,22 +108,29 @@ namespace VirtualWallet.Web.ViewControllers
                     return RedirectToAction("Login", "User");
                 }
 
-                if (!authManagerMVC.isAdmin("roleId"))
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
+                if (!ModelState.IsValid)
                 {
-                    Response.StatusCode = StatusCodes.Status403Forbidden;
-                    return View("Error");
+                    return View(model);
                 }
 
-                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-                var transfer = transferService.GetTransferById(transferId, userId);
+                var transfer = mapper.Map<Transfer>(model);
 
-                transferService.DeleteTransfer(transferId, userId);
+                transferService.AddTransfer(userId, transfer);
 
                 return RedirectToAction("Index", "Home");
             }
             catch (EntityNotFoundException ex)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 ViewData["ErrorMessage"] = ex.Message;
 
                 return View("Error");

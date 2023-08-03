@@ -63,7 +63,8 @@ namespace VirtualWallet.Business.Services
 
                 if (balance == null)
                 {
-                    balance = walletService.CreateWalletBalance(wallet.Id, transfer.CurrencyId);
+                    balance = new Balance { CurrencyId = transfer.CurrencyId, WalletId = transfer.WalletId };
+					wallet.Balances.Add(balance);
                 }
 
                 balance.Amount += transfer.Amount;
