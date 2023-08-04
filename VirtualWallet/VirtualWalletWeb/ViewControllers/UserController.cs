@@ -115,8 +115,8 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (filledForm.ProfilePic is null)
                 {
-                    //filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
-                    //user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
+                    filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
+                    user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
                 }
                 else
                 {
@@ -187,7 +187,9 @@ namespace VirtualWallet.Web.ViewControllers
                 user.IsConfirmed = true;
                 userService.ConfirmUser(user, int.Parse(userId));
 
-                return View("Confirmation");
+                ViewBag.SuccessMessage = "Your account has been confirmed. You can now log in.";
+
+                return View("Successful");
             }
             catch (EntityNotFoundException e)
             {
