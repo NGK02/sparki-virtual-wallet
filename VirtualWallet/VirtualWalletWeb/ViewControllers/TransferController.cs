@@ -30,7 +30,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.transferService = transferService;
         }
 
-        [HttpGet("Transfer/Add")]
+        [HttpGet]
         public IActionResult Add()
         {
             try
@@ -91,7 +91,7 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Transfer/Add")]
+        [HttpPost]
         public IActionResult Add(TransferViewModel model)
         {
             try
