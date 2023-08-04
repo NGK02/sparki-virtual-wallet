@@ -1,176 +1,200 @@
 ﻿@{
-    bool isLogged = this.Context.Session.Keys.Contains("LoggedUser");
-    string userName = Context.Session.GetString("LoggedUser");
-    int? loggedUserId = Context.Session.GetInt32("userId");
-    bool isAdmin = Context.Session.GetInt32("roleId") == (int)RoleName.Admin;
-    string loggedUserProfilePicPath = Context.Session.GetString("profilePicPath");
+	bool isLogged = this.Context.Session.Keys.Contains("LoggedUser");
+	string userName = Context.Session.GetString("LoggedUser");
+	int? loggedUserId = Context.Session.GetInt32("userId");
+	bool isAdmin = Context.Session.GetInt32("roleId") == (int)RoleName.Admin;
+	string loggedUserProfilePicPath = Context.Session.GetString("profilePicPath");
 
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparki</title>
-    <link href="~/main.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sparki</title>
+	<link href="~/main.css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-    <script>
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
-
+	<script>
+		if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	</script>
 </head>
 
 <body class="grid grid-rows-[auto_1fr_auto] min-h-screen bg-neutral-50 dark:bg-neutral-900 font-montserrat">
 
-    <nav class="flex justify-center h-fit bg-transparent px-0 md:px-32">
-        <div class="max-w-screen w-full flex flex-wrap items-center justify-between p-4">
-            <a href="/Home/Index" class="flex items-center">
-                <div class="relative">
-                    <img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
-                    <img src="~/assets/smalllogo2white.png" class="h-7 mr-3 hidden dark:block" alt="Sparki logo" />
-                    <img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
-                </div>
-            </a>
-            <svg class="h-6 w-6 cursor-pointer md:hidden block text-neutral-500
+	<nav class="flex justify-center h-fit bg-transparent px-0 md:px-32">
+		<div class="max-w-screen w-full flex flex-wrap items-center justify-between p-4">
+
+			<a href="/Home/Index" class="flex items-center">
+				<div class="relative">
+					<img src="~/assets/smalllogo2black.png" class="h-7 mr-3 block dark:hidden" alt="Sparki logo" />
+					<img src="~/assets/smalllogo2white.png" class="h-7 mr-3 hidden dark:block" alt="Sparki logo" />
+					<img src="~/assets/smalllogo2purple.png" class="absolute top-0 h-7 mr-3 opacity-0 hover:opacity-100 transition duration-300" alt="Sparki logo" />
+				</div>
+			</a>
+
+			<svg class="h-7 w-7 cursor-pointer md:hidden block text-neutral-500
 						rounded-lg md:hidden hover:bg-neutral-200 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-200
 						dark:hover:bg-neutral-700"
-                 id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
+				 id="menu-button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+			</svg>
 
-            <div class="hidden w-full md:block md:w-auto" id="menu">
-                <ul class="font-semibold flex flex-col items-center p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
-							md:space-x-8 md:mt-0 md:border-0 md:bg-transparent
+			<div class="hidden w-full md:block md:w-auto" id="menu">
+				<ul class="font-semibold flex flex-col items-center p-4 md:p-0 mt-4 border border-purple-400 bg-neutral-200 border-purple-100 rounded-lg md:flex-row
+							md:gap-8 md:mt-0 md:border-0 md:bg-transparent
 							dark:bg-neutral-800 dark:md:bg-transparent">
-                    @if (isLogged && isAdmin)
-                    {
-                        <li>
-                            <a href="http://localhost:7275/Admin/SearchUser" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+					@if (isLogged && isAdmin)
+					{
+						<li>
+							<a href="http://localhost:7275/Admin/SearchUser" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Admin panel</a>
-                        </li>
+						</li>
 
-                    }
-                    <li>
-                        <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+					}
+					<li>
+						<a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">API</a>
-                    </li>
-                    @if (isLogged)
-                    {
-                        <li>
-                            <button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+					</li>
+					@if (isLogged)
+					{
+						<li>
+							<button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn">
-                                @userName
-                            </button>
-                            <div class="absolute border border-purple-400 text-neutral-900 bg-neutral-200 hidden flex-col rounded mt-1 p-2 text-sm w-32 dark:bg-neutral-800 dark:text-neutral-50" id="dropdown">
-                                <a asp-controller="User" asp-action="Dashboard" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Dashboard</a>
-                                <a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Edit Profile</a>
-                                <hr class=" border-1 border-purple-400 dark:border-purple-400 ">
-                                <a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-400 rounded">Sign out</a>
-                            </div>
-                        </li>
-                        <li>
-                            <img class="object-cover w-9 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
-                        </li>
+								@userName
+							</button>
+							<div class="absolute border border-purple-400 text-neutral-900 bg-neutral-200 hidden flex-col rounded mt-1 p-2 text-sm w-32 dark:bg-neutral-800 dark:text-neutral-50" id="dropdown">
+								<a asp-controller="User" asp-action="Dashboard" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Dashboard</a>
+								<a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Edit Profile</a>
+								<hr class=" border-1 border-purple-400 dark:border-purple-400 ">
+								<a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-400 rounded">Sign out</a>
+							</div>
+						</li>
+						<li>
+							<img class="object-cover w-7 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
+						</li>
 
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
+					}
+					else
+					{
+						<li>
+							<a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign in</a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
+						</li>
+						<li>
+							<a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign up</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </nav>
+						</li>
+					}
+					<li>
+						<button id="theme-toggle" type="button" class="p-1 mt-4 h-fit w-fit cursor-pointer block text-neutral-500 rounded-lg hover:bg-neutral-200 transition duration-300 md:mt-0
+						dark:hover:bg-neutral-700">
 
-    <main>
-        @RenderBody()
-    </main>
+							<svg xmlns="http://www.w3.org/2000/svg" id="themeToggleDarkIcon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+								 class="hidden w-7 h-7 text-neutral-500">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+							</svg>
 
-    <footer class="flex flex-wrap items-center justify-center min-h-fit pt-4 pb-4 h-20">
-        <ul class="flex flex-row text-xs">
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">C-Sharp</span>
-                    <img src="~/assets/footericons/csharplogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/csharplogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">HTML</span>
-                    <img src="~/assets/footericons/htmlLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/htmlLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">CSS</span>
-                    <img src="~/assets/footericons/csslogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/csslogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">ASP.NET MVC</span>
-                    <img src="~/assets/footericons/mvcLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/mvcLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">Tailwind CSS</span>
-                    <img src="~/assets/footericons/tailwindLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/tailwindLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-            <li>
-                <div class="group">
-                    <span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">JavaScript</span>
-                    <img src="~/assets/footericons/javascriptLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
-                    <img src="~/assets/footericons/javascriptLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
-                </div>
-            </li>
-        </ul>
-    </footer>
+							<svg xmlns="http://www.w3.org/2000/svg" id="themeToggleLightIcon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+								 class="hidden w-7 h-7 text-neutral-500">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+							</svg>
 
-    @*TODO: Преизползване на код за тези два скрипта?*@
-    <script>
-        const button = document.querySelector('#menu-button'); // Hamburger Icon
-        const menu = document.querySelector('#menu'); // Menu
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-        button.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-    </script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.querySelector('#menu-btn')
-            const dropdown = document.querySelector('#dropdown')
+	<main>
+		@RenderBody()
+	</main>
 
-            menuBtn.addEventListener('click', () => {
-                dropdown.classList.toggle('hidden')
-                dropdown.classList.toggle('flex')
-            })
+	<footer class="flex flex-wrap items-center justify-center min-h-fit pt-4 pb-4 h-20">
+		<ul class="flex flex-row text-xs">
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">C-Sharp</span>
+					<img src="~/assets/footericons/csharplogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/csharplogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">HTML</span>
+					<img src="~/assets/footericons/htmlLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/htmlLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">CSS</span>
+					<img src="~/assets/footericons/csslogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/csslogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">ASP.NET MVC</span>
+					<img src="~/assets/footericons/mvcLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/mvcLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">Tailwind CSS</span>
+					<img src="~/assets/footericons/tailwindLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/tailwindLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+			<li>
+				<div class="group">
+					<span class="align-top absolute h-fit p-1 opacity-0 text-center bg-neutral-500 text-neutral-50 rounded group-hover:opacity-100 transition duration-300">JavaScript</span>
+					<img src="~/assets/footericons/javascriptLogobw.png" class="h-6 mr-4 block dark:hidden" alt="" />
+					<img src="~/assets/footericons/javascriptLogobw2.png" class="h-6 mr-4 hidden dark:block" alt="" />
+				</div>
+			</li>
+		</ul>
+	</footer>
 
-        })
-    </script>
+	@*TODO: Преизползване на код за тези два скрипта?*@
+	<script>
+		const button = document.querySelector('#menu-button'); // Hamburger Icon
+		const menu = document.querySelector('#menu'); // Menu
+
+		button.addEventListener('click', () => {
+			menu.classList.toggle('hidden');
+		});
+	</script>
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			const menuBtn = document.querySelector('#menu-btn')
+			const dropdown = document.querySelector('#dropdown')
+
+			menuBtn.addEventListener('click', () => {
+				dropdown.classList.toggle('hidden')
+				dropdown.classList.toggle('flex')
+			})
+
+		})
+	</script>
+	<script>
+		if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			themeToggleLightIcon.classList.remove('hidden');
+		} else {
+			themeToggleDarkIcon.classList.remove('hidden');
+		}
+	</script>
 </body>
 </html>
