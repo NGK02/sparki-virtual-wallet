@@ -165,5 +165,78 @@ namespace VirtualWallet.Web.ViewControllers
 				return View("Error");
 			}
 		}
-	}
+
+        [HttpGet]
+        public IActionResult UnBlockUser([FromRoute] int id)
+        {
+            try
+            {
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMVC.isAdmin("roleId"))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    return View("Error");
+                }
+                var user = userService.GetUserById(id);
+                this.ViewBag.userIdToUnBlock = id;
+                this.ViewBag.userUsernameToUnBlock = user.Username;
+                return View();
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View();
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+        }
+        [HttpPost]
+        public IActionResult UnBlock([FromRoute] int id)
+        {
+            try
+            {
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMVC.isAdmin("roleId"))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    return View("Error");
+                }
+
+                _ = adminService.UnBlockUser(id, null, null, null);
+                this.ViewBag.SuccessMessage = "User UnBlocked Successfully!";
+                return View("Successful");
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View();
+            }
+            catch (EntityAlreadyUnBlockedException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("UnBlockUser");
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+        }
+    }
 }
