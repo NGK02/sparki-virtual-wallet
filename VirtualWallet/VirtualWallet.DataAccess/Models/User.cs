@@ -55,5 +55,9 @@ namespace VirtualWallet.DataAccess.Models
 		public List<WalletTransaction> Outgoing { get; set; } = new List<WalletTransaction>();
 
 		public List<Card> Cards { get; set; } = new List<Card>();
-	}
+
+		public string ConfirmationToken { get; set; }
+
+		public bool IsConfirmed { get; set; }
+    }
 }

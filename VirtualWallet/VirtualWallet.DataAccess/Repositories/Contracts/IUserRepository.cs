@@ -32,5 +32,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
 
 		public bool BlockUser(User user);
 		public bool UnBlockUser(User user);
-	}
+
+        void ConfirmUser(User userToConfirm, User userNewValues);
+    }
 }

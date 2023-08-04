@@ -61,6 +61,13 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
             catch (UnauthenticatedOperationException ex)
             {
                 Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -117,6 +124,13 @@ namespace VirtualWallet.Web.ViewControllers
             catch (EntityNotFoundException ex)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 ViewData["ErrorMessage"] = ex.Message;
 
                 return View("Error");

@@ -25,5 +25,7 @@ namespace VirtualWallet.Business.Services.Contracts
 		User UpdateUser(int id, User userNewValues);
 
 		bool DeleteUser(string userName, int? userId);
-	}
+
+        void ConfirmUser(User user, int userId);
+    }
 }

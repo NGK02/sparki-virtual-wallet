@@ -9,6 +9,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.DataAccess.Repositories;
 
 namespace VirtualWallet.Business.Services
 {
@@ -178,5 +179,12 @@ namespace VirtualWallet.Business.Services
 			}
 			return false;
 		}
-	}
+
+        public void ConfirmUser(User user, int userId)
+        {
+            var userToConfirm = GetUserById(userId);
+
+            userRepo.ConfirmUser(userToConfirm, user);
+        }
+    }
 }

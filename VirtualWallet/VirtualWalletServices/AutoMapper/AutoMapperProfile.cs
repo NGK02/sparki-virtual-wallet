@@ -17,6 +17,8 @@ using VirtualWallet.Dto.ViewModels.CardViewModels;
 using VirtualWallet.Dto.ViewModels.TransferViewModels;
 using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
+using VirtualWallet.Dto.ViewModels.AdminViewModels;
+using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -73,6 +75,11 @@ namespace VirtualWallet.Business.AutoMapper
 			CreateMap<Exchange, GetExchangeDto>()
 				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
 				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
+
+			CreateMap<SearchUser, UserQueryParameters>()
+		.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
+		.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
+		.ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
 
 		}
 

@@ -150,7 +150,9 @@ namespace VirtualWallet.DataAccess.Repositories
 											.ThenInclude(w => w.Balances)
 											.ThenInclude(b => b.Currency)
 										.Include(u => u.Cards)
-										.Include(u => u.Role);
+										.Include(u => u.Role)
+										.Include(u => u.Incoming)
+										.Include(u => u.Outgoing);
 			return users;
 		}
 
@@ -167,5 +169,12 @@ namespace VirtualWallet.DataAccess.Repositories
 			database.SaveChanges();
 			return true;
 		}
-	}
+
+        public void ConfirmUser(User userToConfirm, User userNewValues)
+        {
+            userToConfirm.ConfirmationToken = userNewValues.ConfirmationToken ?? userToConfirm.ConfirmationToken;
+            userToConfirm.IsConfirmed = userNewValues.IsConfirmed;
+            database.SaveChanges();
+        }
+    }
 }

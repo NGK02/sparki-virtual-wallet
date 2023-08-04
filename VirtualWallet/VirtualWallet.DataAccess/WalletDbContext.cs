@@ -196,6 +196,7 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 1,
+				IsConfirmed = true,
 				PhoneNumber="0888888881"
 
                 //123
@@ -210,7 +211,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 2,
-				PhoneNumber="0888888882"
+                IsConfirmed = true,
+                PhoneNumber="0888888882"
 
                 //123
 
@@ -225,7 +227,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 3,
-				PhoneNumber="0888888883"
+                IsConfirmed = true,
+                PhoneNumber="0888888883"
 
                 //123
             },
@@ -239,7 +242,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 4,
-				PhoneNumber="0888888884"
+                IsConfirmed = true,
+                PhoneNumber="0888888884"
 
                 //123
             },
@@ -253,7 +257,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 5,
-				PhoneNumber="0888888885"
+                IsConfirmed = true,
+                PhoneNumber="0888888885"
 
                 //123
             },
@@ -267,7 +272,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 3,
 				WalletId = 6,
-				PhoneNumber="0888888886"
+                IsConfirmed = true,
+                PhoneNumber="0888888886"
 
 
                 //123
@@ -282,7 +288,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 7,
-				PhoneNumber="0888888887"
+                IsConfirmed = true,
+                PhoneNumber="0888888887"
 
                 //123
             },
@@ -296,7 +303,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 8,
-				PhoneNumber="0888888888"
+                IsConfirmed = true,
+                PhoneNumber="0888888888"
 
                 //123
             },
@@ -310,7 +318,8 @@ namespace VirtualWallet.DataAccess
 				Password = "MTIz",
 				RoleId = 2,
 				WalletId = 9,
-				PhoneNumber="0888888889"
+                IsConfirmed = true,
+                PhoneNumber="0888888889"
 
                 //123
             },
