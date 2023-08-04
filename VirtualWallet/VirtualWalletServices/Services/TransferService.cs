@@ -26,52 +26,54 @@ namespace VirtualWallet.Business.Services
 
 		private void TransferFromWallet(int userId, Transfer transfer)
 		{
-            using (TransactionScope transactionScope = new TransactionScope())
-            {
-                var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
-                var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
-                var currency = currencyService.GetCurrencyById(transfer.CurrencyId);
+			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
-                if (balance == null)
-                {
-                    throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{currency.Code}'.");
-                }
+			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+			var currency = currencyService.GetCurrencyById(transfer.CurrencyId);
 
-                decimal amountToWithdraw = transfer.Amount;
-                decimal availableBalance = balance.Amount;
+			if (balance == null)
+			{
+				throw new InsufficientFundsException($"Cannot withdraw from the wallet. No balance with currency '{currency.Code}'.");
+			}
 
-                if (amountToWithdraw > availableBalance)
-                {
-                    throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {balance.Currency.Code}.");
-                }
+			decimal amountToWithdraw = transfer.Amount;
+			decimal availableBalance = balance.Amount;
 
-                balance.Amount -= transfer.Amount;
-                transferRepository.AddTransfer(transfer);
+			if (amountToWithdraw > availableBalance)
+			{
+				throw new InsufficientFundsException($"Insufficient funds. Available balance: {availableBalance} {balance.Currency.Code}.");
+			}
 
-                transactionScope.Complete();
-            }
+			using (TransactionScope transactionScope = new TransactionScope())
+			{
+				balance.Amount -= transfer.Amount;
+				transferRepository.AddTransfer(transfer);
+
+				transactionScope.Complete();
+			}
 		}
 
 		private void TransferToWallet(int userId, Transfer transfer)
 		{
-            using (TransactionScope transactionScope = new TransactionScope())
-            {
-                var wallet = walletService.GetWalletById(transfer.WalletId, userId);
 
-                var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
+			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
+			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 
-                if (balance == null)
-                {
-                    balance = new Balance { CurrencyId = transfer.CurrencyId, WalletId = transfer.WalletId };
-					wallet.Balances.Add(balance);
-                }
+			//Да разбера защо това не работи с метода.
+			if (balance == null)
+			{
+				balance = new Balance { CurrencyId = transfer.CurrencyId, WalletId = transfer.WalletId };
+				wallet.Balances.Add(balance);
+			}
 
-                balance.Amount += transfer.Amount;
-                transferRepository.AddTransfer(transfer);
+			using (TransactionScope transactionScope = new TransactionScope())
+			{
+				balance.Amount += transfer.Amount;
+				transferRepository.AddTransfer(transfer);
 
-                transactionScope.Complete();
-            }
+				transactionScope.Complete();
+			}
 		}
 
 		public IEnumerable<Transfer> GetTransfers(int userId)

@@ -2,7 +2,6 @@
 
 <div class="px-4 xl:px-24">
 	<div class="flex flex-col mt-32 xl:mt-64 xl:flex-row">
-
 		<div class="flex flex-1 flex-col justify-center items-center text-neutral-950 font-bold dark:text-neutral-50">
 			<div class="max-w-2xl w-fit text-4xl text-center xl:text-left md:w-full md:text-6xl xl:text-7xl">
 				A better way
@@ -21,14 +20,88 @@
 				<img src="~/assets/home/creditcarddark.png" class="hidden dark:block h-72 md:h-80 xl:h-96 flex-shrink-0" />
 			</div>
 		</div>
-
 	</div>
 
 
-	<div class="flex justify-center items-center w-full mt-32 mb-32 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
+	<div class="flex justify-center items-center w-full mt-32 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
 		<div class="w-fit text-neutral-950 text-center font-medium dark:text-neutral-50">
 			Already <span class="text-purple-400">@this.Model.usersCount</span> users believe in us and <span class="text-purple-400">@this.Model.transactionsCount</span> transactions have been made!
 		</div>
 	</div>
 
+	<ul class="carousel-list relative flex justify-center h-72 mt-32 overflow-x-hidden">
+		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-2"></li>
+		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-1"></li>
+		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="0"></li>
+		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="1"></li>
+		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="2"></li>
+	</ul>
+
+	<style>
+		.carousel-item[data-pos="-1"] {
+			transform: translateX(-110%) scale(0.9);
+		}
+
+		.carousel-item[data-pos="1"] {
+			transform: translateX(110%) scale(0.9);
+		}
+
+		.carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
+			opacity: 0.4;
+		}
+
+		.carousel-item[data-pos="-2"] {
+			transform: translateX(-210%) scale(0.9);
+		}
+
+		.carousel-item[data-pos="2"] {
+			transform: translateX(210%) scale(0.9);
+		}
+	</style>
+
+	<script>
+		const state = {};
+		const carouselList = document.querySelector('.carousel-list');
+		const carouselItems = document.querySelectorAll('.carousel-item');
+		const elems = Array.from(carouselItems);
+
+		carouselList.addEventListener('click', function (event) {
+			var newActive = event.target;
+			var isItem = newActive.closest('.carousel-item');
+
+			if (!isItem || newActive.classList.contains('carousel__item_active')) {
+				return;
+			};
+
+			update(newActive);
+		});
+
+		const update = function (newActive) {
+			const newActivePos = newActive.dataset.pos;
+
+			const current = elems.find((elem) => elem.dataset.pos == 0);
+			const prev = elems.find((elem) => elem.dataset.pos == -1);
+			const next = elems.find((elem) => elem.dataset.pos == 1);
+			const first = elems.find((elem) => elem.dataset.pos == -2);
+			const last = elems.find((elem) => elem.dataset.pos == 2);
+
+			current.classList.remove('carousel__item_active');
+
+			[current, prev, next, first, last].forEach(item => {
+				var itemPos = item.dataset.pos;
+
+				item.dataset.pos = getPos(itemPos, newActivePos)
+			});
+		};
+
+		const getPos = function (current, active) {
+			const diff = current - active;
+
+			if (Math.abs(current - active) > 2) {
+				return -current
+			}
+
+			return diff;
+		}
+	</script>
 </div>
