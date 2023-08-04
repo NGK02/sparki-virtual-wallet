@@ -197,7 +197,8 @@ namespace VirtualWallet.DataAccess
 				RoleId = 2,
 				WalletId = 1,
 				IsConfirmed = true,
-				PhoneNumber="0888888881"
+				PhoneNumber="0888888881",
+				ProfilePicPath="/Assets/OriginalProfilePics/1d825707-a65e-4378-8e70-91030d7443bb_c372cf2e-0cab-43a0-81e1-73ea610f9dfd_ddh0598-18d7e667-d117-4b11-8ef0-244eb60bfa45.jpg"
 
                 //123
             },
@@ -212,7 +213,8 @@ namespace VirtualWallet.DataAccess
 				RoleId = 2,
 				WalletId = 2,
                 IsConfirmed = true,
-                PhoneNumber="0888888882"
+                PhoneNumber="0888888882",
+				ProfilePicPath="/Assets/OriginalProfilePics/00305ad2-a944-49ef-ac46-036c00ec8387_1805f02d-058f-4396-b8e9-3286a4344754_650566858583572501.png"
 
                 //123
 
@@ -258,7 +260,8 @@ namespace VirtualWallet.DataAccess
 				RoleId = 2,
 				WalletId = 5,
                 IsConfirmed = true,
-                PhoneNumber="0888888885"
+                PhoneNumber="0888888885",
+				ProfilePicPath="/Assets/OriginalProfilePics/3ec69106-3e2a-4392-b996-81c2627af234_kakashi.jpeg"
 
                 //123
             },
@@ -323,7 +326,23 @@ namespace VirtualWallet.DataAccess
 
                 //123
             },
-			};
+            new User()
+            {
+                Id = 10,
+                FirstName = "Atanas",
+                LastName = "Iliev",
+                Username = "Nachosa",
+                Email = "Nachosa@gmail.com",
+                Password = "MTIz",
+                RoleId = 2,
+                WalletId = 10,
+                IsConfirmed = true,
+                PhoneNumber="0888888810",
+				ProfilePicPath="/Assets/OriginalProfilePics/photo.jpeg"
+
+                //123
+            },
+            };
 
 			IList<Wallet> wallets = new List<Wallet>
 			{

@@ -1,161 +1,209 @@
 ﻿@model VirtualWallet.Dto.ViewModels.AdminViewModels.SearchUser
 @{
-	string defaultProfilePicPath = Url.Content("~/assets/pfp.jpg");
+    string defaultProfilePicPath = Url.Content("~/assets/pfp.jpg");
+    int? totalUsers = this.ViewBag.TotalUsers ?? this.Model.users.Count;
 }
 
 <div class="h-max flex flex-col items-center justify-center px-4 my-12">
 
-	<form asp-controller="Admin" asp-action="SearchUser" method="post"
-		  class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
+    <form asp-controller="Admin" asp-action="SearchUser" method="get"
+          class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400">
 
 
-		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
-		<div class="w-full mb-6 flex-col justify-center items-center flex">
-			<div>
-				<select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full bg-neutral-50
+        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
+        <div class="w-full mb-6 flex-col justify-center items-center flex">
+            <div>
+                <select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full bg-neutral-50
 								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SearchOption">
-					<option value="Username">Username</option>
-					<option value="Email">Email</option>
-					<option value="Phonenumber">Phonenumber</option>
-				</select>
-			</div>
-		</div>
+                    <option value="Username">Username</option>
+                    <option value="Email">Email</option>
+                    <option value="Phonenumber">Phonenumber</option>
+                </select>
+            </div>
+        </div>
 
-		<div class="w-full mb-6 flex-col justify-start items-start flex">
-			@*<div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">password</div>*@
-			<input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+        <div class="w-full mb-6 flex-col justify-start items-start flex">
+            @*<div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">password</div>*@
+            <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50
 						focus:outline focus:outline-purple-400"
-				   asp-for="SearchOptionValue" type="text" placeholder="Provide input to search by....">
-			<div class="text-sm font-normal text-red-600 leading-tight">
-				<span asp-validation-for="SearchOptionValue"></span>
-			</div>
-		</div>
+                   asp-for="SearchOptionValue" type="text" placeholder="Provide input to search by....">
+            <div class="text-sm font-normal text-red-600 leading-tight">
+                <span asp-validation-for="SearchOptionValue"></span>
+            </div>
+        </div>
 
-		@if (this.ViewData["ErrorMessage"] is not null)
-		{
-			<span class="text-red-600 text-base mb-4">
-				@this.ViewData["ErrorMessage"]
-			</span>
-		}
-		<button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
-			<div class="text-neutral-50 text-sm font-medium">
+        @if (this.ViewData["ErrorMessage"] is not null)
+        {
+            <span class="text-red-600 text-base mb-4">
+                @this.ViewData["ErrorMessage"]
+            </span>
+        }
+        <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
+            <div class="text-neutral-50 text-sm font-medium">
 
-				<div class="text-sm">
-					<span>Search</span>
-				</div>
+                <div class="text-sm">
+                    <span>Search</span>
+                </div>
 
-			</div>
-		</button>
+            </div>
+        </button>
 
-	</form>
+    </form>
 
-	@if (this.Model.users.Count != 0)
-	{
-		<div class="flex flex-col items-start mt-12 gap-4 max-w-7xl">
-			@if (this.Model.users.Count == 1)
-			{
-				<span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 users found</span>
-			}
-			else if (true)
-			{
-				<span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@this.Model.users.Count users found</span>
+    @if (this.Model.users.Count != 0)
+    {
+        <div class="flex flex-col items-start mt-12 gap-4 max-w-7xl">
+            @if (this.Model.users.Count == 1)
+            {
+                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 users found</span>
+            }
+            else
+            {
+                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@totalUsers users found</span>
 
-			}
+            }
 
-			<div class="flex flex-col w-full overflow-x-auto border border-purple-400 rounded-2xl inline-block min-w-full align-middle">
-				<table class="w-full">
+            <div class="flex flex-col w-full overflow-x-auto border border-purple-400 rounded-2xl inline-block min-w-full align-middle">
+                <table class="w-full">
 
-					<thead class="bg-neutral-50 dark:bg-neutral-800">
-						<tr>
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Name</th>
+                    <thead class="bg-neutral-50 dark:bg-neutral-800">
+                        <tr>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Name</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Username</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Username</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Email address</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Email address</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Phone number</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Phone number</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Transactions</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Transactions</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Cards</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Cards</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Status</th>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Confirmed</th>
 
-							<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Block/UnBlock</th>
-						</tr>
-					</thead>
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Status</th>
 
-					<tbody class="bg-white divide-y divide-neutral-200  dark:divide-neutral-700 dark:bg-neutral-900">
-						@foreach (var user in this.Model.users)
-						{
-							if (user.Id == Context.Session.GetInt32("userId"))
-							{
-								continue;
-							}
+                            <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Block/UnBlock</th>
+                        </tr>
+                    </thead>
 
-							<tr>
-								<td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 whitespace-nowrapg gap-2">
-									<img class="object-cover w-9 h-9 mt-4 rounded-full md:mt-0" src="@defaultProfilePicPath">
-									<div class="h-fit text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
-										@user.FirstName @user.LastName
-									</div>
-								</td>
+                    <tbody class="bg-white divide-y divide-neutral-200  dark:divide-neutral-700 dark:bg-neutral-900">
+                        @foreach (var user in this.Model.users)
+                        {
+                            if (user.Id == Context.Session.GetInt32("userId"))
+                            {
+                                continue;
+                            }
 
-								<td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Username</td>
+                            <tr>
+                                <td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 whitespace-nowrapg gap-2">
+                                    @if (user.ProfilePicPath is null)
+                                    {
+                                        <img class="object-cover w-9 h-9 mt-4 rounded-full md:mt-0" src="@defaultProfilePicPath">
+                                    }
+                                    else
+                                    {
+                                        <img class="object-cover w-9 h-9 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath">
+                                    }
+                                    <div class="h-fit text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
+                                        @user.FirstName @user.LastName
+                                    </div>
+                                </td>
 
-								<td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Email</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Username</td>
 
-								<td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.PhoneNumber</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Email</td>
 
-
-								@{
-									int alluserTransctions = @user.Incoming.Count + user.Outgoing.Count;
-								}
-								<td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@alluserTransctions</td>
-
-								<td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Cards.Count</td>
-
-								<td class="px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
-									@if (user.RoleId == (int)RoleName.User)
-									{
-										<div class="flex items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-neutral-800">
-											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-											<h2 class="text-sm font-normal text-emerald-500">Active</h2>
-										</div>
-									}
-									else if (user.RoleId == (int)RoleName.Blocked)
-									{
-										<div class="flex w-fit items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-neutral-800">
-											<span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
-											<h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
-										</div>
-									}
-								</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.PhoneNumber</td>
 
 
-								<td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
-									@if (user.RoleId == (int)RoleName.User)
-									{
-										<button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400 " type="submit">
-											<a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
-										</button>
-									}
-									else if (user.RoleId == (int)RoleName.Blocked)
-									{
-										<button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400" type="submit">
-											<a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
-										</button>
+                                @{
+                                    int alluserTransctions = @user.Incoming.Count + user.Outgoing.Count;
+                                }
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@alluserTransctions</td>
 
-									}
-								</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Cards.Count</td>
 
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	}
+                                <td class="text-center px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
+                                    @if (user.IsConfirmed is true)
+                                    {
+                                        <span>Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span>No</span>
+                                    }
+                                </td>
+
+                                <td class="px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
+                                    @if (user.RoleId == (int)RoleName.User)
+                                    {
+                                        <div class="flex items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-neutral-800">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                            <h2 class="text-sm font-normal text-emerald-500">Active</h2>
+                                        </div>
+                                    }
+                                    else if (user.RoleId == (int)RoleName.Blocked)
+                                    {
+                                        <div class="flex w-fit items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-neutral-800">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
+                                            <h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
+                                        </div>
+                                    }
+                                </td>
+
+
+                                <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
+                                    @if (user.RoleId == (int)RoleName.User)
+                                    {
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400 " type="submit">
+                                            <a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
+                                        </button>
+                                    }
+                                    else if (user.RoleId == (int)RoleName.Blocked)
+                                    {
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400" type="submit">
+                                            <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
+                                        </button>
+
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        if (totalUsers > 5)
+        {
+            <ul class="list-style-none flex text-base mt-6">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li>
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href=" /Admin/Search?page =@(ViewBag.CurrentPage - 1)">Previous</a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li @(i == ViewBag.CurrentPage ? "active" : "")>
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="/Admin/Search?page =@i ">@i</a>
+                    </li>
+                }
+
+
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="#">Next</a>
+                </li>
+            </ul>
+        }
+    }
+
 </div>

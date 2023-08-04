@@ -10,10 +10,9 @@ namespace VirtualWallet.Dto.ViewModels.AdminViewModels
 {
     public class SearchUser
     {
-        public string SearchOption { get; set; }
+		public int? Page { get; set; }
+		public string SearchOption { get; set; }
 
-
-        [Required(ErrorMessage = "Please provide input!")]
         public string SearchOptionValue { get; set; }
 
         public List<User> users { get; set; } = new List<User>();
