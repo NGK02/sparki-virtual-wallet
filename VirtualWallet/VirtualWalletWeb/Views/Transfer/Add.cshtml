@@ -2,7 +2,7 @@
 
 <div class="h-full flex flex-col items-center justify-center px-4">
     <form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border-2 flex-col justify-center items-center inline-flex
-				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Transfer" asp-action="Add" method="post">
+				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Transfer" asp-action="Create" method="post">
 
         <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-neutral-50">Transfer Details</div>
 
@@ -18,6 +18,10 @@
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="false">
                     <span class="ml-2 text-gray-700">Wallet to Card</span>
                 </label>
+
+                <div class="text-sm font-normal text-red-600 leading-tight">
+                    <span asp-validation-for="HasCardSender"></span>
+                </div>
             </div>
         </div>
 
@@ -31,13 +35,22 @@
                     <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
                 }
             </select>
+
+            <div class="text-sm font-normal text-red-600 leading-tight">
+                <span asp-validation-for="CardId"></span>
+            </div>
         </div>
 
-        <div class="w-full mb-4 flex-col justify-start items-start flex">
+        @*<div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Amount</label>
             <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50
 						focus:outline focus:outline-purple-400" name="amount" x-model="amount">
+        </div>*@
+
+        <div class="w-full mb-4 flex-col justify-start items-start flex">
+            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Amount</label>
+            <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-neutral-50 focus:outline focus:outline-purple-400" asp-for="Amount">
         </div>
 
         <!-- Currency Selection -->
