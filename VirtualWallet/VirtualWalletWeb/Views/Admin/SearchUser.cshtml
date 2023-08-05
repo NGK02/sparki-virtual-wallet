@@ -61,7 +61,7 @@
             }
             else
             {
-                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@totalUsers users found</span>
+                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(totalUsers - 1) users found</span>
 
             }
 
@@ -195,8 +195,9 @@
                     {
                         <li class="bg-purple-300 rounded">
                             <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                               href="SearchUser?Page=@i">@i
-                               </a>
+                               href="SearchUser?Page=@i">
+                                @i
+                            </a>
                         </li>
                     }
                     else
