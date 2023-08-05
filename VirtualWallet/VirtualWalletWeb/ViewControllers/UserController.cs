@@ -281,6 +281,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (editedUser.ProfilePic is not null)
                 {
                     newUserValues.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(editedUser.ProfilePic);
+                    this.HttpContext.Session.SetString("profilePicPath", newUserValues.ProfilePicPath);
                     imageManager.DeleteProfilePicFromRoot(editedUser.OldProfilePicPath);
                 }
                 userService.UpdateUser(id, newUserValues);
