@@ -8,7 +8,7 @@
 				<div class="w-full text-purple-400 text-center xl:text-left dark:text-purple-400">
 					to send money
 				</div>
-				<div class="hidden text-lg font-thin mt-6 md:block">
+				<div class="hidden text-lg font-thin mt-6 text-neutral-800 dark:text-neutral-200 md:block">
 					Welcome to Sparki Wallet, where you can store your money without the fear of losing it in your couch cushions! With our app, you can easily keep track of your finances and make transactions with just a few clicks.
 				</div>
 			</div>
@@ -23,16 +23,16 @@
 	</div>
 
 
-	<div class="flex justify-center items-center w-full mt-32 px-4 xl:px-24 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
+	<div class="flex justify-center items-center w-full my-32 px-4 xl:px-24 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
 		<div class="w-fit text-neutral-950 text-center font-medium dark:text-neutral-50">
 			Already <span class="text-purple-400">@this.Model.usersCount</span> users believe in us and <span class="text-purple-400">@this.Model.transactionsCount</span> transactions have been made!
 		</div>
 	</div>
 
-	<ul class="carousel-list relative flex justify-center items-center h-80 mt-32 overflow-x-hidden">
+	<ul class="carousel-list relative flex justify-center items-center h-80 mb-48 overflow-x-hidden">
 		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-2">
 			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
 					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
 				</svg>
@@ -106,6 +106,21 @@
 		</li>
 	</ul>
 
+	<div class="inline-flex flex-col w-full bg-gradient-to-b from-neutral-50 via-purple-400 to-neutral-50
+				dark:bg-gradient-to-b dark:from-neutral-900 dark:via-purple-400 dark:to-neutral-900">
+		<div class="flex flex-col justify-center items-center gap-4 my-32 bg-transparent">
+			<div class="text-center text-neutral-950 text-2xl font-semibold dark:text-neutral-50">
+				Refer a friend
+			</div>
+			<div class="text-center text-lg text-neutral-800 max-w-4xl dark:text-neutral-200">
+				Now you can easily invite your friends to join and enjoy the convenience and security of managing their finances with our app. Plus, for every friend you refer, you’ll both receive a bonus credit to your account! It’s a win-win situation
+			</div>
+			<button class="h-fit w-fit p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+				Send email
+			</button>
+		</div>
+	</div>
+
 	<style>
 
 		.carousel-item[data-pos="0"] {
@@ -121,11 +136,11 @@
 		}
 
 		.carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
-			opacity: 0.4;
+			opacity: 0.3;
 		}
 
 		.carousel-item[data-pos="-1"], .carousel-item[data-pos="1"] {
-			opacity: 0.8;
+			opacity: 0.6;
 		}
 
 		.carousel-item[data-pos="-2"] {
