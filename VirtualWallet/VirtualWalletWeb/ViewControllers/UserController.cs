@@ -116,11 +116,11 @@ namespace VirtualWallet.Web.ViewControllers
                 if (filledForm.ProfilePic is null)
                 {
                     filledForm.ProfilePic = imageManager.GeneratePlaceholderAvatar(filledForm.FirstName, filledForm.LastName);
-                    user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic);
+                    user.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(filledForm.ProfilePic).Result;
                 }
                 else
                 {
-                    user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic);
+                    user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic).Result;
                 }
 
                 EmailSender emailSender = new EmailSender();
@@ -280,8 +280,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (editedUser.ProfilePic is not null)
                 {
-                    newUserValues.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(editedUser.ProfilePic);
-                    this.HttpContext.Session.SetString("profilePicPath", newUserValues.ProfilePicPath);
+                    newUserValues.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(editedUser.ProfilePic).Result;
                     imageManager.DeleteProfilePicFromRoot(editedUser.OldProfilePicPath);
                 }
                 userService.UpdateUser(id, newUserValues);

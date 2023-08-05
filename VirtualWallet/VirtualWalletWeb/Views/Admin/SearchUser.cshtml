@@ -102,11 +102,11 @@
                                 <td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 whitespace-nowrapg gap-2">
                                     @if (user.ProfilePicPath is null)
                                     {
-                                        <img class="object-cover w-9 h-9 mt-4 rounded-full md:mt-0" src="@defaultProfilePicPath">
+                                        <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@defaultProfilePicPath">
                                     }
                                     else
                                     {
-                                        <img class="object-cover w-9 h-9 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath">
+                                        <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath">
                                     }
                                     <div class="h-fit text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
                                         @user.FirstName @user.LastName
@@ -127,7 +127,7 @@
 
                                 <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Cards.Count</td>
 
-                                <td class="text-center px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
                                     @if (user.IsConfirmed is true)
                                     {
                                         <span>Yes</span>

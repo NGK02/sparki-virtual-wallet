@@ -3,9 +3,9 @@
     public interface IImageManager
     {
         IFormFile GeneratePlaceholderAvatar(String firstName, String lastName);
-        string UploadGeneratedProfilePicInRoot(IFormFile generatedPic);
+		Task<string> UploadGeneratedProfilePicInRoot(IFormFile generatedPic);
 
-        string UploadOriginalProfilePicInRoot(IFormFile originalPic);
+        Task<string> UploadOriginalProfilePicInRoot(IFormFile originalPic);
 
         bool DeleteProfilePicFromRoot(string fileName);
     }
