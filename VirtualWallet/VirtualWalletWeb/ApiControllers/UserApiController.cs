@@ -48,7 +48,7 @@ namespace VirtualWallet.Web.ApiControllers
                 User mappedUser = mapper.Map<User>(userDto);
 
                 var ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
-                mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(ProfilePic);
+                mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(ProfilePic).Result;
 
                 _ = userService.CreateUser(mappedUser);
 
