@@ -3,26 +3,26 @@
 <div class="h-full flex flex-col items-center justify-center px-4">
     <div class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border-2 flex-col justify-center items-center inline-flex dark:bg-neutral-800 dark:border-puerple-400">
 
-        <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-neutral-50">Transfer Details</div>
+        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Transfer Details</div>
 
         <!-- Direction Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
+            <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
             <div class="mt-2">
                 <label class="inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked disabled>
-                    <span class="ml-2 text-gray-700">Card to Wallet</span>
+                    <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
                 </label>
                 <label class="inline-flex items-center ml-6">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="false" disabled>
-                    <span class="ml-2 text-gray-700">Wallet to Card</span>
+                    <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
                 </label>
             </div>
         </div>
 
         <!-- Card Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Select Card</label>
+            <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Select Card</label>
             <select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50" asp-for="CardId" disabled>
                 <option value="" disabled selected>Select a card</option>
                 @foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
@@ -33,13 +33,13 @@
         </div>
 
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Amount</label>
+            <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Amount</label>
             <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-neutral-50 focus:outline focus:outline-purple-400" asp-for="Amount" readonly>
         </div>
 
         <!-- Currency Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-xs font-medium dark:text-neutral-400">Select Currency</label>
+            <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Select Currency</label>
             <select class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50" asp-for="CurrencyId" disabled>
                 <option value="" disabled selected>Select a currency</option>
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
@@ -55,23 +55,23 @@
         </div>
 
         <!-- Buttons -->
-        <div class="w-full flex justify-center items-center mt-8">
-            <form method="post" asp-action="ConfirmTransfer" asp-controller="Transfer">
+        <div class="w-full flex justify-center items-center gap-3">
+            <form class="flex-1" method="post" asp-action="ConfirmTransfer" asp-controller="Transfer">
                 <input type="hidden" asp-for="Amount" />
                 <input type="hidden" asp-for="CardId" />
                 <input type="hidden" asp-for="CurrencyId" />
                 <input type="hidden" asp-for="HasCardSender" />
                 <input type="hidden" asp-for="WalletId" />
-                <button class="w-1/2 ml-4 px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none hover:bg-purple-400 transition duration-300" type="submit">Confirm</button>
+                <button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">Confirm</button>
             </form>
 
-            <form method="get" asp-action="Add" asp-controller="Transfer">
+            <form class="flex-1" method="get" asp-action="Add" asp-controller="Transfer">
                 <input type="hidden" asp-for="Amount" />
                 <input type="hidden" asp-for="CardId" />
                 <input type="hidden" asp-for="CurrencyId" />
                 <input type="hidden" asp-for="HasCardSender" />
                 <input type="hidden" asp-for="WalletId" />
-                <button class="w-1/2 ml-4 px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none hover:bg-purple-400 transition duration-300" type="submit">Edit</button>
+                <button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">Edit</button>
             </form>
 @*            <a class="w-1/2 px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none hover:bg-purple-400 transition duration-300" asp-action="Add" asp-controller="Transfer">Edit</a>
 *@        </div>
