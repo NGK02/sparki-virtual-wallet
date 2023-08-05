@@ -58,6 +58,22 @@ namespace VirtualWallet.Business.Services
             return wallets;
         }
 
+        public bool ValidateFunds(Wallet wallet, CreateExcahngeDto excahngeValues)
+        {
+            var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From);
+            var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To);
+            var fromBalance = wallet.Balances.FirstOrDefault(b => b.CurrencyId == fromCurrency.Id);
+            if (fromBalance == null)
+            {
+                throw new InsufficientFundsException($"Cannot make exchange. No balance with currency '{fromCurrency.Code}'.");
+            }
+            if (excahngeValues.Amount > fromBalance.Amount)
+            {
+                throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromCurrency.Code}.");
+            }
+            return true;
+        }
+
         public async Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId)
         {
             var wallet = GetWalletById(userId, walletId);
@@ -71,6 +87,10 @@ namespace VirtualWallet.Business.Services
             {
                 throw new InsufficientFundsException($"Cannot make exchange. No balance with currency '{fromCurrency.Code}'.");
             }
+            if (excahngeValues.Amount > fromBalance.Amount)
+            {
+                throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromCurrency.Code}.");
+            }
 
             var toBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == toCurrency.Id);
 
@@ -78,12 +98,6 @@ namespace VirtualWallet.Business.Services
             {
                 CreateWalletBalance(toCurrency.Id, walletId);
             }
-
-            if (excahngeValues.Amount > fromBalance.Amount)
-            {
-                throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromCurrency.Code}.");
-            }
-
             fromBalance.Amount -= excahngeValues.Amount;
             var exchangedAmount = await exchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From, excahngeValues.To, excahngeValues.Amount.ToString());
 

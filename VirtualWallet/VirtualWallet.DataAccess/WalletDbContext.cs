@@ -391,8 +391,13 @@ namespace VirtualWallet.DataAccess
 					Id = 9,
 					UserId = 9,
 				},
+                new Wallet()
+                {
+                    Id = 10,
+                    UserId = 10,
+                },
 
-			};
+            };
 
 			IList<Balance> balances = new List<Balance>
 			{
