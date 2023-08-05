@@ -5,6 +5,7 @@ using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.CreateExcahngeDto;
+using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Web.Helper.Contracts;
@@ -25,19 +26,29 @@ namespace VirtualWallet.Web.ViewControllers
             this.mapper = mapper;
             this.walletService = walletService;
         }
-        public IActionResult ConfirmExchangeDev()
+        public IActionResult FinalizeExchangeDev()
         {
-            return View("ConfirmExchange");
+            return View("FinalizeExchange");
         }
         public IActionResult MakeExchange(CreateExcahngeDto createExchange)
         {
-            
-            if (!authManagerMVC.isLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
+                if (!authManagerMVC.isLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                this.ViewBag.AmountToEdit = createExchange.Amount;
+                ViewData["Currencies"] = LoadCurrencies();
+                return View(createExchange);
+
             }
-            ViewData["Currencies"] = LoadCurrencies();
-            return View(createExchange);
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
         }
 
         public IActionResult ConfirmExchange(CreateExcahngeDto createExchange)
@@ -86,6 +97,48 @@ namespace VirtualWallet.Web.ViewControllers
                 ViewData["Currencies"] = LoadCurrencies();
                 return View("MakeExchange", createExchange);
             }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+        }
+        public IActionResult FinalizeExchange(CreateExcahngeDto createExchange)
+        {
+            try
+            {
+                var loggedUserId = this.HttpContext.Session.GetInt32("userId");
+                var exchange = walletService.ExchangeFunds(createExchange, (int)loggedUserId, (int)loggedUserId);
+                var exchangeDto = mapper.Map<GetExchangeDto>(exchange);
+                return View(exchangeDto);
+
+            }
+            catch (InsufficientFundsException e)
+            {
+                this.ViewData["ErrorMessage"] = e.Message;
+                ViewData["Currencies"] = LoadCurrencies();
+                return View("MakeExchange", createExchange);
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.ViewData["ErrorMessage"] = e.Message;
+                ViewData["Currencies"] = LoadCurrencies();
+                return View("MakeExchange", createExchange);
+            }
+            catch (ArgumentException e)
+            {
+                this.ViewData["ErrorMessage"] = e.Message;
+                ViewData["Currencies"] = LoadCurrencies();
+                return View("MakeExchange", createExchange);
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+
         }
 
         private List<CurrencyViewModel> LoadCurrencies()
