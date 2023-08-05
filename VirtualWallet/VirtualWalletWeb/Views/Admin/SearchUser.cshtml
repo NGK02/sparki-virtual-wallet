@@ -185,23 +185,38 @@
                 {
                     <li>
                         <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                           href=" /Admin/Search?page =@(ViewBag.CurrentPage - 1)">Previous</a>
+                           href="SearchUser?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
                     </li>
                 }
 
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
-                    <li @(i == ViewBag.CurrentPage ? "active" : "")>
-                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                           href="/Admin/Search?page =@i ">@i</a>
-                    </li>
+                    if (i == @ViewBag.CurrentPage)
+                    {
+                        <li class="bg-purple-300 rounded">
+                            <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                               href="SearchUser?Page=@i">@i
+                               </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                               href="SearchUser?Page=@i">
+                                @i
+                            </a>
+                        </li>
+                    }
                 }
 
-
-                <li>
-                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                       href="#">Next</a>
-                </li>
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li>
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="SearchUser?Page=@(ViewBag.CurrentPage + 1)">Next</a>
+                    </li>
+                }
             </ul>
         }
     }
