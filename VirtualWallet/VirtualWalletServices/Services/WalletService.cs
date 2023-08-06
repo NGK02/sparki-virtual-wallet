@@ -96,7 +96,7 @@ namespace VirtualWallet.Business.Services
 
             if (toBalance == null)
             {
-                CreateWalletBalance(toCurrency.Id, walletId);
+                toBalance = CreateWalletBalance(toCurrency.Id, walletId);
             }
             fromBalance.Amount -= excahngeValues.Amount;
             var exchangedAmount = await exchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From, excahngeValues.To, excahngeValues.Amount.ToString());

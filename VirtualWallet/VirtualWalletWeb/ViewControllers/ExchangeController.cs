@@ -109,23 +109,12 @@ namespace VirtualWallet.Web.ViewControllers
             try
             {
                 var loggedUserId = this.HttpContext.Session.GetInt32("userId");
-                var exchange = walletService.ExchangeFunds(createExchange, (int)loggedUserId, (int)loggedUserId);
+                var exchange = walletService.ExchangeFunds(createExchange, (int)loggedUserId, (int)loggedUserId).Result;
                 var exchangeDto = mapper.Map<GetExchangeDto>(exchange);
                 return View(exchangeDto);
 
             }
-            catch (InsufficientFundsException e)
-            {
-                this.ViewData["ErrorMessage"] = e.Message;
-                ViewData["Currencies"] = LoadCurrencies();
-                return View("MakeExchange", createExchange);
-            }
-            catch (EntityNotFoundException e)
-            {
-                this.ViewData["ErrorMessage"] = e.Message;
-                ViewData["Currencies"] = LoadCurrencies();
-                return View("MakeExchange", createExchange);
-            }
+
             catch (ArgumentException e)
             {
                 this.ViewData["ErrorMessage"] = e.Message;
