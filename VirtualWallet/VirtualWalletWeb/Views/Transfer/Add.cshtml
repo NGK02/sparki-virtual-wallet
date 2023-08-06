@@ -9,12 +9,12 @@
         <!-- Direction Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
-            <div class="mt-2">
-                <label class="inline-flex items-center">
+            <div class="flex flex-col md:flex-row mt-2 gap-3">
+                <label class="flex-1 inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked>
                     <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
                 </label>
-                <label class="inline-flex items-center ml-6">
+                <label class="flex-1 inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="false">
                     <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
                 </label>

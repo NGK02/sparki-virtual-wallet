@@ -4,11 +4,11 @@
     <form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border-2 flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Exchange" asp-action="ConfirmExchange" method="post">
 
-        <div class="mb-4 text-center text-gray-900 text-3xl font-extrabold dark:text-neutral-50">Exchange Details</div>
+        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Exchange Details</div>
 
         <!-- From Currency -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-sm font-medium dark:text-neutral-400">From Currency</label>
+            <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">From Currency</label>
             <select asp-for="From" class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
                 <option value="" disabled selected>Select a currency</option>
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
@@ -21,7 +21,7 @@
 
         <!-- To Currency -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-sm font-medium dark:text-neutral-400">To Currency</label>
+            <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">To Currency</label>
             <select asp-for="To" class="border-2 px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
                 <option value="" disabled selected>Select a currency</option>
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
@@ -33,7 +33,7 @@
         </div>
         <!-- Amount -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-gray-700 text-sm font-medium dark:text-neutral-400">Amount to Exchange</label>
+            <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Amount to Exchange</label>
             <input asp-for="Amount" type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50
 						focus:outline focus:outline-purple-400" name="amount" x-model="amount">
