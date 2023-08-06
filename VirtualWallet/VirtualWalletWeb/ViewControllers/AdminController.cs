@@ -14,12 +14,12 @@ namespace VirtualWallet.Web.ViewControllers
 {
     public class AdminController : Controller
     {
-        private readonly IAuthManagerMVC authManagerMVC;
+        private readonly IAuthManagerMvc authManagerMVC;
         private readonly IUserService userService;
         private readonly IAdminService adminService;
         private readonly IMapper mapper;
 
-        public AdminController(IAuthManagerMVC authManagerMVC, IUserService userService, IAdminService adminService, IMapper mapper)
+        public AdminController(IAuthManagerMvc authManagerMVC, IUserService userService, IAdminService adminService, IMapper mapper)
         {
             this.authManagerMVC = authManagerMVC;
             this.userService = userService;
@@ -32,14 +32,14 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMVC.isAdmin("roleId"))
+                if (!authManagerMVC.IsAdmin("roleId"))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
 
@@ -146,14 +146,14 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMVC.isAdmin("roleId"))
+                if (!authManagerMVC.IsAdmin("roleId"))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
                 var user = userService.GetUserById(id);
@@ -179,14 +179,14 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMVC.isAdmin("roleId"))
+                if (!authManagerMVC.IsAdmin("roleId"))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
 
@@ -219,14 +219,14 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMVC.isAdmin("roleId"))
+                if (!authManagerMVC.IsAdmin("roleId"))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
                 var user = userService.GetUserById(id);
@@ -252,14 +252,14 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMVC.isAdmin("roleId"))
+                if (!authManagerMVC.IsAdmin("roleId"))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
 

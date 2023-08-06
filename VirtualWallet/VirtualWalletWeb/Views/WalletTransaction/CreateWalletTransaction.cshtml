@@ -1,0 +1,64 @@
+﻿@model VirtualWallet.Dto.ViewModels.WalletTransactionViewModels.CreateWalletTransactionViewModel
+
+<div class="h-full flex flex-col items-center justify-center px-4">
+	<form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
+				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="WalletTransaction" asp-action="ConfirmWalletTransaction" method="post">
+
+		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Exchange details</div>
+
+		<!-- Currency -->
+		<div class="w-full mb-4 flex-col justify-start items-start flex">
+			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">From currency</label>
+			<select asp-for="CurrencyId" class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
+				<option value="" disabled selected>Select a currency</option>
+				@foreach (var currency in Model.Currencies)
+				{
+					<option value="@currency.Id">@currency.Code</option>
+				}
+			</select>
+		</div>
+
+		<!-- Amount -->
+		<div class="w-full mb-4 flex-col justify-start items-start flex">
+			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Amount to exchange</label>
+			<input asp-for="Amount" type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400" name="amount" x-model="amount">
+		</div>
+
+		<!-- Recipient -->
+		<div class="w-full mb-4 flex-col justify-start items-start flex">
+			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Recipient</label>
+			<select id="select-recipient-identifier" class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full bg-neutral-50
+								dark:bg-neutral-800 dark:text-neutral-50">
+				<option value="RecipientUsername">Username</option>
+				<option value="RecipientEmail">Email</option>
+				<option value="RecipientPhoneNumber">Phone number</option>
+			</select>
+		</div>
+
+		<div class="w-full mb-6 flex-col justify-start items-start flex">
+			<input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+				   asp-for="RecipientUsername" type="text" id="recipient-identifier-input">
+			<div class="text-sm font-normal text-red-600 leading-tight">
+				<span asp-validation-for="RecipientUsername"></span>
+			</div>
+		</div>
+
+		<button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+			Dashboard
+		</button>
+	</form>
+
+	<script>
+		const recipientIdentifierSelect = document.getElementById('select-recipient-identifier');
+		const recipientIdentifierInput = document.getElementById('recipient-identifier-input');
+
+		recipientIdentifierSelect.addEventListener('change', () => {
+			recipientIdentifierInput.setAttribute('asp-for', recipientIdentifierSelect.value)
+			recipientIdentifierInput.setAttribute('asp-validation-for', recipientIdentifierSelect.value)
+		});
+	</script>
+</div>

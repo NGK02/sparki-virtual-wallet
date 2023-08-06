@@ -14,13 +14,13 @@ namespace VirtualWallet.Web.ViewControllers
 {
 	public class ExchangeController : Controller
 	{
-		private readonly IAuthManagerMVC authManagerMVC;
+		private readonly IAuthManagerMvc authManagerMVC;
 		private readonly ICurrencyService currencyService;
 		private readonly IMapper mapper;
 		private readonly IWalletService walletService;
 		private readonly IExchangeService exchangeService;
 
-		public ExchangeController(IAuthManagerMVC authManagerMVC,
+		public ExchangeController(IAuthManagerMvc authManagerMVC,
 									ICurrencyService currencyService,
 									IMapper mapper,
 									IWalletService walletService,
@@ -40,7 +40,7 @@ namespace VirtualWallet.Web.ViewControllers
 		{
 			try
 			{
-				if (!authManagerMVC.isLogged("LoggedUser"))
+				if (!authManagerMVC.IsLogged("LoggedUser"))
 				{
 					return RedirectToAction("Login", "User");
 				}
@@ -61,7 +61,7 @@ namespace VirtualWallet.Web.ViewControllers
 		{
 			try
 			{
-				if (!authManagerMVC.isLogged("LoggedUser"))
+				if (!authManagerMVC.IsLogged("LoggedUser"))
 				{
 					return RedirectToAction("Login", "User");
 				}
