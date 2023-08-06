@@ -32,9 +32,9 @@ namespace VirtualWallet.Web.ViewControllers
 			this.walletService = walletService;
 			this.exchangeService = exchangeService;
 		}
-		public IActionResult ConfirmExchangeDev()
+		public IActionResult FinalizeExchangeDev()
 		{
-			return View("ConfirmExchange");
+			return View("FinalizeExchange");
 		}
 		public IActionResult MakeExchange(CreateExcahngeDto createExchange)
 		{
