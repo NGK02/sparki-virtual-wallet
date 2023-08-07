@@ -41,8 +41,8 @@
 
                 <div class="flex-1 flex-col mb-4 justify-start items-start flex">
                     <div class="text-neutral-50 text-sm font-medium dark:text-neutral-400">To expected amount</div>
-                    <input class=" text-neutral-50 w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
-						dark:bg-neutral-700 dark:text-neutral-50
+                    <input class="placeholder-neutral-900 text-neutral-900 w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50 dark:placeholder-neutral-50
 						focus:outline focus:outline-purple-400"
                            placeholder="@(expectedAmount)" type="text" readonly>
                 </div>
@@ -50,11 +50,12 @@
 
             <div class="w-full mb-6 flex-col justify-start items-start flex">
                 <div class="text-neutral-50 text-sm font-medium dark:text-neutral-400">Expected Rate</div>
-                <input class="text-neutral-50 w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
-						dark:bg-neutral-700 dark:text-neutral-50
+                <input class="placeholder-neutral-900 text-neutral-900 w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50 dark:placeholder-neutral-50
 						focus:outline focus:outline-purple-400"
                        placeholder="@this.ViewBag.Rate" type="text" readonly>
             </div>
+            @*Rate и ExpectedAmount през модела вместо ViewBag?*@
 
             @if (this.ViewData["ErrorMessage"] is not null)
             {

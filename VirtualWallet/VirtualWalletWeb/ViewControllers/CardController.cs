@@ -13,11 +13,11 @@ namespace VirtualWallet.Web.ViewControllers
 {
     public class CardController : Controller
     {
-        private readonly IAuthManagerMVC authManagerMVC;
+        private readonly IAuthManagerMvc authManagerMVC;
         private readonly ICardService cardService;
         private readonly IMapper mapper;
 
-        public CardController(IAuthManagerMVC authManagerMVC, ICardService cardService, IMapper mapper)
+        public CardController(IAuthManagerMvc authManagerMVC, ICardService cardService, IMapper mapper)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
@@ -27,7 +27,7 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpGet("Card/Add")]
         public IActionResult Add()
         {
-            if (!authManagerMVC.isLogged("LoggedUser"))
+            if (!authManagerMVC.IsLogged("LoggedUser"))
             {
                 return RedirectToAction("Login", "User");
             }
@@ -40,7 +40,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
@@ -99,7 +99,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
@@ -107,7 +107,7 @@ namespace VirtualWallet.Web.ViewControllers
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
                 var card = cardService.GetCardById(cardId, userId);
 
-                if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", card.UserId))
+                if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", card.UserId))
                 {
                     Response.StatusCode = StatusCodes.Status403Forbidden;
                     return View("Error");
@@ -158,7 +158,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
@@ -166,7 +166,7 @@ namespace VirtualWallet.Web.ViewControllers
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
                 var card = cardService.GetCardById(cardId, userId);
 
-                if (!authManagerMVC.isAdmin("roleId") && !authManagerMVC.isContentCreator("userId", card.UserId))
+                if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", card.UserId))
                 {
                     Response.StatusCode = StatusCodes.Status403Forbidden;
                     return View("Error");
@@ -218,7 +218,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }

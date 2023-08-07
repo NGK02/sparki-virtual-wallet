@@ -19,7 +19,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IAuthManager,AuthManager>();
 builder.Services.AddScoped<IImageManager,ImageManager>();
-builder.Services.AddScoped<IAuthManagerMVC, AuthManagerMVC>();
+builder.Services.AddScoped<IAuthManagerMvc, AuthManagerMvc>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
