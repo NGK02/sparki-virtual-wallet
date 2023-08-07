@@ -12,7 +12,7 @@ namespace VirtualWallet.Dto.ViewModels.TransferViewModels
         [Required]
         public bool HasCardSender { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter {0}!")]
         [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
         public decimal Amount { get; set; }
 
