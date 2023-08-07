@@ -15,13 +15,13 @@ namespace VirtualWallet.Web.ViewControllers
 {
     public class TransferController : Controller
     {
-        private readonly IAuthManagerMVC authManagerMVC;
+        private readonly IAuthManagerMvc authManagerMVC;
         private readonly ICardService cardService;
         private readonly ICurrencyService currencyService;
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
 
-        public TransferController(IAuthManagerMVC authManagerMVC, ICardService cardService, ICurrencyService currencyService, IMapper mapper, ITransferService transferService)
+        public TransferController(IAuthManagerMvc authManagerMVC, ICardService cardService, ICurrencyService currencyService, IMapper mapper, ITransferService transferService)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
@@ -98,7 +98,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
@@ -167,7 +167,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
