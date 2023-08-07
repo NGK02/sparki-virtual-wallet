@@ -35,7 +35,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
@@ -228,7 +228,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                if (!authManagerMVC.isLogged("LoggedUser"))
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
