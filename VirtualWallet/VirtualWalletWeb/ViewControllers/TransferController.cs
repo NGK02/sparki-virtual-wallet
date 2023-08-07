@@ -110,13 +110,13 @@ namespace VirtualWallet.Web.ViewControllers
                     return View("Add", model);
                 }
 
-                //var transfer = mapper.Map<Transfer>(model);
+                var transfer = mapper.Map<Transfer>(model);
 
-                //transferService.AddTransfer(userId, transfer);
+                transferService.AddTransfer(userId, transfer);
 
-                //return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
 
-                return View("Temp", model);
+                //return View("Temp", model);
             }
             catch (EntityNotFoundException ex)
             {
