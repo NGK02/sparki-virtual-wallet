@@ -186,19 +186,25 @@ namespace VirtualWallet.Web.ApiControllers
             }
         }
 
-        [HttpPut("{id}/exchanges")]
-        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExcahngeDto excahngeValues)
+        [HttpPost("{id}/exchange")]
+        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExcahngeDto excahngeAmounts)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var loggedUser = authManager.IsAuthenticated(splitCredentials);
                 authManager.IsContentCreatorOrAdmin(loggedUser, id);
-                string username = splitCredentials[0];
+                //string username = splitCredentials[0];
 
-                var exchange = await walletService.ExchangeFunds(excahngeValues, loggedUser.WalletId, id);
+                var userWallet = walletService.GetWalletById(id,id);
+                _ = walletService.ValidateFunds(userWallet, excahngeAmounts);
+                var exchange = await walletService.ExchangeFunds(excahngeAmounts, loggedUser.WalletId, id);
                 var GetExchange = mapper.Map<GetExchangeDto>(exchange);
                 return Ok(GetExchange);
+            }
+            catch(EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (InsufficientFundsException ex)
             {

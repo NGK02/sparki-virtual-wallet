@@ -83,15 +83,6 @@ namespace VirtualWallet.Business.Services
 
             var fromBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == fromCurrency.Id);
 
-            if (fromBalance == null)
-            {
-                throw new InsufficientFundsException($"Cannot make exchange. No balance with currency '{fromCurrency.Code}'.");
-            }
-            if (excahngeValues.Amount > fromBalance.Amount)
-            {
-                throw new InsufficientFundsException($"Insufficient funds. Available balance: {fromBalance.Amount} {fromCurrency.Code}.");
-            }
-
             var toBalance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == toCurrency.Id);
 
             if (toBalance == null)
