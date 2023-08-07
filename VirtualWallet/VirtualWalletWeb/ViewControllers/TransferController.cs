@@ -174,6 +174,12 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!ModelState.IsValid)
                 {
+                    int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+                    var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                    var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                    ViewData["Cards"] = cards;
+                    ViewData["Currencies"] = currencies;
+
                     return View("Add", model);
                 }
 
