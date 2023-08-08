@@ -114,6 +114,7 @@ namespace VirtualWallet.Web.ViewControllers
 				return View("Error");
 			}
 		}
+		[HttpPost]
 		public IActionResult FinalizeExchange(CreateExcahngeDto createExchange)
 		{
 			try
