@@ -31,7 +31,6 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             var balance = new Balance { CurrencyId = currencyId, WalletId = walletId };
             walletDbContext.Balances.Add(balance);
-            walletDbContext.SaveChanges();
 
             return balance;
         }

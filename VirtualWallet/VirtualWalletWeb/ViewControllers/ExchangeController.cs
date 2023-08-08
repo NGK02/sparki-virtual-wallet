@@ -119,6 +119,9 @@ namespace VirtualWallet.Web.ViewControllers
 			try
 			{
 				var loggedUserId = this.HttpContext.Session.GetInt32("userId");
+				//Да се преправи метода в сървиса да изисква само userId
+				//Да се мапва тук към обекта
+				//Не съм сигурен дали ExchangeFunds има нужда да е асинхронен.
 				var exchange = walletService.ExchangeFunds(createExchange, (int)loggedUserId, (int)loggedUserId).Result;
 				var exchangeDto = mapper.Map<GetExchangeDto>(exchange);
 				return View(exchangeDto);
