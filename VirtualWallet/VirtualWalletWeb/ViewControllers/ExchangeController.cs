@@ -77,7 +77,7 @@ namespace VirtualWallet.Web.ViewControllers
 				}
 
 				var loggedUserId = this.HttpContext.Session.GetInt32("userId");
-				var loggedUserWallet = walletService.GetWalletById((int)loggedUserId, (int)loggedUserId);
+				var loggedUserWallet = walletService.GetWalletById((int)loggedUserId);
 
 				_ = walletService.ValidateFunds(loggedUserWallet, createExchange);
 

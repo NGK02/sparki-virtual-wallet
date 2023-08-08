@@ -13,7 +13,7 @@ namespace VirtualWallet.Dto.TransferDto
         public bool HasCardSender { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
+        [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "The {0} must be greater than 0.")]
         public decimal Amount { get; set; }
 
         [Required]

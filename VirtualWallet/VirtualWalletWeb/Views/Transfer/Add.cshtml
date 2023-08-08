@@ -1,5 +1,6 @@
 ﻿@model VirtualWallet.Dto.ViewModels.TransferViewModels.TransferViewModel
 
+
 <div class="h-full flex flex-col items-center justify-center px-4">
     <form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Transfer" asp-action="Create" method="post">
@@ -11,17 +12,40 @@
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
 
             <div class="flex flex-col md:flex-row mt-2 gap-3">
-                <label class="flex-1 inline-flex items-center">
-                    <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked>
+                @if (this.Model.HasCardSender)
+                {
 
-                    <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
-                </label>
+                    <label class="flex-1 inline-flex items-center">
+                        <input type="radio" name="HasCardSender" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked >
 
-                <label class="flex-1 inline-flex items-center">
-                    <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="false">
+                        <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
+                    </label>
 
-                    <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
-                </label>
+
+
+                    <label class="flex-1 inline-flex items-center">
+                        <input type="radio" name="HasCardSender" class="form-radio text-purple-500" asp-for="HasCardSender" value="false" >
+
+                        <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
+                    </label>
+                }
+                else if (this.Model.HasCardSender is false)
+                {
+                    <label class="flex-1 inline-flex items-center">
+                        <input type="radio" name="HasCardSender" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" >
+
+                        <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
+                    </label>
+
+
+
+                    <label class="flex-1 inline-flex items-center">
+                        <input type="radio" name="HasCardSender" class="form-radio text-purple-500" asp-for="HasCardSender" value="false" checked >
+
+                        <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
+                    </label>
+
+                }
             </div>
         </div>
 
@@ -39,12 +63,12 @@
                         <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
                     }
 
-                    
+
                 }
 
                 @*@foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
                 {
-                    <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
+                <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
                 }*@
             </select>
         </div>
@@ -54,9 +78,13 @@
 
             <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-neutral-50 focus:outline focus:outline-purple-400" asp-for="Amount">
 
-            <div class="text-sm font-normal text-red-600 leading-tight">
-                <span asp-validation-for="Amount"></span>
-            </div>
+            @*@if (this.Model.WalletId != 0)
+            {
+                <div class="text-sm font-normal text-red-600 leading-tight">
+                    <span asp-validation-for="Amount"></span>
+                </div>
+
+            }*@
         </div>
 
         <!-- Currency Selection -->
@@ -66,7 +94,7 @@
             <select class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50" asp-for="CurrencyId">
                 <option value="" disabled selected>Select a currency</option>
 
-                
+
 
                 @if (ViewData["Currencies"] != null)
                 {
@@ -82,10 +110,16 @@
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <input type="hidden" asp-for="WalletId" />
         </div>
+        @if (this.ViewData["ErrorMessage"] is not null)
+        {
+            <span class="text-center text-red-600 text-base mb-4">
+                @this.ViewData["ErrorMessage"]
+            </span>
+        }
 
         <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none  hover:bg-purple-400 transition duration-300" type="submit">
             <div class="text-neutral-50 text-sm font-medium">
-                <div class="text-sm">
+                <div class="text-base">
                     <span>Submit Transfer</span>
                 </div>
             </div>

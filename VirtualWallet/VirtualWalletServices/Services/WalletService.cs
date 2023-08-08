@@ -80,7 +80,7 @@ namespace VirtualWallet.Business.Services
 
         public async Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId)
         {
-            var wallet = GetWalletById(userId, walletId);
+            var wallet = GetWalletById(walletId);
 
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From);
             var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To);
@@ -114,7 +114,7 @@ namespace VirtualWallet.Business.Services
             return exchange;
         }
 
-        public Wallet GetWalletById(int userId, int walletId)
+        public Wallet GetWalletById(int walletId)
         {
             var wallet = walletRepository.GetWalletById(walletId);
 
@@ -123,12 +123,12 @@ namespace VirtualWallet.Business.Services
                 throw new EntityNotFoundException($"Wallet with ID {walletId} not found.");
             }
 
-            var user = userService.GetUserById(userId);
+            //var user = userService.GetUserById(userId);
 
-            if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
-            {
-                throw new UnauthorizedOperationException("Only an admin or the wallet's owner can access wallet details.");
-            }
+            //if (!authManager.IsAdmin(user) && user.Id != wallet.UserId)
+            //{
+            //    throw new UnauthorizedOperationException("Only an admin or the wallet's owner can access wallet details.");
+            //}
 
             return wallet;
         }

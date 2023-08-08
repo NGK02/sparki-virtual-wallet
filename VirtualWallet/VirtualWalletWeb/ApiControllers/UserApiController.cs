@@ -196,7 +196,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(loggedUser, id);
                 //string username = splitCredentials[0];
 
-                var userWallet = walletService.GetWalletById(id,id);
+                var userWallet = walletService.GetWalletById(id);
                 _ = walletService.ValidateFunds(userWallet, excahngeAmounts);
                 var exchange = await walletService.ExchangeFunds(excahngeAmounts, loggedUser.WalletId, id);
                 var GetExchange = mapper.Map<GetExchangeDto>(exchange);

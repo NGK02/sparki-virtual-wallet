@@ -114,7 +114,8 @@ namespace VirtualWallet.Web.ViewControllers
 
                 transferService.AddTransfer(userId, transfer);
 
-                return RedirectToAction("Index", "Home");
+                ViewBag.SuccessMessage = $"Successfully transfered amount!";
+                return View("Successful");
 
                 //return View("Temp", model);
             }
@@ -172,14 +173,14 @@ namespace VirtualWallet.Web.ViewControllers
                     return RedirectToAction("Login", "User");
                 }
 
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid || model.CurrencyId == 0 || model.CardId == 0)
                 {
                     int userId = HttpContext.Session.GetInt32("userId") ?? 0;
                     var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
                     var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
                     ViewData["Cards"] = cards;
                     ViewData["Currencies"] = currencies;
-
+                    this.ViewData["ErrorMessage"] = (model.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
                     return View("Add", model);
                 }
 

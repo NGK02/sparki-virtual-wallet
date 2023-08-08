@@ -27,7 +27,7 @@ namespace VirtualWallet.Business.Services
 		private void TransferFromWallet(int userId, Transfer transfer)
 		{
 
-			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
+			var wallet = walletService.GetWalletById(transfer.WalletId);
 
 			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 			var currency = currencyService.GetCurrencyById(transfer.CurrencyId);
@@ -57,7 +57,7 @@ namespace VirtualWallet.Business.Services
 		private void TransferToWallet(int userId, Transfer transfer)
 		{
 
-			var wallet = walletService.GetWalletById(transfer.WalletId, userId);
+			var wallet = walletService.GetWalletById(transfer.WalletId);
 			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 
 			//Да разбера защо това не работи с метода.
