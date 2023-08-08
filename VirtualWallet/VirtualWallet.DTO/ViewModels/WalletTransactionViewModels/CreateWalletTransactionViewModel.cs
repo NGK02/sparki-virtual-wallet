@@ -22,11 +22,11 @@ namespace VirtualWallet.Dto.ViewModels.WalletTransactionViewModels
 
 		[Required]
 		[DisplayName("Currency")]
-		[Range(0, int.MaxValue, ErrorMessage = "Please select currency!")]
+		[Range(1, int.MaxValue, ErrorMessage = "Please select currency!")]
 		public int CurrencyId { get; set; }
 
 		[Required]
-		[Range(0, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
+		[Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
         public decimal Amount { get; set; }
     }
 }

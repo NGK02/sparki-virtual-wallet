@@ -50,21 +50,21 @@
 		</div>
 
 		<div class="w-full flex md:flex-row flex-col justify-center items-center gap-3">
-			<form asp-controller="WalletTransaction" asp-action="CreateWalletTransaction">
+			<form asp-controller="WalletTransaction" asp-action="CreateWalletTransaction" method="get" class="w-full md:flex-1">
 				<input type="hidden" asp-for="CurrencyId">
 				<input type="hidden" asp-for="Amount">
 				<input type="hidden" asp-for="RecipientIdentifier">
 				<input type="hidden" asp-for="RecipientIdentifierValue">
-				<button class="h-fit w-full md:flex-1 p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+				<button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
 					Edit
 				</button>
 			</form>
-			<form asp-controller="WalletTransaction" asp-action="FinalizeWalletTransaction">
+			<form asp-controller="WalletTransaction" asp-action="FinalizeWalletTransaction" method="post" class="w-full md:flex-1">
 				<input type="hidden" asp-for="CurrencyId">
 				<input type="hidden" asp-for="Amount">
 				<input type="hidden" asp-for="RecipientIdentifier">
 				<input type="hidden" asp-for="RecipientIdentifierValue">
-				<button class="h-fit w-full md:flex-1 p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+				<button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
 					Confirm
 				</button>
 			</form>

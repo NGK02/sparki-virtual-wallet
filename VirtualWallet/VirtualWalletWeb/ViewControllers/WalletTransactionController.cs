@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
@@ -41,9 +42,26 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View(walletTransactionForm);
             }
-			catch (Exception)
+			catch (UnauthenticatedOperationException ex)
 			{
-				throw;
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
 			}
 		}
 
@@ -67,9 +85,26 @@ namespace VirtualWallet.Web.ViewControllers
 
 				return View(walletTransactionForm);
 			}
-			catch (Exception)
+			catch (UnauthenticatedOperationException ex)
 			{
-				throw;
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
 			}
 		}
 
@@ -93,9 +128,47 @@ namespace VirtualWallet.Web.ViewControllers
 				ViewBag.SuccessMessage = "Transaction completed successfully!";
 				return View("Successful");
 			}
-			catch (Exception)
+			catch (EntityNotFoundException ex)
 			{
-				throw;
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (InsufficientFundsException ex)
+			{
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthenticatedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (ArgumentException ex)
+			{
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (Exception ex)
+			{
+				Response.StatusCode = StatusCodes.Status500InternalServerError;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
 			}
 		}
 	}
