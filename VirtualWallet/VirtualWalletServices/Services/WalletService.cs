@@ -63,6 +63,10 @@ namespace VirtualWallet.Business.Services
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From);
             var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To);
             var fromBalance = wallet.Balances.FirstOrDefault(b => b.CurrencyId == fromCurrency.Id);
+            if (fromCurrency == toCurrency)
+            {
+                throw new ArgumentException("Cannot swap between the same currency!");
+            }
             if (fromBalance == null)
             {
                 throw new InsufficientFundsException($"Cannot make exchange. No balance with currency '{fromCurrency.Code}'.");
@@ -104,7 +108,7 @@ namespace VirtualWallet.Business.Services
                 ToCurrency = toCurrency,
                 ToCurrencyId = toCurrency.Id,
                 Wallet = wallet
-			};
+            };
 
             exchangeService.AddExchange(userId, exchange);
             return exchange;
@@ -128,5 +132,5 @@ namespace VirtualWallet.Business.Services
 
             return wallet;
         }
-	}
+    }
 }
