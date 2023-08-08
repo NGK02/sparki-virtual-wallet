@@ -142,7 +142,8 @@ namespace VirtualWallet.Web.ViewControllers
                 emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
                 // end of email verification section
 
-                return RedirectToAction("Index", "Home");
+                ViewBag.SuccessMessage = "Activation email was sent to your Email.Please activate your account!";
+                return View("Successful");
 
             }
             catch (EmailAlreadyExistException e)
