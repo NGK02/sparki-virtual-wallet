@@ -9,58 +9,71 @@
         <!-- Direction Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Transfer Direction</label>
+
             <div class="flex flex-col md:flex-row mt-2 gap-3">
                 <label class="flex-1 inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="true" checked>
+
                     <span class="ml-2 text-neutral-900 dark:text-neutral-50">Card to Wallet</span>
                 </label>
+
                 <label class="flex-1 inline-flex items-center">
                     <input type="radio" class="form-radio text-purple-500" asp-for="HasCardSender" value="false">
+
                     <span class="ml-2 text-neutral-900 dark:text-neutral-50">Wallet to Card</span>
                 </label>
-
-                <div class="text-sm font-normal text-red-600 leading-tight">
-                    <span asp-validation-for="HasCardSender"></span>
-                </div>
             </div>
         </div>
 
         <!-- Card Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Select Card</label>
+
             <select class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50" asp-for="CardId">
                 <option value="" disabled selected>Select a card</option>
-                @foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
+
+                @if (ViewData["Cards"] != null)
+                {
+                    @foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
+                    {
+                        <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
+                    }
+
+                    
+                }
+
+                @*@foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
                 {
                     <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
-                }
+                }*@
             </select>
-
-            <div class="text-sm font-normal text-red-600 leading-tight">
-                <span asp-validation-for="CardId"></span>
-            </div>
         </div>
-
-        @*<div class="w-full mb-4 flex-col justify-start items-start flex">
-            <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Amount</label>
-            <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
-						dark:bg-neutral-700 dark:text-neutral-50
-						focus:outline focus:outline-purple-400" name="amount" x-model="amount">
-        </div>*@
 
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Amount</label>
+
             <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-neutral-50 focus:outline focus:outline-purple-400" asp-for="Amount">
+
+            <div class="text-sm font-normal text-red-600 leading-tight">
+                <span asp-validation-for="Amount"></span>
+            </div>
         </div>
 
         <!-- Currency Selection -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Select Currency</label>
+
             <select class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50" asp-for="CurrencyId">
                 <option value="" disabled selected>Select a currency</option>
-                @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
+
+                
+
+                @if (ViewData["Currencies"] != null)
                 {
-                    <option value="@currency.Id">@currency.Code.ToString().ToUpper()</option>
+                    @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
+                    {
+                        <option value="@currency.Id">@currency.Code.ToString().ToUpper()</option>
+                    }
                 }
             </select>
         </div>

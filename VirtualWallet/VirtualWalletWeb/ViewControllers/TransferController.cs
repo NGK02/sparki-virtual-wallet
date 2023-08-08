@@ -35,7 +35,69 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
+                if (!authManagerMVC.IsLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
 
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+                model.WalletId = userId;
+                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                ViewData["Cards"] = cards;
+                ViewData["Currencies"] = currencies;
+
+                return View(model);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (ArgumentException ex)
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Confirm(TransferViewModel model)
+        {
+            try
+            {
                 if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
@@ -43,20 +105,18 @@ namespace VirtualWallet.Web.ViewControllers
 
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
 
-                //var model = new TransferViewModel
-                //{
-                //    WalletId = userId
-                //};
+                if (!ModelState.IsValid)
+                {
+                    return View("Add", model);
+                }
 
-                model.WalletId = userId;
+                var transfer = mapper.Map<Transfer>(model);
 
-                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
-                ViewData["Cards"] = cards;
+                transferService.AddTransfer(userId, transfer);
 
-                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
-                ViewData["Currencies"] = currencies;
+                return RedirectToAction("Index", "Home");
 
-                return View(model);
+                //return View("Temp", model);
             }
             catch (EntityNotFoundException ex)
             {
@@ -114,85 +174,16 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!ModelState.IsValid)
                 {
+                    int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+                    var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                    var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                    ViewData["Cards"] = cards;
+                    ViewData["Currencies"] = currencies;
+
                     return View("Add", model);
                 }
 
-                //var transfer = mapper.Map<Transfer>(model);
-
-                //transferService.AddTransfer(userId, transfer);
-
-                //return RedirectToAction("Index", "Home");
-
-                return RedirectToAction("ViewTransfer", model);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (InsufficientFundsException ex)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                Response.StatusCode = StatusCodes.Status403Forbidden;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (ArgumentException ex)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmTransfer(TransferViewModel model)
-        {
-            try
-            {
-                if (!authManagerMVC.IsLogged("LoggedUser"))
-                {
-                    return RedirectToAction("Login", "User");
-                }
-
-                //int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-
-                //if (!ModelState.IsValid)
-                //{
-                //    return View(model);
-                //}
-
-                //var transfer = mapper.Map<Transfer>(model);
-
-                //transferService.AddTransfer(userId, transfer);
-
-                //return RedirectToAction("Index", "Home");
-
-                return View("Temp", model);
+                return RedirectToAction("Details", model);
             }
             catch (EntityNotFoundException ex)
             {
@@ -239,28 +230,26 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult ViewTransfer(TransferViewModel model)
+        public IActionResult Details(TransferViewModel model)
         {
             try
             {
-                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-
                 if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
                     return RedirectToAction("Login", "User");
                 }
 
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
                 if (!ModelState.IsValid)
                 {
-                    return View("Temp", model);
+                    return View("Add", model);
                 }
 
                 var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
-                ViewData["Cards"] = cards;
-
                 var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                ViewData["Cards"] = cards;
                 ViewData["Currencies"] = currencies;
-                //ViewData["TransferViewModel"] = model;
 
                 return View(model);
             }
