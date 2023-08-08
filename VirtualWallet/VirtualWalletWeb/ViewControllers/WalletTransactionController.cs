@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.DataAccess.Models;
+using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
 using VirtualWallet.Web.Helper;
@@ -14,12 +17,14 @@ namespace VirtualWallet.Web.ViewControllers
 		private readonly IAuthManagerMvc authManagerMvc;
 		private readonly ICurrencyService currencyService;
 		private readonly IMapper mapper;
+		private readonly IWalletTransactionService walletTransactionService;
 
-        public WalletTransactionController(IAuthManagerMvc authManagerMvc, ICurrencyService currencyService, IMapper mapper)
+        public WalletTransactionController(IAuthManagerMvc authManagerMvc, ICurrencyService currencyService, IMapper mapper, IWalletTransactionService walletTransactionService)
         {
             this.authManagerMvc = authManagerMvc;
             this.currencyService = currencyService;
             this.mapper = mapper;
+			this.walletTransactionService = walletTransactionService;
         }
 
 		[HttpGet]
@@ -33,17 +38,34 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
 				//Да се изкара във хелпър?
-				walletTransactionForm.Currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+				ViewData["Currencies"] = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
 
                 return View(walletTransactionForm);
             }
-			catch (Exception)
+			catch (UnauthenticatedOperationException ex)
 			{
-				throw;
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
 			}
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public IActionResult ConfirmWalletTransaction(CreateWalletTransactionViewModel walletTransactionForm)
 		{
 			try
@@ -53,18 +75,100 @@ namespace VirtualWallet.Web.ViewControllers
 					return RedirectToAction("Login", "User");
 				}
 
+				ViewData["Currencies"] = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+
 				if (!this.ModelState.IsValid)
 				{
 					//Да се изкара във хелпър?
-					this.ViewData["ErrorMessage"] = (walletTransactionForm.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
 					return View("CreateTransaction", walletTransactionForm);
 				}
 
 				return View(walletTransactionForm);
 			}
-			catch (Exception)
+			catch (UnauthenticatedOperationException ex)
 			{
-				throw;
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+		}
+
+		[HttpPost]
+		public IActionResult FinalizeWalletTransaction(CreateWalletTransactionViewModel walletTransactionForm)
+		{
+			try
+			{
+				if (!authManagerMvc.IsLogged("LoggedUser"))
+				{
+					return RedirectToAction("Login", "User");
+				}
+
+				var loggedUserId = this.HttpContext.Session.GetInt32("userId");
+
+				var walletTransaction = mapper.Map<WalletTransaction>(walletTransactionForm);
+				//Може би loggedUserId да се намапва директно тука и да не се предава нататък за вадене на юзъра?
+				//Да не се пази транзакцията като променлива?
+				walletTransaction = walletTransactionService.CreateTransaction(walletTransaction, (int)loggedUserId);
+
+				ViewBag.SuccessMessage = "Transaction completed successfully!";
+				return View("Successful");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (InsufficientFundsException ex)
+			{
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthenticatedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status401Unauthorized;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				Response.StatusCode = StatusCodes.Status403Forbidden;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (ArgumentException ex)
+			{
+				Response.StatusCode = StatusCodes.Status400BadRequest;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
+			}
+			catch (Exception ex)
+			{
+				Response.StatusCode = StatusCodes.Status500InternalServerError;
+				ViewData["ErrorMessage"] = ex.Message;
+
+				return View("Error");
 			}
 		}
 	}

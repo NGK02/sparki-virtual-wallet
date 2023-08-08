@@ -12,6 +12,7 @@ namespace VirtualWallet.Business.Services.Contracts
 	{
 		int GetTransactionsCount();
 		WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender);
+		WalletTransaction CreateTransaction(WalletTransaction walletTransaction, int senderId);
 
 		WalletTransaction GetWalletTransactionById(int id, string username);
 		List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, int userId);

@@ -36,6 +36,18 @@ namespace VirtualWallet.Business.Services
 			return walletTransactionRepo.CreateTransaction(walletTransaction);
 		}
 
+		public WalletTransaction CreateTransaction(WalletTransaction walletTransaction, int senderId)
+		{
+			var sender = userService.GetUserById(senderId);
+			walletTransaction.Sender = sender;
+
+			walletTransaction.Recipient = userService.SearchBy(new UserQueryParameters { Username = walletTransaction.Recipient.Username, Email = walletTransaction.Recipient.Email, PhoneNumber = walletTransaction.Recipient.PhoneNumber });
+
+			PrepareTransaction(walletTransaction);
+
+			return walletTransactionRepo.CreateTransaction(walletTransaction);
+		}
+
 		private void PrepareTransaction(WalletTransaction walletTransaction)
 		{
 			var senderBalance = walletTransaction.Sender.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
@@ -44,7 +56,8 @@ namespace VirtualWallet.Business.Services
 				//Custom exception here?
 				throw new InvalidOperationException("You don't have sufficient funds!");
 			}
-			var recipient = userService.GetUserById(walletTransaction.RecipientId);
+			//Този метод трябва да се рефакторира, защото е неефективен за уеб частта! (Взима се един и същ юзър два пъти)
+			var recipient = walletTransaction.Recipient ?? userService.GetUserById(walletTransaction.RecipientId);
 			var recipientBalance = recipient.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
 			if (recipientBalance is null)
 			{

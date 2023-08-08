@@ -19,6 +19,7 @@ using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.AdminViewModels;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -39,7 +40,7 @@ namespace VirtualWallet.Business.AutoMapper
 			CreateMap<Card, CardInfoDto>();
 			CreateMap<CardInfoDto, Card>();
 
-			CreateMap<Card, CardViewModel>()
+			CreateMap<Card, CardViewModel>() //Сравняване case insensitive.
 				.ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
 				.ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
 
@@ -48,6 +49,11 @@ namespace VirtualWallet.Business.AutoMapper
 
 			CreateMap<Transfer, TransferViewModel>();
 			CreateMap<TransferViewModel, Transfer>();
+
+			CreateMap<CreateWalletTransactionViewModel, WalletTransaction>()
+				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Username", StringComparison.InvariantCultureIgnoreCase) ? new User { Username = src.RecipientIdentifierValue } : null))
+				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Email", StringComparison.InvariantCultureIgnoreCase) ? new User { Email = src.RecipientIdentifierValue } : null))
+				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Phonenumber", StringComparison.InvariantCultureIgnoreCase) ? new User { PhoneNumber = src.RecipientIdentifierValue } : null));
 
 			CreateMap<CardInfoDto, Card>();
 
@@ -76,7 +82,7 @@ namespace VirtualWallet.Business.AutoMapper
 				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
 				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
 
-            CreateMap<SearchUser, UserQueryParameters>()
+			CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
 				.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
 				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
 				.ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
