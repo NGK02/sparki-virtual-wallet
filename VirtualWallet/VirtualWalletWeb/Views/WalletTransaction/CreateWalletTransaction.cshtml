@@ -5,7 +5,7 @@
 	<form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="WalletTransaction" asp-action="ConfirmWalletTransaction" method="get">
 
-		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Exchange details</div>
+		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Transaction details</div>
 
 		<!-- Currency -->
 		<div class="w-full mb-4 flex-col justify-start items-start flex">
@@ -17,7 +17,7 @@
 					<option value="@currency.Id">@currency.Code</option>
 				}
 			</select>
-			<span asp-validation-for="CurrencyId"></span>
+			@*<span asp-validation-for="CurrencyId"></span>*@
 		</div>
 
 		<!-- Amount -->
@@ -50,6 +50,12 @@
 			</div>
 		</div>
 
+		@if (this.ViewData["ErrorMessage"] is not null)
+		{
+			<span class="text-center text-red-600 text-base mb-4">
+				@this.ViewData["ErrorMessage"]
+			</span>
+		}
 		<button class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
 			Submit
 		</button>

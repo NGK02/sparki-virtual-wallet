@@ -58,7 +58,7 @@ namespace VirtualWallet.Business.Services
 		public User GetUserByUsername(string userName)
 		{
 			var originalUser = userRepo.GetUserByUsername(userName) ?? throw new EntityNotFoundException($"User with Username {userName} was not found!");
-			return originalUser; ;
+			return originalUser;
 		}
 
 		public int GetUsersCount()

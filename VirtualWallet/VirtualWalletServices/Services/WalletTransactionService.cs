@@ -36,9 +36,9 @@ namespace VirtualWallet.Business.Services
 			return walletTransactionRepo.CreateTransaction(walletTransaction);
 		}
 
-		public WalletTransaction CreateTransaction(WalletTransaction walletTransaction, int senderId)
+		public WalletTransaction CreateTransaction(WalletTransaction walletTransaction)
 		{
-			var sender = userService.GetUserById(senderId);
+			var sender = userService.GetUserById(walletTransaction.SenderId);
 			walletTransaction.Sender = sender;
 
 			walletTransaction.Recipient = userService.SearchBy(new UserQueryParameters { Username = walletTransaction.Recipient.Username, Email = walletTransaction.Recipient.Email, PhoneNumber = walletTransaction.Recipient.PhoneNumber });
