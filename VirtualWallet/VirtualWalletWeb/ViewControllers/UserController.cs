@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
@@ -37,10 +38,12 @@ namespace VirtualWallet.Web.ViewControllers
 			this.imageManager = imageManager;
 			this.authManagerMVC = authManagerMVC;
 		}
+
 		[HttpGet]
 		public IActionResult Login()
 		{
 			var login = new Login();
+
 			return View(login);
 		}
 
@@ -59,7 +62,7 @@ namespace VirtualWallet.Web.ViewControllers
 
 				if (!user.IsConfirmed)
 				{
-					throw new UnauthenticatedOperationException("You have to confirm your account registration first before you log in.");
+					return View("EmailNotConfirmed", filledLoginForm);
 				}
 
 				this.HttpContext.Session.SetString("LoggedUser", filledLoginForm.Username);
@@ -68,7 +71,6 @@ namespace VirtualWallet.Web.ViewControllers
 				this.HttpContext.Session.SetString("profilePicPath", user.ProfilePicPath ?? "/Assets/pfp.jpg");
 
 				return RedirectToAction("Index", "Home");
-
 			}
 			catch (EntityNotFoundException)
 			{
@@ -89,6 +91,7 @@ namespace VirtualWallet.Web.ViewControllers
 				return View("Error");
 			}
 		}
+
 		[HttpGet]
 		public IActionResult Logout()
 		{
@@ -96,6 +99,7 @@ namespace VirtualWallet.Web.ViewControllers
 			this.HttpContext.Session.Remove("userId");
 			this.HttpContext.Session.Remove("roleId");
 			this.HttpContext.Session.Remove("profilePicPath");
+
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -103,14 +107,16 @@ namespace VirtualWallet.Web.ViewControllers
 		public IActionResult Register()
 		{
 			var registerUser = new RegisterUser();
+
 			return View(registerUser);
 		}
+
 		[HttpPost]
 		public IActionResult Register(RegisterUser filledForm)
 		{
 			try
 			{
-				if (!this.ModelState.IsValid)
+				if (!ModelState.IsValid)
 				{
 					return View(filledForm);
 				}
@@ -128,27 +134,24 @@ namespace VirtualWallet.Web.ViewControllers
 				}
 
 				EmailSender emailSender = new EmailSender();
-
-				// Generate confirmation token and store it in the database
 				string confirmationToken = EmailSender.GenerateConfirmationToken();
+				var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+
 				user.ConfirmationToken = confirmationToken;
-				user.IsConfirmed = false; // Set IsConfirmed to false initially
+				user.ConfirmationTokenExpiry = expiryTimestamp;
+				user.IsConfirmed = false;
 				userService.CreateUser(user);
 
-				// send confirmation email
 				string emailSubject = "Registration Confirmation";
 				string toUser = $"{user.FirstName} {user.LastName}";
 
-				// TODO edit url path and action that handles email confirmation
 				string emailMessage = $"Dear {user.FirstName}, please confirm your registration by clicking the link below:\n\n" +
 					$"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
 
 				emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
-				// end of email verification section
-
 				ViewBag.SuccessMessage = "Activation email was sent to your Email.Please activate your account!";
-				return View("Successful");
 
+				return View("Successful");
 			}
 			catch (EmailAlreadyExistException e)
 			{
@@ -183,15 +186,24 @@ namespace VirtualWallet.Web.ViewControllers
 			{
 				var user = userService.GetUserById(int.Parse(userId));
 
-				// If the user or token is invalid or the account is already confirmed, show an error message
-				if (user == null || user.IsConfirmed || token != user.ConfirmationToken)
+                if (user == null || user.IsConfirmed || token != user.ConfirmationToken)
 				{
 					return View("Error");
 				}
 
+				if (user.ConfirmationTokenExpiry < DateTime.UtcNow)
+				{
+					Login loginForm = new Login
+					{
+						Username = user.Username,
+						Password = user.Password
+					};
+
+					return View("ConfirmationTokenExpired", loginForm);
+				}
+
 				user.IsConfirmed = true;
 				userService.ConfirmUser(user, int.Parse(userId));
-
 				ViewBag.SuccessMessage = "Your account has been confirmed. You can now log in.";
 
 				return View("Successful");
@@ -210,7 +222,60 @@ namespace VirtualWallet.Web.ViewControllers
 			}
 		}
 
-		[HttpGet]
+		[HttpPost]
+        public IActionResult ResendConfirmationEmail(Login filledLoginForm)
+        {
+            try
+            {
+				if (!ModelState.IsValid)
+				{
+					return View(filledLoginForm);
+				}
+
+				var user = userService.GetUserByUsername(filledLoginForm.Username);
+
+                if (user == null || user.IsConfirmed)
+                {
+                    return View("Error");
+                }
+
+                string confirmationToken = EmailSender.GenerateConfirmationToken();
+                var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+
+				user.ConfirmationToken = confirmationToken;
+				user.ConfirmationTokenExpiry = expiryTimestamp;
+                userService.UpdateUserConfirmationToken(user, filledLoginForm.Username);
+
+                string emailSubject = "Registration Confirmation";
+                string toUser = $"{user.FirstName} {user.LastName}";
+
+                string emailMessage = $"Dear {user.FirstName}, please confirm your registration by clicking the link below:\n\n" +
+                    $"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
+
+                EmailSender emailSender = new EmailSender();
+                emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
+
+                ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
+
+                return View("Successful");
+            }
+            catch (EntityNotFoundException e)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = e.Message;
+
+                return View("Error");
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = e.Message;
+
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
 		public IActionResult EditUser([FromRoute] int id)
 		{
 			try
