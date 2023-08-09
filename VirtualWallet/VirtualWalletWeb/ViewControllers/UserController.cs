@@ -135,7 +135,7 @@ namespace VirtualWallet.Web.ViewControllers
 
 				EmailSender emailSender = new EmailSender();
 				string confirmationToken = EmailSender.GenerateConfirmationToken();
-				var expiryTimestamp = DateTime.UtcNow.AddSeconds(24);
+				var expiryTimestamp = DateTime.UtcNow.AddHours(24);
 
 				user.ConfirmationToken = confirmationToken;
 				user.ConfirmationTokenExpiry = expiryTimestamp;
