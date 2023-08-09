@@ -58,6 +58,8 @@ namespace VirtualWallet.DataAccess.Models
 
 		public string ConfirmationToken { get; set; }
 
-		public bool IsConfirmed { get; set; }
+		public DateTime ConfirmationTokenExpiry { get; set; }
+
+        public bool IsConfirmed { get; set; }
     }
 }

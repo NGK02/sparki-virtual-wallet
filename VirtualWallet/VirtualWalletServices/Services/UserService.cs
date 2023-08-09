@@ -185,5 +185,12 @@ namespace VirtualWallet.Business.Services
 
             userRepo.ConfirmUser(userToConfirm, user);
         }
+
+        public void UpdateUserConfirmationToken(User user, string username)
+        {
+            var userToUpdate = GetUserByUsername(username);
+
+            userRepo.UpdateUserConfirmationToken(userToUpdate, user);
+        }
     }
 }
