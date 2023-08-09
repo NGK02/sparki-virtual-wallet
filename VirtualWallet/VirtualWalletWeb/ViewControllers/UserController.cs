@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
@@ -59,7 +60,13 @@ namespace VirtualWallet.Web.ViewControllers
 
 				if (!user.IsConfirmed)
 				{
-					throw new UnauthenticatedOperationException("You have to confirm your account registration first before you log in.");
+					if (user.ConfirmationTokenExpiry < DateTime.UtcNow)
+					{
+						return View("Resend", new ResendConfirmationViewModel());
+					} else
+					{
+						throw new UnauthenticatedOperationException("You have to confirm your account registration first before you log in.");
+					}
 				}
 
 				this.HttpContext.Session.SetString("LoggedUser", filledLoginForm.Username);
@@ -132,7 +139,13 @@ namespace VirtualWallet.Web.ViewControllers
 				// Generate confirmation token and store it in the database
 				string confirmationToken = EmailSender.GenerateConfirmationToken();
 				user.ConfirmationToken = confirmationToken;
-				user.IsConfirmed = false; // Set IsConfirmed to false initially
+
+				// Calculate the expiry timestamp (e.g., 24 hours from now)
+				var expiryTimestamp = DateTime.UtcNow.AddMinutes(1); // Confirmation link valid for 1 minute
+				//var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+				user.ConfirmationTokenExpiry = expiryTimestamp;
+
+                user.IsConfirmed = false; // Set IsConfirmed to false initially
 				userService.CreateUser(user);
 
 				// send confirmation email
@@ -183,10 +196,16 @@ namespace VirtualWallet.Web.ViewControllers
 			{
 				var user = userService.GetUserById(int.Parse(userId));
 
-				// If the user or token is invalid or the account is already confirmed, show an error message
-				if (user == null || user.IsConfirmed || token != user.ConfirmationToken)
+                // If the user or token is invalid or the account is already confirmed, show an error message
+                if (user == null || user.IsConfirmed || token != user.ConfirmationToken)
 				{
 					return View("Error");
+				}
+
+				// UNDER CONSTRUCTION ***
+				if (user.ConfirmationTokenExpiry < DateTime.UtcNow)
+				{
+					return View("Resend", new ResendConfirmationViewModel());
 				}
 
 				user.IsConfirmed = true;
@@ -211,6 +230,84 @@ namespace VirtualWallet.Web.ViewControllers
 		}
 
 		[HttpGet]
+		public IActionResult Resend(ResendConfirmationViewModel model)
+		{
+			try
+			{
+				return View(model);
+			}
+			catch (EntityNotFoundException e)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+			catch (Exception e)
+			{
+				this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				this.ViewData["ErrorMessage"] = e.Message;
+				return View("Error");
+			}
+		}
+
+		// still under construction
+		[HttpPost]
+        public IActionResult ResendConfirmationEmail(ResendConfirmationViewModel model)
+        {
+            try
+            {
+				if (!ModelState.IsValid)
+				{
+					return View("Resend", model);
+				}
+
+				var user = userService.GetUserByEmail(model.Email);
+
+                // If the user is invalid or the account is already confirmed, show an error message
+                if (user == null || user.IsConfirmed)
+                {
+                    return View("Error");
+                }
+
+                // Generate new confirmation token and store it in the database
+                string confirmationToken = EmailSender.GenerateConfirmationToken();
+                user.ConfirmationToken = confirmationToken;
+
+                // Calculate the new expiry timestamp (e.g., 24 hours from now)
+                var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+                user.ConfirmationTokenExpiry = expiryTimestamp;
+
+                // update the user in the db
+                userService.UpdateUserConfirmationToken(user, model.Username);
+
+                // send confirmation email
+                string emailSubject = "Registration Confirmation";
+                string toUser = $"{user.FirstName} {user.LastName}";
+
+                string emailMessage = $"Dear {user.FirstName}, please confirm your registration by clicking the link below:\n\n" +
+                    $"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
+
+                EmailSender emailSender = new EmailSender();
+                emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
+
+                ViewBag.SuccessMessage = "Activation email was sent to your Email.Please activate your account!";
+                return View("Successful");
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
 		public IActionResult EditUser([FromRoute] int id)
 		{
 			try
