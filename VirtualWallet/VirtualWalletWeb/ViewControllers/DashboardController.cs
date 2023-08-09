@@ -4,9 +4,10 @@ namespace VirtualWallet.Web.ViewControllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            return View("DashboardMenu");
+            return View("DashboardMain");
         }
     }
 }

@@ -85,6 +85,7 @@ namespace VirtualWallet.Web.ViewControllers
                 return View("Error");
             }
         }
+
         [HttpGet]
         public IActionResult Logout()
         {
@@ -101,6 +102,7 @@ namespace VirtualWallet.Web.ViewControllers
             var registerUser = new RegisterUser();
             return View(registerUser);
         }
+
         [HttpPost]
         public IActionResult Register(RegisterUser filledForm)
         {
@@ -173,6 +175,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
+        //Да се оправи този асинхронен метод!
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             try

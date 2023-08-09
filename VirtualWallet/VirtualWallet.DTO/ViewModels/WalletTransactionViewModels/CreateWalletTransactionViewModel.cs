@@ -28,6 +28,6 @@ namespace VirtualWallet.Dto.ViewModels.WalletTransactionViewModels
 
 		//[Required]
 		//[Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
-        public decimal Amount { get; set; }
+		public decimal Amount { get; set; }
     }
 }
