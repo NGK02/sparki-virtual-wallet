@@ -37,8 +37,7 @@ namespace VirtualWallet.Web.ViewControllers
                     return RedirectToAction("Login", "User");
                 }
 
-				//Да се изкара във хелпър?
-				ViewData["Currencies"] = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+				LoadCurrencies();
 
                 return View(walletTransactionForm);
             }
@@ -75,12 +74,12 @@ namespace VirtualWallet.Web.ViewControllers
 					return RedirectToAction("Login", "User");
 				}
 
-				ViewData["Currencies"] = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+				LoadCurrencies();
 
 				if (!this.ModelState.IsValid)
 				{
-					//Да се изкара във хелпър?
-					return View("CreateTransaction", walletTransactionForm);
+					ValidateInputs(walletTransactionForm);
+					return View("CreateWalletTransaction", walletTransactionForm);
 				}
 
 				return View(walletTransactionForm);
@@ -117,13 +116,12 @@ namespace VirtualWallet.Web.ViewControllers
 				{
 					return RedirectToAction("Login", "User");
 				}
+				var loggedUserId = (int)this.HttpContext.Session.GetInt32("userId");
 
-				var loggedUserId = this.HttpContext.Session.GetInt32("userId");
-
-				var walletTransaction = mapper.Map<WalletTransaction>(walletTransactionForm);
 				//Може би loggedUserId да се намапва директно тука и да не се предава нататък за вадене на юзъра?
-				//Да не се пази транзакцията като променлива?
-				walletTransaction = walletTransactionService.CreateTransaction(walletTransaction, (int)loggedUserId);
+				walletTransactionForm.SenderId = loggedUserId;
+				var walletTransaction = mapper.Map<WalletTransaction>(walletTransactionForm);
+				_ = walletTransactionService.CreateTransaction(walletTransaction);
 
 				ViewBag.SuccessMessage = "Transaction completed successfully!";
 				return View("Successful");
@@ -170,6 +168,23 @@ namespace VirtualWallet.Web.ViewControllers
 
 				return View("Error");
 			}
+		}
+
+		private void ValidateInputs(CreateWalletTransactionViewModel walletTransactionForm) 
+		{
+			if (walletTransactionForm.RecipientIdentifierValue is null)
+				this.ViewData["ErrorMessage"] = "Please provide a recipient identifier value!";
+			if (walletTransactionForm.RecipientIdentifier is null)
+				this.ViewData["ErrorMessage"] = "Please provide a recipient identifier!";
+			if (walletTransactionForm.Amount <= 0.01M)
+				this.ViewData["ErrorMessage"] = "Please provide amount greater than 0!";
+			if (walletTransactionForm.CurrencyId <= 0)
+				this.ViewData["ErrorMessage"] = "Please provide a currency!";
+		}
+
+		private void LoadCurrencies() 
+		{
+			ViewData["Currencies"] = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
 		}
 	}
 }
