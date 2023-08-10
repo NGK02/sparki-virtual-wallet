@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Enums;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace VirtualWallet.DataAccess
 {
@@ -455,8 +456,14 @@ namespace VirtualWallet.DataAccess
 					CurrencyId = 4,
 					Amount = 102000000,
 				},
+                new Balance()
+                {
+                    WalletId = 10,
+                    CurrencyId = 1,
+                    Amount = 1000000,
+                },
 
-			};
+            };
 
 			IList<Card> cards = new List<Card>
 			{
@@ -509,13 +516,50 @@ namespace VirtualWallet.DataAccess
 				}
 			};
 
-			builder.Entity<Role>().HasData(roles);
+			IList<Exchange> exchanges = new List<Exchange>
+			{
+				new Exchange
+				{
+					Id = 1,
+					WalletId = 10,
+					ToCurrencyId=1,
+					FromCurrencyId=2,
+					Amount=1000,
+					ExchangedAmout=1100,
+					Rate=1.10m
+                    
+                },
+                new Exchange
+                {
+						Id = 2,
+                    WalletId = 10,
+                    ToCurrencyId=1,
+                    FromCurrencyId=3,
+                    Amount=1000,
+                    ExchangedAmout=560,
+                    Rate=0.56m
+                },
+                new Exchange
+                {
+					Id = 3,
+                    WalletId = 10,
+                    ToCurrencyId=1,
+                    FromCurrencyId=4,
+                    Amount=1000,
+                    ExchangedAmout=6.92m,
+                    Rate=0.0069m
+                }
+            };
+
+            builder.Entity<Role>().HasData(roles);
 			builder.Entity<Currency>().HasData(currencies);
 			builder.Entity<User>().HasData(users);
 			builder.Entity<Wallet>().HasData(wallets);
 			builder.Entity<Balance>().HasData(balances);
 			builder.Entity<Card>().HasData(cards);
 			builder.Entity<Transfer>().HasData(transfers);
-		}
-	}
+            builder.Entity<Exchange>().HasData(exchanges);
+
+        }
+    }
 }
