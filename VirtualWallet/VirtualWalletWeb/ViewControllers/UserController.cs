@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 using VirtualWallet.Dto.UserDto;
@@ -23,13 +26,17 @@ namespace VirtualWallet.Web.ViewControllers
 		private readonly IAuthManager authManager;
 		private readonly IImageManager imageManager;
 		private readonly IAuthManagerMvc authManagerMVC;
+		private readonly IReferralService referralService;
+		private readonly IWalletService walletService;
 
 		public UserController(IUserService userService,
 								IUserRepository userRepository,
 								IAuthManager authManager,
 								IMapper mapper,
 								IImageManager imageManager,
-								IAuthManagerMvc authManagerMVC)
+								IAuthManagerMvc authManagerMVC,
+								IReferralService referralService,
+								IWalletService walletService)
 		{
 			this.userService = userService;
 			this.userRepository = userRepository;
@@ -37,6 +44,8 @@ namespace VirtualWallet.Web.ViewControllers
 			this.mapper = mapper;
 			this.imageManager = imageManager;
 			this.authManagerMVC = authManagerMVC;
+			this.referralService = referralService;
+			this.walletService = walletService;
 		}
 
 		[HttpGet]
@@ -111,6 +120,17 @@ namespace VirtualWallet.Web.ViewControllers
 			return View(registerUser);
 		}
 
+		[HttpGet]
+		public IActionResult RegisterReferredUser(string token)
+		{
+			var registerUser = new RegisterUser()
+			{
+				ReferralToken = token
+			};
+
+			return View("Register", registerUser);
+		}
+
 		[HttpPost]
 		public IActionResult Register(RegisterUser filledForm)
 		{
@@ -151,6 +171,13 @@ namespace VirtualWallet.Web.ViewControllers
 				emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 				ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
 
+				if (!string.IsNullOrEmpty(filledForm.ReferralToken))
+				{
+					var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+
+					return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
+				}
+
 				return View("Successful");
 			}
 			catch (EmailAlreadyExistException e)
@@ -177,6 +204,14 @@ namespace VirtualWallet.Web.ViewControllers
 				this.ViewData["ErrorMessage"] = e.Message;
 				return View("Error");
 			}
+		}
+
+		[HttpGet]
+		public IActionResult ReceiveBonus(int referrerId, int referredUserId)
+		{
+			walletService.DistributeFundsForReferrals(referrerId, referredUserId, 70, 3);
+
+			return View("Successful");
 		}
 
 		[HttpGet]
@@ -406,16 +441,88 @@ namespace VirtualWallet.Web.ViewControllers
 			if (!ModelState.IsValid)
 			{
 				ViewData["ErrorMessage"] = (filledForm.Email is null ? "Please provide email to refer." : "Please enter valid email!");
+
 				return View("ReferFriend", filledForm);
 			}
 
 			if (userRepository.EmailExists(filledForm.Email))
 			{
 				ViewData["ErrorMessage"] = "Email alredy exist";
+
 				return View("ReferFriend", filledForm);
 			}
+
+			int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
+			EmailSender emailSender = new EmailSender();
+			string confirmationToken = "";
+
+			bool isUnique = false;
+
+			while (!isUnique)
+			{
+				confirmationToken = EmailSender.GenerateConfirmationToken();
+				var existingReferral = referralService.FindReferralByToken(confirmationToken);
+
+				if (existingReferral == null)
+				{
+					isUnique = true;
+				}
+			}
+
+			var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+
+			Referral referral = new Referral()
+			{
+				ConfirmationToken = confirmationToken,
+				ConfirmationTokenExpiry = expiryTimestamp,
+				IsConfirmed = false,
+				ReferredEmail = filledForm.Email
+			};
+
+			referralService.CreateReferral(userId, referral);
+			string emailSubject = "Invitation to Register";
+
+			string emailMessage = $"You've been invited to join our app! Click the following link to register:\n\n" +
+				$"{Url.Action("OpenInvitation", "User", new { token = confirmationToken }, Request.Scheme)}";
+
+			emailSender.SendEmail(emailSubject, filledForm.Email, null, emailMessage).Wait();
 			return View("Successful");
 		}
 
+		[HttpGet]
+		public IActionResult OpenInvitation(string token)
+		{
+			try
+			{
+				var referral = referralService.FindReferralByToken(token);
+
+				if (referral.IsConfirmed)
+				{
+					return View("Error");
+				}
+
+				if (referral.ConfirmationTokenExpiry < DateTime.UtcNow)
+				{
+					throw new UnauthenticatedOperationException("The invitation link has expired.");
+				}
+
+				return RedirectToAction("RegisterReferredUser", "User", new { token = token });
+			}
+			catch (EntityNotFoundException e)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = e.Message;
+
+				return View("Error");
+			}
+			catch (Exception e)
+			{
+				Response.StatusCode = StatusCodes.Status500InternalServerError;
+				ViewData["ErrorMessage"] = e.Message;
+
+				return View("Error");
+			}
+		}
 	}
 }

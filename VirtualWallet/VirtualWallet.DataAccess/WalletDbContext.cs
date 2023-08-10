@@ -38,6 +38,8 @@ namespace VirtualWallet.DataAccess
 
 		public DbSet<Exchange> Exchanges { get; set; }
 
+		public DbSet<Referral> Referrals { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			//Вкарах ги в отделни методи за по-чисто, дано не направи проблем в бъдеще.
@@ -50,6 +52,11 @@ namespace VirtualWallet.DataAccess
 
 		protected void ConfigureMigration(ModelBuilder builder)
 		{
+			builder.Entity<Referral>()
+				.HasOne(r => r.Referrer)
+				.WithMany(u => u.Referrals)
+				.OnDelete(DeleteBehavior.NoAction);
+
 			builder.Entity<Balance>()
 				.HasKey(b => new { b.CurrencyId, b.WalletId });
 

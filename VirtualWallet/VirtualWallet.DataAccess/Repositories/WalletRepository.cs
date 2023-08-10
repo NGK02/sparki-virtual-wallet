@@ -44,5 +44,12 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return GetQueryableWallets().FirstOrDefault(w => w.Id == walletId);
         }
+
+		public void DistributeFundsForReferrals(Balance refererBalance, Balance referredUserBalance)
+		{
+            walletDbContext.Balances.Add(refererBalance);
+            walletDbContext.Balances.Add(referredUserBalance);
+			walletDbContext.SaveChanges();
+		}
 	}
 }
