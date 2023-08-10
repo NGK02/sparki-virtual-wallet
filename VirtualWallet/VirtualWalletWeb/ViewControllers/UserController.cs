@@ -446,8 +446,6 @@ namespace VirtualWallet.Web.ViewControllers
 			while (!isUnique)
 			{
 				confirmationToken = EmailSender.GenerateConfirmationToken();
-
-				// Check if the token already exists in the referrals table
 				var existingReferral = referralService.FindReferralByToken(confirmationToken);
 
 				if (existingReferral == null)
@@ -493,7 +491,7 @@ namespace VirtualWallet.Web.ViewControllers
 					throw new UnauthenticatedOperationException("The invitation link has expired.");
 				}
 
-				return View("RegisterReferredUser", token);
+				return RedirectToAction("RegisterReferredUser", "User", new { token = token });
 			}
 			catch (EntityNotFoundException e)
 			{

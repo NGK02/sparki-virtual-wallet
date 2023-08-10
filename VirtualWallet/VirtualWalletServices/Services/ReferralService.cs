@@ -50,10 +50,10 @@ namespace VirtualWallet.Business.Services
 		{
 			var referral = referralRepository.FindReferralByToken(token);
 
-			if (referral == null)
-			{
-				throw new EntityNotFoundException("Requested referral not found.");
-			}
+			//if (referral == null)
+			//{
+			//	throw new EntityNotFoundException("Requested referral not found.");
+			//}
 
 			return referral;
 		}
