@@ -78,12 +78,11 @@ namespace VirtualWallet.Business.Services
 
 		public User SearchBy(UserQueryParameters queryParams)
 		{
-			var user = new User();
+			User user;
 			if (queryParams.Username is null &
 				   queryParams.PhoneNumber is null &
 				   queryParams.Email is null)
 			{
-				//TODO Тук ще е по добре да връщам всички юзъри!!!!!
 				throw new InvalidOperationException("Please provide search parameters!");
 			}
 			else
@@ -100,7 +99,7 @@ namespace VirtualWallet.Business.Services
 
 		public User UpdateUser(string username, User userNewValues)
 		{
-			_ = UserNewValuesValidator(userNewValues);
+			_ = ValidateUserNewValues(userNewValues);
 			var userToUpdate = userRepo.GetUserByUsername(username);
 			if (userToUpdate is null)
 			{
@@ -116,7 +115,7 @@ namespace VirtualWallet.Business.Services
 
 		public User UpdateUser(int id, User userNewValues)
 		{
-			_ = UserNewValuesValidator(userNewValues);
+			_ = ValidateUserNewValues(userNewValues);
 			var userToUpdate = userRepo.GetUserById(id);
 			if (userToUpdate is null)
 			{
@@ -148,7 +147,7 @@ namespace VirtualWallet.Business.Services
 			throw new EntityNotFoundException("Please provide Id or Username for the user to be deleted!");
 		}
 
-		private bool UserNewValuesValidator(User userNewValues)
+		private bool ValidateUserNewValues(User userNewValues)
 		{
 			if (userNewValues.Email is not null)
 			{

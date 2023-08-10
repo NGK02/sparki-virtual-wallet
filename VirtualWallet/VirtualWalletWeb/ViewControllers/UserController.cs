@@ -174,7 +174,7 @@ namespace VirtualWallet.Web.ViewControllers
 					$"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
 
 				emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
-				ViewBag.SuccessMessage = "Activation email was sent to your Email.Please activate your account!";
+				ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
 
 				return View("Successful");
 			}
@@ -259,12 +259,18 @@ namespace VirtualWallet.Web.ViewControllers
 
 				var user = userService.GetUserByUsername(filledLoginForm.Username);
 
-                if (user == null || user.IsConfirmed)
+                if (user == null)
                 {
+					ViewData["ErrorMessage"] = "User was not found!";
                     return View("Error");
                 }
+				if (user.IsConfirmed)
+				{
+					ViewData["ErrorMessage"] = "User already confirmed";
+					return View("Error");
+				}
 
-                string confirmationToken = EmailSender.GenerateConfirmationToken();
+				string confirmationToken = EmailSender.GenerateConfirmationToken();
                 var expiryTimestamp = DateTime.UtcNow.AddHours(24);
 
 				user.ConfirmationToken = confirmationToken;
