@@ -162,11 +162,6 @@ namespace VirtualWallet.Web.ViewControllers
 				user.IsConfirmed = false;
 				userService.CreateUser(user);
 
-				if (!string.IsNullOrEmpty(filledForm.ReferralToken))
-				{
-					// distribute funds to both parties
-				}
-
 				string emailSubject = "Registration Confirmation";
 				string toUser = $"{user.FirstName} {user.LastName}";
 
@@ -175,6 +170,13 @@ namespace VirtualWallet.Web.ViewControllers
 
 				emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 				ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
+
+				if (!string.IsNullOrEmpty(filledForm.ReferralToken))
+				{
+					var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+
+					return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
+				}
 
 				return View("Successful");
 			}
@@ -202,6 +204,14 @@ namespace VirtualWallet.Web.ViewControllers
 				this.ViewData["ErrorMessage"] = e.Message;
 				return View("Error");
 			}
+		}
+
+		[HttpGet]
+		public IActionResult ReceiveBonus(int referrerId, int referredUserId)
+		{
+			walletService.DistributeFundsForReferrals(referrerId, referredUserId, 70, 3);
+
+			return View("Successful");
 		}
 
 		[HttpGet]

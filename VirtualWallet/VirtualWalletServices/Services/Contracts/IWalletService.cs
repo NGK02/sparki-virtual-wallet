@@ -21,5 +21,7 @@ namespace VirtualWallet.Business.Services.Contracts
         Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId);
 
         Wallet GetWalletById(int walletId);
+
+        void DistributeFundsForReferrals(int referrerId, int referredUserId, decimal amount, int currencyId);
 	}
 }
