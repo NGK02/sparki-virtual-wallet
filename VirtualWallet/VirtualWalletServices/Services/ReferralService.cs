@@ -39,11 +39,6 @@ namespace VirtualWallet.Business.Services
 		{
 			var user = userService.GetUserById(userId);
 
-			if (referralRepository.TokenExists(referral.ConfirmationToken))
-			{
-				throw new ArgumentException("A token with the provided code already exists.");
-			}
-
 			referral.Referrer = user;
 			referral.ReferrerId = userId;
 			user.Referrals.Add(referral);
