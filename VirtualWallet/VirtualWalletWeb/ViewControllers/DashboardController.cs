@@ -9,5 +9,13 @@ namespace VirtualWallet.Web.ViewControllers
         {
             return View("DashboardMain");
         }
-    }
+
+		[HttpGet]
+		public IActionResult Exchanges()
+		{
+			return View("Exchanges");
+		}
+
+
+	}
 }

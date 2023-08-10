@@ -14,5 +14,7 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
         IEnumerable<Wallet> GetWallets();
 
         Wallet GetWalletById(int walletId);
+
+		void DistributeFundsForReferrals(Balance refererBalance, Balance referredUserBalance);
 	}
 }

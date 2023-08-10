@@ -61,5 +61,7 @@ namespace VirtualWallet.DataAccess.Models
 		public DateTime ConfirmationTokenExpiry { get; set; }
 
         public bool IsConfirmed { get; set; }
+
+		public List<Referral> Referrals { get; set; } = new List<Referral>();
     }
 }

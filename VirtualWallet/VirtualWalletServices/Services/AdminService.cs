@@ -35,10 +35,6 @@ namespace VirtualWallet.Business.Services
 				result.Add(userService.SearchBy(queryParameters));
 			}
 
-			if (result.Count == 0)
-			{
-				throw new EntityNotFoundException($"User not found!");
-			}
 			return result;
 		}
 

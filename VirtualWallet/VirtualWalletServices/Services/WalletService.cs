@@ -132,5 +132,32 @@ namespace VirtualWallet.Business.Services
 
             return wallet;
         }
-    }
+
+		public void DistributeFundsForReferrals(int referrerId, int referredUserId, decimal amount, int currencyId)
+		{
+            var referrer = userService.GetUserById(referrerId);
+			var referrerBalance = referrer.Wallet.Balances.SingleOrDefault(b => b.CurrencyId == currencyId);
+
+			if (referrerBalance == null)
+			{
+                referrerBalance = new Balance { CurrencyId = currencyId, WalletId = referrerId };
+
+                //referrerBalance = CreateWalletBalance(currencyId, referrerId);
+			}
+
+			referrerBalance.Amount += amount;
+
+			var referredUser = userService.GetUserById(referredUserId);
+			var referredUserBalance = referredUser.Wallet.Balances.SingleOrDefault(b => b.CurrencyId == currencyId);
+
+			if (referredUserBalance == null)
+			{
+                referredUserBalance = new Balance { CurrencyId = currencyId, WalletId = referredUserId };
+			}
+
+			referredUserBalance.Amount += amount;
+
+            walletRepository.DistributeFundsForReferrals(referrerBalance, referredUserBalance);
+		}
+	}
 }
