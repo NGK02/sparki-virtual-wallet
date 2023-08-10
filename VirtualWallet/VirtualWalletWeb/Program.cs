@@ -17,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IReferralRepository, ReferralRepository>();
+builder.Services.AddScoped<IReferralService, ReferralService>();
+
 builder.Services.AddScoped<IAuthManager,AuthManager>();
 builder.Services.AddScoped<IImageManager,ImageManager>();
 builder.Services.AddScoped<IAuthManagerMvc, AuthManagerMvc>();

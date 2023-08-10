@@ -23,13 +23,15 @@ namespace VirtualWallet.Web.ViewControllers
 		private readonly IAuthManager authManager;
 		private readonly IImageManager imageManager;
 		private readonly IAuthManagerMvc authManagerMVC;
+		private readonly IReferralService referralService;
 
 		public UserController(IUserService userService,
 								IUserRepository userRepository,
 								IAuthManager authManager,
 								IMapper mapper,
 								IImageManager imageManager,
-								IAuthManagerMvc authManagerMVC)
+								IAuthManagerMvc authManagerMVC,
+								IReferralService referralService)
 		{
 			this.userService = userService;
 			this.userRepository = userRepository;
@@ -37,6 +39,7 @@ namespace VirtualWallet.Web.ViewControllers
 			this.mapper = mapper;
 			this.imageManager = imageManager;
 			this.authManagerMVC = authManagerMVC;
+			this.referralService = referralService;
 		}
 
 		[HttpGet]
@@ -408,8 +411,72 @@ namespace VirtualWallet.Web.ViewControllers
 				ViewData["ErrorMessage"] = "Email alredy exist";
 				return View("ReferFriend", filledForm);
 			}
+
+			int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
+			EmailSender emailSender = new EmailSender();
+			string confirmationToken = EmailSender.GenerateConfirmationToken();
+			var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+
+			Referral referral = new Referral()
+			{
+				ConfirmationToken = confirmationToken,
+				ConfirmationTokenExpiry = expiryTimestamp,
+				IsConfirmed = false,
+				ReferredEmail = filledForm.Email
+			};
+
+			referralService.CreateReferral(userId, referral);
+			string emailSubject = "Invitation to Register";
+
+			// TODO new url for processing this link
+			string emailMessage = $"You've been invited to join our app! Click the following link to register:\n\n" +
+				$"{Url.Action("OpenInvitation", "User", new { token = confirmationToken }, Request.Scheme)}";
+
+
+			// toUser is null - will that be a problem?
+			emailSender.SendEmail(emailSubject, filledForm.Email, null, emailMessage).Wait();
 			return View("Successful");
 		}
 
+		[HttpGet]
+		public IActionResult OpenInvitation(string token)
+		{
+			try
+			{
+				// find referral by something unique
+				var refferal = referralService.FindReferralByToken(token);
+
+				if (refferal.IsConfirmed || token != refferal.ConfirmationToken)
+				{
+					return View("Error");
+				}
+
+				if (refferal.ConfirmationTokenExpiry < DateTime.UtcNow)
+				{
+					throw new UnauthenticatedOperationException("The invitation link has expired.");
+				}
+
+				// confirm refferal after registration?
+				//refferal.IsConfirmed = true;
+
+				// redirect to registration
+				return RedirectToAction("Index", "Home");
+			}
+			catch (EntityNotFoundException e)
+			{
+				Response.StatusCode = StatusCodes.Status404NotFound;
+				ViewData["ErrorMessage"] = e.Message;
+
+				return View("Error");
+			}
+			catch (Exception e)
+			{
+				Response.StatusCode = StatusCodes.Status500InternalServerError;
+				ViewData["ErrorMessage"] = e.Message;
+
+				return View("Error");
+			}
+		}
 	}
 }
