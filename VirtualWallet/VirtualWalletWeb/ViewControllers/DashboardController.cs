@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
@@ -32,29 +33,46 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpGet]
         public IActionResult Exchanges(int id, PaginateExchanges form)
         {
-            if (!authManagerMvc.IsLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
+                if (!authManagerMvc.IsLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    return View("Error");
+                }
+                ViewBag.Id = id;
+                var queryParams = mapper.Map<QueryParameters>(form);
+                var Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
+                form.Exchanges = Exchanges;
+
+                return View(form);
+
             }
-            if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
+            catch (EntityNotFoundException e)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                this.Response.StatusCode = StatusCodes.Status200OK;
+                this.ViewData["ErrorMessage"] = e.Message;
+                ViewBag.Id = id;
+                return View("Exchanges",form);
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-
-            var queryParams = mapper.Map<QueryParameters>(form);
-            var Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
-            form.Exchanges = Exchanges;
-
-            return View(form);
         }
 
         [HttpGet]
         public IActionResult Transactions(int id)
         {
 
-        
+
             if (!authManagerMvc.IsLogged("LoggedUser"))
             {
                 return RedirectToAction("Login", "User");
@@ -65,6 +83,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                 return View("Error");
             }
+            ViewBag.Id = id;
 
 
 
@@ -85,6 +104,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                 return View("Error");
             }
+            ViewBag.Id = id;
 
 
 
