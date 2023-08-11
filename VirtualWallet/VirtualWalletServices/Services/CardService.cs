@@ -48,7 +48,6 @@ namespace VirtualWallet.Business.Services
 
         public IEnumerable<Card> GetCards()
         {
-
             var cards = cardRepository.GetCards();
 
             if (!cards.Any() || cards == null)

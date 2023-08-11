@@ -11,7 +11,7 @@ namespace VirtualWallet.Business.Services.Contracts
     {
         Card GetCardById(int cardId, int userId);
 
-        IEnumerable<Card> GetCards(int userId);
+        IEnumerable<Card> GetCards();
 
         IEnumerable<Card> GetUserCards(int userId);
 

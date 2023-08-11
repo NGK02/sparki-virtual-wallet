@@ -5,16 +5,15 @@
 }
 
 <head>
-	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 	<!-- <link rel="stylesheet" href="./assets/styles/styles.css" /> -->
 	<script defer src="https://unpkg.com/alpinejs@3.2.2/dist/cdn.min.js"></script>
 </head>
 
 <div class="h-full flex items-center justify-center">
-	<form method="post" asp-action="Update" asp-controller="Card" x-data="creditCard"
+	<form method="post" asp-action="Edit" asp-controller="Card" x-data="creditCard"
 		  class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex sm:w-96 dark:bg-neutral-800 dark:border-puerple-400">
 
-		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-white">Card details</div>
+		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Card details</div>
 
 		<div class="flex flex-col justify-center items-center mb-4">
 			<div class="relative"
@@ -36,16 +35,18 @@
 				</div>
 			</div>
 
-			<div class="relative"
-				 x-show="card === 'back'"
-				 x-transition:enter="transition ease-out duration-300"
-				 x-transition:enter-start="opacity-0 transform scale-90"
-				 x-transition:enter-end="opacity-100 transform scale-100">
-				<img class="w-full h-auto" src="~/assets/addcardback.png" alt="">
-				<div class="bg-transparent text-neutral-950 text-sm w-full flex justify-end absolute bottom-20 px-4 sm:bottom-24 sm:px-6">
-					<p x-text="securityCode !== '' ? securityCode : '000'"></p>
+			<template x-if="true">
+				<div class="relative"
+					 x-show="card === 'back'"
+					 x-transition:enter="transition ease-out duration-300"
+					 x-transition:enter-start="opacity-0 transform scale-90"
+					 x-transition:enter-end="opacity-100 transform scale-100">
+					<img class="w-full h-auto" src="~/assets/addcardback.png" alt="">
+					<div class="bg-transparent text-neutral-950 text-sm w-full flex justify-end absolute bottom-20 px-4 sm:bottom-24 sm:px-6">
+						<p x-text="securityCode !== '' ? securityCode : '000'"></p>
+					</div>
 				</div>
-			</div>
+			</template>
 		</div>
 
 		<div class="w-full mb-4 flex-col justify-start items-start flex">
@@ -108,39 +109,37 @@
 			</div>
 		</div>
 
-		<button type="submit" class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300">
-			<div class="text-white text-sm font-medium">Update card</div>
+		<button type="submit" class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 focus:outline-none transition duration-300">
+			<div class="text-white text-sm font-medium">Add card</div>
 		</button>
 	</form>
-
-	<script defer>
-		document.addEventListener("alpine:init", () => {
-			Alpine.data("creditCard", () => ({
-				init() {
-					console.log('Component mounted');
-					const viewModelData = @Html.Raw(viewModelJson);
-					this.cardholder = viewModelData.CardHolder;
-					this.cardNumber = viewModelData.CardNumber;
-					this.currency = viewModelData.CurrencyCode;
-					this.expired.month = viewModelData.ExpirationMonth;
-					this.expired.year = viewModelData.ExpirationYear;
-					this.securityCode = viewModelData.CheckNumber;
-
-					this.formattedCardNumber = this.formatCardNumber();
-				},
-				formatCardNumber() {
-					const cardNumber = this.cardNumber || '0000 0000 0000 0000';
-					return cardNumber.replace(/\s+/g, "").replace(/(\d{4})/g, "$1 ");
-				},
-				card: 'front',
-				cardholder: '',
-				cardNumber: '',
-				expired: {
-					month: '',
-					year: '',
-				},
-				securityCode: '',
-			}));
-		});
-	</script>
 </div>
+
+<script defer>
+	document.addEventListener("alpine:init", () => {
+		Alpine.data("creditCard", () => ({
+			init() {
+				console.log('Component mounted');
+				const viewModelData = @Html.Raw(viewModelJson);
+				this.cardholder = viewModelData.CardHolder;
+				this.cardNumber = viewModelData.CardNumber.toString(); //Ако се рефакторират картите да се махне .toString()
+				this.currency = viewModelData.CurrencyCode;
+				this.expired.month = viewModelData.ExpirationMonth;
+				this.expired.year = viewModelData.ExpirationYear;
+				this.securityCode = viewModelData.CheckNumber;
+			},
+			formattedCardNumber() {
+				const cardNumber = this.cardNumber || '0000 0000 0000 0000';
+				return cardNumber.replace(/\s+/g, "").replace(/(\d{4})/g, "$1 ");
+			},
+			card: 'front',
+			cardholder: '',
+			cardNumber: '',
+			expired: {
+				month: '',
+				year: '',
+			},
+			securityCode: '',
+		}));
+	});
+</script>

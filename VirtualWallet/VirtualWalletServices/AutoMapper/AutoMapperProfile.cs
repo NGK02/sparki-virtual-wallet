@@ -73,6 +73,8 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<CardViewModel, Card>()
                 .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => ParseDate(src.ExpirationMonth + "-" + src.ExpirationYear)));
 
+            CreateMap<Card, SelectCardViewModel>();
+
             CreateMap<Card, GetCardViewModel>()
                 .ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
                 .ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));

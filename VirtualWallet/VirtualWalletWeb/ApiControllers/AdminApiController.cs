@@ -126,7 +126,7 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAdmin(splitCredentials);
-                var cards = cardService.GetCards(user.Id);
+                var cards = cardService.GetCards();
 
                 return Ok(cards);
             }

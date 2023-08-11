@@ -60,7 +60,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View(dashBoardViewModel);
             }
-            catch (EntityNotFoundException ex) //Може би трябва да се махне по назад във веригата хвърлянето и?
+            catch (EntityNotFoundException ex) //Трябва да се махне по назад във веригата хвърлянето и?
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 ViewData["ErrorMessage"] = ex.Message;
