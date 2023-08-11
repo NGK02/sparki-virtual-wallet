@@ -1,11 +1,11 @@
 ﻿
 
 
-<div class="flex justify-center items-center h-full py-8 md:py-24">
-    <div class="flex flex-col h-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 lg:w-3/6 w-4/6 dark:bg-neutral-800 dark:text-neutral-50">
+<div class="flex justify-center items-center h-full py-12 md:py-24">
+    <div class="flex flex-col h-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
 
-		<div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-xs font-semibold md:text-base dark:border-neutral-700">
-			<button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl border-r border-neutral-300 transition duration-300 bg-neutral-200 dark:border-neutral-600 dark:bg-neutral-700">
+		<div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-[10px] font-semibold md:text-base dark:border-neutral-700">
+			<button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl border-r border-neutral-300 text-neutral-50 transition duration-300 bg-purple-500 dark:border-neutral-600">
 				Main
 			</button>
 			<button href="" class="flex justify-center items-center flex-1 w-full p-2 border-r border-neutral-300 transition duration-300 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-700">
@@ -26,14 +26,14 @@
 						dark:bg-gradient-to-r dark:from-indigo-400 dark:via-purple-400 dark:to-fuchsia-400 dark:border-neutral-600">
 
                 <div class="flex flex-col justify-center">
-                    <div class="flex flex-row items-center h-fit w-full gap-2">
+                    <div class="flex flex-row items-center h-fit w-full gap-1 text-xs sm:text-lg sm:gap-2">
                         <span class="text-neutral-600 dark:text-neutral-200">Balance</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-600 dark:text-neutral-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
                     </div>
 
-                    <span class="h-fit text-neutral-900 font-semibold text-xl md:text-4xl dark:text-neutral-50">
+                    <span class="h-fit text-neutral-900 font-semibold text-lg sm:text-xl md:text-4xl dark:text-neutral-50">
                         900 BGN
                     </span>
                 </div>
@@ -51,10 +51,10 @@
 
             <hr class="w-full my-8 border-neutral-300 dark:border-neutral-600">
 
-            <div class="w-full flex flex-row gap-8">
+            <div class="w-full flex flex-col gap-8 sm:flex-row sm:w-full">
 
                 <div class="relative h-fit min-w-fit">
-                    <button class="flex flex-row justify-evenly items-center gap-1 h-fit w-full md:flex-1 p-1 mb-4 bg-purple-500 text-base text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+                    <button class="flex flex-row justify-evenly items-center gap-1 h-fit w-full p-1 mb-4 bg-purple-500 text-base text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
                         <span>Add a card</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -186,7 +186,9 @@
                     </ul>
                 </div>
 
-                <div class="w-3/6 mx-auto xl:w-4/6">
+                <hr class="block w-full border-neutral-300 dark:border-neutral-600 sm:hidden">
+
+                <div class="w-full h-4/6 mx-auto xl:w-4/6 sm:w-3/6 sm:h-full">
                     <canvas id="chart"></canvas>
                 </div>
 
@@ -194,57 +196,53 @@
 
         </div>
     </div>
+</div>
 
-    @*  <style>
-    .invisible-scrollbar
-    {
-    scrollbar-width: none;
-    }
-    </style>*@
-    <script>
-        var data = {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-            datasets: [
-                {
-                    label: "Dataset #1",
-                    backgroundColor: "#d8b4fe",
-                    hoverBackgroundColor: "#e9d5ff",
-                    borderRadius: 5,
-                    data: [65, 59, 20, 81, 56, 55, 40],
-                    stack: 'Stack 0',
-                },
-                {
-                    label: "Dataset #2",
-                    backgroundColor: "#a5b4fc",
-                    hoverBackgroundColor: "#c7d2fe",
-                    borderRadius: 5,
-                    data: [12, 32, 34, 23, 77, 64, 22],
-                    stack: 'Stack 0',
-                },]
-        };
+<script src=" https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js "></script>
 
-        var options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    stacked: true,
-                    grid: {
-                        display: false,
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
+<script>
+    var data = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [
+            {
+                label: "Dataset #1",
+                backgroundColor: "#d8b4fe",
+                hoverBackgroundColor: "#e9d5ff",
+                borderRadius: 5,
+                data: [65, 59, 20, 81, 56, 55, 40],
+                stack: 'Stack 0',
+            },
+            {
+                label: "Dataset #2",
+                backgroundColor: "#a5b4fc",
+                hoverBackgroundColor: "#c7d2fe",
+                borderRadius: 5,
+                data: [12, 32, 34, 23, 77, 64, 22],
+                stack: 'Stack 0',
+            },]
+    };
+
+    var options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                stacked: true,
+                grid: {
+                    display: false,
+                }
+            },
+            x: {
+                grid: {
+                    display: false
                 }
             }
-        };
+        }
+    };
 
-        new Chart('chart', {
-            type: 'bar',
-            options: options,
-            data: data
-        });
-    </script>
-</div>
+    new Chart('chart', {
+        type: 'bar',
+        options: options,
+        data: data
+    });
+</script>

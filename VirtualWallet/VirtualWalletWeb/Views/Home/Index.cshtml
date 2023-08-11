@@ -120,89 +120,89 @@
 			</a>
 		</div>
 	</div>
+</div>
 
-	<style>
+<style>
 
-		.carousel-item[data-pos="0"] {
-			box-shadow: 0 0 15px #c084fc;
-		}
+	.carousel-item[data-pos="0"] {
+		box-shadow: 0 0 15px #c084fc;
+	}
 
-		.carousel-item[data-pos="-1"] {
-			transform: translateX(-110%) scale(0.9);
-		}
+	.carousel-item[data-pos="-1"] {
+		transform: translateX(-110%) scale(0.9);
+	}
 
-		.carousel-item[data-pos="1"] {
-			transform: translateX(110%) scale(0.9);
-		}
+	.carousel-item[data-pos="1"] {
+		transform: translateX(110%) scale(0.9);
+	}
 
-		.carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
-			opacity: 0.3;
-			filter: blur(1.5px);
-		}
+	.carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
+		opacity: 0.3;
+		filter: blur(1.5px);
+	}
 
-		.carousel-item[data-pos="-1"], .carousel-item[data-pos="1"] {
-			opacity: 0.6;
-			filter: blur(1px);
-		}
+	.carousel-item[data-pos="-1"], .carousel-item[data-pos="1"] {
+		opacity: 0.6;
+		filter: blur(1px);
+	}
 
-		.carousel-item[data-pos="-2"] {
-			transform: translateX(-210%) scale(0.9);
-		}
+	.carousel-item[data-pos="-2"] {
+		transform: translateX(-210%) scale(0.9);
+	}
 
-		.carousel-item[data-pos="2"] {
-			transform: translateX(210%) scale(0.9);
-		}
-	</style>
+	.carousel-item[data-pos="2"] {
+		transform: translateX(210%) scale(0.9);
+	}
+</style>
 
-	<script>
-		const state = {};
-		const carouselList = document.querySelector('.carousel-list');
-		const carouselItems = document.querySelectorAll('.carousel-item');
-		const elems = Array.from(carouselItems);
+<script>
+	const state = {};
+	const carouselList = document.querySelector('.carousel-list');
+	const carouselItems = document.querySelectorAll('.carousel-item');
+	const elems = Array.from(carouselItems);
 
-		carouselList.addEventListener('click', function (event) {
-			var newActive = event.target.closest('.carousel-item');
-			var isItem = newActive.closest('.carousel-item');
+	carouselList.addEventListener('click', function (event) {
+		var newActive = event.target.closest('.carousel-item');
+		var isItem = newActive.closest('.carousel-item');
 
-			if (!isItem || newActive.classList.contains('carousel__item_active')) {
-				return;
-			};
-
-			update(newActive);
-		});
-
-		const update = function (newActive) {
-			const newActivePos = newActive.dataset.pos;
-
-			const current = elems.find((elem) => elem.dataset.pos == 0);
-			const prev = elems.find((elem) => elem.dataset.pos == -1);
-			const next = elems.find((elem) => elem.dataset.pos == 1);
-			const first = elems.find((elem) => elem.dataset.pos == -2);
-			const last = elems.find((elem) => elem.dataset.pos == 2);
-
-			current.classList.remove('carousel__item_active');
-
-			[current, prev, next, first, last].forEach(item => {
-				var itemPos = item.dataset.pos;
-
-				item.dataset.pos = getPos(itemPos, newActivePos)
-			});
+		if (!isItem || newActive.classList.contains('carousel__item_active')) {
+			return;
 		};
 
-		const getPos = function (current, active) {
-			const diff = current - active;
+		update(newActive);
+	});
 
-			if (Math.abs(current - active) > 2) {
-				return -current
-			}
+	const update = function (newActive) {
+		const newActivePos = newActive.dataset.pos;
 
-			return diff;
-		}
-	</script>
+		const current = elems.find((elem) => elem.dataset.pos == 0);
+		const prev = elems.find((elem) => elem.dataset.pos == -1);
+		const next = elems.find((elem) => elem.dataset.pos == 1);
+		const first = elems.find((elem) => elem.dataset.pos == -2);
+		const last = elems.find((elem) => elem.dataset.pos == 2);
 
-	<script>
-		window.addEventListener('load', function () {
-			document.querySelector("footer").style.backgroundColor = "#c084fc";
+		current.classList.remove('carousel__item_active');
+
+		[current, prev, next, first, last].forEach(item => {
+			var itemPos = item.dataset.pos;
+
+			item.dataset.pos = getPos(itemPos, newActivePos)
 		});
-	</script>
-</div>
+	};
+
+	const getPos = function (current, active) {
+		const diff = current - active;
+
+		if (Math.abs(current - active) > 2) {
+			return -current
+		}
+
+		return diff;
+	}
+</script>
+
+<script>
+	window.addEventListener('load', function () {
+		document.querySelector("footer").style.backgroundColor = "#c084fc";
+	});
+</script>

@@ -43,8 +43,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-    <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js "></script>
-
     <script>
         // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
         if (
@@ -117,18 +115,18 @@
                             <button class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 focus:outline-none dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent" id="menu-btn2">
-								@userName
-							</button>
-							<div class="absolute border border-purple-400 text-neutral-900 bg-neutral-100 hidden flex-col rounded mt-1 p-2 text-sm w-32 focus:outline-none dark:bg-neutral-800 dark:text-neutral-50" id="user-dropdown">
-								<a asp-controller="Dashboard" asp-action="DashboardMain" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Dashboard</a>
-								<a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Edit Profile</a>
-								<hr class=" border-1 border-purple-400 dark:border-purple-400 ">
-								<a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-400 rounded">Sign out</a>
-							</div>
-						</li>
-						<li>
-							<img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
-						</li>
+                                @userName
+                            </button>
+                            <div class="absolute border border-purple-400 text-neutral-900 bg-neutral-100 hidden flex-col rounded mt-1 p-2 text-sm w-32 focus:outline-none dark:bg-neutral-800 dark:text-neutral-50" id="user-dropdown">
+                                <a asp-controller="Dashboard" asp-action="DashboardMain" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Dashboard</a>
+                                <a asp-controller="User" asp-action="EditUser" asp-route-id="@loggedUserId" method="post" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">Edit Profile</a>
+                                <hr class=" border-1 border-purple-400 dark:border-purple-400 ">
+                                <a asp-controller="User" asp-action="Logout" class="px-2 py-1 hover:bg-purple-400 rounded">Sign out</a>
+                            </div>
+                        </li>
+                        <li>
+                            <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@loggedUserProfilePicPath">
+                        </li>
 
                     }
                     else
