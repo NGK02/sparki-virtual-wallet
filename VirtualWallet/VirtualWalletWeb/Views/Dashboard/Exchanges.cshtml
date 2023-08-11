@@ -1,7 +1,30 @@
-﻿@model VirtualWallet.Dto.ViewModels.ExchangeViewModel.PaginateExchanges
+﻿
+@model VirtualWallet.Dto.ViewModels.ExchangeViewModel.PaginateExchanges
 @{
 
     int? userId = this.ViewBag.Id;
+}
+@functions {
+	private string BuildQueryString()
+	{
+		var queryBuilder = new StringBuilder();
+
+		var query = Context.Request.Query;
+
+		// Iterate over the query string parameters and append them to the queryBuilder
+		foreach (var param in query)
+		{
+			if (!string.IsNullOrEmpty(param.Key))
+			{
+				queryBuilder.Append($"&{param.Key}={param.Value}");
+			}
+		}
+
+		// Append the filtering and sorting parameters
+		queryBuilder.Append($"&Title={ViewBag.Title}&Content={ViewBag.Content}&CreatedBy={ViewBag.CreatedBy}&Tag={ViewBag.Tag}&MinDate={ViewBag.MinDate}&MaxDate={ViewBag.MaxDate}&SortBy={ViewBag.SortBy}&SortOrder={ViewBag.SortOrder}");
+
+		return queryBuilder.ToString();
+	}
 }
 <div class="flex justify-center items-center h-full  md:py-24">
 
@@ -30,7 +53,7 @@
         }
         else
         {
-            <span class="justify-start px-3 py-1 mb-2 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@Model.Exchanges.Count exchanges found</span>
+            <span class="justify-start px-3 py-1 mb-2 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(ViewBag.TotalUsers ?? 0) exchanges found</span>
         }
 
         @if (this.Model.Exchanges.Count > 0)
@@ -71,7 +94,7 @@
 
 
 
-                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.Rate.ToString("0.00")</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.Rate</td>
 
                                 <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.ExchangedAmout.ToString("0.00")</td>
 
@@ -98,46 +121,46 @@
 
         }
 
-        @if (this.Model.Exchanges.Count > 5)
+        @if (ViewBag.TotalUsers >5)
         {
-        <ul class="list-style-none flex text-base mt-6">
-            @*@if (ViewBag.CurrentPage > 1)
-            {*@
+        <ul class="list-style-none flex text-base mt-2 mb-2">
+            @if (ViewBag.CurrentPage > 1)
+            {
             <li>
                 <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                   href="SearchUser?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
+                   href="@userId?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
             </li>
-            @*}*@
+            }
 
-            @*@for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {*@
-            @*if (i == @ViewBag.CurrentPage)
-            {*@
-            <li class="bg-purple-500 rounded">
-                <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                   href="SearchUser?Page=">
-                    1
-                </a>
-            </li>
-            @*}*@
-            @*else
-            {*@
-            <li>
-                <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                   href="SearchUser?Page=">
-                    2
-                </a>
-            </li>
-            @*}*@
-            @*}*@
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                @if (i == @ViewBag.CurrentPage)
+                {
+                <li class="bg-purple-500 rounded">
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="@userId?Page=@i">
+                        @i
+                    </a>
+                </li>
+                }
+                else
+                {
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="@userId?Page=@i">
+                        @i
+                    </a>
+                </li>
+                }
+            }
 
-            @*@if (ViewBag.CurrentPage < ViewBag.TotalPages)
-            {*@
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
             <li>
                 <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                   href="SearchUser?Page=@(ViewBag.CurrentPage + 1)">Next</a>
+                   href="@userId?Page=@(ViewBag.CurrentPage + 1)">Next</a>
             </li>
-            @* }*@
+             }
         </ul>
         }
     </div>

@@ -46,9 +46,22 @@ namespace VirtualWallet.Web.ViewControllers
                     return View("Error");
                 }
                 ViewBag.Id = id;
+
                 var queryParams = mapper.Map<QueryParameters>(form);
-                var Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
-                form.Exchanges = Exchanges;
+                form.Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
+                // Pagination logic
+                var currentPage = form.Page ?? 1;
+                var pageSize = 5;
+                var totalUsers = form.Exchanges.Count;
+
+                var totalPages = (int)Math.Ceiling(totalUsers / (double)pageSize);
+
+                ViewBag.CurrentPage = currentPage;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.TotalUsers = totalUsers;
+
+                // Apply pagination
+                form.Exchanges = form.Exchanges.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
 
                 return View(form);
 
