@@ -13,6 +13,6 @@ namespace VirtualWallet.DataAccess.Enums
 		EUR = 2,
 		BGN = 3,
 		JPY = 4,
-		CFH = 5
+		CHF = 5
 	}
 }
