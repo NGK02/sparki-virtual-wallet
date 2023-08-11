@@ -1,6 +1,6 @@
 ﻿<div class="flex justify-center items-center h-full  md:py-24">
 
-    <div class="flex flex-col h-full w-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 md:w-4/6 lg:w-3/6 w-4/5 dark:bg-neutral-800 dark:text-neutral-50">
+    <div class="flex flex-col items-center h-full w-full bg-neutral-100 text-neutral-950 rounded-xl shadow-2xl border border-purple-400 md:w-4/6 lg:w-3/6 w-4/5 dark:bg-neutral-800 dark:text-neutral-50">
 
         <div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-xs font-semibold md:text-base dark:border-neutral-700">
             <button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl rounded-bl-xl border-r border-neutral-300 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
@@ -12,33 +12,32 @@
             <button href="" class="flex justify-center items-center flex-1 w-full p-2 border-r transition duration-300 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-700">
                 Transfers
             </button>
-            <button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl border-l border-neutral-300 transition duration-300 bg-neutral-200 dark:border-neutral-600 dark:bg-neutral-700">
+            <button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl border-l border-neutral-300 text-neutral-50 transition duration-300 bg-purple-500 dark:border-neutral-600 dark:bg-purple-500">
                 Exchanges
             </button>
         </div>
 
-        <div class="flex flex-col w-full overflow-x-auto border border-purple-400 shadow-2xl rounded-2xl inline-block min-w-full align-middle">
-            <table class="w-full">
+        <div class="w-4/5 h-12 mt-2 mb-2 border border-purple-400 rounded-2xl">
+
+        </div>
+
+        <div class="flex flex-col items-center w-11/12 overflow-x-auto border border-purple-400  rounded-2xl inline-block align-middle">
+            <table class="w-full ">
 
                 <thead class="bg-neutral-50 dark:bg-neutral-800">
                     <tr>
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">From</th>
+                        <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">From</th>
+                                                       
+                        <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">To</th>
+                                                       
+                        <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Amount</th>
+                                                       
+                        <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Rate</th>
+                                                       
+                        <th scope="col" class="px-4 py-2 w-1/6 text-sm text-center text-neutral-500 dark:text-neutral-400">Exchanged Amount</th>
+                                                       
+                        <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Date</th>
 
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">To</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Amount</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Rate</th>
-
-                        <th scope="col" class="px-4 py-3.5 w-1/6 text-sm text-center text-neutral-500 dark:text-neutral-400">Exchanged Amount</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Date</th>
-
-                        @*<th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Confirmed</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Status</th>
-
-                        <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Block/UnBlock</th>*@
                     </tr>
                 </thead>
 
@@ -47,17 +46,6 @@
 
 
                         <tr>
-                            @*<td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 whitespace-nowrapg gap-2">
-                               
-                                    <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="defaultProfilePicPath">
-                               
-                                
-                                    <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="user.ProfilePicPath">
-                                
-                                <div class="h-fit text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
-                                    user.FirstName user.LastName
-                                </div>
-                            </td>*@
 
                             <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">USD</td>
 
@@ -74,23 +62,54 @@
                             <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
                                17:42 23/06/2023
                             </td>
-@*
-                            <td class="px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
-                             
-
-
-                            </td>
-
-
-                            <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
-                               
-
-                            </td>*@
 
                         </tr>
                     
                 </tbody>
             </table>
         </div>
+
+      @*  if (totalUsers > 5)
+        {*@
+        <ul class="list-style-none flex text-base mt-6">
+            @*@if (ViewBag.CurrentPage > 1)
+            {*@
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="SearchUser?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
+                </li>
+            @*}*@
+
+            @*@for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {*@
+                @*if (i == @ViewBag.CurrentPage)
+                {*@
+                    <li class="bg-purple-500 rounded">
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="SearchUser?Page=">
+                            1
+                        </a>
+                    </li>
+                @*}*@
+                @*else
+                {*@
+                    <li>
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="SearchUser?Page=">
+                            2
+                        </a>
+                    </li>
+                @*}*@
+            @*}*@
+
+            @*@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {*@
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="SearchUser?Page=@(ViewBag.CurrentPage + 1)">Next</a>
+                </li>
+           @* }*@
+        </ul>
+       @* }*@
     </div>
 </div>

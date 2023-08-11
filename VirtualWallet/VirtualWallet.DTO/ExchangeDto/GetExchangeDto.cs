@@ -21,5 +21,6 @@ namespace VirtualWallet.Dto.ExchangeDto
 		public decimal ExchangedAmout { get; set; }
 
 		public decimal Rate { get; set; }
+
 	}
 }
