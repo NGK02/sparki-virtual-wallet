@@ -25,7 +25,7 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-		public IEnumerable<Exchange> GetUserExchanges(int walletId)
+		public IEnumerable<Exchange> GetUserExchanges(int walletId, VirtualWallet.DataAccess.QueryParameters.QueryParameters parameters)
 		{
 			return GetQueryableExchanges().Where(t => t.WalletId == walletId).ToList();
 		}

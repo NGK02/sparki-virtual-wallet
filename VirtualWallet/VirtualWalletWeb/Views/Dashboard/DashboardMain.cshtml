@@ -1,4 +1,7 @@
-﻿
+﻿@{
+    
+    int userId = this.ViewBag.Id;
+}
 
 
 <div class="flex justify-center items-center h-full py-12 md:py-24">
@@ -14,7 +17,7 @@
 			<button href="" class="flex justify-center items-center flex-1 w-full p-2 border-r border-neutral-300 transition duration-300 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-700">
 				Transfers
 			</button>
-			<a asp-controller="Dashboard" asp-action="Exchanges" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+			<a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
 				Exchanges
 			</a>
 		</div>

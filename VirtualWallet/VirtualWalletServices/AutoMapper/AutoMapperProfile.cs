@@ -20,12 +20,15 @@ using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.AdminViewModels;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 
 namespace VirtualWallet.Business.AutoMapper
 {
 	public class AutoMapperProfile : Profile
 	{
-		private IUserService userService;
+		public const string dateFormat = "dd MMMM yyyy HH:mm:ss";
+
+        private IUserService userService;
 
 		public AutoMapperProfile(IUserService userService)
 		{
@@ -81,8 +84,13 @@ namespace VirtualWallet.Business.AutoMapper
 			CreateMap<Exchange, GetExchangeDto>()
 				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
 				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
+			CreateMap<PaginateExchanges, QueryParameters>();
+			CreateMap<Exchange, GetExchangeViewModel>()
+				.ForMember(ExDto => ExDto.Date, opt => opt.MapFrom(d => d.CreatedOn.ToString(dateFormat)))
+                .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
+                .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
 
-			CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
+            CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
 				.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
 				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
 				.ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));

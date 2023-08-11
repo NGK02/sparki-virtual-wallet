@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.QueryParameters
 {
-    public abstract class QueryParameters
+    public class QueryParameters
     {
         public string SortBy { get; set; }
         public string SortOrder { get; set; }
