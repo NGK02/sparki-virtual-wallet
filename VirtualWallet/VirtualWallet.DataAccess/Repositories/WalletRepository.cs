@@ -35,10 +35,16 @@ namespace VirtualWallet.DataAccess.Repositories
             return balance;
         }
 
-        public IEnumerable<Wallet> GetWallets()
+        public List<Balance> GetWalletBalances(int walletId) 
         {
-            return GetQueryableWallets().ToList();
+            return GetWalletById(walletId).Balances;
+            //Exception при null?
         }
+
+        //public IEnumerable<Wallet> GetWallets()
+        //{
+        //    return GetQueryableWallets().ToList();
+        //}
 
         public Wallet GetWalletById(int walletId)
         {

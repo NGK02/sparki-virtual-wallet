@@ -11,7 +11,9 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
     {
         Balance CreateWalletBalance(int currencyId, int walletId);
 
-        IEnumerable<Wallet> GetWallets();
+        //IEnumerable<Wallet> GetWallets();
+
+        List<Balance> GetWalletBalances(int walletId);
 
         Wallet GetWalletById(int walletId);
 

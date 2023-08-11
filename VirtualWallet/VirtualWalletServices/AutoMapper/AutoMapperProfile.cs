@@ -23,80 +23,82 @@ using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
 
 namespace VirtualWallet.Business.AutoMapper
 {
-	public class AutoMapperProfile : Profile
-	{
-		private IUserService userService;
+    public class AutoMapperProfile : Profile
+    {
+        private IUserService userService;
 
-		public AutoMapperProfile(IUserService userService)
-		{
-			this.userService = userService;
+        public AutoMapperProfile(IUserService userService)
+        {
+            this.userService = userService;
 
-			CreateMap<Currency, CurrencyViewModel>();
-			CreateMap<CurrencyViewModel, Currency>().ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<Card, CardInfoDto>();
+            CreateMap<CardInfoDto, Card>();
 
-			CreateMap<Card, SelectCardViewModel>();
-			CreateMap<SelectCardViewModel, Card>().ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<CardInfoDto, Card>();
 
-			CreateMap<Card, CardInfoDto>();
-			CreateMap<CardInfoDto, Card>();
+            CreateMap<CreateUserDto, User>();
+            CreateMap<RegisterUser, User>();
 
-			CreateMap<Card, CardViewModel>() //Сравняване case insensitive.
-				.ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
-				.ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
+            CreateMap<UpdateUserDto, User>();
+            CreateMap<EditUser, User>();
 
-			CreateMap<CardViewModel, Card>()
-				.ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => ParseDate(src.ExpirationMonth + "-" + src.ExpirationYear)));
+            CreateMap<User, GetUserDto>()
+                .ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
+                .ForMember(guDto => guDto.Role, opt => opt.MapFrom(u => u.Role.Name.ToString()));
 
-			CreateMap<Transfer, TransferViewModel>();
-			CreateMap<TransferViewModel, Transfer>();
+            CreateMap<CreateWalletTransactionDto, WalletTransaction>();
+            CreateMap<WalletTransaction, GetWalletTransactionDto>()
+                .ForMember(wtDto => wtDto.SenderUsername, opt => opt.MapFrom(wt => wt.Sender.Username))
+                .ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
+                .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
+                .ForMember(wtDto => wtDto.Amount, opt => opt.MapFrom(wt => wt.Amount));
 
-			CreateMap<CreateWalletTransactionViewModel, WalletTransaction>()
-				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Username", StringComparison.InvariantCultureIgnoreCase) ? new User { Username = src.RecipientIdentifierValue } : null))
-				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Email", StringComparison.InvariantCultureIgnoreCase) ? new User { Email = src.RecipientIdentifierValue } : null))
-				.ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Phonenumber", StringComparison.InvariantCultureIgnoreCase) ? new User { PhoneNumber = src.RecipientIdentifierValue } : null));
+            CreateMap<CreateTransferDto, Transfer>();
+            CreateMap<Transfer, GetTransferDto>()
+                .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
 
-			CreateMap<CardInfoDto, Card>();
+            CreateMap<Exchange, GetExchangeDto>()
+                .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
+                .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
 
-			CreateMap<CreateUserDto, User>();
-			CreateMap<RegisterUser, User>();
+            CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
 
-			CreateMap<UpdateUserDto, User>();
-			CreateMap<EditUser, User>();
+            CreateMap<Card, CardViewModel>()
+                .ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
+                .ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
 
-			CreateMap<User, GetUserDto>()
-				.ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
-				.ForMember(guDto => guDto.Role, opt => opt.MapFrom(u => u.Role.Name.ToString()));
+            CreateMap<CardViewModel, Card>()
+                .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => ParseDate(src.ExpirationMonth + "-" + src.ExpirationYear)));
 
-			CreateMap<CreateWalletTransactionDto, WalletTransaction>();
-			CreateMap<WalletTransaction, GetWalletTransactionDto>()
-				.ForMember(wtDto => wtDto.SenderUsername, opt => opt.MapFrom(wt => wt.Sender.Username))
-				.ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
-				.ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
-				.ForMember(wtDto => wtDto.Amount, opt => opt.MapFrom(wt => wt.Amount));
+            CreateMap<Card, GetCardViewModel>()
+                .ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))
+                .ForMember(dest => dest.ExpirationYear, opt => opt.MapFrom(src => src.ExpirationDate.ToString("yyyy")));
 
-			CreateMap<CreateTransferDto, Transfer>();
-			CreateMap<Transfer, GetTransferDto>()
-				.ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
+            CreateMap<Transfer, TransferViewModel>();
+            CreateMap<TransferViewModel, Transfer>();
 
-			CreateMap<Exchange, GetExchangeDto>()
-				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
-				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
+            CreateMap<CreateWalletTransactionViewModel, WalletTransaction>()
+                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Username", StringComparison.InvariantCultureIgnoreCase) ? new User { Username = src.RecipientIdentifierValue } : null))
+                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Email", StringComparison.InvariantCultureIgnoreCase) ? new User { Email = src.RecipientIdentifierValue } : null))
+                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Phonenumber", StringComparison.InvariantCultureIgnoreCase) ? new User { PhoneNumber = src.RecipientIdentifierValue } : null));
 
-			CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
-				.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
-				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
-				.ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
+            CreateMap<Currency, CurrencyViewModel>();
+            CreateMap<CurrencyViewModel, Currency>().ForMember(dest => dest.Id, opt => opt.Ignore());
 
-		}
+            CreateMap<Balance, GetBalanceViewModel>();
+        }
 
-		private DateTime ParseDate(string date)
-		{
-			if (!DateTime.TryParseExact(date, "MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime expirationDate))
-			{
-				throw new ArgumentException("Invalid expiration date format.");
-			}
+        private DateTime ParseDate(string date)
+        {
+            if (!DateTime.TryParseExact(date, "MM-yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime expirationDate))
+            {
+                throw new ArgumentException("Invalid expiration date format.");
+            }
 
-			return expirationDate;
-		}
-	}
+            return expirationDate;
+        }
+    }
 }

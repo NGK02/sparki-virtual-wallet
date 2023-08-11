@@ -39,24 +39,24 @@ namespace VirtualWallet.Business.Services
             return walletRepository.CreateWalletBalance(currencyId, walletId);
         }
 
-        public IEnumerable<Wallet> GetWallets(int userId)
-        {
-            var user = userService.GetUserById(userId);
+        //public IEnumerable<Wallet> GetWallets(int userId)
+        //{
+        //    var user = userService.GetUserById(userId);
 
-            if (!authManager.IsAdmin(user))
-            {
-                throw new UnauthorizedOperationException("Only admins can access all wallets.");
-            }
+        //    if (!authManager.IsAdmin(user))
+        //    {
+        //        throw new UnauthorizedOperationException("Only admins can access all wallets.");
+        //    }
 
-            var wallets = walletRepository.GetWallets();
+        //    var wallets = walletRepository.GetWallets();
 
-            if (!wallets.Any() || wallets == null)
-            {
-                throw new EntityNotFoundException("No wallets found.");
-            }
+        //    if (!wallets.Any() || wallets == null)
+        //    {
+        //        throw new EntityNotFoundException("No wallets found.");
+        //    }
 
-            return wallets;
-        }
+        //    return wallets;
+        //}
 
         public bool ValidateFunds(Wallet wallet, CreateExcahngeDto excahngeValues)
         {
@@ -131,6 +131,11 @@ namespace VirtualWallet.Business.Services
             //}
 
             return wallet;
+        }
+
+        public List<Balance> GetWalletBalances(int walletId) 
+        {
+            return walletRepository.GetWalletBalances(walletId);
         }
 
 		public void DistributeFundsForReferrals(int referrerId, int referredUserId, decimal amount, int currencyId)
