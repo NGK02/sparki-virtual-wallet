@@ -27,15 +27,24 @@
 						bg-gradient-to-r from-indigo-200 via-purple-200 to-fuchsia-200
 						dark:bg-gradient-to-r dark:from-indigo-400 dark:via-purple-400 dark:to-fuchsia-400 dark:border-neutral-600">
 
-                <div class="flex flex-col justify-center">
-                    <div class="flex flex-row items-center h-fit w-full gap-1 text-xs sm:text-lg sm:gap-2">
+                <div class="relative flex flex-col justify-center">
+                    <button class="flex flex-row items-center h-fit w-fit rounded-lg gap-1 text-xs sm:text-lg sm:gap-2 transition duration-300 ease-in-out hover:bg-purple-500" id="menu-btn3">
                         <span class="text-neutral-600 dark:text-neutral-200">Balance</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-600 dark:text-neutral-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
+                    </button>
+                    <div class="absolute top-4 left-7 border border-purple-400 text-center text-neutral-900 bg-neutral-100 hidden flex-col rounded mt-1 p-2 text-xs w-16 focus:outline-none dark:bg-neutral-800 dark:text-neutral-50" id="balance-dropdown">
+                        @if (!Model.Balances.Any())
+                        {
+                            <span class="w-full px-2 py-1 rounded">No balances yet!</span>
+                        }
+                        @foreach (var balance in Model.Balances)
+                        {
+                            <a data-amount="@balance.Amount" data-code="@balance.Currency.Code" onclick="changeBalanceDisplay('balance-display', this.getAttribute('data-amount'), this.getAttribute('data-code'))" class="w-full px-2 py-1 rounded hover:bg-purple-400 transition duration-300 ease-in-out">@balance.Currency.Code</a>
+                        }
                     </div>
-
-                    <span class="h-fit text-neutral-900 font-semibold text-xl md:text-4xl dark:text-neutral-50">
+                    <span class="h-fit text-neutral-900 font-semibold text-xl md:text-4xl dark:text-neutral-50" id="balance-display">
                         900 BGN
                     </span>
                 </div>
@@ -182,4 +191,21 @@
         options: options,
         data: data
     });
+</script>
+
+<script>
+    const menuBtn3 = document.getElementById('menu-btn3')
+    const balanceDropdown = document.getElementById('balance-dropdown')
+    const balanceDisplay = document.getElementById('balance-display')
+
+    menuBtn3.addEventListener("click", function () {
+        balanceDropdown.classList.toggle("hidden");
+        balanceDropdown.classList.toggle("flex");
+    })
+
+    debugger;
+    function changeBalanceDisplay(id, amount, code) {
+        debugger;
+        balanceDisplay.textContent = `${amount} ${code}`;
+    }
 </script>

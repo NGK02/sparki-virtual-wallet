@@ -51,7 +51,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 //Този метод може да хвърли exception!
                 var mappedCards = cardService.GetUserCards(userId).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
-                var mappedBalances = walletService.GetWalletBalances(userId).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList(); ;
+                var mappedBalances = walletService.GetWalletBalances(userId).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
                 var dashBoardViewModel = new DashboardIndexViewModel
                 {
                     Cards = mappedCards,
