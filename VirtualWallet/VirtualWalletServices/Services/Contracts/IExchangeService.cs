@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
 
@@ -23,5 +24,10 @@ namespace VirtualWallet.Business.Services.Contracts
         /// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
         /// </summary>
         Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(string from, string to, string amount);
-	}
+
+        /// <summary>
+        /// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
+        /// </summary>
+        Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(CurrencyCode fromCurr, CurrencyCode toCurr, decimal amount);
+    }
 }

@@ -154,7 +154,14 @@ namespace VirtualWallet.Web.ViewControllers
 
 				return View("Error");
 			}
-			catch (ArgumentException ex)
+            catch (InvalidOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (ArgumentException ex)
 			{
 				Response.StatusCode = StatusCodes.Status400BadRequest;
 				ViewData["ErrorMessage"] = ex.Message;

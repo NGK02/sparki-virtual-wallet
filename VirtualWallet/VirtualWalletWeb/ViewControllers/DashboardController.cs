@@ -13,6 +13,7 @@ using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.Enums;
 
 namespace VirtualWallet.Web.ViewControllers
 {
@@ -24,13 +25,15 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IWalletService walletService;
         private readonly ICardService cardService;
         private readonly IExchangeService exchangeService;
+        private readonly IWalletTransactionService walletTransactionService;
 
         public DashboardController(IUserService userService,
                                 IMapper mapper,
                                 IAuthManagerMvc authManagerMvc,
                                 IWalletService walletService,
                                 ICardService cardService,
-                                IExchangeService exchangeService)
+                                IExchangeService exchangeService,
+                                IWalletTransactionService walletTransactionService)
         {
             this.userService = userService;
             this.mapper = mapper;
@@ -38,6 +41,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.walletService = walletService;
             this.cardService = cardService;
             this.exchangeService = exchangeService;
+            this.walletTransactionService = walletTransactionService;
         }
 
         [HttpGet]
@@ -55,16 +59,21 @@ namespace VirtualWallet.Web.ViewControllers
                     this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
-                ViewBag.Id = id;
 
+                ViewBag.Id = id;
 
                 //Този метод може да хвърли exception!
                 var mappedCards = cardService.GetUserCards(id).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
                 var mappedBalances = walletService.GetWalletBalances(id).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
+                var incomingData = walletTransactionService.GetUserIncomingTransactionsForLastWeek(id);
+                var outgoingData = walletTransactionService.GetUserOutgoingTransactionsForLastWeek(id);
+
                 var dashBoardViewModel = new DashboardIndexViewModel
                 {
                     Cards = mappedCards,
                     Balances = mappedBalances,
+                    IncomingWalletTransactions = incomingData,
+                    OutgoingWalletTransactions = outgoingData
                 };
 
                 return View(dashBoardViewModel);

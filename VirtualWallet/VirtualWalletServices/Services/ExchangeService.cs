@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories;
@@ -95,5 +96,37 @@ namespace VirtualWallet.Business.Services
 				}
 			}
 		}
-	}
+
+        /// <summary>
+        /// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
+        /// </summary>
+        public async Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(CurrencyCode fromCurr, CurrencyCode toCurr, decimal amount)
+        {//В документацията пише ,че може да хрърли ексепшън!
+
+			var fromCurrString = fromCurr.ToString();
+			var toCurrString = toCurr.ToString();
+			var amountString = amount.ToString();
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://www.exchangerate-api.com");
+                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/0be94dda6c7c1a2c97df4970/pair/{fromCurrString}/{toCurrString}/{amountString}");
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    JObject data = JObject.Parse(stringResult);
+                    decimal conversionRate = (decimal)data["conversion_rate"];
+                    decimal conversionResult = (decimal)data["conversion_result"];
+                    var result = Tuple.Create(conversionRate, conversionResult);
+                    return result;
+
+                }
+                catch (HttpRequestException httpRequestException)
+                {
+                    Console.WriteLine(httpRequestException.StackTrace);
+                    throw;
+                }
+            }
+        }
+    }
 }

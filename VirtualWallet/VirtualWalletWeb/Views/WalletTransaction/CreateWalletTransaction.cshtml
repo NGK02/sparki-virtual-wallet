@@ -10,7 +10,7 @@
 		<!-- Currency -->
 		<div class="w-full mb-4 flex-col justify-start items-start flex">
 			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Currency</label>
-			<select asp-for="CurrencyId" class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
+			<select asp-for="CurrencyId" class="border px-2 border-purple-400 cursor-pointer rounded-full w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
 				<option value="" disabled selected>Select a currency</option>
 				@foreach (var currency in ViewData["Currencies"] as List<CurrencyViewModel>)
 				{

@@ -16,5 +16,9 @@ namespace VirtualWallet.Dto.ViewModels.UserViewModels
         public List<GetBalanceViewModel> Balances { get; set; } = new List<GetBalanceViewModel>();
 
         public List<GetCardViewModel> Cards { get; set; } = new List<GetCardViewModel>();
+
+        public Dictionary<string, decimal> IncomingWalletTransactions { get; set; }
+
+        public Dictionary<string, decimal> OutgoingWalletTransactions { get; set; }
     }
 }

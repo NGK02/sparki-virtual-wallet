@@ -14,7 +14,7 @@
         <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
 
         <div class="w-full mb-6 flex-col justify-center items-center flex">
-            <select class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full bg-neutral-50
+            <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-full bg-neutral-50
 								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SearchOption">
                 <option value="Username">Username</option>
                 <option value="Email">Email</option>
@@ -41,11 +41,7 @@
         }
         <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
             <div class="text-neutral-50 text-sm font-medium">
-
-                <div class="text-sm">
-                    <span>Search</span>
-                </div>
-
+                <span>Search</span>
             </div>
         </button>
 

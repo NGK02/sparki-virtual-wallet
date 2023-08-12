@@ -91,9 +91,10 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<TransferViewModel, Transfer>();
 
             CreateMap<CreateWalletTransactionViewModel, WalletTransaction>()
-                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Username", StringComparison.InvariantCultureIgnoreCase) ? new User { Username = src.RecipientIdentifierValue } : null))
-                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Email", StringComparison.InvariantCultureIgnoreCase) ? new User { Email = src.RecipientIdentifierValue } : null))
-                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src => src.RecipientIdentifier.Equals("Phonenumber", StringComparison.InvariantCultureIgnoreCase) ? new User { PhoneNumber = src.RecipientIdentifierValue } : null));
+                .ForMember(dest => dest.Recipient, opt => opt.MapFrom(src =>
+                            src.RecipientIdentifier.Equals("Username", StringComparison.InvariantCultureIgnoreCase) ? new User { Username = src.RecipientIdentifierValue } :
+                            src.RecipientIdentifier.Equals("Email", StringComparison.InvariantCultureIgnoreCase) ? new User { Email = src.RecipientIdentifierValue } :
+                            src.RecipientIdentifier.Equals("Phonenumber", StringComparison.InvariantCultureIgnoreCase) ? new User { PhoneNumber = src.RecipientIdentifierValue } : null));
 
             CreateMap<Currency, CurrencyViewModel>();
             CreateMap<CurrencyViewModel, Currency>().ForMember(dest => dest.Id, opt => opt.Ignore());
