@@ -15,6 +15,8 @@ namespace VirtualWallet.Business.Services.Contracts
 
         IEnumerable<Card> GetUserCards(int userId);
 
+        IEnumerable<Card> ListUserCards(int userId);
+
         void AddCard(Card card, int userId);
 
         void DeleteCard(int cardId, int userId);

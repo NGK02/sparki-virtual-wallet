@@ -105,5 +105,10 @@ namespace VirtualWallet.Business.Services
 
             cardRepository.UpdateCard(card, cardToUpdate);
         }
+
+        public IEnumerable<Card> ListUserCards(int userId)
+        {
+            return cardRepository.GetUserCards(userId);
+        }
     }
 }
