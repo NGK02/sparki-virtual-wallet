@@ -62,8 +62,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 ViewBag.Id = id;
 
-                //Този метод може да хвърли exception!
-                var mappedCards = cardService.GetUserCards(id).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
+                var mappedCards = cardService.ListUserCards(id).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
                 var mappedBalances = walletService.GetWalletBalances(id).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
                 var incomingData = walletTransactionService.GetUserIncomingTransactionsForLastWeek(id);
                 var outgoingData = walletTransactionService.GetUserOutgoingTransactionsForLastWeek(id);
