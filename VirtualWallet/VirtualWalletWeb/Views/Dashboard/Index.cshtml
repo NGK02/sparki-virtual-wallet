@@ -46,7 +46,7 @@
 
         <div class="flex flex-col justify-center items-center w-full h-full py-8 px-8 rounded-b-xl md:px-16">
 
-            <div class="flex flex-col sm:flex-row sm:justify-between justify-center gap-8 items-center w-full h-fit rounded-xl py-8 px-4 md:px-8
+            <div class="background-animate flex flex-col sm:flex-row sm:justify-between justify-center gap-8 items-center w-full h-fit rounded-xl py-8 px-4 md:px-8
 						bg-gradient-to-r from-indigo-200 via-purple-200 to-fuchsia-200
 						dark:bg-gradient-to-r dark:from-indigo-400 dark:via-purple-400 dark:to-fuchsia-400 dark:border-neutral-600">
 
@@ -207,6 +207,11 @@
     };
 
     var options = {
+        animation: {
+            onComplete: () => {
+                delayed = true;
+            },
+        },
         responsive: true,
         maintainAspectRatio: false,
         scales: {

@@ -127,21 +127,6 @@ namespace VirtualWallet.DataAccess
             builder.Entity<Exchange>()
                 .Property(t => t.ExchangedAmout)
                 .HasPrecision(18, 4);
-            //builder.Entity<Exchange>()
-            //	.HasOne(e => e.To)
-            //	.WithMany(c => c.Exchanges)
-            //	.HasForeignKey(e => e.ToCurrencyId)
-            //	.OnDelete(DeleteBehavior.NoAction);
-
-            //builder.Entity<Currency>()
-            //	.HasMany(c=>c.Exchanges)
-            //	.WithOne(e=>e.)
-
-            //modelBuilder.Entity<Blog>()
-            //.HasOne(e => e.Header)
-            //.WithOne(e => e.Blog)
-            //.HasForeignKey<BlogHeader>(e => e.BlogId)
-            //.IsRequired();
         }
 
         protected void CreateSeed(ModelBuilder builder)
@@ -225,7 +210,6 @@ namespace VirtualWallet.DataAccess
                 ProfilePicPath="/Assets/OriginalProfilePics/00305ad2-a944-49ef-ac46-036c00ec8387_1805f02d-058f-4396-b8e9-3286a4344754_650566858583572501.png"
 
                 //123
-
             },
             new User()
             {
@@ -481,7 +465,7 @@ namespace VirtualWallet.DataAccess
                 {
                     WalletId = 9,
                     CurrencyId = 4,
-                    Amount = 50,
+                    Amount = 50000,
                 },
                 new Balance()
                 {
@@ -505,7 +489,7 @@ namespace VirtualWallet.DataAccess
                 {
                     WalletId = 10,
                     CurrencyId = 4,
-                    Amount = 333,
+                    Amount = 333666,
                 },
                 new Balance
                 {
@@ -597,7 +581,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 7,
                     SenderId = 10,
                     CurrencyId = 4,
-                    Amount = 23m,
+                    Amount = 23004m,
                     CreatedOn = new DateTime(2023, 8, 14)
                 },
                 new WalletTransaction
@@ -642,7 +626,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 4,
                     SenderId = 9,
                     CurrencyId = 4,
-                    Amount = 21m,
+                    Amount = 216505m,
                     CreatedOn = new DateTime(2023, 8, 17)
                 },
                 new WalletTransaction
@@ -687,7 +671,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 10 ,
                     SenderId = 1 ,
                     CurrencyId = 4 ,
-                    Amount = 24m ,
+                    Amount = 15600m ,
                     CreatedOn = new DateTime(2023 ,8 ,13 )
                 },
                 new WalletTransaction
@@ -732,7 +716,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 4 ,
                     SenderId = 7 ,
                     CurrencyId = 4 ,
-                    Amount = 22m ,
+                    Amount = 45024m ,
                     CreatedOn = new DateTime(2023 ,8 ,16 )
                 },
                 new WalletTransaction
@@ -777,7 +761,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 10,
                     SenderId = 9,
                     CurrencyId = 4,
-                    Amount = 25m,
+                    Amount = 2535m,
                     CreatedOn = DateTime.Now.AddDays(-2)
                 },
                 new WalletTransaction()
@@ -822,7 +806,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 6,
                     SenderId = 10,
                     CurrencyId = 4,
-                    Amount = 26m,
+                    Amount = 3458m,
                     CreatedOn=DateTime.Now.AddDays(-5)
                 },
                 new WalletTransaction()
@@ -867,7 +851,7 @@ namespace VirtualWallet.DataAccess
                     RecipientId = 2,
                     SenderId = 10,
                     CurrencyId = 4,
-                    Amount = 25m,
+                    Amount = 5604m,
                     CreatedOn = DateTime.Now.AddDays(-2),
                 },
                 new WalletTransaction()
@@ -923,6 +907,276 @@ namespace VirtualWallet.DataAccess
                     CurrencyId=3,
                     Amount=19m,
                     CreatedOn=DateTime.Now.AddDays(-3),
+                },
+                new WalletTransaction()
+                {
+                    Id=38,
+                    RecipientId=7,
+                    SenderId=6,
+                    CurrencyId=2,
+                    Amount=12m,
+                    CreatedOn=DateTime.Now.AddDays(-2),
+                },
+                new WalletTransaction()
+                {
+                    Id=39,
+                    RecipientId=8,
+                    SenderId=5,
+                    CurrencyId=1,
+                    Amount=45m,
+                    CreatedOn=DateTime.Now.AddDays(-4),
+                },
+                new WalletTransaction()
+                {
+                    Id=40,
+                    RecipientId=9,
+                    SenderId=11,
+                    CurrencyId=3,
+                    Amount=23m,
+                    CreatedOn=DateTime.Now.AddDays(-6),
+                },
+                new WalletTransaction()
+                {
+                    Id=41,
+                    RecipientId=10,
+                    SenderId=7,
+                    CurrencyId=2,
+                    Amount=34m,
+                    CreatedOn=DateTime.Now.AddDays(-1),
+                },
+                new WalletTransaction()
+                {
+                    Id=42,
+                    RecipientId=11,
+                    SenderId=8,
+                    CurrencyId=1,
+                    Amount=16m,
+                    CreatedOn=DateTime.Now.AddDays(-3),
+                },
+                new WalletTransaction()
+                {
+                    Id=43,
+                    RecipientId=5,
+                    SenderId=9,
+                    CurrencyId=3,
+                    Amount=27m,
+                    CreatedOn=DateTime.Now.AddDays(-5),
+                },
+                new WalletTransaction()
+                {
+                    Id=44,
+                    RecipientId=6,
+                    SenderId=10,
+                    CurrencyId=2,
+                    Amount=38m,
+                    CreatedOn=DateTime.Now.AddDays(-7),
+                },
+                new WalletTransaction()
+                {
+                    Id = 45,
+                    RecipientId = 7,
+                    SenderId = 11,
+                    CurrencyId = 1,
+                    Amount = 50m,
+                    CreatedOn = DateTime.Now.AddDays(-2)
+                },
+                new WalletTransaction()
+                {
+                    Id = 46,
+                    RecipientId = 8,
+                    SenderId = 5,
+                    CurrencyId = 3,
+                    Amount = 15m,
+                    CreatedOn = DateTime.Now.AddDays(-4)
+                },
+                new WalletTransaction()
+                {
+                    Id = 47,
+                    RecipientId = 9,
+                    SenderId = 6,
+                    CurrencyId = 2,
+                    Amount = 25m,
+                    CreatedOn = DateTime.Now.AddDays(-6)
+                },
+                new WalletTransaction()
+                {
+                    Id=48,
+                    RecipientId=9,
+                    SenderId=11,
+                    CurrencyId=2,
+                    Amount=12m,
+                    CreatedOn=DateTime.Now.AddDays(-2),
+                },
+                new WalletTransaction()
+                {
+                    Id=49,
+                    RecipientId=10,
+                    SenderId=9,
+                    CurrencyId=1,
+                    Amount=45m,
+                    CreatedOn=DateTime.Now.AddDays(-4),
+                },
+                new WalletTransaction()
+                {
+                    Id=50,
+                    RecipientId=11,
+                    SenderId=10,
+                    CurrencyId=3,
+                    Amount=23m,
+                    CreatedOn=DateTime.Now.AddDays(-6),
+                },
+                new WalletTransaction()
+                {
+                    Id=51,
+                    RecipientId=9,
+                    SenderId=11,
+                    CurrencyId=2,
+                    Amount=34m,
+                    CreatedOn=DateTime.Now.AddDays(-1),
+                },
+                new WalletTransaction()
+                {
+                    Id=52,
+                    RecipientId=10,
+                    SenderId=9,
+                    CurrencyId=1,
+                    Amount=16m,
+                    CreatedOn=DateTime.Now.AddDays(-3),
+                },
+                new WalletTransaction()
+                {
+                    Id = 53,
+                    RecipientId = 11,
+                    SenderId = 10,
+                    CurrencyId = 3,
+                    Amount = 27m,
+                    CreatedOn = DateTime.Now.AddDays(-5)
+                },
+                new WalletTransaction()
+                {
+                    Id = 54,
+                    RecipientId = 9,
+                    SenderId = 11,
+                    CurrencyId = 2,
+                    Amount = 38m,
+                    CreatedOn = DateTime.Now.AddDays(-7)
+                },
+                new WalletTransaction()
+                {
+                    Id = 55,
+                    RecipientId = 10,
+                    SenderId = 9,
+                    CurrencyId = 1,
+                    Amount = 50m,
+                    CreatedOn = DateTime.Now.AddDays(-2)
+                },
+                new WalletTransaction()
+                {
+                    Id = 56,
+                    RecipientId = 11,
+                    SenderId = 10,
+                    CurrencyId = 3,
+                    Amount = 15m,
+                    CreatedOn = DateTime.Now.AddDays(-4)
+                },
+                new WalletTransaction()
+                {
+                    Id = 57,
+                    RecipientId = 9,
+                    SenderId = 11,
+                    CurrencyId = 2,
+                    Amount = 25m,
+                    CreatedOn = DateTime.Now.AddDays(-6)
+                },
+                new WalletTransaction()
+                {
+                    Id=58,
+                    RecipientId=1,
+                    SenderId=2,
+                    CurrencyId=2,
+                    Amount=12m,
+                    CreatedOn=DateTime.Now.AddDays(-2),
+                },
+                new WalletTransaction()
+                {
+                    Id=59,
+                    RecipientId=2,
+                    SenderId=3,
+                    CurrencyId=1,
+                    Amount=45m,
+                    CreatedOn=DateTime.Now.AddDays(-4),
+                },
+                new WalletTransaction()
+                {
+                    Id=60,
+                    RecipientId=3,
+                    SenderId=4,
+                    CurrencyId=3,
+                    Amount=23m,
+                    CreatedOn=DateTime.Now.AddDays(-6),
+                },
+                new WalletTransaction()
+                {
+                    Id=61,
+                    RecipientId=4,
+                    SenderId=5,
+                    CurrencyId=2,
+                    Amount=34m,
+                    CreatedOn=DateTime.Now.AddDays(-1),
+                },
+                new WalletTransaction()
+                {
+                    Id = 62,
+                    RecipientId = 5,
+                    SenderId = 1,
+                    CurrencyId = 1,
+                    Amount = 16m,
+                    CreatedOn = DateTime.Now.AddDays(-3)
+                },
+                new WalletTransaction()
+                {
+                    Id = 63,
+                    RecipientId = 1,
+                    SenderId = 2,
+                    CurrencyId = 3,
+                    Amount = 27m,
+                    CreatedOn = DateTime.Now.AddDays(-5)
+                },
+                new WalletTransaction()
+                {
+                    Id = 64,
+                    RecipientId = 2,
+                    SenderId = 3,
+                    CurrencyId = 2,
+                    Amount = 38m,
+                    CreatedOn = DateTime.Now.AddDays(-7)
+                },
+                new WalletTransaction()
+                {
+                    Id = 65,
+                    RecipientId = 3,
+                    SenderId = 4,
+                    CurrencyId = 1,
+                    Amount = 50m,
+                    CreatedOn = DateTime.Now.AddDays(-2)
+                },
+                new WalletTransaction()
+                {
+                    Id = 66,
+                    RecipientId = 4,
+                    SenderId = 5,
+                    CurrencyId = 3,
+                    Amount = 15m,
+                    CreatedOn = DateTime.Now.AddDays(-4)
+                },
+                new WalletTransaction()
+                {
+                    Id = 67,
+                    RecipientId = 5,
+                    SenderId = 1,
+                    CurrencyId = 2,
+                    Amount = 25m,
+                    CreatedOn = DateTime.Now.AddDays(-6)
                 }
             };
 
@@ -1007,8 +1261,7 @@ namespace VirtualWallet.DataAccess
                     CurrencyId=4 ,
                     Id=10 ,
                     WalletId=10
-                }
-
+                },
             };
 
             IList<Exchange> exchanges = new List<Exchange>
