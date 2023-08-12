@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
@@ -30,11 +31,11 @@ namespace VirtualWallet.Business.Services
 			return true;
 		}
 
-		public IEnumerable<Exchange> GetUserExchanges(int userId)
+		public IEnumerable<Exchange> GetUserExchanges(int userId,QueryParameters parameters)
 		{
 			var user = userService.GetUserById(userId);
 
-			var exchanges = exchangeRepository.GetUserExchanges(user.WalletId);
+			var exchanges = exchangeRepository.GetUserExchanges(user.WalletId,parameters);
 
 			if (!exchanges.Any() || exchanges == null)
 			{

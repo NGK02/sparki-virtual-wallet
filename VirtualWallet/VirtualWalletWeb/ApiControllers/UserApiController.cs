@@ -11,6 +11,7 @@ using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Dto.CreateExcahngeDto;
 using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Web.Helper.Contracts;
+using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Web.ApiControllers
 {
@@ -237,7 +238,8 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, id);
-                var exchanges = exchangeService.GetUserExchanges(id).Select(e => mapper.Map<GetExchangeDto>(e));
+                var parameters = new QueryParameters();
+                var exchanges = exchangeService.GetUserExchanges(id,parameters).Select(e => mapper.Map<GetExchangeDto>(e));
 
                 return Ok(exchanges);
             }

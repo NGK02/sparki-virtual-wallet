@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Business.Services.Contracts
 {
@@ -11,7 +12,7 @@ namespace VirtualWallet.Business.Services.Contracts
 	{
 		bool AddExchange(int userId, Exchange exchange);
 
-		IEnumerable<Exchange> GetUserExchanges(int userId);
+		IEnumerable<Exchange> GetUserExchanges(int userId,QueryParameters parameters);
 
         /// <summary>
         /// Retruns conversion rate.
