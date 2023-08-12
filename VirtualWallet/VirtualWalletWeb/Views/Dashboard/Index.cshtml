@@ -1,5 +1,6 @@
 ﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.DashboardIndexViewModel
 @{
+    int? userId = this.ViewBag.Id;
     int counter = 0;
     bool hasBalances = Model.Balances.Count > 0;
     bool hasCards = Model.Cards.Count > 0;
@@ -18,13 +19,13 @@
             <a asp-controller="Dashboard" asp-action="Index" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl text-neutral-950 bg-neutral-200 dark:text-neutral-50 dark:bg-neutral-700">
                 Main
             </a>
-            <a asp-controller="Dashboard" asp-action="Exchanges" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Exchanges
             </a>
-            <a asp-controller="Dashboard" asp-action="Exchanges" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Transactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Transactions
             </a>
-            <a asp-controller="Dashboard" asp-action="Exchanges" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Transfers
             </a>
         </div>
