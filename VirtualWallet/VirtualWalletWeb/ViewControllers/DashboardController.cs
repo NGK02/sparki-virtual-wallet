@@ -41,7 +41,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult Index(int userId)
+        public IActionResult Index(int id)
         {
             try
             {
@@ -49,16 +49,18 @@ namespace VirtualWallet.Web.ViewControllers
                 {
                     return RedirectToAction("Login", "User");
                 }
-                if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", userId))
+                if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
                     this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
                     return View("Error");
                 }
+                ViewBag.Id = id;
+
 
                 //Този метод може да хвърли exception!
-                var mappedCards = cardService.GetUserCards(userId).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
-                var mappedBalances = walletService.GetWalletBalances(userId).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
+                var mappedCards = cardService.GetUserCards(id).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
+                var mappedBalances = walletService.GetWalletBalances(id).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
                 var dashBoardViewModel = new DashboardIndexViewModel
                 {
                     Cards = mappedCards,
