@@ -22,7 +22,7 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             return walletDbContext.Wallets
                 .Where(w => !w.IsDeleted)
-                .Include(w => w.Balances)
+                .Include(w => w.Balances).ThenInclude(b => b.Currency)
                 .Include(w => w.Transfers)
                 .Include(w => w.User);
         }
