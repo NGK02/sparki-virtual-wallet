@@ -192,5 +192,10 @@ namespace VirtualWallet.Business.Services
 
             userRepo.UpdateUserConfirmationToken(userToUpdate, user);
         }
+
+		public bool EmailExists(string email) 
+		{
+			return userRepo.EmailExists(email);
+		}
     }
 }

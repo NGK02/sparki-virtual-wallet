@@ -126,7 +126,7 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 var user = authManager.IsAdmin(splitCredentials);
-                var cards = cardService.GetCards(user.Id);
+                var cards = cardService.GetCards();
 
                 return Ok(cards);
             }
@@ -191,11 +191,10 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 authManager.IsAdmin(splitCredentials);
-                string username = splitCredentials[0];
 
                 var walletTransactions = walletTransactionService.GetWalletTransactions(queryParameters);
                 var walletTransactionsMapped = walletTransactions.Select(wt => mapper.Map<GetWalletTransactionDto>(wt)).ToList();
-                return StatusCode(StatusCodes.Status200OK, walletTransactionsMapped);
+                return Ok(walletTransactionsMapped);
             }
             catch (UnauthenticatedOperationException e)
             {
@@ -222,37 +221,37 @@ namespace VirtualWallet.Web.ApiControllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        [HttpGet("wallets")]
-        public IActionResult GetAllWallets(string credentials)
-        {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAdmin(splitCredentials);
-                var wallets = walletService.GetWallets(user.Id);
-                return Ok(wallets);
-            }
-            catch (EntityNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (UnauthenticatedOperationException e)
-            {
-                return Unauthorized(e.Message);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //[HttpGet("wallets")]
+        //public IActionResult GetAllWallets(string credentials)
+        //{
+        //    try
+        //    {
+        //        var splitCredentials = authManager.SplitCredentials(credentials);
+        //        var user = authManager.IsAdmin(splitCredentials);
+        //        var wallets = walletService.GetWallets(user.Id);
+        //        return Ok(wallets);
+        //    }
+        //    catch (EntityNotFoundException e)
+        //    {
+        //        return NotFound(e.Message);
+        //    }
+        //    catch (UnauthenticatedOperationException e)
+        //    {
+        //        return Unauthorized(e.Message);
+        //    }
+        //    catch (UnauthorizedOperationException e)
+        //    {
+        //        return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //    }
+        //}
 
         [HttpGet("users")]
         public IActionResult GetAllUsers(string credentials, [FromQuery] UserQueryParameters userParameters)

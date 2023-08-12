@@ -132,8 +132,6 @@ namespace VirtualWallet.DataAccess.Repositories
 			return user;
 		}
 
-
-
 		public bool DeleteUser(User user)
 		{
 			//TODO тряба да се уточни какво друго ще се трие за юзъра

@@ -12,7 +12,7 @@ namespace VirtualWallet.Business.Services.Contracts
     {
         Balance CreateWalletBalance(int currencyId, int walletId);
 
-        IEnumerable<Wallet> GetWallets(int userId);
+        //IEnumerable<Wallet> GetWallets(int userId);
 
         // Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
 
@@ -21,6 +21,8 @@ namespace VirtualWallet.Business.Services.Contracts
         Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId);
 
         Wallet GetWalletById(int walletId);
+
+        List<Balance> GetWalletBalances(int walletId);
 
         void DistributeFundsForReferrals(int referrerId, int referredUserId, decimal amount, int currencyId);
 	}

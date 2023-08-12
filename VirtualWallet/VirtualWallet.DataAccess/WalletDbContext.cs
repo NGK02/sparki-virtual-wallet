@@ -557,7 +557,7 @@ namespace VirtualWallet.DataAccess
                     CheckNumber = 274,
                     ExpirationDate = new DateTime(2025, 12, 31),
                     Id = 4,
-                    UserId = 1
+                    UserId = 10
                 },
                 new Card
                 {
@@ -566,7 +566,7 @@ namespace VirtualWallet.DataAccess
                     CheckNumber = 123,
                     ExpirationDate = new DateTime(2024, 12, 31),
                     Id = 5,
-                    UserId = 1
+                    UserId = 10
                 },
                 new Card
                 {
@@ -575,7 +575,7 @@ namespace VirtualWallet.DataAccess
                     CheckNumber = 425,
                     ExpirationDate = new DateTime(2025, 8, 23),
                     Id = 6,
-                    UserId = 1
+                    UserId = 10
                 },
                 new Card
                 {
@@ -584,7 +584,7 @@ namespace VirtualWallet.DataAccess
                     CheckNumber = 475,
                     ExpirationDate = new DateTime(2025, 8, 23),
                     Id = 7,
-                    UserId = 1
+                    UserId = 10
                 },
 
             };

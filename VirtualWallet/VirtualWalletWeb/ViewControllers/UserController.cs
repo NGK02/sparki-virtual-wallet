@@ -21,7 +21,6 @@ namespace VirtualWallet.Web.ViewControllers
 	public class UserController : Controller
 	{
 		private readonly IUserService userService;
-		private readonly IUserRepository userRepository;
 		private readonly IMapper mapper;
 		private readonly IAuthManager authManager;
 		private readonly IImageManager imageManager;
@@ -30,7 +29,6 @@ namespace VirtualWallet.Web.ViewControllers
 		private readonly IWalletService walletService;
 
 		public UserController(IUserService userService,
-								IUserRepository userRepository,
 								IAuthManager authManager,
 								IMapper mapper,
 								IImageManager imageManager,
@@ -39,7 +37,6 @@ namespace VirtualWallet.Web.ViewControllers
 								IWalletService walletService)
 		{
 			this.userService = userService;
-			this.userRepository = userRepository;
 			this.authManager = authManager;
 			this.mapper = mapper;
 			this.imageManager = imageManager;
@@ -67,6 +64,7 @@ namespace VirtualWallet.Web.ViewControllers
 
 			try
 			{
+				//Защо това се ползва тук? Ако така или иначе ще ползваме този аут мениджър нека всичко да е в него.
 				var user = authManager.IsAuthenticated(new string[] { filledLoginForm.Username, filledLoginForm.Password });
 
 				if (!user.IsConfirmed)
@@ -104,7 +102,10 @@ namespace VirtualWallet.Web.ViewControllers
 		[HttpGet]
 		public IActionResult Logout()
 		{
-			this.HttpContext.Session.Remove("LoggedUser");
+			//Да се използва
+			//this.HttpContext.Session.Clear();
+
+            this.HttpContext.Session.Remove("LoggedUser");
 			this.HttpContext.Session.Remove("userId");
 			this.HttpContext.Session.Remove("roleId");
 			this.HttpContext.Session.Remove("profilePicPath");
@@ -445,7 +446,7 @@ namespace VirtualWallet.Web.ViewControllers
 				return View("ReferFriend", filledForm);
 			}
 
-			if (userRepository.EmailExists(filledForm.Email))
+			if (userService.EmailExists(filledForm.Email))
 			{
 				ViewData["ErrorMessage"] = "Email alredy exist";
 

@@ -29,5 +29,7 @@ namespace VirtualWallet.Business.Services.Contracts
         void ConfirmUser(User user, int userId);
 
         void UpdateUserConfirmationToken(User user, string username);
+
+        bool EmailExists(string email);
     }
 }

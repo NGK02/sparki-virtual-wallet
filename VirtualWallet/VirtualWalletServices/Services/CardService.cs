@@ -46,15 +46,8 @@ namespace VirtualWallet.Business.Services
             return card;
         }
 
-        public IEnumerable<Card> GetCards(int userId)
+        public IEnumerable<Card> GetCards()
         {
-            var user = userService.GetUserById(userId);
-
-            if (!authManager.IsAdmin(user))
-            {
-                throw new UnauthorizedOperationException("Access to all cards is restricted.");
-            }
-
             var cards = cardRepository.GetCards();
 
             if (!cards.Any() || cards == null)
@@ -69,6 +62,7 @@ namespace VirtualWallet.Business.Services
         {
             var cards = cardRepository.GetUserCards(userId);
 
+            //Да се махне ексепшъна?
             if (!cards.Any() || cards == null)
             {
                 throw new EntityNotFoundException("No cards available.");

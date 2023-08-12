@@ -24,7 +24,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.mapper = mapper;
         }
 
-        [HttpGet("Card/Add")]
+        [HttpGet]
         public IActionResult Add()
         {
             if (!authManagerMVC.IsLogged("LoggedUser"))
@@ -35,7 +35,7 @@ namespace VirtualWallet.Web.ViewControllers
             return View();
         }
 
-        [HttpPost("Card/Add")]
+        [HttpPost]
         public IActionResult Add(CardViewModel model)
         {
             try
@@ -53,9 +53,10 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 var card = mapper.Map<Card>(model);
-
                 cardService.AddCard(card, userId);
-                return RedirectToAction("Index", "Home");
+
+                this.ViewBag.SuccessMessage = "Card added successfully!";
+                return View("Successful");
             }
             catch (EntityNotFoundException ex)
             {
@@ -94,7 +95,21 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Card/Delete/{cardId}")]
+        [HttpGet]
+        public IActionResult ConfirmDelete(int cardId)
+        {
+            if (!authManagerMVC.IsLogged("LoggedUser"))
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            //Тези страници за потвърждение на нова страница не работят добре.
+            ViewBag.CardId = cardId;
+
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Delete(int cardId)
         {
             try
@@ -114,7 +129,9 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 cardService.DeleteCard(cardId, userId);
-                return RedirectToAction("Index", "Home");
+
+                this.ViewBag.SuccessMessage = "Card deleted successfully!";
+                return View("Successful");
             }
             catch (EntityNotFoundException ex)
             {
@@ -153,8 +170,8 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpGet("Card/Update/{cardId}")]
-        public IActionResult Update(int cardId)
+        [HttpGet]
+        public IActionResult Edit(int cardId)
         {
             try
             {
@@ -213,8 +230,8 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpPost("Card/Update/{cardId}")]
-        public IActionResult Update(CardViewModel model, int cardId)
+        [HttpPost]
+        public IActionResult Edit(CardViewModel model, int cardId)
         {
             try
             {
@@ -231,9 +248,10 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 var card = mapper.Map<Card>(model);
-
                 cardService.UpdateCard(card, cardId, userId);
-                return RedirectToAction("Index", "Home");
+
+                this.ViewBag.SuccessMessage = "Card edited successfully!";
+                return View("Successful");
             }
             catch (EntityNotFoundException ex)
             {

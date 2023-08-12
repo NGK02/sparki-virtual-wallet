@@ -1,0 +1,185 @@
+﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.DashboardIndexViewModel
+@{
+    int counter = 0;
+}
+
+<div class="flex justify-center items-center h-full py-12 md:py-24">
+    <div class="flex flex-col h-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
+
+		<div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-[10px] font-semibold md:text-base dark:border-neutral-700">
+            <button href="" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl border-r border-neutral-300 text-neutral-900 transition duration-300 bg-fuchsia-200 dark:border-neutral-600 dark:bg-fuchsia-400 dark:text-neutral-50">
+				Main
+			</button>
+			<button href="" class="flex justify-center items-center flex-1 w-full p-2 border-r border-neutral-300 transition duration-300 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-700">
+				Transactions
+			</button>
+			<button href="" class="flex justify-center items-center flex-1 w-full p-2 border-r border-neutral-300 transition duration-300 hover:bg-neutral-200 dark:border-neutral-600 dark:hover:bg-neutral-700">
+				Transfers
+			</button>
+			<button asp-controller="Dashboard" asp-action="Exchanges" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+				Exchanges
+			</button>
+		</div>
+
+        <div class="flex flex-col justify-center items-center w-full h-full py-8 px-8 rounded-b-xl md:px-16">
+
+            <div class="flex flex-row justify-between items-center w-full h-fit h-32 rounded-xl py-8 px-4 md:px-8
+						bg-gradient-to-r from-indigo-200 via-purple-200 to-fuchsia-200
+						dark:bg-gradient-to-r dark:from-indigo-400 dark:via-purple-400 dark:to-fuchsia-400 dark:border-neutral-600">
+
+                <div class="flex flex-col justify-center">
+                    <div class="flex flex-row items-center h-fit w-full gap-1 text-xs sm:text-lg sm:gap-2">
+                        <span class="text-neutral-600 dark:text-neutral-200">Balance</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-600 dark:text-neutral-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </div>
+
+                    <span class="h-fit text-neutral-900 font-semibold text-xl md:text-4xl dark:text-neutral-50">
+                        900 BGN
+                    </span>
+                </div>
+
+                <div class="flex flex-col gap-2 w-max">
+                    <a asp-controller="Exchange" asp-action="MakeExchange" type="submit" method="get" class="h-fit w-full md:flex-1 py-1 px-3 bg-purple-500 text-center text-xs text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300 md:text-sm" type="submit">
+                        Exchange
+                    </a>
+                    <a asp-controller="WalletTransaction" asp-action="CreateWalletTransaction" type="submit" method="get" class="h-fit w-full md:flex-1 py-1 px-3 bg-purple-500 text-center text-xs text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300 md:text-sm" type="submit">
+                        Transaction
+                    </a>                    
+                    <a asp-controller="Transfer" asp-action="Add" type="submit" method="get" class="h-fit w-full md:flex-1 py-1 px-3 bg-purple-500 text-center text-xs text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300 md:text-sm" type="submit">
+                        Transfer
+                    </a>
+                </div>
+
+            </div>
+
+            <hr class="w-full my-8 border-neutral-300 dark:border-neutral-600">
+
+            <div class="w-full flex flex-col items-center gap-8 sm:flex-row sm:w-full">
+
+                <div class="relative h-fit w-fit">
+                    <a asp-controller="Card" asp-action="Add" type="submit" method="get" class="flex flex-row justify-evenly items-center gap-1 h-fit w-full p-1 mb-4 bg-purple-500 text-base text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+                        <span>Add a card</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </a>
+
+                    <ul class="space-y-2 overflow-y-auto max-h-64 thin-scrollbar pr-1">
+                        @if (Model.Cards.Count <= 0)
+                        {
+                            
+                        }
+                        else
+                        {
+                            foreach(var card in Model.Cards)
+                            {
+                                <li class="flex flex-row gap-1">
+                                    <div class="relative w-fit h-fit">
+                                        @if (counter % 2 == 0)
+                                        {
+                                            <img src="~/assets/dashboard/cardfrontdashboard2.png" class="h-20 w-full" />
+                                        }
+                                        else if (counter % 3 == 0)
+                                        {
+                                            <img src="~/assets/dashboard/cardfrontdashboard3.png" class="h-20 w-full" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/dashboard/cardfrontdashboard.png" class="h-20 w-full" />
+                                        }
+                                        <div class="bg-transparent w-full text-neutral-900 font-medium px-3 pb-2 absolute left-0 bottom-0 dark:text-neutral-50">
+                                            <p class="mb-1 text-[10px]">@card.CardNumber</p>
+                                            <div class="flex flex-row justify-between">
+                                                <p class="text-[8px]">@card.CardHolder</p>
+                                                <div class="text-[8px]">
+                                                    <span>@card.ExpirationMonth/@card.ExpirationYear</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col justify-evenly">
+                                        @* Тук тези два хиперлинка по-скоро трябва да са бутони, но не работят с <button> а delete изобщо.*@
+                                        <a asp-controller="Card" asp-action="ConfirmDelete" asp-route-cardId="@card.Id" type="submit" method="get" class="p-0.5 h-fit w-fit cursor-pointer block text-center text-neutral-400 rounded-lg hover:bg-neutral-200 transition duration-300
+												dark:hover:bg-neutral-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="delete-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            </svg>
+                                        </a>
+
+                                        <a asp-controller="Card" asp-action="Edit" asp-route-cardId="@card.Id" type="submit" method="get" class="p-0.5 h-fit w-fit cursor-pointer block text-center text-neutral-400 rounded-lg hover:bg-neutral-200 transition duration-300
+												dark:hover:bg-neutral-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </li>
+                                counter++;
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <hr class="block w-full border-neutral-300 dark:border-neutral-600 sm:hidden">
+
+                <div class="w-full h-4/6 mx-auto xl:w-4/6 sm:w-3/6 sm:h-full">
+                    <canvas id="chart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src=" https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js "></script>
+
+<script>
+    var data = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        datasets: [
+            {
+                label: "Dataset #1",
+                backgroundColor: "#d8b4fe",
+                hoverBackgroundColor: "#e9d5ff",
+                borderRadius: 8,
+                data: [65, 59, 20, 81, 56, 55, 40],
+                stack: 'Stack 0',
+            },
+            {
+                label: "Dataset #2",
+                backgroundColor: "#a5b4fc",
+                hoverBackgroundColor: "#c7d2fe",
+                borderRadius: 8,
+                data: [12, 32, 34, 23, 77, 64, 22],
+                stack: 'Stack 0',
+            },]
+    };
+
+    var options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                stacked: true,
+                grid: {
+                    display: false,
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
+    };
+
+    new Chart('chart', {
+        type: 'bar',
+        options: options,
+        data: data
+    });
+</script>

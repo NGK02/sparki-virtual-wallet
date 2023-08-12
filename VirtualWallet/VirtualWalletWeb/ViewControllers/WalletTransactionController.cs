@@ -161,13 +161,13 @@ namespace VirtualWallet.Web.ViewControllers
 
 				return View("Error");
 			}
-			catch (Exception ex)
-			{
-				Response.StatusCode = StatusCodes.Status500InternalServerError;
-				ViewData["ErrorMessage"] = ex.Message;
+			//catch (Exception ex)
+			//{
+			//	Response.StatusCode = StatusCodes.Status500InternalServerError;
+			//	ViewData["ErrorMessage"] = ex.Message;
 
-				return View("Error");
-			}
+			//	return View("Error");
+			//}
 		}
 
 		private void ValidateInputs(CreateWalletTransactionViewModel walletTransactionForm) 

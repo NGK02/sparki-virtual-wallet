@@ -1,33 +1,100 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
-using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
-using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DataAccess.QueryParameters;
-using VirtualWallet.Dto.TransferDto;
-using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
+using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Dto.ViewModels.CardViewModels;
+using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
+using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Web.Helper.Contracts;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
+using VirtualWallet.Dto.TransferDto;
+using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.DataAccess.Models;
 
 namespace VirtualWallet.Web.ViewControllers
 {
     public class DashboardController : Controller
     {
+        private readonly IUserService userService;
         private readonly IMapper mapper;
-        private readonly IExchangeService exchangeService;
         private readonly IAuthManagerMvc authManagerMvc;
-        public DashboardController(IMapper mapper, IExchangeService exchangeService, IAuthManagerMvc authManagerMvc)
+        private readonly IWalletService walletService;
+        private readonly ICardService cardService;
+        private readonly IExchangeService exchangeService;
+
+        public DashboardController(IUserService userService,
+                                IMapper mapper,
+                                IAuthManagerMvc authManagerMvc,
+                                IWalletService walletService,
+                                ICardService cardService,
+                                IExchangeService exchangeService)
         {
+            this.userService = userService;
             this.mapper = mapper;
-            this.exchangeService = exchangeService;
             this.authManagerMvc = authManagerMvc;
+            this.walletService = walletService;
+            this.cardService = cardService;
+            this.exchangeService = exchangeService;
         }
+
         [HttpGet]
-        public IActionResult Index(int id)
+        public IActionResult Index(int userId)
         {
-            ViewBag.Id = id;
-            return View("DashboardMain");
+            try
+            {
+                if (!authManagerMvc.IsLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", userId))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    return View("Error");
+                }
+
+                //Този метод може да хвърли exception!
+                var mappedCards = cardService.GetUserCards(userId).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
+                var mappedBalances = walletService.GetWalletBalances(userId).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList(); ;
+                var dashBoardViewModel = new DashboardIndexViewModel
+                {
+                    Cards = mappedCards,
+                    Balances = mappedBalances,
+                };
+
+                return View(dashBoardViewModel);
+            }
+            catch (EntityNotFoundException ex) //Трябва да се махне по назад във веригата хвърлянето и?
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
+            catch (ArgumentException ex) //Може би няма нужда?
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                ViewData["ErrorMessage"] = ex.Message;
+
+                return View("Error");
+            }
         }
 
         [HttpGet]

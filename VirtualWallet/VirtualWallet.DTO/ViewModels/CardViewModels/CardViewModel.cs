@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.ViewModels.CardViewModels
 {
+    //Да се преименува
     public class CardViewModel
     {
         [Required]
