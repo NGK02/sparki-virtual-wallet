@@ -1,5 +1,8 @@
 ﻿@model VirtualWallet.Dto.ExchangeDto.GetExchangeDto
+@{
+	 int? loggedUserId = Context.Session.GetInt32("userId");
 
+}
 
 <div class="h-full flex items-center justify-center  px-4">
 
@@ -60,7 +63,7 @@
 			</span>
 		}
 
-		<a asp-controller="Home" asp-action="Index" class="h-fit w-full p-3 bg-purple-500 text-center text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+		<a asp-controller="Dashboard" asp-action="Index" asp-route-id="@loggedUserId" class="h-fit w-full p-3 bg-purple-500 text-center text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
 			Dashboard
 		</a>
 
