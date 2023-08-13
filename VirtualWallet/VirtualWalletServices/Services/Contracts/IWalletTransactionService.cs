@@ -18,7 +18,7 @@ namespace VirtualWallet.Business.Services.Contracts
 		WalletTransaction GetWalletTransactionById(int id, string username);
 		List<WalletTransaction> GetUserWalletTransactions(WalletTransactionQueryParameters queryParameters, int userId);
 		List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters);
-		Dictionary<string, decimal> GetUserOutgoingTransactionsForLastWeek(int userId);
-        Dictionary<string, decimal> GetUserIncomingTransactionsForLastWeek(int userId);
+		Dictionary<string, decimal> GetUserOutgoingTransactionsForLastWeek(int userId, CurrencyCode toCurrency);
+        Dictionary<string, decimal> GetUserIncomingTransactionsForLastWeek(int userId, CurrencyCode toCurrency);
     }
 }

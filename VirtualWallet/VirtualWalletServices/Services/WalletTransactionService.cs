@@ -51,9 +51,10 @@ namespace VirtualWallet.Business.Services
 			return walletTransactionRepo.CreateTransaction(walletTransaction);
 		}
 
-		public Dictionary<string, decimal> GetUserOutgoingTransactionsForLastWeek(int userId)
+		public Dictionary<string, decimal> GetUserOutgoingTransactionsForLastWeek(int userId, CurrencyCode toCurrency)
         {
 			var walletTransactions = walletTransactionRepo.GetUserWalletTransactions(new WalletTransactionQueryParameters { MinDate = DateTime.Today.AddDays(-7), MaxDate = DateTime.Today }, userId);
+			var currencyExchanges = exchangeService.GetAllExchangeRates(toCurrency).Result;
 
             Dictionary<string, decimal> outgoingTransactions = new Dictionary<string, decimal>();
             for (int i = 0; i < 7; i++)
@@ -62,16 +63,16 @@ namespace VirtualWallet.Business.Services
 				var dateString = date.ToString("dd'/'MM'/'yy");
                 outgoingTransactions.Add(dateString, walletTransactions
 					.Where(wt => (wt.CreatedOn.Date == date) & (wt.SenderId == userId))
-					.Sum(wt => exchangeService.GetExchangeRateAndExchangedResult(wt.Currency.Code, CurrencyCode.USD, wt.Amount).Result.Item2));
+					.Sum(wt => exchangeService.CalculateExchangeResult(currencyExchanges ,wt.Currency.Code, wt.Amount)));
 			}
 
 			return outgoingTransactions;
         }
 
-        public Dictionary<string, decimal> GetUserIncomingTransactionsForLastWeek(int userId)
+        public Dictionary<string, decimal> GetUserIncomingTransactionsForLastWeek(int userId, CurrencyCode toCurrency)
         {
             var walletTransactions = walletTransactionRepo.GetUserWalletTransactions(new WalletTransactionQueryParameters { MinDate = DateTime.Today.AddDays(-7), MaxDate = DateTime.Today }, userId);
-
+            var currencyExchanges = exchangeService.GetAllExchangeRates(toCurrency).Result;
 
             Dictionary<string, decimal> incomingTransactions = new Dictionary<string, decimal>();
             for (int i = 0; i < 7; i++)
@@ -80,7 +81,7 @@ namespace VirtualWallet.Business.Services
                 var dateString = date.ToString("dd'/'MM'/'yy");
                 incomingTransactions.Add(dateString, walletTransactions
                     .Where(wt => (wt.CreatedOn.Date == date) & (wt.RecipientId == userId))
-                    .Sum(wt => exchangeService.GetExchangeRateAndExchangedResult(wt.Currency.Code, CurrencyCode.USD, wt.Amount).Result.Item2));
+                    .Sum(wt => exchangeService.CalculateExchangeResult(currencyExchanges, wt.Currency.Code, wt.Amount)));
             }
 
             return incomingTransactions;

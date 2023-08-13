@@ -59,7 +59,7 @@ namespace VirtualWallet.Web.Helper
 
 			using (FileStream fileStream = new FileStream(serverFolder, FileMode.Create))
 			{
-				generatedPic.CopyToAsync(fileStream);
+				await generatedPic.CopyToAsync(fileStream);
 			}
 			return "/" + folder;
 		}

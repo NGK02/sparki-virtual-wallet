@@ -106,6 +106,7 @@ namespace VirtualWallet.Business.Services
             cardRepository.UpdateCard(card, cardToUpdate);
         }
 
+        //Това не е добро решение на проблема с ексепшъните - да се рефакторира GetUserCards().
         public IEnumerable<Card> ListUserCards(int userId)
         {
             return cardRepository.GetUserCards(userId);

@@ -64,8 +64,8 @@ namespace VirtualWallet.Web.ViewControllers
 
                 var mappedCards = cardService.ListUserCards(id).Select(c => mapper.Map<GetCardViewModel>(c)).ToList();
                 var mappedBalances = walletService.GetWalletBalances(id).Select(b => mapper.Map<GetBalanceViewModel>(b)).ToList();
-                var incomingData = walletTransactionService.GetUserIncomingTransactionsForLastWeek(id);
-                var outgoingData = walletTransactionService.GetUserOutgoingTransactionsForLastWeek(id);
+                var incomingData = walletTransactionService.GetUserIncomingTransactionsForLastWeek(id, CurrencyCode.USD);
+                var outgoingData = walletTransactionService.GetUserOutgoingTransactionsForLastWeek(id, CurrencyCode.USD);
 
                 var dashBoardViewModel = new DashboardIndexViewModel
                 {

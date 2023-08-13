@@ -29,5 +29,11 @@ namespace VirtualWallet.Business.Services.Contracts
         /// Retruns conversion rate and the exchanged result in a Tuple<conversionRate,conversionResult>.
         /// </summary>
         Task<Tuple<decimal, decimal>> GetExchangeRateAndExchangedResult(CurrencyCode fromCurr, CurrencyCode toCurr, decimal amount);
+
+        Task<Dictionary<string, decimal>> GetAllExchangeRates(CurrencyCode forCurr);
+
+        Dictionary<string, decimal> GetExchangeRatesFromCache(CurrencyCode forCurr);
+
+        decimal CalculateExchangeResult(Dictionary<string, decimal> conversionRates, CurrencyCode fromCurr, decimal amount);
     }
 }
