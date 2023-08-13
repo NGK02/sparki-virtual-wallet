@@ -50,7 +50,7 @@
     @if (this.Model.users.Count != 0)
     {
         <div class="flex flex-col items-start mt-12 gap-4 max-w-7xl">
-            @if (this.Model.users.Count == 1)
+            @if (this.Model.users.Count == 1 && this.Model.SearchOptionValue is not null)
             {
                 <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 user found</span>
             }
