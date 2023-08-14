@@ -47,9 +47,41 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpGet]
         public IActionResult Profile(int id)
         {
-            var user = userService.GetUserById(id);
-            var mappedUser = mapper.Map<GetUserView>(user);
-            return View(mappedUser);
+            if (!authManagerMVC.IsLogged("LoggedUser"))
+            {
+                return RedirectToAction("Login", "User");
+            }
+            if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                return View("Error");
+            }
+            try
+            {
+                var user = userService.GetUserById(id);
+                var mappedUser = mapper.Map<GetUserView>(user);
+                this.ViewBag.userId = id;
+                return View(mappedUser);
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+            catch (UnauthenticatedOperationException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status403Forbidden;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
         }
         [HttpGet]
         public IActionResult Login()
@@ -179,13 +211,13 @@ namespace VirtualWallet.Web.ViewControllers
                 ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
 
                 if (!string.IsNullOrEmpty(filledForm.ReferralToken))
-				{
-					var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+                {
+                    var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
                     var referrer = userService.GetUserById(referral.ReferrerId);
 
-					if (referrer.ReferralCount < 5)
-					{
-						referrer.ReferralCount++;
+                    if (referrer.ReferralCount < 5)
+                    {
+                        referrer.ReferralCount++;
                         return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
                     }
                 }

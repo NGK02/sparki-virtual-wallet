@@ -22,7 +22,7 @@ namespace VirtualWallet.Dto.ViewModels.UserViewModels
 
         public int transactionsCount { get; set; }
 
-        public string Role { get; set; }
+        public int RoleId { get; set; }
 
         public string ProfilePicPath { get; set; }
     }
