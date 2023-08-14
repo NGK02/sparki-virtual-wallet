@@ -53,9 +53,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
 		public void DistributeFundsForReferrals(Balance refererBalance, Balance referredUserBalance)
 		{
-            walletDbContext.Balances.Add(refererBalance);
-            walletDbContext.Balances.Add(referredUserBalance);
-			walletDbContext.SaveChanges();
+            walletDbContext.SaveChanges();
 		}
 	}
 }
