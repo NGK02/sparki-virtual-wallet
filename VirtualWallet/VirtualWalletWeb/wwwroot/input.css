@@ -67,9 +67,9 @@
 
     .background-animate {
         background-size: 150%;
-        -webkit-animation: gradient-animation 8s ease infinite;
-        -moz-animation: gradient-animation 8s ease infinite;
-        animation: gradient-animation 8s ease infinite;
+        -webkit-animation: gradient-animation 5s ease infinite;
+        -moz-animation: gradient-animation 5s ease infinite;
+        animation: gradient-animation 5s ease infinite;
     }
 
     @keyframes gradient-animation {

@@ -47,15 +47,15 @@ builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>(
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
 
-builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
-{cfg.AddProfile(new AutoMapperProfile(provider.GetService<IUserService>()));
-}).CreateMapper());
+builder.Services.AddMemoryCache();
 
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<WalletDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromSeconds(2000);
@@ -64,14 +64,20 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+//var mapperConfig = new MapperConfiguration(mc =>
+//{
+//    mc.AddProfile(new AutoMapperProfile());
+//});
+//IMapper mapper = mapperConfig.CreateMapper();
+//builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 app.UseDeveloperExceptionPage();
+
 if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
 if (app.Environment.IsDevelopment())
@@ -79,6 +85,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

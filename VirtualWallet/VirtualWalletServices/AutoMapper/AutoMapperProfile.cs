@@ -28,11 +28,8 @@ namespace VirtualWallet.Business.AutoMapper
 	{
 		public const string dateFormat = "dd MMMM yyyy HH:mm:ss";
 
-        private IUserService userService;
-
-        public AutoMapperProfile(IUserService userService)
+        public AutoMapperProfile()
         {
-            this.userService = userService;
 
             CreateMap<Card, CardInfoDto>();
             CreateMap<CardInfoDto, Card>();
