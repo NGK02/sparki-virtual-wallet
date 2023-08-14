@@ -19,14 +19,14 @@ using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.AdminViewModels;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModels;
 using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
-using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 
 namespace VirtualWallet.Business.AutoMapper
 {
-	public class AutoMapperProfile : Profile
-	{
-		public const string dateFormat = "dd MMMM yyyy HH:mm:ss";
+    public class AutoMapperProfile : Profile
+    {
+        public const string dateFormat = "dd MMMM yyyy HH:mm:ss";
 
         public AutoMapperProfile()
         {
@@ -52,24 +52,29 @@ namespace VirtualWallet.Business.AutoMapper
                 .ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
                 .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
                 .ForMember(wtDto => wtDto.Amount, opt => opt.MapFrom(wt => wt.Amount));
+            CreateMap<WalletTransaction, GetWalletTransactionViewModel>()
+                .ForMember(wtDto => wtDto.SenderUsername, opt => opt.MapFrom(wt => wt.Sender.Username))
+                .ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
+                .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
+                .ForMember(wtDto => wtDto.Amount, opt => opt.MapFrom(wt => wt.Amount));
 
             CreateMap<CreateTransferDto, Transfer>();
             CreateMap<Transfer, GetTransferDto>()
                 .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
 
-			CreateMap<Exchange, GetExchangeDto>()
-				.ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
-				.ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
-			CreateMap<PaginateExchanges, QueryParameters>();
-			CreateMap<Exchange, GetExchangeViewModel>()
-				.ForMember(ExDto => ExDto.Date, opt => opt.MapFrom(d => d.CreatedOn.ToString(dateFormat)))
+            CreateMap<Exchange, GetExchangeDto>()
+                .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
+                .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
+            CreateMap<PaginateExchanges, QueryParameters>();
+            CreateMap<Exchange, GetExchangeViewModel>()
+                .ForMember(ExDto => ExDto.Date, opt => opt.MapFrom(d => d.CreatedOn.ToString(dateFormat)))
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
                 .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
 
             CreateMap<SearchUser, UserQueryParameters>() //Сравняване case insensitive.
-				.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
-				.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
-				.ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.SearchOption == "Phonenumber" ? src.SearchOptionValue : null))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.SearchOption == "Email" ? src.SearchOptionValue : null))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.SearchOption == "Username" ? src.SearchOptionValue : null));
 
             CreateMap<Card, CardViewModel>()
                 .ForMember(dest => dest.ExpirationMonth, opt => opt.MapFrom(src => src.ExpirationDate.ToString("MM")))

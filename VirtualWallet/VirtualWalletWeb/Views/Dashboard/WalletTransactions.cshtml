@@ -1,31 +1,8 @@
 ﻿@using System.Text;
-
-@model VirtualWallet.Dto.ViewModels.ExchangeViewModels.PaginateExchanges
+@model VirtualWallet.Dto.ViewModels.WalletTransactionViewModels.PaginateWalletTransactions
 @{
 
     int? userId = this.ViewBag.Id;
-}
-@functions {
-    private string BuildQueryString()
-    {
-        var queryBuilder = new StringBuilder();
-
-        var query = Context.Request.Query;
-
-        // Iterate over the query string parameters and append them to the queryBuilder
-        foreach (var param in query)
-        {
-            if (!string.IsNullOrEmpty(param.Key))
-            {
-                queryBuilder.Append($"&{param.Key}={param.Value}");
-            }
-        }
-
-        // Append the filtering and sorting parameters
-        queryBuilder.Append($"&Title={ViewBag.Title}&Content={ViewBag.Content}&CreatedBy={ViewBag.CreatedBy}&Tag={ViewBag.Tag}&MinDate={ViewBag.MinDate}&MaxDate={ViewBag.MaxDate}&SortBy={ViewBag.SortBy}&SortOrder={ViewBag.SortOrder}");
-
-        return queryBuilder.ToString();
-    }
 }
 
 <div class="flex justify-center items-center h-full py-12 md:py-24">
@@ -35,10 +12,10 @@
             <a asp-controller="Dashboard" asp-action="Index" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Main
             </a>
-            <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 text-neutral-950 bg-neutral-200 dark:text-neutral-50 dark:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Exchanges
             </a>
-            <a asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 text-neutral-950 bg-neutral-200 dark:text-neutral-50 dark:bg-neutral-700">
                 Transactions
             </a>
             <a asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
@@ -47,13 +24,13 @@
         </div>
 
         <div class="flex flex-col items-center justify-center p-8 gap-4">
-            <form asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="w-4/5 h-12 rounded-2xl flex flex-row items-center justify-center gap-4">
+            <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="w-4/5 h-12 rounded-2xl flex flex-row items-center justify-center gap-4">
                 <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
 								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortBy">
                     <option value="" selected>Sort By:</option>
-                    <option value="Amount">Amount</option>
-                    <option value="ExchangedAmount">Exchanged Amount</option>
                     <option value="Date">Date</option>
+                    <option value="Currency">Currency</option>
+                    <option value="Amount">Amount</option>
                 </select>
 
                 <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
@@ -67,7 +44,7 @@
                 </button>
             </form>
 
-            @if (this.Model.Exchanges.Count == 1)
+            @if (this.Model.WalletTransactions.Count == 1)
             {
                 <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 exchange found</span>
             }
@@ -76,7 +53,7 @@
                 <span class="justify-start px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(ViewBag.TotalExchanges ?? 0) exchanges found</span>
             }
 
-            @if (this.Model.Exchanges.Count > 0)
+            @if (this.Model.WalletTransactions.Count > 0)
             {
 
 
@@ -85,40 +62,33 @@
 
                         <thead class="bg-neutral-50 dark:bg-neutral-800">
                             <tr>
-                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">From</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Sender</th>
 
-                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">To</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Recipient</th>
+
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Currency</th>
 
                                 <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Amount</th>
 
-                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Rate</th>
-
-                                <th scope="col" class="px-4 py-2 w-1/6 text-sm text-center text-neutral-500 dark:text-neutral-400">Exchanged Amount</th>
-
-                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Date</th>
-
+                                <th scope="col" class="px-4 py-2 w-1/6 text-sm text-center text-neutral-500 dark:text-neutral-400">Created on</th>
                             </tr>
                         </thead>
 
                         <tbody class="bg-white divide-y divide-neutral-200 dark:divide-neutral-700 dark:bg-neutral-900">
-                            @foreach (var ex in Model.Exchanges)
+                            @foreach (var wt in Model.WalletTransactions)
                             {
 
                                 <tr>
 
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.FromCurrency</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.SenderUsername</td>
 
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.ToCurrency</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.RecipientUsername</td>
 
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.Amount.ToString("0.00")</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.CurrencyCode.ToString()</td>
 
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.Amount</td>
 
-
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.Rate</td>
-
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.ExchangedAmout.ToString("0.00")</td>
-
-                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@ex.Date</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.CreatedOn</td>
 
 
                                 </tr>
@@ -141,9 +111,9 @@
 
             }
 
-            @if (ViewBag.TotalExchanges > 5)
+            @if (ViewBag.TotalWalletTransactions > 5)
             {
-                <form asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get">
+                <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get">
                     <input type="hidden" asp-for="SortBy">
                     <input type="hidden" asp-for="SortOrder">
                     <ul class="list-style-none flex w-fit text-base">

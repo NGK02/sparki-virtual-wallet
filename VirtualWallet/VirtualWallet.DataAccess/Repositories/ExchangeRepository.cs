@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.DataAccess.Repositories
@@ -40,6 +41,14 @@ namespace VirtualWallet.DataAccess.Repositories
                 if (parameters.SortBy.Equals("Date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     exchangesQuerable = exchangesQuerable.OrderBy(e => e.CreatedOn);
+                }
+                if (parameters.SortBy.Equals("FromCurrency", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    exchangesQuerable = exchangesQuerable.OrderBy(e => e.FromCurrency.Code.ToString());
+                }
+                if (parameters.SortBy.Equals("ToCurrency", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    exchangesQuerable = exchangesQuerable.OrderBy(t => t.ToCurrency.Code.ToString());
                 }
                 if (parameters.SortBy.Equals("Amount", StringComparison.InvariantCultureIgnoreCase))
                 {

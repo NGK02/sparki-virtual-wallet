@@ -12,7 +12,7 @@ using VirtualWallet.Web.Helper.Contracts;
 
 namespace VirtualWallet.Web.ViewControllers
 {
-	public class WalletTransactionController : Controller
+    public class WalletTransactionController : Controller
 	{
 		private readonly IAuthManagerMvc authManagerMvc;
 		private readonly ICurrencyService currencyService;
