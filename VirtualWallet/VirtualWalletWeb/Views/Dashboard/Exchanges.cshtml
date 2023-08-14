@@ -5,28 +5,6 @@
 
     int? userId = this.ViewBag.Id;
 }
-@functions {
-    private string BuildQueryString()
-    {
-        var queryBuilder = new StringBuilder();
-
-        var query = Context.Request.Query;
-
-        // Iterate over the query string parameters and append them to the queryBuilder
-        foreach (var param in query)
-        {
-            if (!string.IsNullOrEmpty(param.Key))
-            {
-                queryBuilder.Append($"&{param.Key}={param.Value}");
-            }
-        }
-
-        // Append the filtering and sorting parameters
-        queryBuilder.Append($"&Title={ViewBag.Title}&Content={ViewBag.Content}&CreatedBy={ViewBag.CreatedBy}&Tag={ViewBag.Tag}&MinDate={ViewBag.MinDate}&MaxDate={ViewBag.MaxDate}&SortBy={ViewBag.SortBy}&SortOrder={ViewBag.SortOrder}");
-
-        return queryBuilder.ToString();
-    }
-}
 
 <div class="flex justify-center items-center h-full py-12 md:py-24">
     <div class="flex flex-col h-fit bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
