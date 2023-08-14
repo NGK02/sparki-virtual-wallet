@@ -63,5 +63,7 @@ namespace VirtualWallet.DataAccess.Models
         public bool IsConfirmed { get; set; }
 
 		public List<Referral> Referrals { get; set; } = new List<Referral>();
+
+        public int ReferralCount { get; set; }
     }
 }

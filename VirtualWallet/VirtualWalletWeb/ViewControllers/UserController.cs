@@ -172,12 +172,17 @@ namespace VirtualWallet.Web.ViewControllers
 				emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 				ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
 
-				if (!string.IsNullOrEmpty(filledForm.ReferralToken))
+                if (!string.IsNullOrEmpty(filledForm.ReferralToken))
 				{
 					var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+                    var referrer = userService.GetUserById(referral.ReferrerId);
 
-					return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
-				}
+					if (referrer.ReferralCount < 5)
+					{
+						referrer.ReferralCount++;
+                        return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
+                    }
+                }
 
 				return View("Successful");
 			}
