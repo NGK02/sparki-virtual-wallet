@@ -133,13 +133,13 @@ namespace VirtualWallet.Web.ViewControllers
                 // Pagination logic
                 var currentPage = form.Page ?? 1;
                 var pageSize = 5;
-                var totalUsers = form.Exchanges.Count;
+                var totalExchanges = form.Exchanges.Count;
 
-                var totalPages = (int)Math.Ceiling(totalUsers / (double)pageSize);
+                var totalPages = (int)Math.Ceiling(totalExchanges / (double)pageSize);
 
                 ViewBag.CurrentPage = currentPage;
                 ViewBag.TotalPages = totalPages;
-                ViewBag.TotalUsers = totalUsers;
+                ViewBag.TotalExchanges = totalExchanges;
 
                 // Apply pagination
                 form.Exchanges = form.Exchanges.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
