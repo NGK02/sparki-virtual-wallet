@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualWallet.Dto.ViewModels.CustomAttributes;
 
 namespace VirtualWallet.Dto.ViewModels.CardViewModels
 {
@@ -23,9 +24,11 @@ namespace VirtualWallet.Dto.ViewModels.CardViewModels
         public string CardHolder { get; set; }
 
         [Required]
+        [ValidMonth]
         public string ExpirationMonth { get; set; }
 
         [Required]
+        [ValidYear]
         public string ExpirationYear { get; set; }
     }
 }

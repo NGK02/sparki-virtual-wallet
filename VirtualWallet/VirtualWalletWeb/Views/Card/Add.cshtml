@@ -5,6 +5,10 @@
 	<script defer src="https://unpkg.com/alpinejs@3.2.2/dist/cdn.min.js"></script>
 </head>
 
+@{
+	var viewModelJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+}
+
 <div class="h-full flex items-center justify-center">
 	<form method="post" asp-action="Add" asp-controller="Card" x-data="creditCard"
 		  class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex sm:w-96 dark:bg-neutral-800 dark:border-puerple-400">
@@ -115,6 +119,13 @@
 			Alpine.data("creditCard", () => ({
 				init() {
 					console.log('Component mounted');
+					const viewModelData = @Html.Raw(viewModelJson);
+					this.cardholder = viewModelData.CardHolder;
+					this.cardNumber = viewModelData.CardNumber.toString(); //Ако се рефакторират картите да се махне .toString()
+					this.currency = viewModelData.CurrencyCode;
+					this.expired.month = viewModelData.ExpirationMonth;
+					this.expired.year = viewModelData.ExpirationYear;
+					this.securityCode = viewModelData.CheckNumber;
 				},
 				formattedCardNumber() {
 					const cardNumber = this.cardNumber || '0000 0000 0000 0000';
