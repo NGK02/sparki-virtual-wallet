@@ -146,23 +146,14 @@ namespace VirtualWallet.Business.Services
 
 			if (referrerBalance == null)
 			{
-                referrerBalance = new Balance { CurrencyId = currencyId, WalletId = referrerId };
-
-                //referrerBalance = CreateWalletBalance(currencyId, referrerId);
+                referrerBalance = CreateWalletBalance(currencyId, referrerId);
 			}
 
 			referrerBalance.Amount += amount;
-
 			var referredUser = userService.GetUserById(referredUserId);
-			var referredUserBalance = referredUser.Wallet.Balances.SingleOrDefault(b => b.CurrencyId == currencyId);
+			var referredUserBalance = CreateWalletBalance(currencyId, referredUserId);
 
-			if (referredUserBalance == null)
-			{
-                referredUserBalance = new Balance { CurrencyId = currencyId, WalletId = referredUserId };
-			}
-
-			referredUserBalance.Amount += amount;
-
+            referredUserBalance.Amount += amount;
             walletRepository.DistributeFundsForReferrals(referrerBalance, referredUserBalance);
 		}
 	}
