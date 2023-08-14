@@ -14,6 +14,7 @@ using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Enums;
+using VirtualWallet.Dto.ViewModels.TransferViewModels;
 
 namespace VirtualWallet.Web.ViewControllers
 {
@@ -26,6 +27,7 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly ICardService cardService;
         private readonly IExchangeService exchangeService;
         private readonly IWalletTransactionService walletTransactionService;
+        private readonly ITransferService transferService;
 
         public DashboardController(IUserService userService,
                                 IMapper mapper,
@@ -33,7 +35,8 @@ namespace VirtualWallet.Web.ViewControllers
                                 IWalletService walletService,
                                 ICardService cardService,
                                 IExchangeService exchangeService,
-                                IWalletTransactionService walletTransactionService)
+                                IWalletTransactionService walletTransactionService,
+                                ITransferService transferService)
         {
             this.userService = userService;
             this.mapper = mapper;
@@ -42,6 +45,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.cardService = cardService;
             this.exchangeService = exchangeService;
             this.walletTransactionService = walletTransactionService;
+            this.transferService = transferService;
         }
 
         [HttpGet]
@@ -179,27 +183,39 @@ namespace VirtualWallet.Web.ViewControllers
 
             return View();
         }
+
         [HttpGet]
-        public IActionResult Transfers(int id)
+        public IActionResult Transfers(int id, PaginatedTransfersViewModel model)
         {
-
-
             if (!authManagerMvc.IsLogged("LoggedUser"))
             {
                 return RedirectToAction("Login", "User");
             }
+
             if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+
                 return View("Error");
             }
+
             ViewBag.Id = id;
 
+			var queryParams = mapper.Map<QueryParameters>(model);
 
+			model.Transfers = transferService.GetUserTransfers(id).Select(t => mapper.Map<TransferViewModel>(t)).ToList();
+			var currentPage = model.Page ?? 1;
+			var pageSize = 5;
+			var totalTransfers = model.Transfers.Count;
 
-            return View();
+			var totalPages = (int) Math.Ceiling(totalTransfers / (double) pageSize);
+			ViewBag.CurrentPage = currentPage;
+			ViewBag.TotalPages = totalPages;
+			ViewBag.TotalUsers = totalTransfers;
+
+			model.Transfers = model.Transfers.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+			return View(model);
         }
-
     }
 }
