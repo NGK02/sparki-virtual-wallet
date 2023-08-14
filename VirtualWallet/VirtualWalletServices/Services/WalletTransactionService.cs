@@ -54,7 +54,7 @@ namespace VirtualWallet.Business.Services
 		public Dictionary<string, decimal> GetUserOutgoingTransactionsForLastWeek(int userId, CurrencyCode toCurrency)
         {
 			var walletTransactions = walletTransactionRepo.GetUserWalletTransactions(new WalletTransactionQueryParameters { MinDate = DateTime.Today.AddDays(-7), MaxDate = DateTime.Today }, userId);
-			var currencyExchanges = exchangeService.GetAllExchangeRates(toCurrency).Result;
+			var currencyExchanges = exchangeService.GetExchangeRatesFromCache(toCurrency);
 
             Dictionary<string, decimal> outgoingTransactions = new Dictionary<string, decimal>();
             for (int i = 0; i < 7; i++)
@@ -72,7 +72,7 @@ namespace VirtualWallet.Business.Services
         public Dictionary<string, decimal> GetUserIncomingTransactionsForLastWeek(int userId, CurrencyCode toCurrency)
         {
             var walletTransactions = walletTransactionRepo.GetUserWalletTransactions(new WalletTransactionQueryParameters { MinDate = DateTime.Today.AddDays(-7), MaxDate = DateTime.Today }, userId);
-            var currencyExchanges = exchangeService.GetAllExchangeRates(toCurrency).Result;
+            var currencyExchanges = exchangeService.GetExchangeRatesFromCache(toCurrency);
 
             Dictionary<string, decimal> incomingTransactions = new Dictionary<string, decimal>();
             for (int i = 0; i < 7; i++)
