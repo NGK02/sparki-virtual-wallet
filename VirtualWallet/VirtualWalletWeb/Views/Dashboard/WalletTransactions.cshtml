@@ -24,20 +24,69 @@
         </div>
 
         <div class="flex flex-col items-center justify-center p-8 gap-4">
-            <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="w-4/5 h-12 rounded-2xl flex flex-row items-center justify-center gap-4">
-                <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
-								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortBy">
-                    <option value="" selected>Sort By:</option>
-                    <option value="Date">Date</option>
-                    <option value="Currency">Currency</option>
-                    <option value="Amount">Amount</option>
-                </select>
+            <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="w-4/5 h-fit rounded-2xl flex flex-col items-center justify-center gap-4">
 
-                <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Recipient username</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="RecipientUsername" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Sender username</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="SenderUsername" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">From date</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="MinDate" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">To date</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="MaxDate" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                            @*                         <span asp-validation-for="MaxDate"></span> *@
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <select class="flex-1 border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
+								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortBy">
+                        <option value="" selected>Sort By:</option>
+                        <option value="Date">Date</option>
+                        <option value="Currency">Currency</option>
+                        <option value="Amount">Amount</option>
+                    </select>
+
+                    <select class="flex-1 border px-2 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
 								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortOrder">
-                    <option value="" selected>Order By:</option>
-                    <option value="Descending">Descending</option>
-                </select>
+                        <option value="" selected>Order By:</option>
+                        <option value="Descending">Descending</option>
+                    </select>
+                </div>
 
                 <button type="submit" class="h-fit w-fit py-1 px-3 bg-purple-500 text-center text-xs text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300 md:text-sm">
                     Apply
@@ -116,6 +165,10 @@
                 <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get">
                     <input type="hidden" asp-for="SortBy">
                     <input type="hidden" asp-for="SortOrder">
+                    <input type="hidden" asp-for="RecipientUsername">
+                    <input type="hidden" asp-for="SenderUsername">
+                    <input type="hidden" asp-for="MinDate">
+                    <input type="hidden" asp-for="MaxDate">
                     <ul class="list-style-none flex w-fit text-base">
 
                         @if (ViewBag.CurrentPage > 1)

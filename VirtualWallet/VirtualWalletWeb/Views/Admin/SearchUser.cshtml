@@ -7,8 +7,8 @@
 <div class="h-max flex flex-col items-center justify-center px-4 my-12">
 
     <form asp-controller="Admin" asp-action="SearchUser" method="get"
-          class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
-				dark:bg-neutral-800 dark:border-puerple-400">
+          class="flex mx-auto justify-center w-80 px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
+				dark:bg-neutral-800 dark:border-puerple-400 sm:w-96">
 
 
         <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
@@ -49,20 +49,20 @@
 
     @if (this.Model.users.Count != 0)
     {
-        <div class="flex flex-col items-start mt-12 gap-4 max-w-7xl">
-            @if (this.Model.users.Count == 1 && this.Model.SearchOptionValue is not null)
-            {
-                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 user found</span>
-            }
-            else
-            {
-                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(totalUsers) users found</span>
+        <div class="flex flex-col items-center mt-12 gap-4 w-full">
 
-            }
-
-            <div class="flex flex-col w-full overflow-x-auto border border-purple-400 shadow-2xl rounded-2xl inline-block min-w-full align-middle">
+            <div class="flex items-center w-max">
+                @if (this.Model.users.Count == 1 && this.Model.SearchOptionValue is not null)
+                {
+                    <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 user found</span>
+                }
+                else
+                {
+                    <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(totalUsers) users found</span>
+                }
+            </div>
+            <div class="flex flex-col w-80 overflow-x-auto border border-purple-400 shadow-2xl rounded-2xl sm:w-[600px] lg:w-[980px] xl:w-5/6">
                 <table class="w-full">
-
                     <thead class="bg-neutral-50 dark:bg-neutral-800">
                         <tr>
                             <th scope="col" class="px-4 py-3.5 text-sm text-center text-neutral-500 dark:text-neutral-400">Name</th>
@@ -91,7 +91,7 @@
 
 
                             <tr>
-                                <td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 whitespace-nowrapg gap-2">
+                                <td class="flex flex-row items-center px-4 py-4 font-medium text-sm text-neutral-700 text-center whitespace-nowrapg gap-2">
                                     @if (user.ProfilePicPath is null)
                                     {
                                         <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@defaultProfilePicPath">
@@ -130,43 +130,42 @@
                                     }
                                 </td>
 
-                                <td class="px-4 py-4 text-sm font-inter text-neutral-700 whitespace-nowrap">
+                                <td class="px-4 py-4 text-sm font-inter text-neutral-700 text-center whitespace-nowrap">
                                     @if (user.RoleId == (int)RoleName.User)
                                     {
-                                        <div class="flex items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-neutral-800">
+                                        <div class="flex items-center w-fit px-3 py-1 mx-auto rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-neutral-800">
                                             <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                             <h2 class="text-sm font-normal text-emerald-500">Active</h2>
                                         </div>
                                     }
                                     else if (user.RoleId == (int)RoleName.Blocked)
                                     {
-                                        <div class="flex w-fit items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-neutral-800">
+                                        <div class="flex w-fit items-center w-fit px-3 py-1 mx-auto rounded-full gap-x-2 border border-red-500 bg-red-300 dark:bg-neutral-800">
                                             <span class="h-1.5 w-1.5 rounded-full bg-neutral-950 dark:bg-red-500 "></span>
                                             <h2 class="text-sm font-normal text-neutral-950 dark:text-red-500">Blocked</h2>
                                         </div>
                                     }
                                     else if (user.RoleId == (int)RoleName.Admin)
                                     {
-                                        <div class="flex justify-center items-center flex-row text-base ttext-neutral-900 dark:text-neutral-50">
-                                            <span>Admin</span>
+                                        <div class="flex items-center w-fit px-3 py-1 mx-auto rounded-full gap-x-2 border border-purple-500 bg-purple-200/60 dark:bg-neutral-800">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-purple-500"></span>
+                                            <h2 class="text-sm font-normal text-purple-500">Admin</h2>
                                         </div>
                                     }
-
-
                                 </td>
 
 
-                                <td class="px-4 py-4 text-base text-neutral-50 whitespace-nowrap items-center">
+                                <td class="px-4 py-4 text-base text-neutral-50 text-center whitespace-nowrap items-center">
                                     @if (user.RoleId == (int)RoleName.User)
                                     {
-                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400 " type="submit">
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-2 py-0.5 mx-auto rounded-xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400 " type="submit">
                                             <a asp-controller="Admin" asp-action="BlockUser" asp-route-id="@user.Id" class="px-8 py-3">Block</a>
                                         </button>
                                     }
                                     else if (user.RoleId == (int)RoleName.Blocked)
                                     {
-                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 rounded-2xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400" type="submit">
-                                            <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">UnBlock</a>
+                                        <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 mx-auto rounded-xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400" type="submit">
+                                            <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">Unblock</a>
                                         </button>
                                     }
                                     else if (user.Id == Context.Session.GetInt32("userId"))
@@ -187,45 +186,45 @@
         </div>
         if (totalUsers > 5)
         {
-            <ul class="list-style-none flex text-base mt-6">
+        <ul class="list-style-none flex text-base mt-6">
                 @if (ViewBag.CurrentPage > 1)
                 {
-                    <li>
-                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                           href="SearchUser?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
-                    </li>
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="SearchUser?Page=@(ViewBag.CurrentPage - 1)">Previous</a>
+                </li>
                 }
 
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     if (i == @ViewBag.CurrentPage)
                     {
-                        <li class="bg-purple-500 rounded">
-                            <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                               href="SearchUser?Page=@i">
+                    <li class="bg-purple-500 rounded">
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="SearchUser?Page=@i">
                                 @i
-                            </a>
-                        </li>
+                        </a>
+                    </li>
                     }
                     else
                     {
-                        <li>
-                            <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                               href="SearchUser?Page=@i">
+                    <li>
+                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                           href="SearchUser?Page=@i">
                                 @i
-                            </a>
-                        </li>
+                        </a>
+                    </li>
                     }
                 }
 
                 @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                 {
-                    <li>
-                        <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
-                           href="SearchUser?Page=@(ViewBag.CurrentPage + 1)">Next</a>
-                    </li>
+                <li>
+                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white"
+                       href="SearchUser?Page=@(ViewBag.CurrentPage + 1)">Next</a>
+                </li>
                 }
-            </ul>
+        </ul>
         }
     }
 
