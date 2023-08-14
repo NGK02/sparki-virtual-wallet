@@ -109,7 +109,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
                 if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    walletTransactions.Reverse();
+                    walletTransactions = walletTransactions.Reverse();
                 }
             }
 
