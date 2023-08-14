@@ -8,7 +8,6 @@ using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.UserDto;
 using System.Net;
 using VirtualWallet.Business.AuthManager;
-using VirtualWallet.Dto.CreateExcahngeDto;
 using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Web.Helper.Contracts;
 using VirtualWallet.DataAccess.QueryParameters;

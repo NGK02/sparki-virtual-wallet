@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.Dto.ViewModels.ExchangeViewModel
+namespace VirtualWallet.Dto.ViewModels.ExchangeViewModels
 {
     public class GetExchangeViewModel
     {

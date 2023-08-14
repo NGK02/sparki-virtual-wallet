@@ -36,7 +36,7 @@
             <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Exchanges
             </a>
-            <a asp-controller="Dashboard" asp-action="Transactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+            <a asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
                 Transactions
             </a>
             <a asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
@@ -202,7 +202,7 @@
                 hoverBackgroundColor: "#c7d2fe",
                 borderRadius: 8,
                 data: @Html.Raw(outgoingChartDataJson),
-                stack: 'Stack 0',
+                stack: 'Stack 1',
             }]
     };
 
@@ -228,11 +228,6 @@
                 stacked: true,
                 grid: {
                     display: false,
-                }
-            },
-            x: {
-                grid: {
-                    display: false
                 }
             }
         }

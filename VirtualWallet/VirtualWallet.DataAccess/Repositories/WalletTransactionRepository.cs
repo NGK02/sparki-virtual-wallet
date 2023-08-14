@@ -98,16 +98,20 @@ namespace VirtualWallet.DataAccess.Repositories
             if (!string.IsNullOrEmpty(queryParameters.SortBy))
             {
 
-                if (queryParameters.SortBy.Equals("date", StringComparison.InvariantCultureIgnoreCase))
+                if (queryParameters.SortBy.Equals("Date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     walletTransactions = walletTransactions.OrderBy(t => t.CreatedOn);
                 }
-                if (queryParameters.SortBy.Equals("amount", StringComparison.InvariantCultureIgnoreCase))
+                if (queryParameters.SortBy.Equals("Amount", StringComparison.InvariantCultureIgnoreCase))
                 {
                     walletTransactions = walletTransactions.OrderBy(t => t.Amount);
                 }
+                if (queryParameters.SortBy.Equals("Currency", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    walletTransactions = walletTransactions.OrderBy(t => t.Currency.Code.ToString());
+                }
 
-                if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))
                 {
                     walletTransactions = walletTransactions.Reverse();
                 }
