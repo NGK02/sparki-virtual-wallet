@@ -1,5 +1,159 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using System.Text;
+
+@model VirtualWallet.Dto.ViewModels.TransferViewModels.PaginatedTransfersViewModel
+
 @{
+    int? userId = ViewBag.Id;
 }
+
+<div class="flex justify-center items-center h-full py-12 md:py-24">
+    <div class="flex flex-col h-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
+
+        <div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-[10px] font-semibold md:text-base dark:border-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Index" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Main
+            </a>
+            <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 text-neutral-950 bg-neutral-200 dark:text-neutral-50 dark:bg-neutral-700">
+                Exchanges
+            </a>
+            <a asp-controller="Dashboard" asp-action="Transactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Transactions
+            </a>
+            <a asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Transfers
+            </a>
+        </div>
+
+        <div class="flex flex-col items-center justify-center p-8 gap-4">
+            <form asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="w-4/5 h-12 rounded-2xl flex flex-row items-center justify-center">
+                <select class="border px-2 ml-2 mt-3 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
+								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortBy">
+                    <option value="" selected>Sort By:</option>
+                    <option value="Amount">Amount</option>
+                    <option value="Card">Card</option>
+                    <option value="Date">Date</option>
+                </select>
+
+                <select class="border px-2 ml-2 mt-3 border-purple-400 cursor-pointer rounded-full w-40 bg-neutral-50
+								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SortOrder">
+                    <option value="" selected>Order By:</option>
+                    <option value="Descending">Descending</option>
+                </select>
+
+                <button type="submit" class="border-2 px-2 ml-2 mt-3 border-purple-600 cursor-pointer rounded-full w-20 bg-purple-500 hover:bg-purple-400
+								dark:bg-purple-500 dark:text-neutral-50 dark:border-neutral-900 focus:outline-none transition duration-300">
+                    Apply
+                </button>
+            </form>
+
+            <span class="justify-start px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">Transfers found: @(ViewBag.TotalTransfers ?? 0)</span>
+
+            @if (Model.Transfers.Count > 0)
+            {
+                <div class="flex flex-col w-full items-center overflow-x-auto border border-purple-400 rounded-2xl inline-block align-middle">
+                    <table class="w-full">
+                        <thead class="bg-neutral-50 dark:bg-neutral-800">
+                            <tr>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">From (Card/User)</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">To (User/Card)</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Amount</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Currency</th>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="bg-white divide-y divide-neutral-200 dark:divide-neutral-700 dark:bg-neutral-900">
+                            @foreach (var transfer in Model.Transfers)
+                            {
+                                <tr>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
+                                        @if (transfer.HasCardSender)
+                                        {
+                                            @transfer.Card
+                                        }
+                                        else
+                                        {
+                                            @transfer.Username
+                                        }
+                                    </td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
+                                        @if (transfer.HasCardSender)
+                                        {
+                                            @transfer.Username
+                                        }
+                                        else
+                                        {
+                                            @transfer.Card
+                                        }
+                                    </td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@transfer.Amount.ToString("0.00")</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@transfer.Currency</td>
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@transfer.Date</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                @if (this.ViewData["ErrorMessage"] is not null)
+                {
+                    <span class="text-red-600 text-base mb-4">
+                        @this.ViewData["ErrorMessage"]
+                    </span>
+                }
+            }
+
+            @if (ViewBag.TotalTransfers > 5)
+            {
+                <form asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get">
+                    <input type="hidden" asp-for="SortBy">
+                    <input type="hidden" asp-for="SortOrder">
+
+                    <ul class="list-style-none flex w-fit text-base">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li>
+                                <button type="submit" name="Page" value="@(ViewBag.CurrentPage - 1)" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                    Previous
+                                </button>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            @if (i == @ViewBag.CurrentPage)
+                            {
+                                <li class="bg-purple-500 rounded">
+                                    <button type="submit" name="Page" value="@i" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                        @i
+                                    </button>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <button type="submit" name="Page" value="@i" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                        @i
+                                    </button>
+                                </li>
+                            }
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li>
+                                <button button type="submit" name="Page" value="@(ViewBag.CurrentPage + 1)" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                    Next
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </form>
+            }
+        </div>
+    </div>
+</div>

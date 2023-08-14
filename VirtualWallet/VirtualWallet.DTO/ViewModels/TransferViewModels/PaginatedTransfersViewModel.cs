@@ -12,6 +12,6 @@ namespace VirtualWallet.Dto.ViewModels.TransferViewModels
 	{
 		public int? Page { get; set; }
 
-		public List<TransferViewModel> Transfers { get; set; } = new List<TransferViewModel>();
+		public List<GetTransferViewModel> Transfers { get; set; } = new List<GetTransferViewModel>();
 	}
 }
