@@ -231,7 +231,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CardViewModel model, int cardId)
+        public IActionResult Edit(CardViewModel model, int id)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 var card = mapper.Map<Card>(model);
-                cardService.UpdateCard(card, cardId, userId);
+                cardService.UpdateCard(card, id, userId);
 
                 this.ViewBag.SuccessMessage = "Card edited successfully!";
                 return View("Successful");

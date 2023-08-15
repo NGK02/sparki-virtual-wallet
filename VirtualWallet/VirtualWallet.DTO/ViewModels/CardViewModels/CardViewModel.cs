@@ -11,6 +11,8 @@ namespace VirtualWallet.Dto.ViewModels.CardViewModels
     //Да се преименува
     public class CardViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [Range(100, 999, ErrorMessage = "The {0} must be a 3-digit number.")]
         public int CheckNumber { get; set; }
