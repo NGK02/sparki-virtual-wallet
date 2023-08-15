@@ -108,7 +108,7 @@ namespace VirtualWallet.DataAccess.Repositories
                 }
                 if (queryParameters.SortBy.Equals("Currency", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    walletTransactions = walletTransactions.OrderBy(t => t.Currency.Code.ToString());
+                    walletTransactions = walletTransactions.OrderBy(t => t.Currency.Code);
                 }
 
                 if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))

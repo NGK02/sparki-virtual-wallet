@@ -26,7 +26,7 @@ namespace VirtualWallet.DataAccess.Repositories
             return true;
         }
 
-        public IEnumerable<Exchange> GetUserExchanges(int walletId, VirtualWallet.DataAccess.QueryParameters.QueryParameters parameters)
+        public IEnumerable<Exchange> GetUserExchanges(int walletId, QueryParameters.QueryParameters parameters)
         {
             var exchangesQuerable = GetQueryableExchanges().Where(t => t.WalletId == walletId);
             return SortExchangesBy(exchangesQuerable, parameters).ToList();
@@ -44,11 +44,11 @@ namespace VirtualWallet.DataAccess.Repositories
                 }
                 if (parameters.SortBy.Equals("FromCurrency", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    exchangesQuerable = exchangesQuerable.OrderBy(e => e.FromCurrency.Code.ToString());
+                    exchangesQuerable = exchangesQuerable.OrderBy(e => e.FromCurrency.Code);
                 }
                 if (parameters.SortBy.Equals("ToCurrency", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    exchangesQuerable = exchangesQuerable.OrderBy(t => t.ToCurrency.Code.ToString());
+                    exchangesQuerable = exchangesQuerable.OrderBy(t => t.ToCurrency.Code);
                 }
                 if (parameters.SortBy.Equals("Amount", StringComparison.InvariantCultureIgnoreCase))
                 {
