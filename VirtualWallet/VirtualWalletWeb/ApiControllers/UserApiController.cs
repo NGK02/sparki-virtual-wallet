@@ -237,7 +237,7 @@ namespace VirtualWallet.Web.ApiControllers
                 var user = authManager.IsAuthenticated(splitCredentials);
 
                 authManager.IsContentCreatorOrAdmin(user, id);
-                var parameters = new QueryParameters();
+                var parameters = new QueryParams();
                 var exchanges = exchangeService.GetUserExchanges(id,parameters).Select(e => mapper.Map<GetExchangeDto>(e));
 
                 return Ok(exchanges);
