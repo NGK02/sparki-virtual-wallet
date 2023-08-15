@@ -5,7 +5,8 @@ namespace VirtualWallet.Web.Helper
 {
     public class AuthManagerMvc : IAuthManagerMvc
     {
-        public const string notAthorized = "You are not Authorized to do this!";
+        public const string notAuthorized = "You are not Authorized to do this!";
+        public const string bloked = "You are Blocked!";
 
         private readonly IHttpContextAccessor contextAccessor;
 

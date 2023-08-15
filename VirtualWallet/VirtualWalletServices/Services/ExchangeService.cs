@@ -38,7 +38,7 @@ namespace VirtualWallet.Business.Services
             return true;
         }
 
-        public IEnumerable<Exchange> GetUserExchanges(int userId, QueryParameters parameters)
+        public IEnumerable<Exchange> GetUserExchanges(int userId, QueryParams parameters)
         {
             var user = userService.GetUserById(userId);
 

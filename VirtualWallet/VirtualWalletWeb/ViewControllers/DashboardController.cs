@@ -58,7 +58,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
 
@@ -121,12 +121,12 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 ViewBag.Id = id;
 
-                var queryParams = mapper.Map<QueryParameters>(form);
+                var queryParams = mapper.Map<QueryParams>(form);
                 form.Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
 
                 // Pagination logic
@@ -173,7 +173,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 ViewBag.Id = id;
@@ -225,7 +225,7 @@ namespace VirtualWallet.Web.ViewControllers
             if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
             {
                 this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                 return View("Error");
             }
             ViewBag.Id = id;

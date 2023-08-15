@@ -56,7 +56,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
 
@@ -375,7 +375,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 if (id == 0)
@@ -416,7 +416,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 if (!this.ModelState.IsValid)

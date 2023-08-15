@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.DataAccess.QueryParameters
 {
-    public class WalletTransactionQueryParameters : QueryParameters
+    public class WalletTransactionQueryParameters : QueryParams
     {
         public string SenderUsername { get; set; }
         public string RecipientUsername { get; set; }

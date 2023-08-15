@@ -36,6 +36,13 @@ namespace VirtualWallet.Web.ViewControllers
 				{
                     return RedirectToAction("Login", "User");
                 }
+				if (authManagerMvc.IsBlocked("roleId"))
+				{
+                    Response.StatusCode = StatusCodes.Status403Forbidden;
+					ViewData["ErrorMessage"] = AuthManagerMvc.bloked;
+                    return View("Error");
+                }
+
 
 				LoadCurrencies();
 
