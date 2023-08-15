@@ -25,6 +25,11 @@ namespace VirtualWallet.Web.ViewControllers
             return View(HomePageViewModel);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Successful()
         {
             return View();
