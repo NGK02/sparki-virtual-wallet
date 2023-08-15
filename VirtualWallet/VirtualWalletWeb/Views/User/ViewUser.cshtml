@@ -8,7 +8,7 @@
 
 <div class="w-full h-full flex items-center justify-center px-4 py-12">
 
-    <div class="flex flex-col relative items-center max-w-md w-full border border-purple-400 px-12 py-8 text-center bg-white shadow-xl rounded-3xl dark:bg-neutral-800 dark:text-neutral-50 gap-4">
+    <div class="flex flex-col relative items-center max-w-md w-full border border-purple-400 px-12 py-8 text-center bg-neutral-100 shadow-xl rounded-3xl dark:bg-neutral-800 dark:text-neutral-50 gap-4">
 
         <div class="w-full flex justify-center">
 
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="flex flex-row justify-center w-full gap-8 sm:gap-16">
+        <div class="flex flex-row justify-center w-full gap-4">
 
             <div class="w-20 text-center">
                 <span class="text-xl font-bold block uppercase">
@@ -77,7 +77,7 @@
             }
         </div>
 
-        <a asp-controller="User" asp-action="EditUser" asp-route-id="@userId" method="get" class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300">
+        <a asp-controller="User" asp-action="EditUser" asp-route-id="@userId" method="get" class="h-fit w-full p-3 mt-4 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300">
             Edit Profile
         </a>
 

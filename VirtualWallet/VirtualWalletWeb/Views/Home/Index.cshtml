@@ -1,208 +1,226 @@
 ﻿@model VirtualWallet.Dto.ViewModels.HomePageViewModel
 
-<div>
-	<div class="flex flex-col mt-32 px-4 xl:px-24 xl:mt-64 xl:flex-row">
-		<div class="flex flex-1 flex-col justify-center items-center text-neutral-950 font-bold dark:text-neutral-50">
-			<div class="max-w-2xl w-fit text-4xl text-center xl:text-left md:w-full md:text-6xl xl:text-7xl">
-				A better way
-				<div class="w-full text-purple-400 text-center xl:text-left dark:text-purple-400">
-					to send money
-				</div>
-				<div class="hidden text-lg font-thin mt-6 text-neutral-800 dark:text-neutral-200 md:block">
-					Welcome to Sparki Wallet, where you can store your money without the fear of losing it in your couch cushions! With our app, you can easily keep track of your finances and make transactions with just a few clicks.
-				</div>
-			</div>
-		</div>
+<div id="observer-container" class="overflow-x-hidden">
+    <div class="off-stage flex flex-col mt-32 px-4 xl:px-24 xl:mt-64 xl:flex-row">
+        <div class="flex flex-1 flex-col justify-center items-center text-neutral-950 font-bold dark:text-neutral-50">
+            <div class="max-w-2xl w-fit text-4xl text-center xl:text-left md:w-full md:text-6xl xl:text-7xl">
+                A better way
+                <div class="w-full text-purple-400 text-center xl:text-left dark:text-purple-400">
+                    to send money
+                </div>
+                <div class="hidden text-lg font-thin mt-6 text-neutral-800 dark:text-neutral-200 md:block">
+                    Welcome to Sparki Wallet, where you can store your money without the fear of losing it in your couch cushions! With our app, you can easily keep track of your finances and make transactions with just a few clicks.
+                </div>
+            </div>
+        </div>
 
-		<div class="flex flex-1 justify-center items-center mt-24 xl:mt-0">
-			<div class="ml-0 xl:ml-24">
-				<img src="~/assets/home/creditcard.png" class="block dark:hidden h-64 md:h-80 xl:h-96 flex-shrink-0" />
-				<img src="~/assets/home/creditcarddark.png" class="hidden dark:block h-64 md:h-80 xl:h-96 flex-shrink-0" />
-			</div>
-		</div>
-	</div>
+        <div class="flex flex-1 justify-center items-center mt-24 xl:mt-0">
+            <div class="ml-0 xl:ml-24">
+                <img src="~/assets/home/creditcard.png" class="block dark:hidden h-64 md:h-80 xl:h-96 flex-shrink-0" />
+                <img src="~/assets/home/creditcarddark.png" class="hidden dark:block h-64 md:h-80 xl:h-96 flex-shrink-0" />
+            </div>
+        </div>
+    </div>
 
 
-	<div class="flex justify-center items-center w-full my-32 px-4 xl:px-24 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
-		<div class="w-fit text-neutral-950 text-center font-medium dark:text-neutral-50">
-			Already <span class="text-purple-400">@this.Model.usersCount</span> users believe in us and <span class="text-purple-400">@this.Model.transactionsCount</span> transactions have been made!
-		</div>
-	</div>
+    <div class="off-stage flex justify-center items-center w-full my-32 px-4 xl:px-24 xl:mt-64 text-3xl md:text-4xl xl:text-5xl">
+        <div class="w-fit text-neutral-950 text-center font-medium dark:text-neutral-50">
+            Already <span class="text-purple-400">@this.Model.usersCount</span> users believe in us and <span class="text-purple-400">@this.Model.transactionsCount</span> transactions have been made!
+        </div>
+    </div>
 
-	<ul class="carousel-list relative flex justify-center items-center h-80 mb-28 overflow-x-hidden">
-		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-2">
-			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-				</svg>
-			</div>
-			<div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
-				Multiple cards
-			</div>
-			<div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
-				With us you can easily manage all your debit and credit cards in one convenient place. Simply select the one you want to use within the app and you’re good to go.
-			</div>
-		</li>
+    <ul class="off-stage carousel-list relative flex justify-center items-center h-80 mb-28 overflow-x-hidden">
+        <li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-2">
+            <div class="rounded-lg bg-purple-400 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                     class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                </svg>
+            </div>
+            <div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
+                Multiple cards
+            </div>
+            <div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
+                With us you can easily manage all your debit and credit cards in one convenient place. Simply select the one you want to use within the app and you’re good to go.
+            </div>
+        </li>
 
-		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-1">
-			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-				</svg>
-			</div>
-			<div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
-				Dark theme
-			</div>
-			<div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
-				The dark theme is perfect for those who prefer a more subdued and elegant look and it's easier on the eyes. Plus, it can help save battery life on your device.
-			</div>
-		</li>
+        <li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="-1">
+            <div class="rounded-lg bg-purple-400 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                     class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </div>
+            <div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
+                Dark theme
+            </div>
+            <div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
+                The dark theme is perfect for those who prefer a more subdued and elegant look and it's easier on the eyes. Plus, it can help save battery life on your device.
+            </div>
+        </li>
 
-		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="0">
-			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-				</svg>
-			</div>
-			<div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
-				Currency exchange
-			</div>
-			<div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
-				Sparki supports multiple currencies in your wallet. You can instantly exchange between your currencies with real dynamic exchange rates!
-			</div>
-		</li>
+        <li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="0">
+            <div class="rounded-lg bg-purple-400 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                     class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
+                Currency exchange
+            </div>
+            <div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
+                Sparki supports multiple currencies in your wallet. You can instantly exchange between your currencies with real dynamic exchange rates!
+            </div>
+        </li>
 
-		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="1">
-			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-				</svg>
-			</div>
-			<div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
-				Responsive design
-			</div>
-			<div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
-				You can use our website on any device! We support multiple screen sizes from monitors, through tablets down to the smallest of smartphones!
-			</div>
-		</li>
+        <li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="1">
+            <div class="rounded-lg bg-purple-400 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                     class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                </svg>
+            </div>
+            <div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
+                Responsive design
+            </div>
+            <div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
+                You can use our website on any device! We support multiple screen sizes from monitors, through tablets down to the smallest of smartphones!
+            </div>
+        </li>
 
-		<li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="2">
-			<div class="rounded-lg bg-purple-400 p-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-					 class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-				</svg>
-			</div>
-			<div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
-				Email verification
-			</div>
-			<div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
-				Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account. Don’t take chances with your money.
-			</div>
-		</li>
-	</ul>
+        <li class="carousel-item absolute flex flex-col items-center h-72 w-56 shadow-2xl p-4 gap-4 rounded-xl border border-purple-400 bg-neutral-100 shadow-xl transition duration-300 dark:bg-neutral-800" data-pos="2">
+            <div class="rounded-lg bg-purple-400 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                     class="w-7 h-7 text-neutral-950 dark:text-neutral-50">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+            </div>
+            <div class="text-center text-neutral-950 font-semibold dark:text-neutral-50">
+                Email verification
+            </div>
+            <div class="text-center text-sm text-neutral-800 dark:text-neutral-200">
+                Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account. Don’t take chances with your money.
+            </div>
+        </li>
+    </ul>
 
-	<div class="inline-flex flex-col w-full bg-gradient-to-b from-neutral-50 to-purple-400
+    <div class="inline-flex flex-col w-full bg-gradient-to-b from-neutral-50 to-purple-400
 				dark:bg-gradient-to-b dark:from-neutral-900 dark:to-purple-400">
-		<div class="flex flex-col justify-center items-center gap-6 px-4 my-32 bg-transparent">
-			<div class="text-center text-neutral-950 text-2xl font-semibold dark:text-neutral-50">
-				Refer a friend
-			</div>
-			<div class="text-center text-lg text-neutral-800 max-w-4xl dark:text-neutral-200">
-				Now you can easily invite your friends to join and enjoy the convenience and security of managing their finances with our app. Plus, for every friend you refer, you’ll both receive a bonus credit to your account! It’s a win-win situation
-			</div>
-			<a asp-controller="User" asp-action="ReferFriend" class="text-center text-lg h-fit w-24 p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
-				Refer
-			</a>
-		</div>
-	</div>
+        <div class="off-stage flex flex-col justify-center items-center gap-6 px-4 my-32 bg-transparent">
+            <div class="text-center text-neutral-950 text-2xl font-semibold dark:text-neutral-50">
+                Refer a friend
+            </div>
+            <div class="text-center text-lg text-neutral-800 max-w-4xl dark:text-neutral-200">
+                Now you can easily invite your friends to join and enjoy the convenience and security of managing their finances with our app. Plus, for every friend you refer, you’ll both receive a bonus credit to your account! It’s a win-win situation
+            </div>
+            <a asp-controller="User" asp-action="ReferFriend" class="text-center text-lg h-fit w-24 p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300" type="submit">
+                Refer
+            </a>
+        </div>
+    </div>
 </div>
 
 @* Да се махне след като минем на CLI *@
 <style>
-	.carousel-item[data-pos="0"] {
-		box-shadow: 0 0 15px #c084fc;
-	}
+    .carousel-item[data-pos="0"] {
+        box-shadow: 0 0 15px #c084fc;
+    }
 
-	.carousel-item[data-pos="-1"] {
-		transform: translateX(-110%) scale(0.9);
-	}
+    .carousel-item[data-pos="-1"] {
+        transform: translateX(-110%) scale(0.9);
+    }
 
-	.carousel-item[data-pos="1"] {
-		transform: translateX(110%) scale(0.9);
-	}
+    .carousel-item[data-pos="1"] {
+        transform: translateX(110%) scale(0.9);
+    }
 
-	.carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
-		opacity: 0.3;
-		filter: blur(1.5px);
-	}
+    .carousel-item[data-pos="-2"], .carousel-item[data-pos="2"] {
+        opacity: 0.3;
+        filter: blur(1.5px);
+    }
 
-	.carousel-item[data-pos="-1"], .carousel-item[data-pos="1"] {
-		opacity: 0.6;
-		filter: blur(1px);
-	}
+    .carousel-item[data-pos="-1"], .carousel-item[data-pos="1"] {
+        opacity: 0.6;
+        filter: blur(1px);
+    }
 
-	.carousel-item[data-pos="-2"] {
-		transform: translateX(-210%) scale(0.9);
-	}
+    .carousel-item[data-pos="-2"] {
+        transform: translateX(-210%) scale(0.9);
+    }
 
-	.carousel-item[data-pos="2"] {
-		transform: translateX(210%) scale(0.9);
-	}
+    .carousel-item[data-pos="2"] {
+        transform: translateX(210%) scale(0.9);
+    }
 </style>
 
 <script>
-	const state = {};
-	const carouselList = document.querySelector('.carousel-list');
-	const carouselItems = document.querySelectorAll('.carousel-item');
-	const elems = Array.from(carouselItems);
+    const state = {};
+    const carouselList = document.querySelector('.carousel-list');
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const elems = Array.from(carouselItems);
 
-	carouselList.addEventListener('click', function (event) {
-		var newActive = event.target.closest('.carousel-item');
-		var isItem = newActive.closest('.carousel-item');
+    carouselList.addEventListener('click', function (event) {
+        var newActive = event.target.closest('.carousel-item');
+        var isItem = newActive.closest('.carousel-item');
 
-		if (!isItem || newActive.classList.contains('carousel__item_active')) {
-			return;
-		};
+        if (!isItem || newActive.classList.contains('carousel__item_active')) {
+            return;
+        };
 
-		update(newActive);
-	});
+        update(newActive);
+    });
 
-	const update = function (newActive) {
-		const newActivePos = newActive.dataset.pos;
+    const update = function (newActive) {
+        const newActivePos = newActive.dataset.pos;
 
-		const current = elems.find((elem) => elem.dataset.pos == 0);
-		const prev = elems.find((elem) => elem.dataset.pos == -1);
-		const next = elems.find((elem) => elem.dataset.pos == 1);
-		const first = elems.find((elem) => elem.dataset.pos == -2);
-		const last = elems.find((elem) => elem.dataset.pos == 2);
+        const current = elems.find((elem) => elem.dataset.pos == 0);
+        const prev = elems.find((elem) => elem.dataset.pos == -1);
+        const next = elems.find((elem) => elem.dataset.pos == 1);
+        const first = elems.find((elem) => elem.dataset.pos == -2);
+        const last = elems.find((elem) => elem.dataset.pos == 2);
 
-		current.classList.remove('carousel__item_active');
+        current.classList.remove('carousel__item_active');
 
-		[current, prev, next, first, last].forEach(item => {
-			var itemPos = item.dataset.pos;
+        [current, prev, next, first, last].forEach(item => {
+            var itemPos = item.dataset.pos;
 
-			item.dataset.pos = getPos(itemPos, newActivePos)
-		});
-	};
+            item.dataset.pos = getPos(itemPos, newActivePos)
+        });
+    };
 
-	const getPos = function (current, active) {
-		const diff = current - active;
+    const getPos = function (current, active) {
+        const diff = current - active;
 
-		if (Math.abs(current - active) > 2) {
-			return -current
-		}
+        if (Math.abs(current - active) > 2) {
+            return -current
+        }
 
-		return diff;
-	}
+        return diff;
+    }
 </script>
 
 <script>
-	window.addEventListener('load', function () {
-		document.querySelector("footer").style.backgroundColor = "#c084fc";
-	});
+    window.addEventListener('load', function () {
+        document.querySelector("footer").style.backgroundColor = "#c084fc";
+    });
+</script>
+
+<script>
+    const observerContainer = document.getElementById("observer-container");
+    const observerOptions = {
+        root: observerContainer,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("on");
+            }
+        });
+    }, observerContainer);
+
+    const hiddenElements = document.querySelectorAll(".off-stage");
+    hiddenElements.forEach((el) => observer.observe(el));
 </script>
