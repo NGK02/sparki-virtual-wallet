@@ -25,7 +25,8 @@ namespace VirtualWallet.DataAccess.Repositories
                 .Where(t => !t.IsDeleted)
                 .Include(t => t.Card)
                 .Include(t => t.Currency)
-                .Include(t => t.Wallet);
+                .Include(t => t.Wallet)
+                .ThenInclude(w => w.User);
         }
 
         private IQueryable<Transfer> SortTransfers(IQueryable<Transfer> queryableTransfers, QueryParams parameters)
