@@ -1,0 +1,214 @@
+﻿@using System.Text;
+@model VirtualWallet.Dto.ViewModels.WalletTransactionViewModels.PaginateWalletTransactions
+@{
+
+    int? userId = this.ViewBag.Id;
+}
+
+<div class="flex justify-center items-center h-full py-12 md:py-24">
+    <div class="flex flex-col h-fit bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 shadow-2xl dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
+
+        <div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-[10px] font-semibold md:text-base dark:border-neutral-700">
+            <a asp-controller="Dashboard" asp-action="Index" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tl-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Main
+            </a>
+            <a asp-controller="Dashboard" asp-action="Exchanges" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Exchanges
+            </a>
+            <a asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 text-neutral-950 bg-neutral-200 dark:text-neutral-50 dark:bg-neutral-700">
+                Transactions
+            </a>
+            <a asp-controller="Dashboard" asp-action="Transfers" asp-route-id="@userId" method="get" class="flex justify-center items-center flex-1 w-full p-2 rounded-tr-xl transition duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+                Transfers
+            </a>
+        </div>
+
+        <div class="flex flex-col items-center justify-center p-12 gap-4">
+            <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get" class="w-4/5 h-fit rounded-2xl flex flex-col items-center justify-center gap-4">
+
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Recipient username</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="RecipientUsername" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">Sender username</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="SenderUsername" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">From date</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="MinDate" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex-col mb-4 justify-start items-start flex">
+                        <div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">To date</div>
+                        <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
+						dark:bg-neutral-700 dark:text-neutral-50
+						focus:outline focus:outline-purple-400"
+                               asp-for="MaxDate" type="text" placeholder=" ">
+                        <div class="text-sm font-normal text-red-600 leading-tight">
+                            @*                         <span asp-validation-for="MaxDate"></span> *@
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col w-full md:flex-row md:gap-3">
+                    <select class="flex-1 cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50" asp-for="SortBy">
+                        <option value="" selected>Sort By:</option>
+                        <option value="Date">Date</option>
+                        <option value="Currency">Currency</option>
+                        <option value="Amount">Amount</option>
+                    </select>
+
+                    <select class="flex-1 cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50" asp-for="SortOrder">
+                        <option value="" selected>Order By:</option>
+                        <option value="Descending">Descending</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="h-fit w-fit py-1 px-3 bg-purple-500 text-center text-xs text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300 md:text-sm">
+                    Apply
+                </button>
+            </form>
+
+            @if (this.ViewBag.TotalWalletTransactions == 1)
+            {
+                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 transactions found</span>
+            }
+            else
+            {
+                <span class="justify-start px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(ViewBag.TotalWalletTransactions ?? 0) transactions found</span>
+            }
+
+            @if (this.Model.WalletTransactions.Count > 0)
+            {
+
+
+                <div class="flex flex-col w-full items-center overflow-x-auto border border-purple-400 rounded-2xl inline-block align-middle">
+                    <table class="w-full">
+
+                        <thead class="bg-neutral-50 dark:bg-neutral-800">
+                            <tr>
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Sender</th>
+
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Recipient</th>
+
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Currency</th>
+
+                                <th scope="col" class="px-4 py-2 text-sm text-center text-neutral-500 dark:text-neutral-400">Amount</th>
+
+                                <th scope="col" class="px-4 py-2 w-1/6 text-sm text-center text-neutral-500 dark:text-neutral-400">Created on</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="bg-white divide-y divide-neutral-200 dark:divide-neutral-700 dark:bg-neutral-900">
+                            @foreach (var wt in Model.WalletTransactions)
+                            {
+
+                                <tr>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.SenderUsername</td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.RecipientUsername</td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.CurrencyCode.ToString()</td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.Amount</td>
+
+                                    <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@wt.CreatedOn</td>
+
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            }
+            else
+            {
+                @if (this.ViewData["ErrorMessage"] is not null)
+                {
+                    <span class="text-red-600 text-base mb-4">
+                        @this.ViewData["ErrorMessage"]
+                    </span>
+                }
+
+            }
+
+            @if (ViewBag.TotalWalletTransactions > 5)
+            {
+                <form asp-controller="Dashboard" asp-action="WalletTransactions" asp-route-id="@userId" method="get">
+                    <input type="hidden" asp-for="SortBy">
+                    <input type="hidden" asp-for="SortOrder">
+                    <input type="hidden" asp-for="RecipientUsername">
+                    <input type="hidden" asp-for="SenderUsername">
+                    <input type="hidden" asp-for="MinDate">
+                    <input type="hidden" asp-for="MaxDate">
+                    <ul class="list-style-none flex w-fit text-base">
+
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li>
+                                <button type="submit" name="Page" value="@(ViewBag.CurrentPage - 1)" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                    Previous
+                                </button>
+                            </li>
+                        }
+
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            @if (i == @ViewBag.CurrentPage)
+                            {
+                                <li class="bg-purple-500 rounded">
+                                    <button type="submit" name="Page" value="@i" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                        @i
+                                    </button>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <button type="submit" name="Page" value="@i" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300  hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                        @i
+                                    </button>
+                                </li>
+                            }
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li>
+                                <button button type="submit" name="Page" value="@(ViewBag.CurrentPage + 1)" class="relative block rounded bg-transparent px-3 py-1.5 text-neutral-600 transition-all duration-300 hover:bg-purple-400 dark:text-white dark:hover:bg-purple-400 dark:hover:text-white">
+                                    Next
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                </form>
+            }
+        </div>
+    </div>
+</div>

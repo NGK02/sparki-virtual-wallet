@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualWallet.Dto.CreateExcahngeDto
+namespace VirtualWallet.Dto.ExchangeDto
 {
     public class CreateExcahngeDto
     {

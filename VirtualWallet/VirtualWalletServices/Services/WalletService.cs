@@ -14,7 +14,7 @@ using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
-using VirtualWallet.Dto.CreateExcahngeDto;
+using VirtualWallet.Dto.ExchangeDto;
 
 namespace VirtualWallet.Business.Services
 {

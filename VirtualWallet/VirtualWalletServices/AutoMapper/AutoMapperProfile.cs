@@ -19,8 +19,8 @@ using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.AdminViewModels;
 using VirtualWallet.DataAccess.QueryParameters;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModels;
 using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
-using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 
 namespace VirtualWallet.Business.AutoMapper
 {
@@ -46,15 +46,19 @@ namespace VirtualWallet.Business.AutoMapper
                 .ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
                 .ForMember(guDto => guDto.Role, opt => opt.MapFrom(u => u.Role.Name.ToString()));
 
-            CreateMap<User, GetUserView>()
+            CreateMap<User, GetUserViewModel>()
                 .ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
-                .ForMember(guDto => guDto.Role, opt => opt.MapFrom(u => u.Role.Name.ToString()))
-                .ForMember(guDto => guDto.transactionsCount, opt => opt.MapFrom(u => u.Incoming.Count + u.Outgoing.Count));
+                .ForMember(guDto => guDto.TransactionsCount, opt => opt.MapFrom(u => u.Outgoing.Count));
 
 
 
             CreateMap<CreateWalletTransactionDto, WalletTransaction>();
             CreateMap<WalletTransaction, GetWalletTransactionDto>()
+                .ForMember(wtDto => wtDto.SenderUsername, opt => opt.MapFrom(wt => wt.Sender.Username))
+                .ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
+                .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
+                .ForMember(wtDto => wtDto.Amount, opt => opt.MapFrom(wt => wt.Amount));
+            CreateMap<WalletTransaction, GetWalletTransactionViewModel>()
                 .ForMember(wtDto => wtDto.SenderUsername, opt => opt.MapFrom(wt => wt.Sender.Username))
                 .ForMember(wtDto => wtDto.RecipientUsername, opt => opt.MapFrom(wt => wt.Recipient.Username))
                 .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()))
@@ -74,7 +78,7 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<Exchange, GetExchangeDto>()
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
                 .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
-            CreateMap<PaginateExchanges, QueryParameters>();
+            CreateMap<PaginateExchanges, QueryParams>();
             CreateMap<Exchange, GetExchangeViewModel>()
                 .ForMember(ExDto => ExDto.Date, opt => opt.MapFrom(d => d.CreatedOn.ToString(dateFormat)))
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))

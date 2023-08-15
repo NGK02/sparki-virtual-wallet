@@ -1,0 +1,86 @@
+﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.GetUserViewModel
+@{
+    string ProfilePicPath = this.Model.ProfilePicPath ?? Url.Content("~/assets/pfp.jpg");
+    int userId = this.ViewBag.userId;
+}
+
+
+
+<div class="w-full h-full flex items-center justify-center px-4 py-12">
+
+    <div class="flex flex-col relative items-center max-w-md w-full border border-purple-400 px-12 py-8 text-center bg-white shadow-xl rounded-3xl dark:bg-neutral-800 dark:text-neutral-50 gap-4">
+
+        <div class="w-full flex justify-center">
+
+            <img alt="Profile picture" src="@ProfilePicPath" class="object-cover w-32 h-32 rounded-full">
+
+        </div>
+
+        <div class="flex flex-col">
+            <h3 class="text-xl font-semibold leading-normal">
+                @Model.FirstName @Model.LastName
+            </h3>
+
+            <div class="text-base leading-normal font-bold">
+                <i class="text-lg"></i>
+                @Model.Username
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-center w-full gap-8 sm:gap-16">
+
+            <div class="w-20 text-center">
+                <span class="text-xl font-bold block uppercase">
+                    @Model.TransactionsCount
+                </span>
+                <span class="text-xs">Transactions</span>
+            </div>
+
+            <div class="w-20 text-center">
+                <span class="text-xl font-bold block uppercase">
+                    @Model.CardsCount
+                </span>
+                <span class="text-xs">Cards</span>
+            </div>
+
+        </div>
+
+        <div class="">
+            @Model.Email
+        </div>
+
+        <div class="">
+            @Model.PhoneNumber
+        </div>
+
+        <div class="flex justify-center items-center">
+            @if (Model.RoleId == (int)RoleName.User)
+            {
+                <div class="flex items-center w-fit px-3 py-1 rounded-full gap-x-2 border border-emerald-500 bg-emerald-200/60 dark:bg-neutral-800">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                    <h2 class="text-sm font-normal text-emerald-500">Active</h2>
+                </div>
+            }
+            else if (Model.RoleId == (int)RoleName.Blocked)
+            {
+                <div class="flex w-fit items-center w-fit px-3 py-1 mx-auto rounded-full gap-x-2 border border-red-600 bg-red-300 dark:bg-neutral-800">
+                    <span class="h-1.5 w-1.5 rounded-full bg-red-600 dark:bg-red-500 "></span>
+                    <h2 class="text-sm font-normal text-red-600 dark:text-red-500">Blocked</h2>
+                </div>
+            }
+            else if (Model.RoleId == (int)RoleName.Admin)
+            {
+                <div class="flex items-center w-fit px-3 py-1 mx-auto rounded-full gap-x-2 border border-purple-500 bg-purple-200/60 dark:bg-neutral-800">
+                    <span class="h-1.5 w-1.5 rounded-full bg-purple-500"></span>
+                    <h2 class="text-sm font-normal text-purple-500">Admin</h2>
+                </div>
+            }
+        </div>
+
+        <a asp-controller="User" asp-action="EditUser" asp-route-id="@userId" method="get" class="h-fit w-full p-3 bg-purple-500 text-neutral-50 rounded-md shadow hover:bg-purple-400 focus:outline-none transition duration-300">
+            Edit Profile
+        </a>
+
+    </div>
+
+</div>

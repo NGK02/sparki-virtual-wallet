@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.ViewModels.UserViewModels
 {
-    public class GetUserView
+    public class GetUserViewModel
     {
         public string FirstName { get; set; }
 
@@ -20,9 +20,9 @@ namespace VirtualWallet.Dto.ViewModels.UserViewModels
 
         public int CardsCount { get; set; }
 
-        public int transactionsCount { get; set; }
+        public int TransactionsCount { get; set; }
 
-        public string Role { get; set; }
+        public int RoleId { get; set; }
 
         public string ProfilePicPath { get; set; }
     }

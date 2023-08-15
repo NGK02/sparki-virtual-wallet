@@ -4,7 +4,6 @@ using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.Dto.CreateExcahngeDto;
 using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Web.Helper;
@@ -12,7 +11,7 @@ using VirtualWallet.Web.Helper.Contracts;
 
 namespace VirtualWallet.Web.ViewControllers
 {
-	public class ExchangeController : Controller
+    public class ExchangeController : Controller
 	{
 		private readonly IAuthManagerMvc authManagerMVC;
 		private readonly ICurrencyService currencyService;

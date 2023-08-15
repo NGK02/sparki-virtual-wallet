@@ -9,12 +9,13 @@ using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
 using VirtualWallet.Dto.ViewModels.UserViewModels;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Web.Helper.Contracts;
-using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 using VirtualWallet.Dto.TransferDto;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Enums;
-using VirtualWallet.Dto.ViewModels.TransferViewModels;
+using VirtualWallet.Dto.TransactionDto;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModels;
+using VirtualWallet.Dto.ViewModels.WalletTransactionViewModels;
 
 namespace VirtualWallet.Web.ViewControllers
 {
@@ -60,7 +61,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
 
@@ -123,18 +124,18 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 ViewBag.Id = id;
 
-                var queryParams = mapper.Map<QueryParameters>(form);
+                var queryParams = mapper.Map<QueryParams>(form);
                 form.Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
+
                 // Pagination logic
                 var currentPage = form.Page ?? 1;
                 var pageSize = 5;
                 var totalExchanges = form.Exchanges.Count;
-
                 var totalPages = (int)Math.Ceiling(totalExchanges / (double)pageSize);
 
                 ViewBag.CurrentPage = currentPage;
@@ -149,6 +150,7 @@ namespace VirtualWallet.Web.ViewControllers
             }
             catch (EntityNotFoundException e)
             {
+                //Това трябва да се оправи, да не се хвърля изобщо ексепшън.
                 this.Response.StatusCode = StatusCodes.Status200OK;
                 this.ViewData["ErrorMessage"] = e.Message;
                 ViewBag.Id = id;
@@ -163,25 +165,55 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult Transactions(int id)
+        public IActionResult WalletTransactions(int id, PaginateWalletTransactions form)
         {
-
-
-            if (!authManagerMvc.IsLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
+                if (!authManagerMvc.IsLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
+                    return View("Error");
+                }
+                ViewBag.Id = id;
+
+                var queryParams = mapper.Map<WalletTransactionQueryParameters>(form);
+                form.WalletTransactions = walletTransactionService.GetUserWalletTransactions(queryParams, id).Select(wt => mapper.Map<GetWalletTransactionViewModel>(wt)).ToList();
+
+                // Pagination logic
+                var currentPage = form.Page ?? 1;
+                var pageSize = 5;
+                var totalWalletTransactions = form.WalletTransactions.Count;
+                var totalPages = (int)Math.Ceiling(totalWalletTransactions / (double)pageSize);
+
+                ViewBag.CurrentPage = currentPage;
+                ViewBag.TotalPages = totalPages;
+                ViewBag.TotalWalletTransactions = totalWalletTransactions;
+
+                // Apply pagination
+                form.WalletTransactions = form.WalletTransactions.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+                return View(form);
+
             }
-            if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
+            catch (EntityNotFoundException e)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                //Това трябва да се оправи, да не се хвърля изобщо ексепшън.
+                this.Response.StatusCode = StatusCodes.Status200OK;
+                this.ViewData["ErrorMessage"] = e.Message;
+                ViewBag.Id = id;
+                return View("Exchanges", form);
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            ViewBag.Id = id;
-
-
-
-            return View();
         }
 
         [HttpGet]

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.DataAccess.Repositories
@@ -25,14 +26,14 @@ namespace VirtualWallet.DataAccess.Repositories
             return true;
         }
 
-        public IEnumerable<Exchange> GetUserExchanges(int walletId, VirtualWallet.DataAccess.QueryParameters.QueryParameters parameters)
+        public IEnumerable<Exchange> GetUserExchanges(int walletId,QueryParams parameters)
         {
             var exchangesQuerable = GetQueryableExchanges().Where(t => t.WalletId == walletId);
             return SortExchangesBy(exchangesQuerable, parameters).ToList();
 
         }
 
-        private IQueryable<Exchange> SortExchangesBy(IQueryable<Exchange> exchangesQuerable, QueryParameters.QueryParameters parameters)
+        private IQueryable<Exchange> SortExchangesBy(IQueryable<Exchange> exchangesQuerable,QueryParams parameters)
         {
             if (parameters.SortBy is not null)
             {
@@ -40,6 +41,14 @@ namespace VirtualWallet.DataAccess.Repositories
                 if (parameters.SortBy.Equals("Date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     exchangesQuerable = exchangesQuerable.OrderBy(e => e.CreatedOn);
+                }
+                if (parameters.SortBy.Equals("FromCurrency", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    exchangesQuerable = exchangesQuerable.OrderBy(e => e.FromCurrency.Code);
+                }
+                if (parameters.SortBy.Equals("ToCurrency", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    exchangesQuerable = exchangesQuerable.OrderBy(t => t.ToCurrency.Code);
                 }
                 if (parameters.SortBy.Equals("Amount", StringComparison.InvariantCultureIgnoreCase))
                 {

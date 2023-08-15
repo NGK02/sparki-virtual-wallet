@@ -12,7 +12,7 @@ using VirtualWallet.Web.Helper.Contracts;
 
 namespace VirtualWallet.Web.ViewControllers
 {
-	public class WalletTransactionController : Controller
+    public class WalletTransactionController : Controller
 	{
 		private readonly IAuthManagerMvc authManagerMvc;
 		private readonly ICurrencyService currencyService;
@@ -36,6 +36,13 @@ namespace VirtualWallet.Web.ViewControllers
 				{
                     return RedirectToAction("Login", "User");
                 }
+				if (authManagerMvc.IsBlocked("roleId"))
+				{
+                    Response.StatusCode = StatusCodes.Status403Forbidden;
+					ViewData["ErrorMessage"] = AuthManagerMvc.bloked;
+                    return View("Error");
+                }
+
 
 				LoadCurrencies();
 

@@ -17,17 +17,17 @@ namespace VirtualWallet.Dto.ViewModels.WalletTransactionViewModels
         //[Required]
         public string RecipientIdentifier { get; set; }
 
-		//[Required]
-		public string RecipientIdentifierValue { get; set; }
+        //[Required]
+        public string RecipientIdentifierValue { get; set; }
 
-		//[Required]
-		public int SenderId { get; set; }
+        //[Required]
+        public int SenderId { get; set; }
 
-		//[Required]
-		public int CurrencyId { get; set; }
+        //[Required]
+        public int CurrencyId { get; set; }
 
-		//[Required]
-		//[Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
-		public decimal Amount { get; set; }
+        //[Required]
+        //[Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
+        public decimal Amount { get; set; }
     }
 }
