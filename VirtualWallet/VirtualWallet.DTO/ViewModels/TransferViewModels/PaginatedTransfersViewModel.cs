@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.QueryParameters;
-using VirtualWallet.Dto.ViewModels.ExchangeViewModel;
 
 namespace VirtualWallet.Dto.ViewModels.TransferViewModels
 {
-	public class PaginatedTransfersViewModel : QueryParameters
+	public class PaginatedTransfersViewModel : QueryParams
 	{
 		public int? Page { get; set; }
 

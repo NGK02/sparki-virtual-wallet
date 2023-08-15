@@ -68,7 +68,7 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<Transfer, GetTransferDto>()
                 .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
 
-            CreateMap<PaginatedTransfersViewModel, QueryParameters>();
+            CreateMap<PaginatedTransfersViewModel, QueryParams>();
             CreateMap<Transfer, GetTransferViewModel>()
                 .ForMember(dest => dest.Card, opt => opt.MapFrom(src => FormatCardNumber(src.Card.CardNumber)))
                 .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency != null ? src.Currency.Code.ToString() : string.Empty))
