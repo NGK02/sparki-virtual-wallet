@@ -46,9 +46,9 @@ namespace VirtualWallet.Business.AutoMapper
                 .ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
                 .ForMember(guDto => guDto.Role, opt => opt.MapFrom(u => u.Role.Name.ToString()));
 
-            CreateMap<User, GetUserView>()
+            CreateMap<User, GetUserViewModel>()
                 .ForMember(guDto => guDto.CardsCount, opt => opt.MapFrom(u => u.Cards.Count))
-                .ForMember(guDto => guDto.transactionsCount, opt => opt.MapFrom(u => u.Outgoing.Count));
+                .ForMember(guDto => guDto.TransactionsCount, opt => opt.MapFrom(u => u.Outgoing.Count));
 
 
 

@@ -45,22 +45,23 @@ namespace VirtualWallet.Web.ViewControllers
             this.walletService = walletService;
         }
         [HttpGet]
-        public IActionResult Profile(int id)
+        public IActionResult ViewUser(int id)
         {
-            if (!authManagerMVC.IsLogged("LoggedUser"))
-            {
-                return RedirectToAction("Login", "User");
-            }
-            if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
-            {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
-                return View("Error");
-            }
             try
             {
+                if (!authManagerMVC.IsLogged("LoggedUser"))
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                if (!authManagerMVC.IsAdmin("roleId") && !authManagerMVC.IsContentCreator("userId", id))
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    return View("Error");
+                }
+
                 var user = userService.GetUserById(id);
-                var mappedUser = mapper.Map<GetUserView>(user);
+                var mappedUser = mapper.Map<GetUserViewModel>(user);
                 this.ViewBag.userId = id;
                 return View(mappedUser);
             }
@@ -94,14 +95,14 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpPost]
         public IActionResult Login(Login filledLoginForm)
         {
-            //Влизаме тук ако имаме Null Username or Password!
-            if (!this.ModelState.IsValid)
-            {
-                return View(filledLoginForm);
-            }
-
             try
             {
+                //Влизаме тук ако имаме Null Username or Password!
+                if (!this.ModelState.IsValid)
+                {
+                    return View(filledLoginForm);
+                }
+
                 //Защо това се ползва тук? Ако така или иначе ще ползваме този аут мениджър нека всичко да е в него.
                 var user = authManager.IsAuthenticated(new string[] { filledLoginForm.Username, filledLoginForm.Password });
 

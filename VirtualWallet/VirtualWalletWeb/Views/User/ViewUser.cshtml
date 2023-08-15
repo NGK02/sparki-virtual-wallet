@@ -1,4 +1,4 @@
-﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.GetUserView
+﻿@model VirtualWallet.Dto.ViewModels.UserViewModels.GetUserViewModel
 @{
     string ProfilePicPath = this.Model.ProfilePicPath ?? Url.Content("~/assets/pfp.jpg");
     int userId = this.ViewBag.userId;
@@ -31,7 +31,7 @@
 
             <div class="w-20 text-center">
                 <span class="text-xl font-bold block uppercase">
-                    @Model.transactionsCount
+                    @Model.TransactionsCount
                 </span>
                 <span class="text-xs">Transactions</span>
             </div>
