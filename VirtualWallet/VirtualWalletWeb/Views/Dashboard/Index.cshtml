@@ -20,7 +20,7 @@
     bool hasCards = Model.Cards.Count > 0;
 
     bool hasBalances = Model.Balances.Count > 0;
-    string defaultBalanceDisplay = "No balance";
+    string defaultBalanceDisplay = "No balance yet.";
     if (hasBalances)
     {
         var firstBalance = Model.Balances.First();
@@ -28,7 +28,7 @@
     }
 }
 
-<div class="flex justify-center items-center h-full py-12 md:py-24">
+<div class="flex justify-center items-center h-full py-12 md:py-16">
     <div class="flex flex-col h-full bg-neutral-100 text-neutral-950 rounded-xl border border-purple-400 w-5/6 shadow-2xl dark:bg-neutral-800 dark:text-neutral-50 lg:w-3/6 sm:w-4/6">
 
         <div class="flex flex-row w-full h-12 rounded-t-xl border-b border-neutral-300 text-[10px] font-semibold md:text-base dark:border-neutral-700">
@@ -53,12 +53,15 @@
 						dark:bg-gradient-to-r dark:from-indigo-400 dark:via-purple-400 dark:to-fuchsia-400 dark:border-neutral-600">
 
                 <div class="relative flex flex-col justify-center items-center sm:items-start">
-                    <button class="flex flex-row items-center h-fit w-fit rounded-lg gap-1 text-xs sm:text-lg sm:gap-2 transition duration-300 ease-in-out hover:opacity-50 hover:bg-neutral-200 dark:hover:bg-neutral-500" id="menu-btn3">
-                        <span class="text-neutral-600 dark:text-neutral-200">Balance</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-600 dark:text-neutral-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </button>
+                    @if (hasBalances)
+                    {
+                        <button class="flex flex-row items-center h-fit w-fit rounded-lg gap-1 text-xs sm:text-lg sm:gap-2 transition duration-300 ease-in-out hover:opacity-50 hover:bg-neutral-200 dark:hover:bg-neutral-500" id="menu-btn3">
+                            <span class="text-neutral-600 dark:text-neutral-200">Balance</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neutral-600 dark:text-neutral-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                    }
                     <div class="absolute top-6 left-7 border border-purple-400 text-center text-neutral-900 bg-neutral-100 hidden flex-col rounded-lg mt-1 p-2 text-xs min-w-fit w-16 focus:outline-none dark:bg-neutral-800 dark:text-neutral-50" id="balance-dropdown">
                         @if (hasBalances)
                         {
@@ -66,10 +69,6 @@
                             {
                                 <a data-amount="@balance.Amount" data-code="@balance.Currency.Code" onclick="changeBalanceDisplay('balance-display', this.getAttribute('data-amount'), this.getAttribute('data-code'))" class="w-full px-2 py-1 cursor-pointer rounded hover:bg-purple-400 transition duration-300 ease-in-out">@balance.Currency.Code</a>
                             }
-                        }
-                        else
-                        {
-                            <span class="w-full rounded-lg">No balances</span>
                         }
                     </div>
                     <span class="h-fit text-neutral-900 font-semibold text-2xl sm:text-xl md:text-4xl dark:text-neutral-50" id="balance-display">
@@ -180,7 +179,8 @@
                 <hr class="block w-full border-neutral-300 dark:border-neutral-600 sm:hidden">
 
                 <div class="w-full h-4/6 mx-auto xl:w-9/12 sm:w-6/12 sm:h-full">
-                    <canvas id="chart"></canvas>
+                    <canvas id="chart">
+                    </canvas>
                 </div>
 
             </div>
@@ -222,7 +222,7 @@
             delay: (context) => {
                 let delay = 0;
                 if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                    delay = context.dataIndex * 500;
+                    delay = context.dataIndex * 300;
                 }
                 return delay;
             },
