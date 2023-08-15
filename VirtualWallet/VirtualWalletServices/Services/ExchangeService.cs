@@ -63,7 +63,6 @@ namespace VirtualWallet.Business.Services
                 conversionRates = GetAllExchangeRates(forCurr).Result;
 
                 var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(30))
                     .SetAbsoluteExpiration(TimeSpan.FromHours(6))
                     .SetPriority(CacheItemPriority.Normal);
 
