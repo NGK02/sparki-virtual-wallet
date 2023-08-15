@@ -253,14 +253,28 @@ namespace VirtualWallet.Web.ViewControllers
         [HttpGet]
         public IActionResult ReceiveBonus(int referrerId, int referredUserId)
         {
-            walletService.DistributeFundsForReferrals(referrerId, referredUserId, 70, 3);
-			ViewBag.SuccessMessage = "Registered successfully!";
-			return View("Successful");
+            try
+            {
+                walletService.DistributeFundsForReferrals(referrerId, referredUserId, 70, 3);
+                ViewBag.SuccessMessage = "Registered successfully!";
+                return View("Successful");
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
+            catch (Exception e)
+            {
+                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                this.ViewData["ErrorMessage"] = e.Message;
+                return View("Error");
+            }
         }
 
-        //Да се оправи, не е функциониращ асинхронен метод.
         [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public IActionResult ConfirmEmail(string userId, string token)
         {
             try
             {
@@ -475,66 +489,82 @@ namespace VirtualWallet.Web.ViewControllers
             return View(referFriend);
         }
 
-        //Да се добави exception handling.
         [HttpPost]
         public IActionResult ReferFriendFinalize(ReferFriend filledForm)
         {
-            if (!authManagerMVC.IsLogged("LoggedUser"))
+            try
             {
-                return RedirectToAction("Login", "User");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["ErrorMessage"] = (filledForm.Email is null ? "Please provide email to refer." : "Please enter valid email!");
-
-                return View("ReferFriend", filledForm);
-            }
-
-            if (userService.EmailExists(filledForm.Email))
-            {
-                ViewData["ErrorMessage"] = "Email alredy exist";
-
-                return View("ReferFriend", filledForm);
-            }
-
-            int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-
-            EmailSender emailSender = new EmailSender();
-            string confirmationToken = "";
-
-            bool isUnique = false;
-
-            while (!isUnique)
-            {
-                confirmationToken = EmailSender.GenerateConfirmationToken();
-                var existingReferral = referralService.FindReferralByToken(confirmationToken);
-
-                if (existingReferral == null)
+                if (!authManagerMVC.IsLogged("LoggedUser"))
                 {
-                    isUnique = true;
+                    return RedirectToAction("Login", "User");
                 }
+
+                if (!ModelState.IsValid)
+                {
+                    ViewData["ErrorMessage"] = (filledForm.Email is null ? "Please provide email to refer." : "Please enter valid email!");
+
+                    return View("ReferFriend", filledForm);
+                }
+
+                if (userService.EmailExists(filledForm.Email))
+                {
+                    ViewData["ErrorMessage"] = "Email alredy exist";
+
+                    return View("ReferFriend", filledForm);
+                }
+
+                int userId = HttpContext.Session.GetInt32("userId") ?? 0;
+
+                EmailSender emailSender = new EmailSender();
+                string confirmationToken = "";
+
+                bool isUnique = false;
+
+                while (!isUnique)
+                {
+                    confirmationToken = EmailSender.GenerateConfirmationToken();
+                    var existingReferral = referralService.FindReferralByToken(confirmationToken);
+
+                    if (existingReferral == null)
+                    {
+                        isUnique = true;
+                    }
+                }
+
+                var expiryTimestamp = DateTime.UtcNow.AddHours(24);
+
+                Referral referral = new Referral()
+                {
+                    ConfirmationToken = confirmationToken,
+                    ConfirmationTokenExpiry = expiryTimestamp,
+                    IsConfirmed = false,
+                    ReferredEmail = filledForm.Email
+                };
+
+                referralService.CreateReferral(userId, referral);
+                string emailSubject = "Invitation to Register";
+
+                string emailMessage = $"You've been invited to join our app! Click the following link to register:\n\n" +
+                    $"{Url.Action("OpenInvitation", "User", new { token = confirmationToken }, Request.Scheme)}";
+
+                emailSender.SendEmail(emailSubject, filledForm.Email, null, emailMessage).Wait();
+                ViewBag.SuccessMessage = "Referal successful";
+                return View("Successful");
             }
-
-            var expiryTimestamp = DateTime.UtcNow.AddHours(24);
-
-            Referral referral = new Referral()
+            catch (EntityNotFoundException e)
             {
-                ConfirmationToken = confirmationToken,
-                ConfirmationTokenExpiry = expiryTimestamp,
-                IsConfirmed = false,
-                ReferredEmail = filledForm.Email
-            };
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                ViewData["ErrorMessage"] = e.Message;
 
-            referralService.CreateReferral(userId, referral);
-            string emailSubject = "Invitation to Register";
+                return View("Error");
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                ViewData["ErrorMessage"] = e.Message;
 
-            string emailMessage = $"You've been invited to join our app! Click the following link to register:\n\n" +
-                $"{Url.Action("OpenInvitation", "User", new { token = confirmationToken }, Request.Scheme)}";
-
-            emailSender.SendEmail(emailSubject, filledForm.Email, null, emailMessage).Wait();
-            ViewBag.SuccessMessage = "Referal successful";
-            return View("Successful");
+                return View("Error");
+            }
         }
 
         [HttpGet]
