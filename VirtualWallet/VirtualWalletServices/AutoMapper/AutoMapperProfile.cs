@@ -68,6 +68,13 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<Transfer, GetTransferDto>()
                 .ForMember(wtDto => wtDto.CurrencyCode, opt => opt.MapFrom(wt => wt.Currency.Code.ToString()));
 
+            CreateMap<PaginatedTransfersViewModel, QueryParams>();
+            CreateMap<Transfer, GetTransferViewModel>()
+                .ForMember(dest => dest.Card, opt => opt.MapFrom(src => FormatCardNumber(src.Card.CardNumber)))
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency != null ? src.Currency.Code.ToString() : string.Empty))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss")))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Wallet.User != null ? src.Wallet.User.Username : string.Empty));
+
             CreateMap<Exchange, GetExchangeDto>()
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
                 .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
@@ -108,6 +115,22 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<CurrencyViewModel, Currency>().ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<Balance, GetBalanceViewModel>();
+        }
+
+        private string FormatCardNumber(long cardNumber)
+        {
+            string cardNumberString = cardNumber.ToString();
+
+            if (!string.IsNullOrEmpty(cardNumberString))
+            {
+                int chunkSize = 4;
+                string formattedCardNumber = string.Join(" ", Enumerable.Range(0, cardNumberString.Length / chunkSize)
+                    .Select(i => cardNumberString.Substring(i * chunkSize, chunkSize)));
+
+                return formattedCardNumber;
+            }
+
+            return string.Empty;
         }
 
         private DateTime ParseDate(string date)
