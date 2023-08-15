@@ -3,6 +3,7 @@ using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
@@ -24,9 +25,8 @@ namespace VirtualWallet.Business.Services
 			this.walletService = walletService;
 		}
 
-		private void TransferFromWallet(int userId, Transfer transfer)
+		private void TransferFromWallet(Transfer transfer)
 		{
-
 			var wallet = walletService.GetWalletById(transfer.WalletId);
 
 			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
@@ -54,13 +54,12 @@ namespace VirtualWallet.Business.Services
 			}
 		}
 
-		private void TransferToWallet(int userId, Transfer transfer)
+		private void TransferToWallet(Transfer transfer)
 		{
-
 			var wallet = walletService.GetWalletById(transfer.WalletId);
+
 			var balance = wallet.Balances.SingleOrDefault(b => b.CurrencyId == transfer.CurrencyId);
 
-			//Да разбера защо това не работи с метода.
 			if (balance == null)
 			{
 				balance = new Balance { CurrencyId = transfer.CurrencyId, WalletId = transfer.WalletId };
@@ -97,9 +96,7 @@ namespace VirtualWallet.Business.Services
 
 		public IEnumerable<Transfer> GetUserTransfers(int userId)
 		{
-			var user = userService.GetUserById(userId);
-
-			var transfers = transferRepository.GetWalletTransfers(user.WalletId);
+			var transfers = transferRepository.GetUserTransfers(userId);
 
 			if (!transfers.Any() || transfers == null)
 			{
@@ -109,7 +106,19 @@ namespace VirtualWallet.Business.Services
 			return transfers;
 		}
 
-		public Transfer GetTransferById(int transferId, int userId)
+        public IEnumerable<Transfer> GetUserTransfers(int userId, QueryParams parameters)
+        {
+            var transfers = transferRepository.GetUserTransfers(userId, parameters);
+
+            if (!transfers.Any() || transfers == null)
+            {
+                throw new EntityNotFoundException("No transfers available.");
+            }
+
+            return transfers;
+        }
+
+        public Transfer GetTransferById(int transferId, int userId)
 		{
 			var transfer = transferRepository.GetTransferById(transferId);
 
@@ -120,7 +129,7 @@ namespace VirtualWallet.Business.Services
 
 			var user = userService.GetUserById(userId);
 
-			if (!authManager.IsAdmin(user) && transfer.Wallet.UserId != userId)
+			if (!authManager.IsAdmin(user) && transfer.WalletId != userId)
 			{
 				throw new UnauthorizedOperationException("Access to transfer denied.");
 			}
@@ -128,15 +137,15 @@ namespace VirtualWallet.Business.Services
 			return transfer;
 		}
 
-		public void AddTransfer(int userId, Transfer transfer)
+		public void AddTransfer(Transfer transfer)
 		{
 			if (transfer.HasCardSender)
 			{
-				TransferToWallet(userId, transfer);
+				TransferToWallet(transfer);
 			}
 			else
 			{
-				TransferFromWallet(userId, transfer);
+				TransferFromWallet(transfer);
 			}
 		}
 

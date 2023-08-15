@@ -61,7 +61,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
             }
 
-            if (parameters.SortOrder is not null)
+            if (parameters.SortOrder is not null && parameters.SortBy is not null)
             {
                 if (parameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))
                 {
