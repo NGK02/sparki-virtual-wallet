@@ -95,6 +95,7 @@ namespace VirtualWallet.Business.Services
                 toBalance = CreateWalletBalance(toCurrency.Id, walletId);
             }
             fromBalance.Amount -= excahngeValues.Amount;
+            //Да използва метода с кешираните данни.
             var exchangedAmount = await exchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From, excahngeValues.To, excahngeValues.Amount.ToString());
 
             toBalance.Amount += exchangedAmount.Item2;
