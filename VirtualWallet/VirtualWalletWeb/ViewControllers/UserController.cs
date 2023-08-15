@@ -222,8 +222,7 @@ namespace VirtualWallet.Web.ViewControllers
                         return RedirectToAction("ReceiveBonus", "User", new { referrerId = referral.ReferrerId, referredUserId = user.Id });
                     }
                 }
-
-                return View("Successful");
+				return View("Successful");
             }
             catch (EmailAlreadyExistException e)
             {
@@ -255,8 +254,8 @@ namespace VirtualWallet.Web.ViewControllers
         public IActionResult ReceiveBonus(int referrerId, int referredUserId)
         {
             walletService.DistributeFundsForReferrals(referrerId, referredUserId, 70, 3);
-
-            return View("Successful");
+			ViewBag.SuccessMessage = "Registered successfully!";
+			return View("Successful");
         }
 
         //Да се оправи, не е функциониращ асинхронен метод.
@@ -534,6 +533,7 @@ namespace VirtualWallet.Web.ViewControllers
                 $"{Url.Action("OpenInvitation", "User", new { token = confirmationToken }, Request.Scheme)}";
 
             emailSender.SendEmail(emailSubject, filledForm.Email, null, emailMessage).Wait();
+            ViewBag.SuccessMessage = "Referal successful";
             return View("Successful");
         }
 
