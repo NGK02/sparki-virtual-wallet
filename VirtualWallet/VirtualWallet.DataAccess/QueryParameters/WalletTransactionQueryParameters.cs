@@ -12,7 +12,6 @@ namespace VirtualWallet.DataAccess.QueryParameters
         public string SenderUsername { get; set; }
         public string RecipientUsername { get; set; }
         public DateTime? MinDate { get; set; }
-
         //[IsDateAfter("Beggining", true, "PeriodErrorMessage")]
         public DateTime? MaxDate { get; set; }
     }
