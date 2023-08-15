@@ -6,13 +6,12 @@
 	<div class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400">
 
-		<div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Transaction details</div>
+		<div class="mb-8 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Transaction details</div>
 
 		<!-- Currency -->
 		<div class="w-full mb-4 flex-col justify-start items-start flex">
 			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Currency</label>
-			<select disabled asp-for="CurrencyId" name="CurrencyId" id="currency-select" class="border px-2 border-purple-400 cursor-pointer rounded-full w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
-				<option value="" disabled selected>Select a currency</option>
+			<select disabled asp-for="CurrencyId" name="CurrencyId" id="currency-select" class="cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50">
 				@foreach (var currency in ViewData["Currencies"] as List<CurrencyViewModel>)
 				{
 					<option value="@currency.Id">@currency.Code</option>
@@ -32,16 +31,14 @@
 		<!-- Recipient -->
 		<div class="w-full mb-4 flex-col justify-start items-start flex">
 			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Recipient</label>
-			<select disabled asp-for="RecipientIdentifier" class="border px-2 border-purple-400 cursor-pointer rounded-full drop-shadow-md w-full bg-neutral-50
-								dark:bg-neutral-800 dark:text-neutral-50">
-				<option value="" disabled selected>Select an identifier</option>
+			<select disabled asp-for="RecipientIdentifier" class="cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50">
 				<option value="Username">Username</option>
 				<option value="Email">Email</option>
 				<option value="Phonenumber">Phone number</option>
 			</select>
 		</div>
 
-		<div class="w-full mb-6 flex-col justify-start items-start flex">
+		<div class="w-full mb-8 flex-col justify-start items-start flex">
 			<label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Recipient identifier</label>
 			<input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50

@@ -4,13 +4,12 @@
     <form class="flex mx-auto justify-center max-w-sm w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400" asp-controller="Exchange" asp-action="ConfirmExchange" method="post">
 
-        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Exchange details</div>
+        <div class="mb-8 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Exchange details</div>
 
         <!-- From Currency -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">From currency</label>
-            <select asp-for="From" class="border px-2 border-purple-400 cursor-pointer rounded-full w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
-                <option value="" disabled selected>Select a currency</option>
+            <select asp-for="From" class="cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50">
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
                 {
                     <option value="@currency.Code.ToString().ToUpper()">@currency.Code.ToString().ToUpper()</option>
@@ -22,8 +21,7 @@
         <!-- To Currency -->
         <div class="w-full mb-4 flex-col justify-start items-start flex">
             <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">To currency</label>
-            <select asp-for="To" class="border px-2 border-purple-400 cursor-pointer rounded-full w-full duration-300 bg-neutral-50 dark:bg-neutral-800 dark:text-neutral-50">
-                <option value="" disabled selected>Select a currency</option>
+            <select asp-for="To" class="cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50">
                 @foreach (var currency in ViewData["Currencies"] as List<VirtualWallet.Dto.ViewModels.CurrencyViewModels.CurrencyViewModel>)
                 {
                     <option value="@currency.Code.ToString().ToUpper()">@currency.Code.ToString().ToUpper()</option>

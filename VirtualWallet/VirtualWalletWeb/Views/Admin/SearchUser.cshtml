@@ -11,11 +11,11 @@
 				dark:bg-neutral-800 dark:border-puerple-400 sm:w-96">
 
 
-        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
+        <div class="mb-8 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Search user </div>
 
-        <div class="w-full mb-6 flex-col justify-center items-center flex">
-            <select class="border px-2 border-purple-400 cursor-pointer rounded-full w-full bg-neutral-50
-								dark:bg-neutral-800 dark:text-neutral-50" asp-for="SearchOption">
+        <div class="w-full mb-4 flex-col flex">
+            <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">User identifier</label>
+            <select class="cursor-pointer rounded-full py-1 px-3 w-full bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-50" asp-for="SearchOption">
                 <option value="Username">Username</option>
                 <option value="Email">Email</option>
                 <option value="Phonenumber">Phonenumber</option>
@@ -23,11 +23,11 @@
         </div>
 
         <div class="w-full mb-6 flex-col justify-start items-start flex">
-            @*<div class="text-neutral-700 text-xs font-medium dark:text-neutral-400">password</div>*@
+            <label class="text-neutral-700 text-sm font-medium dark:text-neutral-400">Identifier value</label>
             <input class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex
 						dark:bg-neutral-700 dark:text-neutral-50
 						focus:outline focus:outline-purple-400"
-                   asp-for="SearchOptionValue" type="text" placeholder="Provide input to search by....">
+                   asp-for="SearchOptionValue" type="text">
             <div class="text-sm font-normal text-red-600 leading-tight">
                 <span asp-validation-for="SearchOptionValue"></span>
             </div>

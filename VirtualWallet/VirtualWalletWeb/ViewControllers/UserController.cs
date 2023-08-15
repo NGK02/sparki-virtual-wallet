@@ -259,6 +259,7 @@ namespace VirtualWallet.Web.ViewControllers
             return View("Successful");
         }
 
+        //Да се оправи, не е функциониращ асинхронен метод.
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
@@ -475,6 +476,7 @@ namespace VirtualWallet.Web.ViewControllers
             return View(referFriend);
         }
 
+        //Да се добави exception handling.
         [HttpPost]
         public IActionResult ReferFriendFinalize(ReferFriend filledForm)
         {
