@@ -58,7 +58,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
 
@@ -121,7 +121,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 ViewBag.Id = id;
@@ -173,7 +173,7 @@ namespace VirtualWallet.Web.ViewControllers
                 if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
                 {
                     this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                    this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                     return View("Error");
                 }
                 ViewBag.Id = id;
@@ -225,7 +225,7 @@ namespace VirtualWallet.Web.ViewControllers
             if (!authManagerMvc.IsAdmin("roleId") && !authManagerMvc.IsContentCreator("userId", id))
             {
                 this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAthorized;
+                this.ViewData["ErrorMessage"] = AuthManagerMvc.notAuthorized;
                 return View("Error");
             }
             ViewBag.Id = id;
