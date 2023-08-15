@@ -101,11 +101,13 @@
                                         <img class="object-cover w-7 h-7 mt-4 rounded-full md:mt-0" src="@user.ProfilePicPath">
                                     }
                                     <div class="h-fit text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
-                                        @user.FirstName @user.LastName
+                                        <a asp-controller="User" asp-action="ViewUser" asp-route-id="@user.Id" class=" transition duration-300 hover:text-purple-500">@user.FirstName @user.LastName</a>
                                     </div>
                                 </td>
 
-                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Username</td>
+                                <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">
+                                    <a asp-controller="Dashboard" asp-action="Index" asp-route-id="@user.Id" class=" transition duration-300 hover:text-purple-500">@user.Username</a>
+                                </td>
 
                                 <td class="text-center px-4 py-4 text-sm text-neutral-500 dark:text-neutral-300 whitespace-nowrap">@user.Email</td>
 
