@@ -8,6 +8,7 @@
     string[] chartLabels = Model.IncomingWalletTransactions.Keys.ToArray();
     decimal[] incomingChartData = Model.IncomingWalletTransactions.Values.ToArray();
     decimal[] outgoingChartData = Model.OutgoingWalletTransactions.Values.ToArray();
+    bool hasData = incomingChartData.Sum() + outgoingChartData.Sum() > 0;
 
     string chartLabelsJson = JsonConvert.SerializeObject(chartLabels);
     string incomingChartDataJson = JsonConvert.SerializeObject(incomingChartData);
@@ -109,7 +110,7 @@
                     }
 
                     <ul class="space-y-2 overflow-y-auto h-64 thin-scrollbar">
-                        @if (hasCards & !isAdmin)
+                        @if (hasCards && !isAdmin)
                         {
                             foreach (var card in Model.Cards)
                             {
@@ -178,9 +179,18 @@
 
                 <hr class="block w-full border-neutral-300 dark:border-neutral-600 sm:hidden">
 
-                <div class="w-full h-4/6 mx-auto xl:w-9/12 sm:w-6/12 sm:h-full">
-                    <canvas id="chart">
-                    </canvas>
+                <div class="flex flex-col items-center justify-center w-full h-4/6 mx-auto xl:w-9/12 sm:w-6/12 sm:h-full">
+                    @if (hasData)
+                    {
+                        <canvas id="chart">
+                        </canvas>
+                    }
+                    else
+                    {
+                        <img src="~/assets/dashboard/emptygraph.png" class="block h-56 dark:hidden mb-8"/>
+                        <img src="~/assets/dashboard/emptygraphdark.png" class="hidden h-56 dark:block mb-8"/>
+                        <span class="text-neutral-300 dark:text-neutral-600 text-2xl">No transactions yet...</span>
+                    }
                 </div>
 
             </div>
@@ -212,7 +222,7 @@
                 stack: 'Stack 1',
             }]
     };
-    
+
     let delayed;
     var options = {
         animation: {
