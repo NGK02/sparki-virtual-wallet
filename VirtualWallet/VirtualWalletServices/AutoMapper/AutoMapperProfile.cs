@@ -71,7 +71,7 @@ namespace VirtualWallet.Business.AutoMapper
             CreateMap<Exchange, GetExchangeDto>()
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))
                 .ForMember(ExDto => ExDto.ToCurrency, opt => opt.MapFrom(e => e.ToCurrency.Code.ToString()));
-            CreateMap<PaginateExchanges, QueryParameters>();
+            CreateMap<PaginateExchanges, QueryParams>();
             CreateMap<Exchange, GetExchangeViewModel>()
                 .ForMember(ExDto => ExDto.Date, opt => opt.MapFrom(d => d.CreatedOn.ToString(dateFormat)))
                 .ForMember(ExDto => ExDto.FromCurrency, opt => opt.MapFrom(e => e.FromCurrency.Code.ToString()))

@@ -13,7 +13,7 @@ namespace VirtualWallet.Business.Services.Contracts
 	{
 		bool AddExchange(int userId, Exchange exchange);
 
-		IEnumerable<Exchange> GetUserExchanges(int userId,QueryParameters parameters);
+		IEnumerable<Exchange> GetUserExchanges(int userId,QueryParams parameters);
 
         /// <summary>
         /// Retruns conversion rate.

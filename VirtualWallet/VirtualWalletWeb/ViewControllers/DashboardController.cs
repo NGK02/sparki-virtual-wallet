@@ -126,7 +126,7 @@ namespace VirtualWallet.Web.ViewControllers
                 }
                 ViewBag.Id = id;
 
-                var queryParams = mapper.Map<QueryParameters>(form);
+                var queryParams = mapper.Map<QueryParams>(form);
                 form.Exchanges = exchangeService.GetUserExchanges(id, queryParams).Select(e => mapper.Map<GetExchangeViewModel>(e)).ToList();
 
                 // Pagination logic

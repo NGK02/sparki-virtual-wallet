@@ -26,14 +26,14 @@ namespace VirtualWallet.DataAccess.Repositories
             return true;
         }
 
-        public IEnumerable<Exchange> GetUserExchanges(int walletId, VirtualWallet.DataAccess.QueryParameters.QueryParameters parameters)
+        public IEnumerable<Exchange> GetUserExchanges(int walletId,QueryParams parameters)
         {
             var exchangesQuerable = GetQueryableExchanges().Where(t => t.WalletId == walletId);
             return SortExchangesBy(exchangesQuerable, parameters).ToList();
 
         }
 
-        private IQueryable<Exchange> SortExchangesBy(IQueryable<Exchange> exchangesQuerable, QueryParameters.QueryParameters parameters)
+        private IQueryable<Exchange> SortExchangesBy(IQueryable<Exchange> exchangesQuerable,QueryParams parameters)
         {
             if (parameters.SortBy is not null)
             {

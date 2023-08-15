@@ -7,7 +7,7 @@ using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.Dto.ViewModels.ExchangeViewModels
 {
-    public class PaginateExchanges : QueryParameters
+    public class PaginateExchanges : QueryParams
     {
         public int? Page { get; set; }
         public List<GetExchangeViewModel> Exchanges { get; set; } = new List<GetExchangeViewModel>();
