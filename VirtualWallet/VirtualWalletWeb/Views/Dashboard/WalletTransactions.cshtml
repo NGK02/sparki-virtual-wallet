@@ -91,13 +91,13 @@
                 </button>
             </form>
 
-            @if (this.Model.WalletTransactions.Count == 1)
+            @if (this.ViewBag.TotalWalletTransactions == 1)
             {
-                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 transaction found</span>
+                <span class="px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">1 transactions found</span>
             }
             else
             {
-                <span class="justify-start px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(ViewBag.TotalExchanges ?? 0) transactions found</span>
+                <span class="justify-start px-3 py-1 text-sm border border-purple-400 text-purple-600 bg-purple-100 rounded-full dark:bg-neutral-800 dark:text-purple-400">@(ViewBag.TotalWalletTransactions ?? 0) transactions found</span>
             }
 
             @if (this.Model.WalletTransactions.Count > 0)
