@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 
 namespace VirtualWallet.DataAccess.Repositories.Contracts
 {
@@ -11,7 +12,9 @@ namespace VirtualWallet.DataAccess.Repositories.Contracts
     {
         IEnumerable<Transfer> GetTransfers();
 
-        IEnumerable<Transfer> GetWalletTransfers(int walletId);
+        IEnumerable<Transfer> GetUserTransfers(int userId);
+
+        IEnumerable<Transfer> GetUserTransfers(int userId, QueryParams parameters);
 
         Transfer GetTransferById(int transferId);
 

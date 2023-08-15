@@ -239,12 +239,12 @@ namespace VirtualWallet.Web.ViewControllers
 
                 var queryParams = mapper.Map<QueryParams>(model);
 
-                model.Transfers = transferService.GetUserTransfers(id).Select(t => mapper.Map<GetTransferViewModel>(t)).ToList();
+                model.Transfers = transferService.GetUserTransfers(id, queryParams).Select(t => mapper.Map<GetTransferViewModel>(t)).ToList();
                 var currentPage = model.Page ?? 1;
                 var pageSize = 5;
                 var totalTransfers = model.Transfers.Count;
 
-                var totalPages = (int)Math.Ceiling(totalTransfers / (double)pageSize);
+                var totalPages = (int) Math.Ceiling(totalTransfers / (double) pageSize);
                 ViewBag.CurrentPage = currentPage;
                 ViewBag.TotalPages = totalPages;
                 ViewBag.TotalTransfers = totalTransfers;

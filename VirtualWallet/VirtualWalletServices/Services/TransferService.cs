@@ -3,6 +3,7 @@ using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
+using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
@@ -99,7 +100,7 @@ namespace VirtualWallet.Business.Services
 		{
 			var user = userService.GetUserById(userId);
 
-			var transfers = transferRepository.GetWalletTransfers(user.WalletId);
+			var transfers = transferRepository.GetUserTransfers(user.WalletId);
 
 			if (!transfers.Any() || transfers == null)
 			{
@@ -109,7 +110,21 @@ namespace VirtualWallet.Business.Services
 			return transfers;
 		}
 
-		public Transfer GetTransferById(int transferId, int userId)
+        public IEnumerable<Transfer> GetUserTransfers(int userId, QueryParams parameters)
+        {
+            var user = userService.GetUserById(userId);
+
+            var transfers = transferRepository.GetUserTransfers(user.WalletId, parameters);
+
+            if (!transfers.Any() || transfers == null)
+            {
+                throw new EntityNotFoundException("No transfers available.");
+            }
+
+            return transfers;
+        }
+
+        public Transfer GetTransferById(int transferId, int userId)
 		{
 			var transfer = transferRepository.GetTransferById(transferId);
 
