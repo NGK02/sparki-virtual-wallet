@@ -134,13 +134,13 @@ Sparki Virtual Wallet
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
 
 ## Administrative part
-* When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for individuals based on their first name, username, or email address.
+* When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for users based on their username, email address or phone number.
+	<br><br>
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDownAdmin.PNG)
+	<br><br>
+* From the Admin panel, administrators have comprehensive access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
 	<br><br>
     ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/AdminPanel.png)
-	<br><br>
-* From the Admin panel, administrators have comprehensive access to user profiles, allowing them to view detailed user information. Additionally, administrators are provided with several options to manage user accounts effectively, including the ability to edit user profiles, block or unblock accounts, delete user accounts, or promote users to the admin role.
-	<br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/Admin.png)
 	<br><br>
 * When the Admin utilizes the "View All Posts" functionality, they are presented with an option to directly delete posts from the search results.
 	<br><br>
