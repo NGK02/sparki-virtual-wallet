@@ -14,20 +14,20 @@ namespace VirtualWallet.Dto.ViewModels.WalletTransactionViewModels
 {
     public class CreateWalletTransactionViewModel
     {
-        //[Required]
+        [Required]
         public string RecipientIdentifier { get; set; }
 
-        //[Required]
+        [Required]
         public string RecipientIdentifierValue { get; set; }
 
-        //[Required]
+        [Required]
         public int SenderId { get; set; }
 
-        //[Required]
+        [Required]
         public int CurrencyId { get; set; }
 
-        //[Required]
-        //[Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
+        [Required]
+        [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Amount must be between {0} and {1}!")]
         public decimal Amount { get; set; }
     }
 }
