@@ -8,7 +8,7 @@ using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
 {
-	public class TransferService : ITransferService
+    public class TransferService : ITransferService
 	{
 		private readonly IAuthManager authManager;
 		private readonly ICurrencyService currencyService;
@@ -137,7 +137,7 @@ namespace VirtualWallet.Business.Services
 			return transfer;
 		}
 
-		public void AddTransfer(Transfer transfer)
+		public void CreateTransfer(Transfer transfer)
 		{
 			if (transfer.HasCardSender)
 			{

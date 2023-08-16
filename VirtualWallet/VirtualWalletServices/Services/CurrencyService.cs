@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualWallet.Business.Exceptions;
+﻿using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
@@ -21,11 +15,6 @@ namespace VirtualWallet.Business.Services
             this.currencyRepository = currencyRepository;
         }
 
-        public IEnumerable<Currency> GetCurrencies()
-        {
-            return currencyRepository.GetCurrencies();
-        }
-
         public Currency GetCurrencyByCode(string currencyCode)
         {
             if (!Enum.TryParse<CurrencyCode>(currencyCode.ToUpper(), out var code))
@@ -37,7 +26,7 @@ namespace VirtualWallet.Business.Services
 
             if (currency == null)
             {
-                throw new EntityNotFoundException("Currency with the provided code was not found in the database.");
+                throw new EntityNotFoundException("Requested currency not found.");
             }
 
             return currency;
@@ -49,10 +38,15 @@ namespace VirtualWallet.Business.Services
 
             if (currency == null)
             {
-                throw new EntityNotFoundException($"Currency with ID {currencyId} not found.");
+                throw new EntityNotFoundException("Requested currency not found.");
             }
 
             return currency;
+        }
+
+        public IEnumerable<Currency> GetCurrencies()
+        {
+            return currencyRepository.GetCurrencies();
         }
     }
 }
