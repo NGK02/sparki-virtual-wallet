@@ -42,6 +42,10 @@ Sparki Virtual Wallet
 
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDown.PNG)
 
+### View profile
+* On this page every user can see and edit his profile information.
+
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Profile.PNG)
 
 ### Main Dashboard
 * Within this page, each user has an advanced overview of their financial landscape. Here, users can review their balances, see details of their credit and debit cards, and a dynamic diagram illustrating their transactions from the past seven days.
@@ -110,16 +114,24 @@ Sparki Virtual Wallet
 ## View Transactions
 * Every user has the opportunity to view all their transactions with options to Order them by Descending/Ascending and Search or Sort them by:
 * Search By:
-	*Recipient username
-	*Sender username
-	*From Date
-	*To Date
+	* Recipient username
+	* Sender username
+	* From Date
+	* To Date
 * Sort By:
 	* Date
 	* Currency
 	* Amount
-
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransactions.PNG)
+
+	## View Transfers
+* Every user has the opportunity to view all their transfers with options to Order them by Descending/Ascending and Sort them by:
+	* Date
+	* From Currency
+	* To Currency
+	* Amount
+	* Exchanged Amount
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
 
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for individuals based on their first name, username, or email address.
@@ -142,18 +154,19 @@ Sparki Virtual Wallet
     ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/DatabaseDiagram.png)
 
 ## Additionally
-* In-memory database, MSTest and Moq for testing
-* Data transfer objects(DTOs)
-* Auto-Mapper
-* Unit test code coverage of the business logic
-* Public API's
 * Exchange Rate API - https://www.exchangerate-api.com
 * Email service - https://sendgrid.com
+* Auto-Mapper
+* Data transfer objects(DTOs)
+* Public API's
+* In-memory database, MSTest and Moq for testing
+* Unit test code coverage of the business logic
 * Technologies
      * ASP.NET Core
 	 * Entity Framework Core
 	 * Mock Framework
-	 * MS SQL Server
+	 * MSSQL Server
+	 * TailWind CSS
 	 * HTML
 	 * CSS
 ## Team Members
