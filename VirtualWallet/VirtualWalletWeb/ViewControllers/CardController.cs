@@ -53,7 +53,7 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 var card = mapper.Map<Card>(model);
-                cardService.AddCard(card, userId);
+                cardService.CreateCard(card, userId);
 
                 this.ViewBag.SuccessMessage = "Card added successfully!";
                 return View("Successful");
