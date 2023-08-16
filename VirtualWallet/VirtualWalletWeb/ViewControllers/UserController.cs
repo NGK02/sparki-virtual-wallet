@@ -213,7 +213,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!string.IsNullOrEmpty(filledForm.ReferralToken))
                 {
-                    var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+                    var referral = referralService.GetReferralByToken(filledForm.ReferralToken);
                     var referrer = userService.GetUserById(referral.ReferrerId);
 
                     if (referrer.ReferralCount < 5)
@@ -523,7 +523,7 @@ namespace VirtualWallet.Web.ViewControllers
                 while (!isUnique)
                 {
                     confirmationToken = EmailSender.GenerateConfirmationToken();
-                    var existingReferral = referralService.FindReferralByToken(confirmationToken);
+                    var existingReferral = referralService.GetReferralByToken(confirmationToken);
 
                     if (existingReferral == null)
                     {
@@ -572,7 +572,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                var referral = referralService.FindReferralByToken(token);
+                var referral = referralService.GetReferralByToken(token);
 
                 if (referral.IsConfirmed)
                 {
