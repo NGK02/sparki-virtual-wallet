@@ -148,6 +148,16 @@ Sparki Virtual Wallet
 * A detailed database diagram is included to provide a an idea for the underlying structure of Sparki Wallet. This diagram visually represents the relationships between different database tables and the structure of the data model.
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DataBaseDiagram.PNG)
 
+## Installation
+* Download project from the repository.
+* Create Database and seed the stored data inside.
+```
+add-migration initial
+update-database
+```
+* Run the project 
+* Register and use all functionalities
+
 ## Additionally
 * Exchange Rate API - https://www.exchangerate-api.com
 * Email service - https://sendgrid.com
