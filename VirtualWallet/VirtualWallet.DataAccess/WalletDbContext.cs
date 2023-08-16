@@ -336,7 +336,7 @@ namespace VirtualWallet.DataAccess
                 WalletId = 10,
                 IsConfirmed = true,
                 PhoneNumber="0888888810",
-                ProfilePicPath="/Assets/OriginalProfilePics/naskoPhoto.jpeg"
+                ProfilePicPath="/Assets/OriginalProfilePics/naskoPhoto.png"
 
                 //123
             },
