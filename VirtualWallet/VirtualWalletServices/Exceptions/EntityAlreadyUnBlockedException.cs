@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Business.Exceptions
 {
-	public class EntityAlreadyUnBlockedException : ApplicationException
+	public class EntityAlreadyUnblockedException : ApplicationException
 	{
-		public EntityAlreadyUnBlockedException(string message) : base(message) { }
+		public EntityAlreadyUnblockedException(string message) : base(message) { }
 	}
 }

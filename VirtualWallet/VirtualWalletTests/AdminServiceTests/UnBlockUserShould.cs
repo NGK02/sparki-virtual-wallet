@@ -13,11 +13,11 @@ using VirtualWallet.DataAccess.Repositories.Contracts;
 namespace VirtualWalletTests.AdminServiceTests
 {
 	[TestClass]
-	public class UnBlockUserShould
+	public class UnblockUserShould
 	{
-		#region "UnBlock user by ID tests"
+		#region "Unblock user by ID tests"
 		[TestMethod]
-		public void UnBlockUser_Should_UnBlock_When_Provided_Id()
+		public void UnblockUser_Should_Unblock_When_Provided_Id()
 		{
 			var user = new User
 			{
@@ -46,15 +46,15 @@ namespace VirtualWalletTests.AdminServiceTests
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id)).Returns(user);
-			userRepoMock.Setup(repo => repo.UnBlockUser(user)).Returns(true);
+			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
 
-			var result = sut.UnBlockUser((int)id, username, email, phoneNumber);
+			var result = sut.UnblockUser((int)id, username, email, phoneNumber);
 
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserNotFound_By_Id()
+		public void UnblockUser_Should_Throw_When_UserNotFound_By_Id()
 		{
 			var user = new User
 			{
@@ -82,11 +82,11 @@ namespace VirtualWalletTests.AdminServiceTests
 			var userRepoMock = new Mock<IUserRepository>();
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
-			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnBlockUser((int)id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser((int)id, username, email, phoneNumber));
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserAlreadyUnBlocked_By_Id()
+		public void UnblockUser_Should_Throw_When_UserAlreadyUnblocked_By_Id()
 		{
 			var user = new User
 			{
@@ -116,12 +116,12 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id)).Returns(user);
 
-			Assert.ThrowsException<EntityAlreadyUnBlockedException>(() => sut.UnBlockUser((int)id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityAlreadyUnblockedException>(() => sut.UnblockUser((int)id, username, email, phoneNumber));
 		}
 		#endregion
-		#region"UnBlock user by USERNAME tests"
+		#region"Unblock user by USERNAME tests"
 		[TestMethod]
-		public void UnBlockUser_Should_UnBlock_When_Provided_Username()
+		public void UnblockUser_Should_Unblock_When_Provided_Username()
 		{
 			var user = new User
 			{
@@ -150,15 +150,15 @@ namespace VirtualWalletTests.AdminServiceTests
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username)).Returns(user);
-			userRepoMock.Setup(repo => repo.UnBlockUser(user)).Returns(true);
+			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
 
-			var result = sut.UnBlockUser(id, username, email, phoneNumber);
+			var result = sut.UnblockUser(id, username, email, phoneNumber);
 
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserNotFound_By_Username()
+		public void UnblockUser_Should_Throw_When_UserNotFound_By_Username()
 		{
 			var user = new User
 			{
@@ -186,11 +186,11 @@ namespace VirtualWalletTests.AdminServiceTests
 			var userRepoMock = new Mock<IUserRepository>();
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
-			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserAlreadyUnBlocked_By_Username()
+		public void UnblockUser_Should_Throw_When_UserAlreadyUnblocked_By_Username()
 		{
 			var user = new User
 			{
@@ -220,14 +220,14 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username)).Returns(user);
 
-			Assert.ThrowsException<EntityAlreadyUnBlockedException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityAlreadyUnblockedException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		#endregion
 
-		#region"UnBlock user by EMAIL tests"
+		#region"Unblock user by EMAIL tests"
 		[TestMethod]
-		public void UnBlockUser_Should_UnBlock_When_Provided_Email()
+		public void UnblockUser_Should_Unblock_When_Provided_Email()
 		{
 			var user = new User
 			{
@@ -256,15 +256,15 @@ namespace VirtualWalletTests.AdminServiceTests
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
-			userRepoMock.Setup(repo => repo.UnBlockUser(user)).Returns(true);
+			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
 
-			var result = sut.UnBlockUser(id, username, email, phoneNumber);
+			var result = sut.UnblockUser(id, username, email, phoneNumber);
 
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserNotFound_By_Email()
+		public void UnblockUser_Should_Throw_When_UserNotFound_By_Email()
 		{
 			var user = new User
 			{
@@ -292,11 +292,11 @@ namespace VirtualWalletTests.AdminServiceTests
 			var userRepoMock = new Mock<IUserRepository>();
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
-			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserAlreadyUnBlocked_By_Email()
+		public void UnblockUser_Should_Throw_When_UserAlreadyUnblocked_By_Email()
 		{
 			var user = new User
 			{
@@ -326,14 +326,14 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			userRepoMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
 
-			Assert.ThrowsException<EntityAlreadyUnBlockedException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityAlreadyUnblockedException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		#endregion
 
-		#region"UnBlock user by PHONENUMBER tests"
+		#region"Unblock user by PHONENUMBER tests"
 		[TestMethod]
-		public void UnBlockUser_Should_UnBlock_When_Provided_Phonenumber()
+		public void UnblockUser_Should_Unblock_When_Provided_Phonenumber()
 		{
 			var user = new User
 			{
@@ -362,15 +362,15 @@ namespace VirtualWalletTests.AdminServiceTests
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
-			userRepoMock.Setup(repo => repo.UnBlockUser(user)).Returns(true);
+			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
 
-			var result = sut.UnBlockUser(id, username, email, phoneNumber);
+			var result = sut.UnblockUser(id, username, email, phoneNumber);
 
 			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserNotFound_By_Phonenumber()
+		public void UnblockUser_Should_Throw_When_UserNotFound_By_Phonenumber()
 		{
 			var user = new User
 			{
@@ -398,11 +398,11 @@ namespace VirtualWalletTests.AdminServiceTests
 			var userRepoMock = new Mock<IUserRepository>();
 			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
 
-			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_UserAlreadyUnBlocked_By_Phonenumber()
+		public void UnblockUser_Should_Throw_When_UserAlreadyUnblocked_By_Phonenumber()
 		{
 			var user = new User
 			{
@@ -432,13 +432,13 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
 
-			Assert.ThrowsException<EntityAlreadyUnBlockedException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<EntityAlreadyUnblockedException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 
 		#endregion
 
 		[TestMethod]
-		public void UnBlockUser_Should_Throw_When_NoInput_Provided()
+		public void UnblockUser_Should_Throw_When_NoInput_Provided()
 		{
 			var user = new User
 			{
@@ -468,7 +468,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			//userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
 
-			Assert.ThrowsException<ArgumentNullException>(() => sut.UnBlockUser(id, username, email, phoneNumber));
+			Assert.ThrowsException<ArgumentNullException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
 	}
 }

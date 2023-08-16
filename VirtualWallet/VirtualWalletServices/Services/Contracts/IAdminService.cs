@@ -14,7 +14,7 @@ namespace VirtualWallet.Business.Services.Contracts
 
 		bool BlockUser(int? id, string username, string email, string phoneNumber);
 
-		bool UnBlockUser(int? id, string username, string email, string phoneNumber);
+		bool UnblockUser(int? id, string username, string email, string phoneNumber);
 
 	}
 }

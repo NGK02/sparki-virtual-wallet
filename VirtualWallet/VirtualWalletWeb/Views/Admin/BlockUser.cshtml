@@ -5,7 +5,7 @@
 
         <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Block user @this.ViewBag.userUsernameToBlock</div>
 
-        <div class="mb-8 text-center text-neutral-900 text-sm font-extrabold dark:text-neutral-50">Confirm your action</div>
+        <div class="mb-8 text-center text-neutral-900 text-sm dark:text-neutral-50">Confirm your action</div>
 
 
 
@@ -18,8 +18,8 @@
         }
         @if (this.ViewData["ErrorMessage"] is null)
         {
-            <form asp-controller="Admin" asp-action="Block" asp-route-id="@this.ViewBag.userIdToBlock" method="post" class="w-full mb-2 flex-col justify-start items-start flex">
-                <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none hover:bg-purple-400 transition duration-300" type="submit">
+            <form asp-controller="Admin" asp-action="Block" asp-route-id="@this.ViewBag.userIdToBlock" method="post" class="w-full mb-4 flex-col justify-start items-start flex">
+                <button class="w-full px-4 py-2 bg-purple-500 rounded-md shadow justify-center items-center inline-flex focus:outline-none hover:bg-purple-400 transition duration-300" type="submit">
 
                     <div class="text-neutral-50 text-base font-medium">
                         Block
@@ -37,9 +37,9 @@
             </div>
         </button>*@
         <form asp-controller="Admin" asp-action="SearchUser" method="get" class="w-full mb-2 flex-col justify-start items-start flex">
-            <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flexfocus:outline-none hover:bg-purple-400 transition duration-300" type="submit">
+            <button class="w-full px-4 py-2 bg-purple-500 rounded-md shadow justify-center items-center inline-flexfocus:outline-none hover:bg-purple-400 transition duration-300" type="submit">
 
-                <div class="text-neutral-50 text-sm font-medium">
+                <div class="text-neutral-50 text-base font-medium">
                     Admin panel
                 </div>
 

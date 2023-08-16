@@ -38,35 +38,35 @@ namespace VirtualWallet.Business.Services
 			return result;
 		}
 
-		public bool UnBlockUser(int? id, string username, string email, string phoneNumber)
+		public bool UnblockUser(int? id, string username, string email, string phoneNumber)
 		{
 			if (id is not null)
 			{
 				var user = userRepository.GetUserById((int)id);
 				if (user is null) throw new EntityNotFoundException($"User with Id:{id} was not found!");
-				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnBlockedException($"User with Id:{id} is already UNBLOCKED!");
-				return userRepository.UnBlockUser(user);
+				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnblockedException($"User with Id:{id} is already UNBLOCKED!");
+				return userRepository.UnblockUser(user);
 			}
 			else if (!string.IsNullOrEmpty(username))
 			{
 				var user = userRepository.GetUserByUsername(username);
 				if (user is null) throw new EntityNotFoundException($"User with Username:{username} was not found!");
-				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnBlockedException($"User with Username:{username} is already UNBLOCKED!");
-				return userRepository.UnBlockUser(user);
+				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnblockedException($"User with Username:{username} is already UNBLOCKED!");
+				return userRepository.UnblockUser(user);
 			}
 			else if (!string.IsNullOrEmpty(email))
 			{
 				var user = userRepository.GetUserByEmail(email);
 				if (user is null) throw new EntityNotFoundException($"User with Email:{email} was not found!");
-				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnBlockedException($"User with Email:{email} is already UNBLOCKED!");
-				return userRepository.UnBlockUser(user);
+				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnblockedException($"User with Email:{email} is already UNBLOCKED!");
+				return userRepository.UnblockUser(user);
 			}
 			else if (!string.IsNullOrEmpty(phoneNumber))
 			{
 				var user = userRepository.GetUserByPhoneNumber(phoneNumber);
 				if (user is null) throw new EntityNotFoundException($"User with PhoneNumber:{phoneNumber} was not found!");
-				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnBlockedException($"User with PhoneNumber:{phoneNumber} is already UNBLOCKED!");
-				return userRepository.UnBlockUser(user);
+				if (user.RoleId == (int)RoleName.User) throw new EntityAlreadyUnblockedException($"User with PhoneNumber:{phoneNumber} is already UNBLOCKED!");
+				return userRepository.UnblockUser(user);
 			}
 			else
 			{

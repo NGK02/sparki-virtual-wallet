@@ -191,7 +191,7 @@ namespace VirtualWallet.Web.ViewControllers
                 }
 
                 _ = adminService.BlockUser(id, null, null, null);
-                this.ViewBag.SuccessMessage = "User Blocked Successfully!";
+                this.ViewBag.SuccessMessage = "User blocked successfully!";
                 return View("Successful");
             }
             catch (EntityNotFoundException e)
@@ -215,7 +215,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult UnBlockUser([FromRoute] int id)
+        public IActionResult UnblockUser([FromRoute] int id)
         {
             try
             {
@@ -230,8 +230,8 @@ namespace VirtualWallet.Web.ViewControllers
                     return View("Error");
                 }
                 var user = userService.GetUserById(id);
-                this.ViewBag.userIdToUnBlock = id;
-                this.ViewBag.userUsernameToUnBlock = user.Username;
+                this.ViewBag.userIdToUnblock = id;
+                this.ViewBag.userUsernameToUnblock = user.Username;
                 return View();
             }
             catch (EntityNotFoundException e)
@@ -248,7 +248,7 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
         [HttpPost]
-        public IActionResult UnBlock([FromRoute] int id)
+        public IActionResult Unblock([FromRoute] int id)
         {
             try
             {
@@ -263,8 +263,8 @@ namespace VirtualWallet.Web.ViewControllers
                     return View("Error");
                 }
 
-                _ = adminService.UnBlockUser(id, null, null, null);
-                this.ViewBag.SuccessMessage = "User UnBlocked Successfully!";
+                _ = adminService.UnblockUser(id, null, null, null);
+                this.ViewBag.SuccessMessage = "User unblocked successfully!";
                 return View("Successful");
             }
             catch (EntityNotFoundException e)
@@ -273,11 +273,11 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View();
             }
-            catch (EntityAlreadyUnBlockedException e)
+            catch (EntityAlreadyUnblockedException e)
             {
                 this.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
                 this.ViewData["ErrorMessage"] = e.Message;
-                return View("UnBlockUser");
+                return View("UnblockUser");
             }
             catch (Exception e)
             {

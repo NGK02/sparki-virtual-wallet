@@ -161,7 +161,7 @@ namespace VirtualWallet.DataAccess.Repositories
 			return true;
 		}
 
-		public bool UnBlockUser(User user)
+		public bool UnblockUser(User user)
 		{
 			user.RoleId = (int)RoleName.User;
 			database.SaveChanges();

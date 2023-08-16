@@ -355,7 +355,7 @@ namespace VirtualWallet.Web.ViewControllers
                 EmailSender emailSender = new EmailSender();
                 emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 
-                ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
+                ViewBag.SuccessMessage = "Activation email was sent to your email. Please activate your account!";
 
                 return View("Successful");
             }

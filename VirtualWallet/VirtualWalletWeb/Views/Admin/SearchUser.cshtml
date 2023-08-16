@@ -167,7 +167,7 @@
                                     else if (user.RoleId == (int)RoleName.Blocked)
                                     {
                                         <button class="flex justify-center items-center flex-row w-28 h-10 px-3 py-1 mx-auto rounded-xl gap-x-2 bg-purple-500 transition duration-300 hover:bg-purple-400" type="submit">
-                                            <a asp-controller="Admin" asp-action="UnBlockUser" asp-route-id="@user.Id" class="px-8 py-1">Unblock</a>
+                                            <a asp-controller="Admin" asp-action="UnblockUser" asp-route-id="@user.Id" class="px-8 py-1">Unblock</a>
                                         </button>
                                     }
                                     else if (user.Id == Context.Session.GetInt32("userId"))
