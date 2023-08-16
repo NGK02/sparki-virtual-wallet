@@ -140,18 +140,16 @@ Sparki Virtual Wallet
 	<br><br>
 * From the Admin panel, administrators have comprehensive access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
 	<br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/AdminPanel.png)
-	<br><br>
-* When the Admin utilizes the "View All Posts" functionality, they are presented with an option to directly delete posts from the search results.
-	<br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/AdminPosts.png)
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/AdminPanel.PNG)
 	<br><br>
 ## API
-* The Blockie forum system provides API documentation in Swagger format, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations. The Swagger documentation provides a user-friendly interface where developers can interactively test API endpoints, view sample requests and responses, and access detailed descriptions of each API resource. 
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/API.png)
+* The Sparki Wallet provides API documentation in Swagger format, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations. The Swagger documentation provides a user-friendly interface where developers can interactively test API endpoints, view sample requests and responses, and access detailed descriptions of each API resource. 
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/API.PNG)
+
 ## Database Diagram
-* A detailed database diagram is included to provide a comprehensive and objective view of the underlying data structure in the Blockie forum system. This diagram visually represents the relationships between different database tables and the structure of the data model. It offers insights into the organization of user data, posts, comments, tags, and other relevant entities within the system. 
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/DatabaseDiagram.png)
+* A detailed database diagram is included to provide a comprehensive and objective view of the underlying data structure in the Sparki Wallet. This diagram visually represents the relationships between different database tables and the structure of the data model. It offers insights into the organization of user data, wallets, transfers, exchanges, and other relevant entities within the system. 
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DataBaseDiagram.PNG)
+
 
 ## Additionally
 * Exchange Rate API - https://www.exchangerate-api.com
@@ -175,4 +173,4 @@ Sparki Virtual Wallet
 * Katrin Lilova - [GitLab](https://gitlab.com/katrinlilova)
 * Telerik Acedemy Official Project
 <br>
-![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/telerik.PNG)
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/telerik.PNG)
