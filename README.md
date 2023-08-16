@@ -1,16 +1,21 @@
 
-Blockie Forum System
+Sparki Virtual Wallet
 ====================
 
 
->Blockie is a forum system designed for cryptocurrency enthusiasts. It empowers users to actively engage in discussions by creating posts and comments related to various crypto topics. Users have the freedom to express their opinions by liking or disliking posts and comments. Additionally, Blockie offers a comprehensive search functionality, enabling users to easily find specific users or posts of interest.
- This project is developed using the ASP.NET Core 6 framework and encompasses a public API and a User Interface built with MVC, ensuring a seamless and intuitive user experience.
+>Sparkie is a virtual wallet web app that lets you take charge of your budget! You can send and receive money to everyone, deposit cash from your credit or debit card, and even exchange currencies with real-time rates from a 3rd party API.
+ A solution that empowers users to effortlessly monitor their exchanges,transactions and transfers.Acess to tools which helps you make informed financial decisions.
+ The project is developed using the ASP.NET Core 6 framework with a Custom User Interface built with MVC and TailWind CSS also public API's, ensuring a seamless and intuitive user experience.
 
 ## Project Description
-### Areas
-* **Public part** -  accessible without authentication
-* **Private part** - available for registered users only
-* **Administrative part** - available for administrators only
+### Key Features:
+* **Email verification** -  Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account.
+* **Currency exchange** -  Sparki supports multiple currencies in your wallet. You can instantly exchange between your currencies with real dynamic exchange rates from a 3rd party API!
+* **Comprehensive Transfer Records** - Options to sort your transactions based on your preferences, allowing you to quickly locate specific details and streamline your financial analysis.
+* **Multiple cards** - With us you can easily manage all your debit and credit cards in one convenient place. Simply select the one you want to use within the app and you’re good to go.
+* **Responsive design** - You can use our website on any device! We support multiple screen sizes from monitors, through tablets down to the smallest of smartphones!
+* **Dark theme** - The dark theme is perfect for those who prefer a more subdued and elegant look and it's easier on the eyes. Plus, it can help save battery life on your device.
+* **Refer a frined** - A fantastic opportunity for you to invite a friend and both of you enjoy a delightful gift.
 
 #### Home Page
 * The home page of our forum system showcases real-time active user count, total post count, and tables featuring the top ten most commented and created posts, providing visitors with a glimpse into the vibrant community and engaging discussions.
