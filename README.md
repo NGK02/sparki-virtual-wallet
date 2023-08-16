@@ -3,9 +3,9 @@ Sparki Virtual Wallet
 ====================
 
 
->Sparkie is a virtual wallet web app that lets you take charge of your budget! You can send and receive money to everyone, deposit cash from your credit or debit card, and even exchange currencies with real-time rates from a 3rd party API.
+>Sparki is a virtual wallet web app that lets you take charge of your budget! You can send and receive money to everyone, deposit cash from your credit or debit card, and even exchange currencies with real-time rates from a 3rd party API.
  A solution that empowers users to effortlessly monitor their exchanges,transactions and transfers.Acess to tools which helps you make informed financial decisions.
- The project is developed using the ASP.NET Core 6 framework with a Custom User Interface built with MVC and TailWind CSS also public API's, ensuring a seamless and intuitive user experience.
+ The project is developed using the ASP.NET Core 6 framework with a Graphic User Interface built with MVC and TailWind CSS also public API's, ensuring a seamless and intuitive user experience.
 
 ## Project Description
 ### Key Features:
@@ -18,10 +18,9 @@ Sparki Virtual Wallet
 * **Refer a frined** - A fantastic opportunity for you to invite a friend and both of you enjoy a delightful gift.
 
 #### Home Page
-* The home page of our forum system showcases real-time active user count, total post count, and tables featuring the top ten most commented and created posts, providing visitors with a glimpse into the vibrant community and engaging discussions.
+* The home page of our virtual wallet showcases real-time active user count, total transactions count, our main features and options to Login,Register, Refer a friend and more. 
 
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/HomePage1.PNG)
-
 
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/HomePage2.PNG)
 
@@ -29,12 +28,12 @@ Sparki Virtual Wallet
 #### Login Page
 * The login page provides visitors with the opportunity to access the full potential of the website by logging in with their accounts, unlocking various features and functionalities.
 
-
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Login.PNG)
 
 ### Register Page
 * Visitors can register for the system and unlock the full potential o the website.
 
-![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/Register.png)
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Register.PNG)
 
 ### View All Posts
 * In this forum system, every visitor of the website is provided with the ability to access and view all created posts. Additionally, visitors have the option to utilize the search feature to refine their browsing experience by searching for posts based on the following criteria:
