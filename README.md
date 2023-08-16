@@ -31,30 +31,36 @@ Sparki Virtual Wallet
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Login.PNG)
 
 ### Register Page
-* Visitors can register for the system and unlock the full potential o the website.
+* Visitors can register for the system and unlock the full potential of the website.
 
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Register.PNG)
 
-### View All Posts
-* In this forum system, every visitor of the website is provided with the ability to access and view all created posts. Additionally, visitors have the option to utilize the search feature to refine their browsing experience by searching for posts based on the following criteria:
+### Logged User Options
+* Dashboard - Opens the Main Dashboard page.
+* View Profile - Opens detailed profile page.
+* Sign Out - Doesn't need descripiton.
 
-     * Title - By entering specific keywords or phrases into the search bar, all posts that contain the input in their titles will be displayed. 
-     * Content – By entering specific keywords or phrases into the search bar,all posts that contain the input in their content will be displayed.
-     * Created by - By entering a specific username as input, all posts that match the input and were created by the corresponding user will be displayed.
-     * Tag - By entering relevant keywords or phrases as input, all posts that contain matching tags will be displayed. 
-	 * Start/End Date - By selecting a start date and an end date, the system will retrieve and display all posts that fall within that date range.
-	 * Sort posts by:
-	  	 * Title
-		 * Comments
-		 * Likes
-		 * Date
-	* Order posts in either ascending or descending order.
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDown.PNG)
+
+
+### Main Dashboard
+* Within this page, each user has an advanced overview of their financial landscape. Here, users can review their balances, see details of their credit and debit cards, and a dynamic diagram illustrating their transactions from the past seven days.
+
+
 		<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/ViewAllPosts.png)
-### Main Search for NOT logged users
-* Anonymous visitors are granted access to the search functionality available in the navigation bar. This feature allows them to search for posts based on specific keywords present in the post title, as well as filter results by relevant tags.
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MainDashboard.PNG)
+
+### Make Transfer
+* Every user can effortless deposits into their wallet directly from their debit or credit card. Additionally, users have the freedom to initiate withdrawals.
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/Search.png)
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransfer.PNG)
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferForm.PNG)
+
+* Confirmation Page where you can confirm you'r transfer or edit it.
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferConfirm.PNG)
+
 * Results
 	<br><br>
 	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/NOTloggedResults.png)
@@ -103,8 +109,10 @@ Sparki Virtual Wallet
 * In-memory database, MSTest and Moq for testing
 * Data transfer objects(DTOs)
 * Auto-Mapper
-* Above 80% Unit test code coverage of the business logic
+* Unit test code coverage of the business logic
 * Public API's
+* Exchange Rate API - https://www.exchangerate-api.com
+* Email service - https://sendgrid.com
 * Technologies
      * ASP.NET Core
 	 * Entity Framework Core
