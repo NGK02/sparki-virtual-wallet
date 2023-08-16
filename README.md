@@ -97,6 +97,30 @@ Sparki Virtual Wallet
 	<br><br>
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransaction.PNG)
 
+	### View Exchanges
+* Every user has the opportunity to view all their exchanges with options to Order them by Descending/Ascending and Sort them by:
+		* Date
+		* From Currency
+		* To Currency
+		* Amount
+		* Exchanged Amount
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewExchanges.PNG)
+
+	### View Transactions
+* Every user has the opportunity to view all their transactions with options to Order them by Descending/Ascending and Search or Sort them by:
+* Search By:
+		*Recipient username
+		*Sender username
+		*From Date
+		*To Date
+* Sort By:
+		* Date
+		* Currency
+		* Amount
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransactions.PNG)
+
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for individuals based on their first name, username, or email address.
 	<br><br>
