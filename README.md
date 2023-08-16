@@ -1,92 +1,173 @@
-# Virtual Wallet
+Sparki Virtual Wallet
+====================
 
+>Sparki is a virtual wallet web app that lets you take charge of your budget! You can send and receive money, deposit cash from your credit or debit card, and even exchange currencies with real-time rates from a 3rd party API. Sparki lets users to effortlessly monitor their exchanges, transactions and transfers. It also shows them detailed financial data to help them make better decisions.
 
+>The project is developed on the ASP.NET Core 6 framework with a graphic UI built with MVC and TailWind CSS entirely from scratch - no templates/themes used. We've also integrated some public API's which provide great added functionality.
 
-## Getting started
+## Project Description
+### Key Features:
+* **Email verification** - Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account.
+* **Currency exchange** - Sparki supports multiple currencies in your wallet. You can instantly exchange between your currencies with real dynamic exchange rates from a 3rd party API!
+* **Detailed Transfer Records** - Options to sort your transactions based on your preferences, allowing you to quickly locate specific details and streamline your financial analysis.
+* **Multiple cards** - With us you can easily manage all your debit and credit cards in one convenient place. Simply select the one you want to use within the app and you’re good to go.
+* **Responsive design** - You can use our website on any device! We support multiple screen sizes from monitors, through tablets down to the smallest of smartphones!
+* **Dark theme** - The dark theme is perfect for those who prefer a more subdued and elegant look and it's easier on the eyes. Plus, it can help save battery life on your device.
+* **Refer a friend** - A fantastic opportunity for you to invite a friend and both of you enjoy a delightful gift.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+#### Home Page
+* The home page of our virtual wallet showcases real-time active user count, total transactions count, our main features and options to Login, Register, Refer a friend and more. 
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/HomePageDark.png)
 
-## Add your files
+#### Login Page
+* The login page provides visitors with the opportunity to access the full potential of the website by logging in with their accounts, unlocking various features and functionalities.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Login.PNG)
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/project-one-group-five/virtual-wallet.git
-git branch -M main
-git push -uf origin main
-```
+### Register Page
+* Visitors can get some info on the website’s features and register to unlock the app’s full functionality.
 
-## Integrate with your tools
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Register.PNG)
 
-- [ ] [Set up project integrations](https://gitlab.com/project-one-group-five/virtual-wallet/-/settings/integrations)
+### Logged User Options
+* Dashboard - Opens the Main Dashboard page.
+* View Profile - Opens detailed profile page.
+* Sign Out - Doesn't need description.
 
-## Collaborate with your team
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDown.PNG)
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### View profile
+* On this page every user can see and edit their profile information.
 
-## Test and Deploy
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Profile.PNG)
 
-Use the built-in continuous integration in GitLab.
+### Main Dashboard
+* Within this page, each user has an advanced overview of their financial landscape. Here users can review their balances, see details of their credit and debit cards, and a dynamic diagram illustrating their transactions from the past seven days.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MainDashboard.PNG)
 
-***
+### Make Transfer
+* Every user can deposit into their wallet directly from their debit or credit card. Additionally, users have the freedom to initiate withdrawals.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransfer.PNG)
 
-# Editing this README
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferForm.PNG)
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+* Readonly confirmation Page where you can confirm your transfer or edit it.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferConfirm.PNG)
 
-## Name
-Choose a self-explaining name for your project.
+* Message for successful transfer.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransfer.PNG)
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+    
+### Make Exchange
+* Every user has the opportunity to exchange their currencies at the latest real-time rates. 
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchange.PNG)
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchangeForm.PNG)
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+* Readonly confirmation page where you can check the rate and the expected amount and confirm your exchange or edit it.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchangeConfirm.PNG)
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+* Message for Successful Exchange.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/SExchange.PNG)
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+    ### Make Transaction
+* With just a few clicks, users can effortlessly send or receive funds from other users. 
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransaction.PNG)
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+* Users can find their recipient by Username, Email and Phone number. 
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransactionForm.PNG)
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+* Readonly confirmation page where you can confirm your transaction or edit it (Only the Username of the recipient is shown).
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransactionConfirm.PNG)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+* Message for successful Transaction.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransaction.PNG)
 
-## License
-For open source projects, say how it is licensed.
+## View Exchanges
+* Every user has the ability to view all their exchanges with options to Order them by Descending/Ascending and Sort them by:
+    * Date
+    * From Currency
+    * To Currency
+    * Amount
+    * Exchanged Amount
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewExchanges.PNG)
+
+## View Transactions
+* Every user has the ability to view all their transactions with options to Order them by Descending/Ascending and Search or Sort them by:
+* Filter By:
+    * Recipient username
+    * Sender username
+    * From Date
+    * To Date
+* Sort By:
+    * Date
+    * Currency
+    * Amount
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransactions.PNG)
+
+    ## View Transfers
+* Every user has the ability to view all their transfers with options to Order them by Descending/Ascending and Sort them by:
+    * Date
+    * From Currency
+    * To Currency
+    * Amount
+    * Exchanged Amount
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
+
+## Administrative part
+* When an admin is logged into the system, they gain access to the Admin panel. Within the Admin panel, admins are able to search for users based on their username, email address or phone number.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDownAdmin.PNG)
+    <br><br>
+* From the Admin panel, administrators have access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/AdminPanel.PNG)
+    <br><br>
+* If you try to access the any other user's data without being an admin. You will be greeted by our awesome custom error page!
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ErrorPageDark.gif)
+    <br><br>
+## API
+* Sparki Wallet provides a REST API documentation in Swagger, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/API.PNG)
+
+## Database Diagram
+* A detailed database diagram is included to provide a an idea for the underlying structure of Sparki Wallet. This diagram visually represents the relationships between different database tables and the structure of the data model.
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DataBaseDiagram.PNG)
+
+## Additionally
+* Exchange Rate API - https://www.exchangerate-api.com
+* Email service - https://sendgrid.com
+* Auto-Mapper
+* Data transfer objects(DTOs)
+* Public API's
+* In-memory database, MSTest and Moq for testing
+* Unit test code coverage of the business logic
+* Technologies
+     * ASP.NET Core
+     * Entity Framework Core
+     * Mock Framework
+     * MSSQL Server
+     * TailWind CSS
+     * HTML
+     * CSS
+## Team Members
+* Atanas Iliev - [GitLab](https://gitlab.com/atanasiliev1293)
+* Nikolai Gigov - [GitLab](https://gitlab.com/NG02)
+* Katrin Lilova - [GitLab](https://gitlab.com/katrinlilova)
+* Telerik Acedemy Official Project
+<br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/telerik.PNG)

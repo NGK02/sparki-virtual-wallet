@@ -112,7 +112,7 @@ namespace VirtualWallet.Business.Services
                 Wallet = wallet
             };
 
-            exchangeService.AddExchange(userId, exchange);
+            exchangeService.CreateExchange(userId, exchange);
             return exchange;
         }
 

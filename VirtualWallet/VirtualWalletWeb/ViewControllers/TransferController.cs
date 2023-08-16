@@ -112,7 +112,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 var transfer = mapper.Map<Transfer>(model);
 
-                transferService.AddTransfer(transfer);
+                transferService.CreateTransfer(transfer);
 
                 ViewBag.SuccessMessage = $"Successfully transfered amount!";
                 return View("Successful");
