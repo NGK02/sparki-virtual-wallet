@@ -80,9 +80,23 @@ Sparki Virtual Wallet
 	<br><br>
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/SExchange.PNG)
 
-* Message for Successfull tranasfer.
+	### Make Transaction
+* With just a few clicks, users can effortlessly send or receive funds from other users. 
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransfer.PNG)
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransaction.PNG)
+
+* Users can find their recipient by Username,Email and Phone number. 
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransactionForm.PNG)
+
+* Readonly Confirmation Page where you can confirm you'r transaction or edit it (Only the Username of the recipient is shown).
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransactionConfirm.PNG)
+
+* Message for Successfull Transaction.
+	<br><br>
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransaction.PNG)
+
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for individuals based on their first name, username, or email address.
 	<br><br>
