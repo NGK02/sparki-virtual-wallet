@@ -1,11 +1,6 @@
 ﻿using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtualWallet.Business.Services
 {
@@ -28,10 +23,12 @@ namespace VirtualWallet.Business.Services
             const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
             var result = new StringBuilder(length);
+
             for (int i = 0; i < length; i++)
             {
                 result.Append(validChars[random.Next(validChars.Length)]);
             }
+
             return result.ToString();
         }
     }

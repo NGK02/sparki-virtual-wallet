@@ -25,7 +25,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult CreateCard()
         {
             if (!authManagerMVC.IsLogged("LoggedUser"))
             {
@@ -36,7 +36,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Add(CardViewModel model)
+        public IActionResult CreateCard(CardViewModel model)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmDelete(int cardId)
+        public IActionResult ConfirmDeleteCard(int cardId)
         {
             if (!authManagerMVC.IsLogged("LoggedUser"))
             {
@@ -110,7 +110,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int cardId)
+        public IActionResult DeleteCard(int cardId)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int cardId)
+        public IActionResult EditCard(int cardId)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CardViewModel model, int id)
+        public IActionResult EditCard(CardViewModel model, int id)
         {
             try
             {
