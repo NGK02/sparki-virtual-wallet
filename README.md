@@ -20,7 +20,7 @@ Sparki Virtual Wallet
 #### Home Page
 * The home page of our forum system showcases real-time active user count, total post count, and tables featuring the top ten most commented and created posts, providing visitors with a glimpse into the vibrant community and engaging discussions.
 
-![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/HomePage1.png)
+![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/blob/dev/ImagesForREADME/HomePage1.PNG)
 
 
 ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/HomePage2.jpeg)
