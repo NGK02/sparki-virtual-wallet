@@ -97,27 +97,27 @@ Sparki Virtual Wallet
 	<br><br>
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransaction.PNG)
 
-	### View Exchanges
+## View Exchanges
 * Every user has the opportunity to view all their exchanges with options to Order them by Descending/Ascending and Sort them by:
-		* Date
-		* From Currency
-		* To Currency
-		* Amount
-		* Exchanged Amount
+	* Date
+	* From Currency
+	* To Currency
+	* Amount
+	* Exchanged Amount
 
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewExchanges.PNG)
 
-	### View Transactions
+## View Transactions
 * Every user has the opportunity to view all their transactions with options to Order them by Descending/Ascending and Search or Sort them by:
 * Search By:
-		*Recipient username
-		*Sender username
-		*From Date
-		*To Date
+	*Recipient username
+	*Sender username
+	*From Date
+	*To Date
 * Sort By:
-		* Date
-		* Currency
-		* Amount
+	* Date
+	* Currency
+	* Amount
 
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransactions.PNG)
 
