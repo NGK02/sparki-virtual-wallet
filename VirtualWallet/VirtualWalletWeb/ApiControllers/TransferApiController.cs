@@ -35,7 +35,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(user, userId);
 				var transfer = mapper.Map<Transfer>(createTransferDto);
 
-				transferService.AddTransfer(transfer);
+				transferService.CreateTransfer(transfer);
                 var mappedTransfer = mapper.Map<GetTransferDto>(transfer);
 
                 return StatusCode(201, mappedTransfer);
