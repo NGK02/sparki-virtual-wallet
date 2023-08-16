@@ -150,13 +150,14 @@ Sparki Virtual Wallet
 
 ## Installation
 * Download project from the repository.
-* Create Database and seed the stored data inside.
+* Connect Database and seed the stored data inside.(use commands below)
 ```
 add-migration initial
 update-database
 ```
 * Run the project 
-* Register and use all functionalities
+* Register 
+* Use all functionalities :)
 
 ## Additionally
 * Exchange Rate API - https://www.exchangerate-api.com
