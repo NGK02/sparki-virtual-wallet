@@ -47,7 +47,6 @@ Sparki Virtual Wallet
 * Within this page, each user has an advanced overview of their financial landscape. Here, users can review their balances, see details of their credit and debit cards, and a dynamic diagram illustrating their transactions from the past seven days.
 
 
-		<br><br>
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MainDashboard.PNG)
 
 ### Make Transfer
@@ -57,34 +56,33 @@ Sparki Virtual Wallet
 
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferForm.PNG)
 
-* Confirmation Page where you can confirm you'r transfer or edit it.
+* Readonly Confirmation Page where you can confirm you'r transfer or edit it.
 
 	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeTransferConfirm.PNG)
 
-* Results
+* Message for Successfull tranasfer.
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/NOTloggedResults.png)
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransfer.PNG)
+
 	
-### Main Search for logged users
-* Once a visitor is authenticated, they gain access to the main search feature, which enables them to search for other users based on specific keywords present in their profile title.
+### Make Exchange
+* Every user has the opportunity to exchange their currencies at the latest real-time rates. 
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/LoggedResults.png)
-### Create Post 
-* Logged-in users have the ability to create posts within the forum system.
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchange.PNG)
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchangeForm.PNG)
+
+* Readonly Confirmation Page where you can check the Rate and the Expected amoun and confirm you'r exchange or edit it.
+
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/MakeExchangeConfirm.PNG)
+
+* Message for Successfull Exchange.
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/CreatePost.png)
-### Edit Post
-* Furthermore, logged-in users who are the creators of a post possess the capability to make edits to the post, including modifying the title, content, and adding or modifying tags associated with the post.
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/SExchange.PNG)
+
+* Message for Successfull tranasfer.
 	<br><br>
-	![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/EditPost.png)
-### Add Comment
-* Logged-in users are provided with the privilege to actively engage with the community by adding comments to existing posts.
-	<br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/AddComment.png)
-### Tag Details
-* If a logged-in user is either the creator of a tag or an admin, they have the additional privileges of deleting or editing the tag. Furthermore, if a logged-in user is the owner of a post or an admin, they have the authority to remove existing tags associated with that particular post.
-	<br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/forum-system/-/raw/main/ImagesForREADME/TagDetails.png)
+	![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/STransfer.PNG)
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel, unlocking a range of administrative functionalities. Within the Admin panel, admins are empowered to search for individuals based on their first name, username, or email address.
 	<br><br>
