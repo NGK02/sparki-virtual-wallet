@@ -29,7 +29,26 @@ namespace VirtualWallet.Business.Services
             this.walletTransactionRepo = walletTransactionRepo;
         }
 
-        private void PrepareTransaction(WalletTransaction walletTransaction)
+        public WalletTransaction CreateTransaction(WalletTransaction walletTransaction)
+        {
+            var sender = userService.GetUserById(walletTransaction.SenderId);
+            walletTransaction.Recipient = userService.SearchBy(new UserQueryParameters
+            { Username = walletTransaction.Recipient.Username, Email = walletTransaction.Recipient.Email, PhoneNumber = walletTransaction.Recipient.PhoneNumber });
+            walletTransaction.Sender = sender;
+
+            PrepareTransaction(walletTransaction);
+            return walletTransactionRepo.CreateTransaction(walletTransaction);
+        }
+
+        public WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender)
+        {
+            walletTransaction.Sender = sender;
+
+            PrepareTransaction(walletTransaction);
+            return walletTransactionRepo.CreateTransaction(walletTransaction);
+        }
+
+        private bool PrepareTransaction(WalletTransaction walletTransaction)
         {
             //Да се овъррайдне Equals?
             if (walletTransaction.Sender.Id == walletTransaction.Recipient.Id)
@@ -39,7 +58,11 @@ namespace VirtualWallet.Business.Services
 
             var senderBalance = walletTransaction.Sender.Wallet.Balances.FirstOrDefault(b => b.CurrencyId == walletTransaction.CurrencyId);
 
-            if (senderBalance is null || senderBalance.Amount < walletTransaction.Amount)
+            if (senderBalance is null) 
+            {
+                throw new InsufficientFundsException($"You have no balance in the selected currency!");
+            }
+            if (senderBalance.Amount < walletTransaction.Amount)
             {
                 throw new InsufficientFundsException($"Insufficient funds. Available balance: {senderBalance.Amount} {senderBalance.Currency.Code}.");
             }
@@ -53,7 +76,7 @@ namespace VirtualWallet.Business.Services
                 recipientBalance = walletService.CreateWalletBalance(walletTransaction.CurrencyId, recipient.WalletId);
             }
 
-            walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
+            return walletTransactionRepo.CompleteTransaction(senderBalance, recipientBalance, walletTransaction.Amount);
         }
 
         //Do both in one loop.
@@ -114,25 +137,6 @@ namespace VirtualWallet.Business.Services
         public List<WalletTransaction> GetWalletTransactions(WalletTransactionQueryParameters queryParameters)
         {
             return walletTransactionRepo.GetWalletTransactions(queryParameters);
-        }
-
-        public WalletTransaction CreateTransaction(WalletTransaction walletTransaction)
-        {
-            var sender = userService.GetUserById(walletTransaction.SenderId);
-            walletTransaction.Recipient = userService.SearchBy(new UserQueryParameters
-            { Username = walletTransaction.Recipient.Username, Email = walletTransaction.Recipient.Email, PhoneNumber = walletTransaction.Recipient.PhoneNumber });
-            walletTransaction.Sender = sender;
-
-            PrepareTransaction(walletTransaction);
-            return walletTransactionRepo.CreateTransaction(walletTransaction);
-        }
-
-        public WalletTransaction CreateTransaction(WalletTransaction walletTransaction, User sender)
-        {
-            walletTransaction.Sender = sender;
-
-            PrepareTransaction(walletTransaction);
-            return walletTransactionRepo.CreateTransaction(walletTransaction);
         }
 
         public WalletTransaction GetWalletTransactionById(int id, string username)

@@ -15,10 +15,10 @@ namespace VirtualWalletTests.UserServiceTests
 	public class GetUsersShould
 	{
 		[TestMethod]
-		public void GetUsers_Should_Retrun_All_Users()
+		public void Retrun_All_Users()
 		{
 			var users = new List<User> {
-			 new User
+			new User
 			{
 				FirstName = "TestFirstName"
 				,
@@ -33,7 +33,7 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			},
-			 new User
+			new User
 			{
 				FirstName = "TestFirstName"
 				,
@@ -48,7 +48,7 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			}
-		};
+			};
 
 			var userRepomock = new Mock<IUserRepository>();
 			var sut = new UserService(userRepomock.Object);
@@ -62,7 +62,7 @@ namespace VirtualWalletTests.UserServiceTests
 		}
 
 		[TestMethod]
-		public void GetUsers_Should_Throw_Exception_When_NoUsersFound()
+		public void Throw_Exception_When_NoUsersFound()
 		{
 			var users = new List<User>();
 
