@@ -47,7 +47,6 @@ namespace VirtualWalletTests.UserServiceTests
 		{
 
 			var userRepoMock = new Mock<IUserRepository>();
-
 			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(It.IsAny<string>()));
