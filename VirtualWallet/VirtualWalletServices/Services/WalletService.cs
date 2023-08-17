@@ -1,4 +1,5 @@
-﻿using VirtualWallet.Business.AuthManager;
+﻿using System.Transactions;
+using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
@@ -37,12 +38,14 @@ namespace VirtualWallet.Business.Services
                 toBalance = CreateWalletBalance(toCurrency.Id, walletId);
             }
 
-            fromBalance.Amount -= excahngeValues.Amount;
-
-            //Да използва метода с кешираните данни.
             var exchangedAmount = await exchangeService.GetExchangeRateAndExchangedResult(excahngeValues.From, excahngeValues.To, excahngeValues.Amount.ToString());
 
-            toBalance.Amount += exchangedAmount.Item2;
+            using (TransactionScope transactionScope = new TransactionScope())
+            {
+                fromBalance.Amount -= excahngeValues.Amount;
+                toBalance.Amount += exchangedAmount.Item2;
+                transactionScope.Complete();
+            }
 
             var exchange = new Exchange
             {

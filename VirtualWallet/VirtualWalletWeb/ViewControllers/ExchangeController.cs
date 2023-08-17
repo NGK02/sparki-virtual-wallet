@@ -33,7 +33,6 @@ namespace VirtualWallet.Web.ViewControllers
 			this.exchangeService = exchangeService;
 		}
 
-		[HttpGet]
 		public IActionResult CreateExchange(CreateExchangeViewModel createExchange)
 		{
 			try

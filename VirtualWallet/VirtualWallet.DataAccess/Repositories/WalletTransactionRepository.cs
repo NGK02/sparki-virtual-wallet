@@ -29,17 +29,13 @@ namespace VirtualWallet.DataAccess.Repositories
 
         public bool CompleteTransaction(Balance senderBalance, Balance recipientBalance, decimal walletTransactionAmount)
         {
-            //Тук може би е по-подходящо да се използва SqlTransaction?
             using (TransactionScope transactionScope = new TransactionScope())
             {
                 senderBalance.Amount -= walletTransactionAmount;
                 recipientBalance.Amount += walletTransactionAmount;
                 database.SaveChanges();
                 transactionScope.Complete();
-                //catch (OverflowException)
-                //{
-                //	throw new InvalidOperationException("Too much money?");
-                //}
+              
             }
             return true;
         }
