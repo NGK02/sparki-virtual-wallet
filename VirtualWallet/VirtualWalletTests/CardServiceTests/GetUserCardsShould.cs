@@ -54,31 +54,26 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act
             var resultCards = cardService.GetUserCards(userId).ToList();
 
-            // Assert
             CollectionAssert.AreEqual(cards, resultCards);
         }
 
         [TestMethod]
         public void GetUserCards_NoCardsAvailable_ThrowsEntityNotFoundException()
         {
-            // Arrange
             int userId = 123;
 
             cardRepositoryMock.Setup(repo => repo.GetUserCards(userId)).Returns(new List<Card>());
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             Assert.ThrowsException<EntityNotFoundException>(() => cardService.GetUserCards(userId));
         }
 
         [TestMethod]
         public void ListUserCards_ReturnsListOfCards()
         {
-            // Arrange
             int userId = 123;
 
             var cards = new List<Card>
@@ -107,10 +102,8 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act
             var resultCards = cardService.ListUserCards(userId).ToList();
 
-            // Assert
             CollectionAssert.AreEqual(cards, resultCards);
         }
     }

@@ -30,6 +30,7 @@ namespace VirtualWallet.Business.AuthManager
 				throw new ArgumentException("Please split credentials with ':' !");
 			}
 			string[] splitCredentials = credentials.Split(':');
+
 			return splitCredentials;
 		}
 
