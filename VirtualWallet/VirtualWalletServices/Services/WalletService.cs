@@ -1,5 +1,4 @@
-﻿using VirtualWallet.Business.AuthManager;
-using VirtualWallet.Business.Exceptions;
+﻿using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
