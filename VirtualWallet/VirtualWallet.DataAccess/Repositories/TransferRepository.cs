@@ -31,7 +31,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         private IQueryable<Transfer> SortTransfers(IQueryable<Transfer> queryableTransfers, QueryParams parameters)
         {
-            if (!string.IsNullOrEmpty(parameters.SortBy))
+            if (parameters.SortBy is not null)
             {
                 if (parameters.SortBy.Equals("Amount", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -54,7 +54,7 @@ namespace VirtualWallet.DataAccess.Repositories
                 }
             }
 
-            if (!string.IsNullOrEmpty(parameters.SortOrder))
+            if (parameters.SortBy is not null && parameters.SortOrder is not null)
             {
                 if (parameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))
                 {

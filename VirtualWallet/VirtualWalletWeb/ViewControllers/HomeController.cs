@@ -9,7 +9,7 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IUserService userService;
         private readonly IWalletTransactionService walletTransactionService;
 
-        public HomeController(IUserService userService,IWalletTransactionService walletTransactionService)
+        public HomeController(IUserService userService, IWalletTransactionService walletTransactionService)
         {
             this.userService = userService;
             this.walletTransactionService = walletTransactionService;

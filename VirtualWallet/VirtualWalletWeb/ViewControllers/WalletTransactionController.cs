@@ -19,7 +19,10 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IMapper mapper;
         private readonly IWalletTransactionService walletTransactionService;
 
-        public WalletTransactionController(IAuthManagerMvc authManagerMvc, ICurrencyService currencyService, IMapper mapper, IWalletTransactionService walletTransactionService)
+        public WalletTransactionController(IAuthManagerMvc authManagerMvc,
+                                            ICurrencyService currencyService,
+                                            IMapper mapper,
+                                            IWalletTransactionService walletTransactionService)
         {
             this.authManagerMvc = authManagerMvc;
             this.currencyService = currencyService;
@@ -70,7 +73,7 @@ namespace VirtualWallet.Web.ViewControllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult ConfirmWalletTransaction(CreateWalletTransactionViewModel walletTransactionForm)
         {
             try

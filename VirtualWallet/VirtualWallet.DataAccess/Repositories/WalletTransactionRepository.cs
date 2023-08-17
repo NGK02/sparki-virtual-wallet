@@ -95,7 +95,7 @@ namespace VirtualWallet.DataAccess.Repositories
 
         private IQueryable<WalletTransaction> SortBy(WalletTransactionQueryParameters queryParameters, IQueryable<WalletTransaction> walletTransactions)
         {
-            if (!string.IsNullOrEmpty(queryParameters.SortBy))
+            if (queryParameters.SortBy is not null)
             {
 
                 if (queryParameters.SortBy.Equals("Date", StringComparison.InvariantCultureIgnoreCase))
@@ -111,9 +111,12 @@ namespace VirtualWallet.DataAccess.Repositories
                     walletTransactions = walletTransactions.OrderBy(t => t.Currency.Code);
                 }
 
-                if (!string.IsNullOrEmpty(queryParameters.SortOrder) && queryParameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))
+                if (queryParameters.SortBy is not null && queryParameters.SortOrder is not null)
                 {
-                    walletTransactions = walletTransactions.Reverse();
+                    if (queryParameters.SortOrder.Equals("Descending", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        walletTransactions = walletTransactions.Reverse();
+                    }
                 }
             }
 

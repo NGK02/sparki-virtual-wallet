@@ -44,6 +44,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.referralService = referralService;
             this.walletService = walletService;
         }
+
         [HttpGet]
         public IActionResult ViewUser(int id)
         {
@@ -84,6 +85,7 @@ namespace VirtualWallet.Web.ViewControllers
                 return View("Error");
             }
         }
+
         [HttpGet]
         public IActionResult Login()
         {
