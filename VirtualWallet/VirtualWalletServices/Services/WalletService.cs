@@ -22,7 +22,7 @@ namespace VirtualWallet.Business.Services
             this.walletRepository = walletRepository;
         }
 
-        public async Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId)
+        public async Task<Exchange> ExchangeFunds(CreateExchangeDto excahngeValues, int userId, int walletId)
         {
             var wallet = GetWalletById(walletId);
 
@@ -65,7 +65,7 @@ namespace VirtualWallet.Business.Services
             return walletRepository.CreateWalletBalance(currencyId, walletId);
         }
 
-        public bool ValidateFunds(Wallet wallet, CreateExcahngeDto excahngeValues)
+        public bool ValidateFunds(Wallet wallet, CreateExchangeDto excahngeValues)
         {
             var fromCurrency = currencyService.GetCurrencyByCode(excahngeValues.From);
             var toCurrency = currencyService.GetCurrencyByCode(excahngeValues.To);

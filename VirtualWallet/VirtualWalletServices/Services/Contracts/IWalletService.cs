@@ -19,7 +19,7 @@ namespace VirtualWallet.Business.Services.Contracts
         /// <param name="wallet">The wallet to validate funds for.</param>
         /// <param name="exchangeValues">The details of the exchange.</param>
         /// <returns>True if the wallet has sufficient funds for the exchange, otherwise false.</returns>
-        bool ValidateFunds(Wallet wallet, CreateExcahngeDto excahngeValues);
+        bool ValidateFunds(Wallet wallet, CreateExchangeDto excahngeValues);
 
         /// <summary>
         /// Retrieves all wallet balances associated with the specified wallet.
@@ -35,7 +35,7 @@ namespace VirtualWallet.Business.Services.Contracts
         /// <param name="userId">The ID of the user initiating the exchange.</param>
         /// <param name="walletId">The ID of the wallet for the exchange.</param>
         /// <returns>The exchanged funds in the form of an Exchange object.</returns>
-        Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId);
+        Task<Exchange> ExchangeFunds(CreateExchangeDto excahngeValues, int userId, int walletId);
 
         /// <summary>
         /// Distributes funds to the referrer and referred user for successful referrals.
