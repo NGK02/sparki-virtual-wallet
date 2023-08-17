@@ -43,7 +43,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id)).Returns(user);
 			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
@@ -80,7 +80,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser((int)id, username, email, phoneNumber));
 		}
@@ -112,7 +112,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id)).Returns(user);
 
@@ -147,7 +147,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username)).Returns(user);
 			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
@@ -184,7 +184,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
@@ -216,7 +216,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username)).Returns(user);
 
@@ -253,7 +253,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
 			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
@@ -290,7 +290,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
@@ -322,7 +322,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
 
@@ -359,7 +359,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
 			userRepoMock.Setup(repo => repo.UnblockUser(user)).Returns(true);
@@ -396,7 +396,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.UnblockUser(id, username, email, phoneNumber));
 		}
@@ -428,7 +428,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
 
@@ -464,7 +464,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			//userRepoMock.Setup(repo => repo.GetUserByPhoneNumber(phoneNumber)).Returns(user);
 
