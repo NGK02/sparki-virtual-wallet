@@ -1,17 +1,11 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualWallet.Business.Services.Contracts;
+using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
-using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
-using VirtualWallet.DataAccess.Migrations;
-using VirtualWallet.Business.Exceptions;
+using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWalletTests.ExchangeServiceTests
 {
