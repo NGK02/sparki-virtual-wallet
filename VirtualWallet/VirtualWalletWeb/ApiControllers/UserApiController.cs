@@ -187,7 +187,7 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPost("{id}/exchange")]
-        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExcahngeDto excahngeAmounts)
+        public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExchangeDto excahngeAmounts)
         {
             try
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VirtualWallet.Dto.ExchangeDto
 {
-    public class CreateExcahngeDto
+    public class CreateExchangeDto
     {
         [Required]
         public string From { get; set; }

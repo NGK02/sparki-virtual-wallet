@@ -19,7 +19,10 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IAdminService adminService;
         private readonly IMapper mapper;
 
-        public AdminController(IAuthManagerMvc authManagerMVC, IUserService userService, IAdminService adminService, IMapper mapper)
+        public AdminController(IAuthManagerMvc authManagerMVC,
+                                IUserService userService,
+                                IAdminService adminService,
+                                IMapper mapper)
         {
             this.authManagerMVC = authManagerMVC;
             this.userService = userService;
@@ -93,53 +96,6 @@ namespace VirtualWallet.Web.ViewControllers
                 return View("Error");
             }
         }
-
-        //[HttpPost]
-        //public IActionResult Search(SearchUser filledForm)
-        //{
-        //    if (!authManagerMVC.isLogged("LoggedUser"))
-        //    {
-        //        return RedirectToAction("Login", "User");
-        //    }
-        //    if (!authManagerMVC.isAdmin("roleId"))
-        //    {
-        //        this.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-        //        this.ViewData["ErrorMessage"] = AuthManagerMVC.notAthorized;
-        //        return View("Error");
-        //    }
-        //    try
-        //    {
-
-        //        if (!this.ModelState.IsValid)
-        //        {
-        //            return View("SearchUser", filledForm);
-        //        }
-        //        var parameters = new UserQueryParameters();
-
-        //        mapper.Map(filledForm, parameters);
-        //        var result = userService.SearchBy(parameters);
-        //        filledForm.users.Add(result);
-        //        return View("SearchUser", filledForm);
-        //    }
-        //        catch (EntityNotFoundException e)
-        //        {
-        //            this.Response.StatusCode = StatusCodes.Status404NotFound;
-        //            this.ViewData["ErrorMessage"] = e.Message;
-        //            return View(filledForm);
-        //}
-        //        catch (InvalidOperationException e)
-        //        {
-        //            this.Response.StatusCode = StatusCodes.Status404NotFound;
-        //            this.ViewData ["ErrorMessage"] = e.Message;
-        //            return View(filledForm);
-        //}
-        //        catch (Exception e)
-        //        {
-        //            this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        //            this.ViewData ["ErrorMessage"] = e.Message;
-        //            return View("Error");
-        //}
-        //}
 
         [HttpGet]
         public IActionResult BlockUser([FromRoute] int id)

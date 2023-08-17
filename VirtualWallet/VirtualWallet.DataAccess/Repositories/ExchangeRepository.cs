@@ -37,7 +37,6 @@ namespace VirtualWallet.DataAccess.Repositories
         {
             if (parameters.SortBy is not null)
             {
-
                 if (parameters.SortBy.Equals("Date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     exchangesQuerable = exchangesQuerable.OrderBy(e => e.CreatedOn);
@@ -58,7 +57,6 @@ namespace VirtualWallet.DataAccess.Repositories
                 {
                     exchangesQuerable = exchangesQuerable.OrderBy(e => e.ExchangedAmout);
                 }
-
             }
 
             if (parameters.SortOrder is not null && parameters.SortBy is not null)

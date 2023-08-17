@@ -90,8 +90,8 @@ namespace VirtualWallet.Business.AuthManager
 			{
 				var user = userService.GetUserByUsername(userName);
 
-				string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
-				if (user.Password == loginPasswordToBASE64)
+				string loginPasswordToBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+				if (user.Password == loginPasswordToBase64)
 				{
 					return user;
 				}

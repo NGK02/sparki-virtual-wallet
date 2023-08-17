@@ -16,9 +16,9 @@ namespace VirtualWallet.Business.Services.Contracts
 
         // Task<decimal> ExchangeCurrencyAsync(User user, CreateExcahngeDto excahngeValues);
 
-        bool ValidateFunds(Wallet wallet, CreateExcahngeDto excahngeValues);
+        bool ValidateFunds(Wallet wallet, CreateExchangeDto excahngeValues);
 
-        Task<Exchange> ExchangeFunds(CreateExcahngeDto excahngeValues, int userId, int walletId);
+        Task<Exchange> ExchangeFunds(CreateExchangeDto excahngeValues, int userId, int walletId);
 
         Wallet GetWalletById(int walletId);
 
