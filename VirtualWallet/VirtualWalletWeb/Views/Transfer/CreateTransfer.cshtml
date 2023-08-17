@@ -64,10 +64,7 @@
 
                 }
 
-                @*@foreach (var card in ViewData["Cards"] as List<VirtualWallet.Dto.ViewModels.CardViewModels.SelectCardViewModel>)
-                {
-                <option value="@card.Id">Card ending in @card.CardNumber.ToString().Substring(@card.CardNumber.ToString().Length - 4)</option>
-                }*@
+
             </select>
         </div>
 
@@ -76,13 +73,7 @@
 
             <input type="text" class="w-full px-3 py-2 bg-neutral-200 rounded-md outline-1 justify-start items-center inline-flex dark:bg-neutral-700 dark:text-neutral-50 focus:outline focus:outline-purple-400" asp-for="Amount">
 
-            @*@if (this.Model.WalletId != 0)
-            {
-                <div class="text-sm font-normal text-red-600 leading-tight">
-                    <span asp-validation-for="Amount"></span>
-                </div>
 
-            }*@
         </div>
 
         <!-- Currency Selection -->

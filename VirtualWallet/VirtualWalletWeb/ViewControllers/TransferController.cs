@@ -116,6 +116,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!ModelState.IsValid)
                 {
+                    this.ViewData["ErrorMessage"] = (model.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
                     return View("CreateTransfer", model);
                 }
 
