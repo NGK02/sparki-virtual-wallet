@@ -1,13 +1,8 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
-using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.Services;
+using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
@@ -31,7 +26,6 @@ namespace VirtualWalletTests.CardServiceTests
         [TestMethod]
         public void DeleteCard_ValidCardIdAndUserId_CardDeletedSuccessfully()
         {
-            // Arrange
             int userId = 123;
             int cardId = 456;
 
@@ -48,17 +42,14 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act
             cardService.DeleteCard(cardId, userId);
 
-            // Assert
             cardRepositoryMock.Verify(repo => repo.DeleteCard(cardToDelete), Times.Once);
         }
 
         [TestMethod]
         public void DeleteCard_CardNotFound_ThrowsEntityNotFoundException()
         {
-            // Arrange
             int userId = 123;
             int cardId = 456;
 
@@ -70,7 +61,6 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             Assert.ThrowsException<EntityNotFoundException>(() => cardService.DeleteCard(cardId, userId));
         }
     }

@@ -26,7 +26,6 @@ namespace VirtualWalletTests.CardServiceTests
         [TestMethod]
         public void GetCardById_ValidCardAndUser_ReturnsCard()
         {
-            // Arrange
             int cardId = 1;
             int userId = 123;
 
@@ -46,17 +45,14 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act
             var resultCard = cardService.GetCardById(cardId, userId);
 
-            // Assert
             Assert.AreEqual(expectedCard, resultCard);
         }
 
         [TestMethod]
         public void GetCardById_CardNotFound_ThrowsEntityNotFoundException()
         {
-            // Arrange
             int cardId = 1;
             int userId = 123;
 
@@ -64,14 +60,12 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             Assert.ThrowsException<EntityNotFoundException>(() => cardService.GetCardById(cardId, userId));
         }
 
         [TestMethod]
         public void GetCardById_UnauthorizedAccess_ThrowsUnauthorizedOperationException()
         {
-            // Arrange
             int cardId = 1;
             int userId = 123;
 
@@ -91,7 +85,6 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             Assert.ThrowsException<UnauthorizedOperationException>(() => cardService.GetCardById(cardId, userId));
         }
     }

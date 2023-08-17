@@ -25,7 +25,6 @@ namespace VirtualWalletTests.CardServiceTests
         [TestMethod]
         public void CreateCard_ValidCard_CardAddedSuccessfully()
         {
-            // Arrange
             int userId = 123;
 
             var user = new User {
@@ -55,7 +54,6 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             var ex = Assert.ThrowsException<ArgumentException>(() => cardService.CreateCard(card, userId));
             Assert.AreEqual("A card with the provided number already exists.", ex.Message);
         }
@@ -63,7 +61,6 @@ namespace VirtualWalletTests.CardServiceTests
         [TestMethod]
         public void CreateCard_CardNumberExists_ThrowsArgumentException()
         {
-            // Arrange
             int userId = 123;
 
             var user = new User
@@ -95,14 +92,12 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             Assert.ThrowsException<ArgumentException>(() => cardService.CreateCard(card, userId));
         }
 
         [TestMethod]
         public void CreateCard_CardNumberDoesNotExist_CardCreatedSuccessfully()
         {
-            // Arrange
             int userId = 123;
             var cardNumber = 1234567890123456;
 
@@ -126,7 +121,6 @@ namespace VirtualWalletTests.CardServiceTests
 
             var cardService = new CardService(authManagerMock.Object, cardRepositoryMock.Object, userServiceMock.Object);
 
-            // Act and Assert
             var card = new Card
             {
                 CardHolder = "Georgi Georgiev",
@@ -146,7 +140,6 @@ namespace VirtualWalletTests.CardServiceTests
                 Assert.Fail($"CreateCard threw an unexpected exception: {ex}");
             }
 
-            // Additional Asserts
             cardRepositoryMock.Verify(repo => repo.AddCard(card), Times.Once);
             Assert.AreEqual(user, card.User);
             Assert.AreEqual(userId, card.UserId);
