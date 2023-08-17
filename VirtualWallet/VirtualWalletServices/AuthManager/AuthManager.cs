@@ -105,18 +105,6 @@ namespace VirtualWallet.Business.AuthManager
 			}
 		}
 
-		//public User IsAuthenticated(string userName, string password)
-		//{
-		//	var user = userService.GetUserByUsername(userName);
-		//	string loginPasswordToBASE64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
-		//	if (user.Password == loginPasswordToBASE64)
-		//	{
-		//		return user;
-		//	}
-
-		//	throw new UnauthenticatedOperationException("Invalid username or password!");
-		//}
-
 		public void IsBlocked(string[] splitCredentials)
 		{
 			var user = IsAuthenticated(splitCredentials);
@@ -128,12 +116,6 @@ namespace VirtualWallet.Business.AuthManager
 
 		public bool IsBlocked(User user)
 		{
-			//if (user.RoleId == (int)RoleName.Blocked)
-			//{
-			//	return true;
-			//}
-			//return false;
-
 			return user.RoleId == (int)RoleName.Blocked;
 		}
 
