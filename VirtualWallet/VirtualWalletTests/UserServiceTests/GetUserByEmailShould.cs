@@ -42,6 +42,7 @@ namespace VirtualWalletTests.UserServiceTests
 			Assert.AreEqual(user, result);
 
 		}
+
 		[TestMethod]
 		public void Throw_When_User_NotFound()
 		{
