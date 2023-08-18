@@ -15,37 +15,11 @@
     <title>Sparki</title>
     <link rel="icon" href="~/assets/favicon.ico">
 
-    @*Command for updating main.css:
-    cd D:\Downloads\Works\Telerik\FinalProject\VirtualWallet\VirtualWalletWeb
-    .\tailwindcss.exe -i .\wwwroot\input.css -o .\wwwroot\main.css --watch*@
-
     <link href="~/main.css" rel="stylesheet" />
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-
-            darkMode: 'class',
-            content: ["./views/**/*.cshtml"],
-            theme: {
-                extend: {
-                    animation: {
-                        'spin-slow': 'spin 5s linear infinite',
-                    },
-                    fontFamily: {
-                        'montserrat': ['Montserrat', 'sans-serif'],
-                    },
-                },
-            },
-            plugins: [],
-
-        }
-    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
     <script>
-        // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
         if (
             localStorage.getItem('color-theme') === 'dark' ||
             (!('color-theme' in localStorage) &&
@@ -56,21 +30,6 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
-
-    @* Да се махне след като минем на CLI *@
-    <style>
-        .thin-scrollbar {
-            scrollbar-width: thin;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: #737373;
-        }
-    </style>
 </head>
 
 <body class="scroll-smooth grid grid-rows-[auto_1fr_auto] min-h-screen bg-neutral-50 dark:bg-neutral-900 font-montserrat">
@@ -231,10 +190,9 @@
         </ul>
     </footer>
 
-    @*TODO: Преизползване на код за тези два скрипта?*@
     <script>
-        const menuBtn = document.querySelector('#menu-btn'); // Hamburger Icon
-        const navMenu = document.querySelector('#nav-menu'); // Menu
+        const menuBtn = document.querySelector('#menu-btn');
+        const navMenu = document.querySelector('#nav-menu');
 
         menuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('hidden');
