@@ -15,9 +15,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class SearchByShould
 	{
-		[TestMethod]
-		public void SearchBy_Should_Return_Specific_User()
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
+		public void ReturnUser_When_InputIsValid()
 		{
+			//Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -39,44 +50,37 @@ namespace VirtualWalletTests.UserServiceTests
 				Username = "Random"
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo=>repo.SearchBy(queryParams)).Returns(user);
 
-			userRepomock.Setup(repo=>repo.SearchBy(queryParams)).Returns(user);
+			// Act
+			var result = sut.SearchBy(queryParams);
 
-			var result=sut.SearchBy(queryParams);
-
+			//Assert
 			Assert.AreEqual(user,result);
 		}
 		[TestMethod]
-		public void SearchBy_Should_Throw_When_Invalid_Input()
+		public void Throw_When_InputIsInvalid()
 		{
-
+			//Arrange
 			var queryParams = new UserQueryParameters();
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
-
+			//Act & Assert
 			Assert.ThrowsException<InvalidOperationException>(() => sut.SearchBy(queryParams));
 		}
 
 		[TestMethod]
 		public void SearchBy_Should_Throw_When_User_Is_Null()
 		{
-
+			//Arrange
 			var queryParams = new UserQueryParameters
 			{
 				PhoneNumber = "1234567890"
 			};	
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.SearchBy(queryParams)).Returns((User)null);
 
-			userRepomock.Setup(repo => repo.SearchBy(queryParams)).Returns((User)null);
-
+			//Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.SearchBy(queryParams));
 		}
-
-
 	}
 }

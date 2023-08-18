@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,21 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class CreateUserShould
 	{
-		[TestMethod]
-		public void CreateUser_When_All_Input_Is_Valid()
+		private Mock<IUserRepository> userRepoMock;
+		private UserService sut;
+
+		[TestInitialize]
+		public void TestInitialize() 
 		{
+			this.userRepoMock = new Mock<IUserRepository>();
+			this.sut = new UserService(userRepoMock.Object);
+		}
+
+		[TestMethod]
+		public void CreateUser_When_InputIsValid()
+		{
+
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -33,23 +46,23 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			};
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.CreateUser(It.IsAny<User>())).Returns(true);
 			userRepoMock.Setup(repo => repo.EmailExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.UsernameExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.PhoneNumberExists(It.IsAny<string>())).Returns(false);
 
-
+			// Act
 			var result = sut.CreateUser(user);
 
+			// Assert
 			Assert.IsTrue(result);
-
 		}
+
 		[TestMethod]
-		public void Throw_When_Email_Exist()
+		public void Throw_When_EmailExist()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -65,21 +78,20 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			};
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.CreateUser(It.IsAny<User>())).Returns(true);
 			userRepoMock.Setup(repo => repo.EmailExists(It.IsAny<string>())).Returns(true);
 			userRepoMock.Setup(repo => repo.UsernameExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.PhoneNumberExists(It.IsAny<string>())).Returns(false);
 
-
+			//Act & Assert
 			Assert.ThrowsException<EmailAlreadyExistException>(() => sut.CreateUser(user));
 		}
 
 		[TestMethod]
-		public void Throw_When_Username_Exist()
+		public void Throw_When_UsernameExist()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -95,21 +107,20 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			};
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.CreateUser(It.IsAny<User>())).Returns(true);
 			userRepoMock.Setup(repo => repo.EmailExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.UsernameExists(It.IsAny<string>())).Returns(true);
 			userRepoMock.Setup(repo => repo.PhoneNumberExists(It.IsAny<string>())).Returns(false);
 
-
+			// Act & Assert
 			Assert.ThrowsException<UsernameAlreadyExistException>(() => sut.CreateUser(user));
 		}
 
 		[TestMethod]
-		public void Throw_When_PhoneNumber_Exist()
+		public void Throw_When_PhoneNumberExist()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -125,15 +136,13 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			};
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.CreateUser(It.IsAny<User>())).Returns(true);
 			userRepoMock.Setup(repo => repo.EmailExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.UsernameExists(It.IsAny<string>())).Returns(false);
 			userRepoMock.Setup(repo => repo.PhoneNumberExists(It.IsAny<string>())).Returns(true);
 
-
+			//Act & Assert
 			Assert.ThrowsException<PhoneNumberAlreadyExistException>(() => sut.CreateUser(user));
 		}
 

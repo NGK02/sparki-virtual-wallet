@@ -14,9 +14,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class GetUsersShould
 	{
-		[TestMethod]
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
 		public void Retrun_All_Users()
 		{
+			// Arrange
 			var users = new List<User> {
 			new User
 			{
@@ -50,28 +61,23 @@ namespace VirtualWalletTests.UserServiceTests
 			}
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.GetUsers()).Returns(users);
 
-			userRepomock.Setup(repo => repo.GetUsers()).Returns(users);
-
-
+			// Act
 			var result = sut.GetUsers();
 
+			// Assert
 			Assert.AreEqual(users, result);
 		}
 
 		[TestMethod]
-		public void Throw_Exception_When_NoUsersFound()
+		public void Throw_When_NoUsersFound()
 		{
+			// Arrange
 			var users = new List<User>();
+			userRepoMock.Setup(repo => repo.GetUsers()).Returns(users);
 
-
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
-
-			userRepomock.Setup(repo => repo.GetUsers()).Returns(users);
-
+			// Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.GetUsers());
 		}
 	}

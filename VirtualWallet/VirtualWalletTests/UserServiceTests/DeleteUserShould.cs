@@ -14,9 +14,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class DeleteUserShould
 	{
-		[TestMethod]
-		public void Deleteuser_Should_Delete_By_Id()
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
+		public void DeleteById_When_InputIsValid()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -35,35 +46,31 @@ namespace VirtualWalletTests.UserServiceTests
 
 			int? id = 1;
 			string username = null;
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id)).Returns(user);
 			userRepoMock.Setup(repo => repo.DeleteUser(user)).Returns(true);
 
+			// Act & Assert
 			Assert.IsTrue(sut.DeleteUser(username, id));
-
 		}
 
 		[TestMethod]
-		public void Deleteuser_Should_Throw_When_UserNotFound_By_Id()
+		public void Throw_When_UserNotFoundById()
 		{
-
-
+			// Arrange
 			int? id = 1;
 			string username = null;
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById((int)id));
 
+			// Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.DeleteUser(username, id));
-
 		}
 
 		[TestMethod]
-		public void Deleteuser_Should_Delete_By_Username()
+		public void Delete_When_ValidInput()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -82,41 +89,36 @@ namespace VirtualWalletTests.UserServiceTests
 
 			int? id = null;
 			string username = "test";
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username)).Returns(user);
 			userRepoMock.Setup(repo => repo.DeleteUser(user)).Returns(true);
 
+			// Act & Assert
 			Assert.IsTrue(sut.DeleteUser(username, id));
-
 		}
 
 		[TestMethod]
-		public void Deleteuser_Should_Throw_When_UserNotFound_By_Username()
+		public void Throw_When_UserNotFound()
 		{
+			// Arrange
 			int? id = null;
 			string username = "test";
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserByUsername(username));
 
+			// Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.DeleteUser(username, id));
-
 		}
 
 		[TestMethod]
-		public void Deleteuser_Should_Throw_When_Not_Provided_Input()
+		public void Throw_When_NotProvidedInput()
 		{
+			//Arrange
 			int? id = null;
 			string username = null;
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
-
+			//Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.DeleteUser(username, id));
-
 		}
 	}
 }
