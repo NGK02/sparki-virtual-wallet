@@ -78,12 +78,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -132,12 +127,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View(filledLoginForm);
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -244,12 +234,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View(filledForm);
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -267,12 +252,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+           
         }
 
         [HttpGet]
@@ -310,12 +290,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpPost]
@@ -368,13 +343,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -472,12 +441,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -560,13 +524,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -595,13 +553,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
     }
 }
