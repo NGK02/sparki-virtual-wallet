@@ -34,5 +34,13 @@ namespace VirtualWallet.Web.ViewControllers
         {
             return View();
         }
+
+        public IActionResult Error()
+        {
+            // TODO да логвам ексепшъна в някакъв файл или тук или във Middleware
+            this.ViewData["ErrorMessage"] ="An error occurred. Please try again later.";
+            this.HttpContext.Response.StatusCode = 500;
+            return View("Error");
+        }
     }
 }
