@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net;
+using System.Security.Policy;
 using System.Text.Json;
 using VirtualWallet.Business.Exceptions;
 
@@ -41,7 +42,8 @@ namespace VirtualWallet.Web.Helper
                         // unhandled error
                         //TODO да логвам ексепшъна в някаквъ файл
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        context.Response.Redirect("Error"); 
+                        var homeErrorUrl = context.Request.PathBase + "/Home/Error";
+                        context.Response.Redirect(homeErrorUrl);
                         return;
                 }
 
