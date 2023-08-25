@@ -66,10 +66,6 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
         }
 
         [HttpGet("{id}")]
@@ -100,10 +96,6 @@ namespace VirtualWallet.Web.ApiControllers
             catch (ArgumentException ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -146,10 +138,6 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
         }
 
 
@@ -180,10 +168,7 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
+
         }
 
         [HttpPost("{id}/exchange")]
@@ -222,10 +207,7 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
+
         }
 
         [HttpGet("{id}/exchanges")]
@@ -257,10 +239,6 @@ namespace VirtualWallet.Web.ApiControllers
             catch (ArgumentException ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

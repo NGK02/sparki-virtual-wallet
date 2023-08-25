@@ -25,29 +25,40 @@ namespace VirtualWallet.Web.Helper
             {
                 var response = context.Response;
                 response.ContentType = "application/json";
+                bool isApiRequest = context.Request.Path.StartsWithSegments("/api");
 
-                switch (error)
+                if (isApiRequest)
                 {
-                    // custom application error
-                    case DuplicateEntityException e:
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        break;
-                    case EmailAlreadyExistException e:
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        break;
-                    case EntityAlreadyAdminException e:
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        break;
-                    default:
-                        // unhandled error
-                        //TODO да логвам ексепшъна в някаквъ файл
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        var homeErrorUrl = context.Request.PathBase + "/Home/Error";
-                        context.Response.Redirect(homeErrorUrl);
-                        return;
+                    //TODO да логвам ексепшъна в някакъв файл
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    //var developerErrorMessage = error.Message; логване на грешката
+                    
+                }
+                else
+                {
+                    switch (error)
+                    {
+                        // custom application error
+                        case DuplicateEntityException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case EmailAlreadyExistException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case EntityAlreadyAdminException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        default:
+                            // unhandled error
+                            //TODO да логвам ексепшъна в някакъв файл
+                            response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            var homeErrorUrl = context.Request.PathBase + "/Home/Error";
+                            context.Response.Redirect(homeErrorUrl);
+                            return;
+                    }
                 }
 
-                var result = JsonSerializer.Serialize(new { message = error?.Message });
+                var result = JsonSerializer.Serialize(new { message = "An error occurred. Please try again later." });
                 await response.WriteAsync(result);
             }
         }
