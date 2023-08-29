@@ -129,7 +129,20 @@ Sparki Virtual Wallet
     * Amount
     * Exchanged Amount
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
-
+    
+## Administrative part
+* When an admin is logged into the system, they gain access to the Admin panel. Within the Admin panel, admins are able to search for users based on their username, email address or phone number.
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDownAdmin.PNG)
+    <br><br>
+* From the Admin panel, administrators have access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/AdminPanel.PNG)
+    <br><br>
+* If you try to access the any other user's data without being an admin. You will be greeted by our awesome custom error page!
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ErrorPageDark.gif)
+    <br><br>
 ## Responsive design
 * Here are some screencaps from out app on mobile to show it is fully responsive!
     <br><br>
