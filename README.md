@@ -5,6 +5,9 @@ Sparki Virtual Wallet
 
 >The project is developed on the ASP.NET Core 6 framework with a graphic UI built with MVC and TailWind CSS entirely from scratch - no templates/themes used. We've also integrated some public API's which provide great added functionality.
 
+#### You can visit Sparki at - https://sparkiwalletweb.azurewebsites.net
+<br>
+
 ## Project Description
 ### Key Features:
 * **Email verification** - Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account.
@@ -127,19 +130,12 @@ Sparki Virtual Wallet
     * Exchanged Amount
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
 
-## Administrative part
-* When an admin is logged into the system, they gain access to the Admin panel. Within the Admin panel, admins are able to search for users based on their username, email address or phone number.
+## Responsive design
+* Here are some screencaps from out app on mobile to show it is fully responsive!
     <br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/DropDownAdmin.PNG)
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Responsive.png)
     <br><br>
-* From the Admin panel, administrators have access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
-    <br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/AdminPanel.PNG)
-    <br><br>
-* If you try to access the any other user's data without being an admin. You will be greeted by our awesome custom error page!
-    <br><br>
-    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ErrorPageDark.gif)
-    <br><br>
+
 ## API
 * Sparki Wallet provides a REST API documentation in Swagger, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations.
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/API.PNG)
@@ -150,7 +146,7 @@ Sparki Virtual Wallet
 
 ## Installation
 * Download project from the repository.
-* Connect Database and seed the stored data inside.(use commands below)
+* Connect Database and seed the stored data inside. You can do this by installing the NuGet package Microsoft.EntityFrameworkCore for VS and running the following commands:
 ```
 add-migration initial
 update-database
