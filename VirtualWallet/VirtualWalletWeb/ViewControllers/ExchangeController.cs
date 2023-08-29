@@ -6,6 +6,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.Dto.ExchangeDto;
 using VirtualWallet.Dto.ViewModels.CurrencyViewModels;
+using VirtualWallet.Dto.ViewModels.ExchangeViewModels;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Web.Helper.Contracts;
 
@@ -32,7 +33,7 @@ namespace VirtualWallet.Web.ViewControllers
 			this.exchangeService = exchangeService;
 		}
 
-		public IActionResult MakeExchange(CreateExcahngeDto createExchange)
+		public IActionResult CreateExchange(CreateExchangeViewModel createExchange)
 		{
 			try
 			{
@@ -53,7 +54,8 @@ namespace VirtualWallet.Web.ViewControllers
 			}
 		}
 
-		public IActionResult ConfirmExchange(CreateExcahngeDto createExchange)
+		[HttpPost]
+		public IActionResult ConfirmExchange(CreateExchangeViewModel createExchange)
 		{
 			try
 			{
@@ -69,7 +71,7 @@ namespace VirtualWallet.Web.ViewControllers
 					currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
 					ViewData["Currencies"] = currencies;
 					this.ViewData["ErrorMessage"] = (createExchange.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
-					return View("MakeExchange", createExchange);
+					return View("CreateExchange", createExchange);
 				}
 
 				var loggedUserId = this.HttpContext.Session.GetInt32("userId");
@@ -89,19 +91,19 @@ namespace VirtualWallet.Web.ViewControllers
 			{
 				this.ViewData["ErrorMessage"] = e.Message;
 				ViewData["Currencies"] = LoadCurrencies();
-				return View("MakeExchange", createExchange);
+				return View("CreateExchange", createExchange);
 			}
 			catch (EntityNotFoundException e)
 			{
 				this.ViewData["ErrorMessage"] = e.Message;
 				ViewData["Currencies"] = LoadCurrencies();
-				return View("MakeExchange", createExchange);
+				return View("CreateExchange", createExchange);
 			}
 			catch (ArgumentException e)
 			{
 				this.ViewData["ErrorMessage"] = e.Message;
 				ViewData["Currencies"] = LoadCurrencies();
-				return View("MakeExchange", createExchange);
+				return View("CreateExchange", createExchange);
 			}
 			catch (Exception e)
 			{
@@ -110,8 +112,9 @@ namespace VirtualWallet.Web.ViewControllers
 				return View("Error");
 			}
 		}
+
 		[HttpPost]
-		public IActionResult FinalizeExchange(CreateExcahngeDto createExchange)
+		public IActionResult FinalizeExchange(CreateExchangeViewModel createExchange)
 		{
 			try
 			{
@@ -129,7 +132,7 @@ namespace VirtualWallet.Web.ViewControllers
 			{
 				this.ViewData["ErrorMessage"] = e.Message;
 				ViewData["Currencies"] = LoadCurrencies();
-				return View("MakeExchange", createExchange);
+				return View("CreateExchange", createExchange);
 			}
 			catch (Exception e)
 			{

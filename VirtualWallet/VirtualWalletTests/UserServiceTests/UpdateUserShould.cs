@@ -15,9 +15,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class UpdateUserShould
 	{
-		[TestMethod]
-		public void UpdateUser_ByUsername_Should_Update()
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
+		public void UpdateUserByUsername_When_InputIsValid()
 		{
+			// Arrange
 			User userToBeUpdated = new User
 			{
 				FirstName = "Test"
@@ -49,19 +60,20 @@ namespace VirtualWalletTests.UserServiceTests
 
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.UpdateUser(new string("test"), userNewValues)).Returns(userNewValues);
+			userRepoMock.Setup(repo=>repo.GetUserByUsername(new string("test"))).Returns(userToBeUpdated);
 
-			userRepomock.Setup(repo => repo.UpdateUser(new string("test"), userNewValues)).Returns(userNewValues);
-			userRepomock.Setup(repo=>repo.GetUserByUsername(new string("test"))).Returns(userToBeUpdated);
+			// Act
+			var result = sut.UpdateUser(new string("test"), userNewValues);
 
-			var result=sut.UpdateUser(new string("test"), userNewValues);
-
+			//Assert
 			Assert.AreEqual(userNewValues, result);
 		}
+
 		[TestMethod]
-		public void UpdateUser_ById_Should_Update()
+		public void UpdateUserById_When_InputIsValid()
 		{
+			// Arrange
 			int someId = 1;
 			User userToBeUpdated = new User
 			{
@@ -94,19 +106,20 @@ namespace VirtualWalletTests.UserServiceTests
 
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.UpdateUser(someId, userNewValues)).Returns(userNewValues);
+			userRepoMock.Setup(repo => repo.GetUserById(someId)).Returns(userToBeUpdated);
 
-			userRepomock.Setup(repo => repo.UpdateUser(someId, userNewValues)).Returns(userNewValues);
-			userRepomock.Setup(repo => repo.GetUserById(someId)).Returns(userToBeUpdated);
-
+			// Act
 			var result = sut.UpdateUser(someId, userNewValues);
 
+			// Assert
 			Assert.AreEqual(userNewValues, result);
 		}
+
 		[TestMethod]
-		public void UpdateUser_ByUsername_Should_Throw_When_UserToUpdate_NotFound()
+		public void Throw_When_UserToUpdateByUsernameNotFound()
 		{
+			// Arrange
 			User userNewValues = new User
 			{
 				FirstName = "TestFirstName"
@@ -123,17 +136,16 @@ namespace VirtualWalletTests.UserServiceTests
 
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.UpdateUser(new string("test"), userNewValues)).Returns(userNewValues);
 
-			userRepomock.Setup(repo => repo.UpdateUser(new string("test"), userNewValues)).Returns(userNewValues);
-
+			//Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(()=>sut.UpdateUser(new string("test"), userNewValues));
 		}
 
 		[TestMethod]
 		public void UpdateUser_ById_Should_Throw_When_UserToUpdate_NotFound()
 		{
+			//Arrange
 			int someId = 1;
 
 			User userNewValues = new User
@@ -152,11 +164,9 @@ namespace VirtualWalletTests.UserServiceTests
 
 			};
 
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
+			userRepoMock.Setup(repo => repo.UpdateUser(someId, userNewValues)).Returns(userNewValues);
 
-			userRepomock.Setup(repo => repo.UpdateUser(someId, userNewValues)).Returns(userNewValues);
-
+			//Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.UpdateUser(someId, userNewValues));
 		}
 	}

@@ -44,6 +44,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.referralService = referralService;
             this.walletService = walletService;
         }
+
         [HttpGet]
         public IActionResult ViewUser(int id)
         {
@@ -77,13 +78,9 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -130,12 +127,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View(filledLoginForm);
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -213,7 +205,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!string.IsNullOrEmpty(filledForm.ReferralToken))
                 {
-                    var referral = referralService.FindReferralByToken(filledForm.ReferralToken);
+                    var referral = referralService.GetReferralByToken(filledForm.ReferralToken);
                     var referrer = userService.GetUserById(referral.ReferrerId);
 
                     if (referrer.ReferralCount < 5)
@@ -242,12 +234,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View(filledForm);
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -265,12 +252,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+           
         }
 
         [HttpGet]
@@ -308,12 +290,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpPost]
@@ -355,7 +332,7 @@ namespace VirtualWallet.Web.ViewControllers
                 EmailSender emailSender = new EmailSender();
                 emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 
-                ViewBag.SuccessMessage = "Activation email was sent to your Email. Please activate your account!";
+                ViewBag.SuccessMessage = "Activation email was sent to your email. Please activate your account!";
 
                 return View("Successful");
             }
@@ -366,13 +343,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -470,12 +441,7 @@ namespace VirtualWallet.Web.ViewControllers
                 this.ViewData["ErrorMessage"] = e.Message;
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                this.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                this.ViewData["ErrorMessage"] = e.Message;
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -523,7 +489,7 @@ namespace VirtualWallet.Web.ViewControllers
                 while (!isUnique)
                 {
                     confirmationToken = EmailSender.GenerateConfirmationToken();
-                    var existingReferral = referralService.FindReferralByToken(confirmationToken);
+                    var existingReferral = referralService.GetReferralByToken(confirmationToken);
 
                     if (existingReferral == null)
                     {
@@ -558,13 +524,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
 
         [HttpGet]
@@ -572,7 +532,7 @@ namespace VirtualWallet.Web.ViewControllers
         {
             try
             {
-                var referral = referralService.FindReferralByToken(token);
+                var referral = referralService.GetReferralByToken(token);
 
                 if (referral.IsConfirmed)
                 {
@@ -593,13 +553,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 return View("Error");
             }
-            catch (Exception e)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = e.Message;
-
-                return View("Error");
-            }
+            
         }
     }
 }

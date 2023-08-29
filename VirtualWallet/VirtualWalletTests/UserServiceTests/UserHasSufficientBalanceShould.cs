@@ -13,9 +13,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class UserHasSufficientBalanceShould
 	{
-		[TestMethod]
-		public void UserHasSufficientBalance_Should_Retrun_True()
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
+		public void Retrun_True_WhenBalanceIsSufficient()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName",
@@ -36,19 +47,17 @@ namespace VirtualWalletTests.UserServiceTests
 					}
 				}
 			};
-
-
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
 
 			int lowerAmount = 500;
 
+			// Act & Assert
 			Assert.IsTrue(sut.UserHasSufficientBalance(user, lowerAmount, 1));
-
 		}
+
 		[TestMethod]
-		public void UserHasSufficientBalance_Should_Retrun_False()
+		public void Retrun_False_WhenUserBalanceIsInsufficient()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName",
@@ -70,14 +79,10 @@ namespace VirtualWalletTests.UserServiceTests
 				}
 			};
 
-
-			var userRepomock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepomock.Object);
-
 			int lowerAmount = 1500;
 
+			//Act & Assert
 			Assert.IsFalse(sut.UserHasSufficientBalance(user, lowerAmount, 1));
-
 		}
 	}
 }

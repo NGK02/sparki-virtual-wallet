@@ -9,7 +9,7 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IUserService userService;
         private readonly IWalletTransactionService walletTransactionService;
 
-        public HomeController(IUserService userService,IWalletTransactionService walletTransactionService)
+        public HomeController(IUserService userService, IWalletTransactionService walletTransactionService)
         {
             this.userService = userService;
             this.walletTransactionService = walletTransactionService;
@@ -25,9 +25,22 @@ namespace VirtualWallet.Web.ViewControllers
             return View(HomePageViewModel);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Successful()
         {
             return View();
+        }
+
+        public IActionResult Error()
+        {
+            // TODO да логвам ексепшъна в някакъв файл или тук или във Middleware
+            this.ViewData["ErrorMessage"] ="An error occurred. Please try again later.";
+            this.HttpContext.Response.StatusCode = 500;
+            return View("Error");
         }
     }
 }

@@ -1,15 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualWallet.Business.AuthManager;
+﻿using VirtualWallet.Business.AuthManager;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
-using VirtualWallet.DataAccess;
 using VirtualWallet.DataAccess.Models;
-using VirtualWallet.DataAccess.Repositories;
 using VirtualWallet.DataAccess.Repositories.Contracts;
 
 namespace VirtualWallet.Business.Services
@@ -62,7 +54,6 @@ namespace VirtualWallet.Business.Services
         {
             var cards = cardRepository.GetUserCards(userId);
 
-            //Да се махне ексепшъна?
             if (!cards.Any() || cards == null)
             {
                 throw new EntityNotFoundException("No cards available.");
@@ -71,7 +62,12 @@ namespace VirtualWallet.Business.Services
             return cards;
         }
 
-        public void AddCard(Card card, int userId)
+        public IEnumerable<Card> ListUserCards(int userId)
+        {
+            return cardRepository.GetUserCards(userId);
+        }
+
+        public void CreateCard(Card card, int userId)
         {
             var user = userService.GetUserById(userId);
 
@@ -104,12 +100,6 @@ namespace VirtualWallet.Business.Services
             }
 
             cardRepository.UpdateCard(card, cardToUpdate);
-        }
-
-        //Това не е добро решение на проблема с ексепшъните - да се рефакторира GetUserCards().
-        public IEnumerable<Card> ListUserCards(int userId)
-        {
-            return cardRepository.GetUserCards(userId);
         }
     }
 }

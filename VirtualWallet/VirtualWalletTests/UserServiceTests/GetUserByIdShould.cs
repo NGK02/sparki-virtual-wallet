@@ -15,9 +15,20 @@ namespace VirtualWalletTests.UserServiceTests
 	[TestClass]
 	public class GetUserByIdShould
 	{
-		[TestMethod]
-		public void Return_User_When_Valid_Input()
+        private Mock<IUserRepository> userRepoMock;
+        private UserService sut;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.userRepoMock = new Mock<IUserRepository>();
+            this.sut = new UserService(userRepoMock.Object);
+        }
+
+        [TestMethod]
+		public void ReturnUser_When_InputIsValid()
 		{
+			// Arrange
 			User user = new User
 			{
 				FirstName = "TestFirstName"
@@ -33,28 +44,24 @@ namespace VirtualWalletTests.UserServiceTests
 				PhoneNumber = "0896342516"
 
 			};
-			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new UserService(userRepoMock.Object);
 
 			userRepoMock.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(user);
 
+			// Act
 			var result = sut.GetUserById(It.IsAny<int>());
 
+			// Assert
 			Assert.AreEqual(user, result);
-
 		}
+
 		[TestMethod]
-		public void Throw_When_User_NotFound()
+		public void Throw_When_UserNotFound()
 		{
-
-			var userRepoMock = new Mock<IUserRepository>();
-
-			var sut = new UserService(userRepoMock.Object);
-
+			// Arrange
 			userRepoMock.Setup(repo => repo.GetUserById(It.IsAny<int>()));
 
+			// Act & Assert
 			Assert.ThrowsException<EntityNotFoundException>(() => sut.GetUserById(It.IsAny<int>()));
-
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace VirtualWallet.Web.ApiControllers
                 authManager.IsContentCreatorOrAdmin(user, userId);
                 var card = mapper.Map<Card>(cardInfoDto);
 
-                cardService.AddCard(card, userId);
+                cardService.CreateCard(card, userId);
                 return StatusCode(201, cardInfoDto);
             }
             catch (EntityNotFoundException ex)

@@ -56,7 +56,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userServiceMock.Setup(service=>service.GetUsers()).Returns(users);
 
@@ -96,7 +96,7 @@ namespace VirtualWalletTests.AdminServiceTests
 
 			var userServiceMock = new Mock<IUserService>();
 			var userRepoMock = new Mock<IUserRepository>();
-			var sut = new AdminService(userServiceMock.Object, userRepoMock.Object);
+			var sut = new AdminService(userRepoMock.Object, userServiceMock.Object);
 
 			userServiceMock.Setup(service => service.SearchBy(userQueryParams)).Returns(user);
 

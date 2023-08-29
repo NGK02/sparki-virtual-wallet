@@ -3,9 +3,9 @@
     <div class="flex mx-auto justify-center max-w-md w-full px-8 py-8 bg-neutral-100 rounded-3xl shadow-2xl border-purple-400 border flex-col justify-center items-center inline-flex
 				dark:bg-neutral-800 dark:border-puerple-400">
 
-        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">UnBlock user @this.ViewBag.userUsernameToUnBlock</div>
+        <div class="mb-4 text-center text-neutral-900 text-3xl font-extrabold dark:text-neutral-50">Unblock user @this.ViewBag.userUsernameToUnblock</div>
 
-        <div class="mb-8 text-center text-neutral-900 text-sm font-extrabold dark:text-neutral-50">Confirm you'r action</div>
+        <div class="mb-8 text-center text-neutral-900 text-sm dark:text-neutral-50">Confirm your action</div>
 
 
 
@@ -18,28 +18,20 @@
         }
         @if (this.ViewData["ErrorMessage"] is null)
         {
-            <form asp-controller="Admin" asp-action="UnBlock" asp-route-id="@this.ViewBag.userIdToUnBlock" method="post" class="w-full mb-2 flex-col justify-start items-start flex">
-                <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
+            <form asp-controller="Admin" asp-action="Unblock" asp-route-id="@this.ViewBag.userIdToUnblock" method="post" class="w-full mb-2 flex-col justify-start items-start flex">
+                <button class="w-full px-4 py-2 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
 
                     <div class="text-neutral-50 text-base font-medium">
-                        UnBlock
+                        Unblock
                     </div>
 
                 </button>
             </form>
         }
-        
-       @* <button type="submit" class="w-full p-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
-            <div class="text-neutral-50 text-sm font-medium">
-                <a asp-controller="Admin" asp-action="SearchUser" class="text-sm">
-                    <span>Admin Panel</span>
-                </a>
-            </div>
-        </button>*@
         <form asp-controller="Admin" asp-action="SearchUser" method="get" class="w-full mb-2 flex-col justify-start items-start flex">
-            <button class="w-full px-4 py-4 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
+            <button class="w-full px-4 py-2 bg-purple-500 rounded-md shadow justify-center items-center inline-flex hover:bg-purple-400 transition duration-300" type="submit">
 
-                <div class="text-neutral-50 text-sm font-medium">
+                <div class="text-neutral-50 text-base font-medium">
                     Admin panel
                 </div>
 

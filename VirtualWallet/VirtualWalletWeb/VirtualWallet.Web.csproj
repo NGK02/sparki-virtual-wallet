@@ -42,4 +42,11 @@
 	  <None Include="wwwroot\Assets\favicon.ico" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="wwwroot\Assets\naskoPhotoBw.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

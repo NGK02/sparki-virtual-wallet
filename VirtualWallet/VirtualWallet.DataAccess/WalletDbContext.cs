@@ -222,7 +222,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 2,
                 WalletId = 3,
                 IsConfirmed = true,
-                PhoneNumber="0888888883"
+                PhoneNumber="0888888883",
+                ProfilePicPath="/Assets/GeneratedProfilePics/77764ebb-a43a-4bbb-a6ea-2fc5697df26b_SU.png"
 
                 //123
             },
@@ -237,7 +238,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 2,
                 WalletId = 4,
                 IsConfirmed = true,
-                PhoneNumber="0888888884"
+                PhoneNumber="0888888884",
+                ProfilePicPath="/Assets/GeneratedProfilePics/aff0050a-910b-432c-8754-d3dc0e40293b_VC.png"
 
                 //123
             },
@@ -268,7 +270,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 3,
                 WalletId = 6,
                 IsConfirmed = true,
-                PhoneNumber="0888888886"
+                PhoneNumber="0888888886",
+                ProfilePicPath="/Assets/OriginalProfilePics/0fb0bfde-2f25-409c-8e9e-48f97a35ddf1_gandalfAdmin.png"
 
 
                 //123
@@ -284,7 +287,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 2,
                 WalletId = 7,
                 IsConfirmed = true,
-                PhoneNumber="0888888887"
+                PhoneNumber="0888888887",
+                ProfilePicPath="/Assets/GeneratedProfilePics/7448d873-3696-4afb-921e-ace24f80379a_AP.png"
 
                 //123
             },
@@ -299,7 +303,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 2,
                 WalletId = 8,
                 IsConfirmed = true,
-                PhoneNumber="0888888888"
+                PhoneNumber="0888888888",
+                ProfilePicPath="/Assets/GeneratedProfilePics/6cdf3f00-c41f-46a2-a6fe-577b9901cf31_EP.png"
 
                 //123
             },
@@ -314,7 +319,8 @@ namespace VirtualWallet.DataAccess
                 RoleId = 2,
                 WalletId = 9,
                 IsConfirmed = true,
-                PhoneNumber="0888888889"
+                PhoneNumber="0888888889",
+                ProfilePicPath="/Assets/GeneratedProfilePics/b3d6b069-1325-4793-a0ad-375cd7f23d7e_KL.png"
 
                 //123
             },
@@ -330,7 +336,7 @@ namespace VirtualWallet.DataAccess
                 WalletId = 10,
                 IsConfirmed = true,
                 PhoneNumber="0888888810",
-                ProfilePicPath="/Assets/OriginalProfilePics/naskoPhoto.jpeg"
+                ProfilePicPath="/Assets/OriginalProfilePics/naskoPhoto.png"
 
                 //123
             },
@@ -339,7 +345,7 @@ namespace VirtualWallet.DataAccess
                 Id = 11,
                 FirstName = "Nikolai",
                 LastName = "Gigov",
-                Username = "Kitaeca_02",
+                Username = "Niki",
                 Email = "kitaeca@gmail.com",
                 Password = "MTIz",
                 RoleId = 2,
@@ -445,7 +451,7 @@ namespace VirtualWallet.DataAccess
                 },
                 new Balance()
                 {
-                    WalletId = 6,
+                    WalletId = 5,
                     CurrencyId = 1,
                     Amount = 45,
                 },
@@ -502,6 +508,36 @@ namespace VirtualWallet.DataAccess
                     WalletId = 11,
                     CurrencyId = 5,
                     Amount = 999,
+                },
+                new Balance
+                {
+                    WalletId = 1,
+                    CurrencyId = 2,
+                    Amount = 99,
+                },
+                new Balance
+                {
+                    WalletId = 1,
+                    CurrencyId = 5,
+                    Amount = 59,
+                },
+                new Balance
+                {
+                    WalletId = 2,
+                    CurrencyId = 1,
+                    Amount = 34,
+                },
+                new Balance
+                {
+                    WalletId = 2,
+                    CurrencyId = 4,
+                    Amount = 5686,
+                },
+                new Balance
+                {
+                    WalletId = 3,
+                    CurrencyId = 4,
+                    Amount = 57856,
                 },
             };
 
@@ -596,7 +632,7 @@ namespace VirtualWallet.DataAccess
                 new WalletTransaction
                 {
                     Id = 3,
-                    RecipientId = 6,
+                    RecipientId = 11,
                     SenderId = 10,
                     CurrencyId = 1,
                     Amount = 12m,
@@ -741,7 +777,7 @@ namespace VirtualWallet.DataAccess
                 {
                     Id = 19,
                     RecipientId = 5,
-                    SenderId = 6,
+                    SenderId = 10,
                     CurrencyId = 5,
                     Amount = 29m,
                     CreatedOn = new DateTime(2023, 8, 15)
@@ -786,7 +822,7 @@ namespace VirtualWallet.DataAccess
                 {
                     Id = 24,
                     RecipientId = 10,
-                    SenderId = 6,
+                    SenderId = 5,
                     CurrencyId = 5,
                     Amount = 37m,
                     CreatedOn = DateTime.Now.AddDays(-1)
@@ -803,7 +839,7 @@ namespace VirtualWallet.DataAccess
                 new WalletTransaction()
                 {
                     Id = 26,
-                    RecipientId = 6,
+                    RecipientId = 3,
                     SenderId = 10,
                     CurrencyId = 4,
                     Amount = 3458m,
@@ -912,7 +948,7 @@ namespace VirtualWallet.DataAccess
                 {
                     Id=38,
                     RecipientId=7,
-                    SenderId=6,
+                    SenderId=10,
                     CurrencyId=2,
                     Amount=12m,
                     CreatedOn=DateTime.Now.AddDays(-2),
@@ -965,7 +1001,7 @@ namespace VirtualWallet.DataAccess
                 new WalletTransaction()
                 {
                     Id=44,
-                    RecipientId=6,
+                    RecipientId=5,
                     SenderId=10,
                     CurrencyId=2,
                     Amount=38m,

@@ -21,7 +21,11 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IMapper mapper;
         private readonly ITransferService transferService;
 
-        public TransferController(IAuthManagerMvc authManagerMVC, ICardService cardService, ICurrencyService currencyService, IMapper mapper, ITransferService transferService)
+        public TransferController(IAuthManagerMvc authManagerMVC,
+                                    ICardService cardService,
+                                    ICurrencyService currencyService,
+                                    IMapper mapper,
+                                    ITransferService transferService)
         {
             this.authManagerMVC = authManagerMVC;
             this.cardService = cardService;
@@ -31,7 +35,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpGet]
-        public IActionResult Add(TransferViewModel model)
+        public IActionResult CreateTransfer(TransferViewModel model)
         {
             try
             {
@@ -94,7 +98,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Confirm(TransferViewModel model)
+        public IActionResult ConfirmTransfer(TransferViewModel model)
         {
             try
             {
@@ -105,19 +109,18 @@ namespace VirtualWallet.Web.ViewControllers
 
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
 
+                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
+                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
+                ViewData["Cards"] = cards;
+                ViewData["Currencies"] = currencies;
+
                 if (!ModelState.IsValid)
                 {
-                    return View("Add", model);
+                    this.ViewData["ErrorMessage"] = (model.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
+                    return View("CreateTransfer", model);
                 }
 
-                var transfer = mapper.Map<Transfer>(model);
-
-                transferService.AddTransfer(transfer);
-
-                ViewBag.SuccessMessage = $"Successfully transfered amount!";
-                return View("Successful");
-
-                //return View("Temp", model);
+                return View(model);
             }
             catch (EntityNotFoundException ex)
             {
@@ -164,74 +167,7 @@ namespace VirtualWallet.Web.ViewControllers
         }
 
         [HttpPost]
-        public IActionResult Create(TransferViewModel model)
-        {
-            try
-            {
-                if (!authManagerMVC.IsLogged("LoggedUser"))
-                {
-                    return RedirectToAction("Login", "User");
-                }
-
-                if (!ModelState.IsValid || model.CurrencyId == 0 || model.CardId == 0)
-                {
-                    int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-                    var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
-                    var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
-                    ViewData["Cards"] = cards;
-                    ViewData["Currencies"] = currencies;
-                    this.ViewData["ErrorMessage"] = (model.Amount <= 0 ? "Please provide positive Amount!" : "Please provide input!");
-                    return View("Add", model);
-                }
-
-                return RedirectToAction("Details", model);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (InsufficientFundsException ex)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                Response.StatusCode = StatusCodes.Status403Forbidden;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (ArgumentException ex)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-                ViewData["ErrorMessage"] = ex.Message;
-
-                return View("Error");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Details(TransferViewModel model)
+        public IActionResult FinalizeTransfer(TransferViewModel model)
         {
             try
             {
@@ -244,15 +180,17 @@ namespace VirtualWallet.Web.ViewControllers
 
                 if (!ModelState.IsValid)
                 {
-                    return View("Add", model);
+                    return View("CreateTransfer", model);
                 }
 
-                var cards = cardService.GetUserCards(userId).Select(c => mapper.Map<SelectCardViewModel>(c)).ToList();
-                var currencies = currencyService.GetCurrencies().Select(c => mapper.Map<CurrencyViewModel>(c)).ToList();
-                ViewData["Cards"] = cards;
-                ViewData["Currencies"] = currencies;
+                var transfer = mapper.Map<Transfer>(model);
 
-                return View(model);
+                transferService.CreateTransfer(transfer);
+
+                ViewBag.SuccessMessage = $"Successfully transfered amount!";
+                return View("Successful");
+
+                //return View("Temp", model);
             }
             catch (EntityNotFoundException ex)
             {

@@ -79,13 +79,13 @@ namespace VirtualWallet.Web.ApiControllers
         }
 
         [HttpPut("unblock")]
-        public IActionResult UnBlockUser(string credentials, [FromQuery] int? id, string username, string email, string phoneNumber)
+        public IActionResult UnblockUser(string credentials, [FromQuery] int? id, string username, string email, string phoneNumber)
         {
             try
             {
                 var splitCredentials = authManager.SplitCredentials(credentials);
                 authManager.IsAdmin(splitCredentials);
-                adminService.UnBlockUser(id, username, email, phoneNumber);
+                adminService.UnblockUser(id, username, email, phoneNumber);
                 return Ok("User unblocked successfully!");
             }
             catch (EntityNotFoundException e)
@@ -100,7 +100,7 @@ namespace VirtualWallet.Web.ApiControllers
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
-            catch (EntityAlreadyUnBlockedException e)
+            catch (EntityAlreadyUnblockedException e)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, e.Message);
             }
