@@ -27,144 +27,60 @@ namespace VirtualWallet.Web.ApiControllers
         [HttpPost]
         public IActionResult AddTransfer([FromBody] CreateTransferDto createTransferDto, [FromHeader] string credentials, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-				var transfer = mapper.Map<Transfer>(createTransferDto);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-				transferService.CreateTransfer(transfer);
-                var mappedTransfer = mapper.Map<GetTransferDto>(transfer);
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var transfer = mapper.Map<Transfer>(createTransferDto);
 
-                return StatusCode(201, mappedTransfer);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            transferService.CreateTransfer(transfer);
+            var mappedTransfer = mapper.Map<GetTransferDto>(transfer);
+
+            return StatusCode(201, mappedTransfer);
+
         }
 
         [HttpDelete("{transferId}")]
         public IActionResult DeleteTransfer([FromHeader] string credentials, int transferId, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                transferService.DeleteTransfer(transferId, userId);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                return Ok("Transfer deleted successfully.");
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            transferService.DeleteTransfer(transferId, userId);
+
+            return Ok("Transfer deleted successfully.");
+
         }
 
         [HttpGet("{transferId}")]
         public IActionResult GetTransferById([FromHeader] string credentials, int transferId, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                var mappedTransfer = mapper.Map<GetTransferDto>(transferService.GetTransferById(transferId, userId));
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                return Ok(mappedTransfer);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var mappedTransfer = mapper.Map<GetTransferDto>(transferService.GetTransferById(transferId, userId));
+
+            return Ok(mappedTransfer);
+
         }
 
         [HttpGet]
         public IActionResult GetUserTransfers([FromHeader] string credentials, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                var mappedTransfers = transferService.GetUserTransfers(userId).Select(t => mapper.Map<GetTransferDto>(t)).ToList();
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                return Ok(mappedTransfers);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var mappedTransfers = transferService.GetUserTransfers(userId).Select(t => mapper.Map<GetTransferDto>(t)).ToList();
+
+            return Ok(mappedTransfers);
+
         }
     }
 }
