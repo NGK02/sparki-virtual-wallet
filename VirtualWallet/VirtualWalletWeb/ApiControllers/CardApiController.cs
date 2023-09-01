@@ -31,107 +31,44 @@ namespace VirtualWallet.Web.ApiControllers
         [HttpPost]
         public IActionResult AddCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int userId)
         {
-            try
-            {
-				var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                var card = mapper.Map<Card>(cardInfoDto);
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var card = mapper.Map<Card>(cardInfoDto);
 
-                cardService.CreateCard(card, userId);
-                return StatusCode(201, cardInfoDto);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            cardService.CreateCard(card, userId);
+            return StatusCode(201, cardInfoDto);
+
         }
 
         [HttpDelete("{cardId}")]
         public IActionResult DeleteCard([FromHeader] string credentials, int cardId, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                cardService.DeleteCard(cardId, userId);
-                return Ok("Card deleted successfully.");
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
+
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            cardService.DeleteCard(cardId, userId);
+
+            return Ok("Card deleted successfully.");
+
         }
 
         [HttpGet("{cardId}")]
         public IActionResult GetCardById([FromHeader] string credentials, int cardId, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                var card = cardService.GetCardById(cardId, userId);
-                var cardInfoDto = mapper.Map<CardInfoDto>(card);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                return Ok(cardInfoDto);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var card = cardService.GetCardById(cardId, userId);
+            var cardInfoDto = mapper.Map<CardInfoDto>(card);
+
+            return Ok(cardInfoDto);
+
         }
 
         [HttpGet]
@@ -172,37 +109,16 @@ namespace VirtualWallet.Web.ApiControllers
         [HttpPut("{cardId}")]
         public IActionResult UpdateCard([FromBody] CardInfoDto cardInfoDto, [FromHeader] string credentials, int cardId, int userId)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, userId);
-                var card = mapper.Map<Card>(cardInfoDto);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                cardService.UpdateCard(card, cardId, userId);
-                return Ok(card);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, userId);
+            var card = mapper.Map<Card>(cardInfoDto);
+
+            cardService.UpdateCard(card, cardId, userId);
+            return Ok(card);
+
         }
     }
 }

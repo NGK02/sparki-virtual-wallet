@@ -29,25 +29,61 @@ namespace VirtualWallet.Web.Helper
 
                 if (isApiRequest)
                 {
-                    //TODO да логвам ексепшъна в някакъв файл
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    //var developerErrorMessage = error.Message; логване на грешката
-                    
+                    switch (error)
+                    {//Не съм добавил AutoMapperMappingException и DbUpdateException като те се кечват като Exception и даваме Internal Serv Error
+                        case EntityNotFoundException e:
+                            response.StatusCode = (int) HttpStatusCode.NotFound; 
+                            break;
+                        case UnauthenticatedOperationException e:
+                            response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            break;
+                        case UnauthorizedOperationException e:
+                            response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            break;
+                        case InsufficientFundsException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case UsernameAlreadyExistException e:
+                            response.StatusCode = (int)HttpStatusCode.Conflict;
+                            break;
+                        case EmailAlreadyExistException e:
+                            response.StatusCode = (int)HttpStatusCode.Conflict;
+                            break;
+                        case PhoneNumberAlreadyExistException e:
+                            response.StatusCode = (int)HttpStatusCode.Conflict;
+                            break;
+                        case EntityAlreadyBlockedException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case EntityAlreadyUnblockedException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case InvalidOperationException e:
+                            response.StatusCode= (int)HttpStatusCode.BadRequest;
+                            break;
+                        case ArgumentNullException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        case ArgumentException e:
+                            response.StatusCode = (int)HttpStatusCode.BadRequest;
+                            break;
+                        default:
+                        //TODO да логвам ексепшъна в някакъв файл
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            //var developerErrorMessage = error.Message; логване на грешката
+                            // "An error occurred. Please try again later."
+                            break;
+                    }
+
+                    var result = JsonSerializer.Serialize(new { message = error.Message });
+                    await response.WriteAsync(result);
                 }
                 else
                 {
                     switch (error)
                     {
                         // custom application error
-                        case DuplicateEntityException e:
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            break;
-                        case EmailAlreadyExistException e:
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            break;
-                        case EntityAlreadyAdminException e:
-                            response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            break;
+                        
                         default:
                             // unhandled error
                             //TODO да логвам ексепшъна в някакъв файл
@@ -58,8 +94,6 @@ namespace VirtualWallet.Web.Helper
                     }
                 }
 
-                var result = JsonSerializer.Serialize(new { message = "An error occurred. Please try again later." });
-                await response.WriteAsync(result);
             }
         }
     }

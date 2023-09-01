@@ -43,203 +43,95 @@ namespace VirtualWallet.Web.ApiControllers
         [HttpPost("")]
         public IActionResult CreateUser([FromBody] CreateUserDto userDto)
         {
-            try
-            {
-                User mappedUser = mapper.Map<User>(userDto);
 
-                var ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
-                mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(ProfilePic).Result;
+            User mappedUser = mapper.Map<User>(userDto);
 
-                _ = userService.CreateUser(mappedUser);
+            var ProfilePic = imageManager.GeneratePlaceholderAvatar(userDto.FirstName, userDto.LastName);
+            mappedUser.ProfilePicPath = imageManager.UploadGeneratedProfilePicInRoot(ProfilePic).Result;
 
-                return Ok("Registered Successfully!");
-            }
-            catch (EmailAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, e.Message);
-            }
-            catch (UsernameAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, e.Message);
-            }
-            catch (PhoneNumberAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, e.Message);
-            }
+            _ = userService.CreateUser(mappedUser);
+
+            return Ok("Registered Successfully!");
+
         }
 
         [HttpGet("{id}")]
         public IActionResult GetUserById([FromHeader] string credentials, [FromRoute] int id)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                _ = authManager.IsAuthenticated(splitCredentials);
-                string username = splitCredentials[0];
-                var user = userService.GetUserById(id);
-                var mappedUser = mapper.Map<GetUserDto>(user);
-                return Ok(mappedUser);
 
-            }
-            catch (EntityNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (UnauthenticatedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            _ = authManager.IsAuthenticated(splitCredentials);
+            string username = splitCredentials[0];
+
+            var user = userService.GetUserById(id);
+            var mappedUser = mapper.Map<GetUserDto>(user);
+
+            return Ok(mappedUser);
+
         }
 
         [HttpPut("{id}")]
         public IActionResult EditUser([FromHeader] string credentials, [FromRoute] int id, [FromBody] UpdateUserDto userValues)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var loggedUser = authManager.IsAuthenticated(splitCredentials);
-                authManager.IsContentCreatorOrAdmin(loggedUser, id);
-                string username = splitCredentials[0];
-                var mapped = mapper.Map<User>(userValues);
-                var updatedUser = userService.UpdateUser(username, mapped);
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var loggedUser = authManager.IsAuthenticated(splitCredentials);
+            authManager.IsContentCreatorOrAdmin(loggedUser, id);
+            string username = splitCredentials[0];
 
-                return Ok("Updated Successfully!");
+            var mapped = mapper.Map<User>(userValues);
+            var updatedUser = userService.UpdateUser(username, mapped);
 
-            }
-            catch (EntityNotFoundException e)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, e.Message);
-            }
-            catch (UnauthenticatedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
-            catch (EmailAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, e.Message);
-            }
-            catch (PhoneNumberAlreadyExistException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, e.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return Ok("Updated Successfully!");
+
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult DeleteUser([FromHeader] string credentials, [FromRoute] int id)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var loggedUser = authManager.IsAuthenticated(splitCredentials);
-                authManager.IsContentCreatorOrAdmin(loggedUser, id);
-                string username = splitCredentials[0];
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var loggedUser = authManager.IsAuthenticated(splitCredentials);
+            authManager.IsContentCreatorOrAdmin(loggedUser, id);
+            string username = splitCredentials[0];
 
-                imageManager.DeleteProfilePicFromRoot(loggedUser.ProfilePicPath);
-                userService.DeleteUser(username, null);
-                return Ok("User Deleted!");
+            imageManager.DeleteProfilePicFromRoot(loggedUser.ProfilePicPath);
+            userService.DeleteUser(username, null);
 
-            }
-            catch (EntityNotFoundException e)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, e.Message);
-            }
-            catch (UnauthenticatedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
+            return Ok("User Deleted!");
+
 
         }
 
         [HttpPost("{id}/exchange")]
         public async Task<IActionResult> ExchangeCurrency([FromHeader] string credentials, [FromRoute] int id, [FromBody] CreateExchangeDto excahngeAmounts)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var loggedUser = authManager.IsAuthenticated(splitCredentials);
-                authManager.IsContentCreatorOrAdmin(loggedUser, id);
-                //string username = splitCredentials[0];
 
-                var userWallet = walletService.GetWalletById(id);
-                _ = walletService.ValidateFunds(userWallet, excahngeAmounts);
-                var exchange = await walletService.ExchangeFunds(excahngeAmounts, loggedUser.WalletId, id);
-                var GetExchange = mapper.Map<GetExchangeDto>(exchange);
-                return Ok(GetExchange);
-            }
-            catch(EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (InsufficientFundsException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (UnauthenticatedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var loggedUser = authManager.IsAuthenticated(splitCredentials);
+            authManager.IsContentCreatorOrAdmin(loggedUser, id);
+
+            var userWallet = walletService.GetWalletById(id);
+            _ = walletService.ValidateFunds(userWallet, excahngeAmounts);
+            var exchange = await walletService.ExchangeFunds(excahngeAmounts, loggedUser.WalletId, id);
+            var GetExchange = mapper.Map<GetExchangeDto>(exchange);
+
+            return Ok(GetExchange);
 
         }
 
         [HttpGet("{id}/exchanges")]
         public IActionResult GetUserExchanges([FromHeader] string credentials, int id)
         {
-            try
-            {
-                var splitCredentials = authManager.SplitCredentials(credentials);
-                var user = authManager.IsAuthenticated(splitCredentials);
 
-                authManager.IsContentCreatorOrAdmin(user, id);
-                var parameters = new QueryParams();
-                var exchanges = exchangeService.GetUserExchanges(id,parameters).Select(e => mapper.Map<GetExchangeDto>(e));
+            var splitCredentials = authManager.SplitCredentials(credentials);
+            var user = authManager.IsAuthenticated(splitCredentials);
 
-                return Ok(exchanges);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (UnauthenticatedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
-            }
-            catch (UnauthorizedOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            authManager.IsContentCreatorOrAdmin(user, id);
+            var parameters = new QueryParams();
+            var exchanges = exchangeService.GetUserExchanges(id, parameters).Select(e => mapper.Map<GetExchangeDto>(e));
+
+            return Ok(exchanges);
+
         }
     }
 }
