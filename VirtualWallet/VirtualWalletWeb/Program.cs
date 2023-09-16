@@ -10,12 +10,15 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using VirtualWallet.Web.Helper.Contracts;
 using VirtualWallet.Web.Helper;
+using VirtualWallet.Dto.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.Configure<ApiKeys>(builder.Configuration.GetSection("ApiKeys"));
 
 builder.Services.AddScoped<IReferralRepository, ReferralRepository>();
 builder.Services.AddScoped<IReferralService, ReferralService>();

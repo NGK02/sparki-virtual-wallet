@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services.Contracts;
@@ -6,6 +7,7 @@ using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Dto.Config;
 
 namespace VirtualWallet.Business.Services
 {
@@ -14,13 +16,14 @@ namespace VirtualWallet.Business.Services
         private readonly IExchangeRepository exchangeRepository;
         private readonly IMemoryCache cache;
         private readonly IUserService userService;
-        private readonly string apiKey = "33dcab244a4be6a1beae8f4c";
+        private readonly IOptions<ApiKeys> _keys;
 
-        public ExchangeService(IExchangeRepository exchangeRepository, IMemoryCache cache, IUserService userService)
+        public ExchangeService(IExchangeRepository exchangeRepository, IMemoryCache cache, IUserService userService,IOptions<ApiKeys> keys)
         {
             this.cache = cache;
             this.exchangeRepository = exchangeRepository;
             this.userService = userService;
+            this._keys = keys;
         }
 
         public async Task<Dictionary<string, decimal>> GetAllExchangeRates(CurrencyCode forCurr)
@@ -32,7 +35,7 @@ namespace VirtualWallet.Business.Services
                 try
                 {
                     client.BaseAddress = new Uri("https://www.exchangerate-api.com");
-                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{apiKey}/latest/{forCurrString}");
+                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{_keys.Value.ExchangeRateApikey}/latest/{forCurrString}");
                     var stringResult = await response.Content.ReadAsStringAsync();
 
                     var data = JObject.Parse(stringResult);
@@ -57,7 +60,7 @@ namespace VirtualWallet.Business.Services
                 try
                 {
                     client.BaseAddress = new Uri("https://www.exchangerate-api.com");
-                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{apiKey}/pair/{from}/{to}");
+                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{_keys.Value.ExchangeRateApikey}/pair/{from}/{to}");
                     var stringResult = await response.Content.ReadAsStringAsync();
 
                     JObject jsonObject = JObject.Parse(stringResult);
@@ -84,7 +87,7 @@ namespace VirtualWallet.Business.Services
                 try
                 {
                     client.BaseAddress = new Uri("https://www.exchangerate-api.com");
-                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{apiKey}/pair/{fromCurrString}/{toCurrString}/{amountString}");
+                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{_keys.Value.ExchangeRateApikey}/pair/{fromCurrString}/{toCurrString}/{amountString}");
                     var stringResult = await response.Content.ReadAsStringAsync();
 
                     JObject data = JObject.Parse(stringResult);
@@ -110,7 +113,7 @@ namespace VirtualWallet.Business.Services
                 try
                 {
                     client.BaseAddress = new Uri("https://www.exchangerate-api.com");
-                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{apiKey}/pair/{from}/{to}/{amount}");
+                    var response = await client.GetAsync($"https://v6.exchangerate-api.com/v6/{_keys.Value.ExchangeRateApikey}/pair/{from}/{to}/{amount}");
                     var stringResult = await response.Content.ReadAsStringAsync();
 
                     JObject data = JObject.Parse(stringResult);
