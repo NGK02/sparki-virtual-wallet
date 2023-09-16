@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq;
 using VirtualWallet.Business.Exceptions;
 using VirtualWallet.Business.Services;
@@ -6,6 +7,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.QueryParameters;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Dto.Config;
 
 namespace VirtualWalletTests.ExchangeServiceTests
 {
@@ -21,7 +23,9 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var user = new User();
             var queryParams = new QueryParams();
             List<Exchange> exchanges = new List<Exchange> { new Exchange() };
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object);
+            var keys = new Mock<IOptions<ApiKeys>>();
+
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, keys.Object);
 
             userServiceMock.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(user);
             exchangeRepoMock.Setup(repo => repo.GetUserExchanges(It.IsAny<int>(), queryParams)).Returns(exchanges);
@@ -40,7 +44,9 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var user = new User();
             var queryParams = new QueryParams();
             List<Exchange> exchanges = new List<Exchange>();
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object);
+            var keys = new Mock<IOptions<ApiKeys>>();
+
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, keys.Object);
 
             userServiceMock.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(user);
             exchangeRepoMock.Setup(repo => repo.GetUserExchanges(It.IsAny<int>(), queryParams)).Returns(exchanges);

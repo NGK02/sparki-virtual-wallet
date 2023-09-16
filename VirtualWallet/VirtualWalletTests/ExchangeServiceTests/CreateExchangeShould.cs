@@ -9,6 +9,8 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Business.Services;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using Microsoft.Extensions.Options;
+using VirtualWallet.Dto.Config;
 
 namespace VirtualWalletTests.ExchangeServiceTests
 {
@@ -23,8 +25,9 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var exchangeRepoMock = new Mock<IExchangeRepository>();
             var memoryCacheMock = new Mock<IMemoryCache>();
             var userServiceMock = new Mock<IUserService>();
+            var keys = new Mock<IOptions<ApiKeys>>();
 
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object);
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object,keys.Object);
 
             userServiceMock.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(user);
             exchangeRepoMock.Setup(repo => repo.AddExchange(exchange)).Returns(true);

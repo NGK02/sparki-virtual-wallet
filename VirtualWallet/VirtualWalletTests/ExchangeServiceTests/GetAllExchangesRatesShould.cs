@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq;
 using RichardSzalay.MockHttp;
 using System;
@@ -11,6 +12,7 @@ using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.DataAccess.Enums;
 using VirtualWallet.DataAccess.Models;
 using VirtualWallet.DataAccess.Repositories.Contracts;
+using VirtualWallet.Dto.Config;
 
 namespace VirtualWalletTests.ExchangeServiceTests
 {
@@ -27,14 +29,20 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var forCurr = currency;
             var expectedResponse = @"{""conversion_rates"":{""EUR"":0.85,""JPY"":110.5}}";
 
-            mockHttp.When($"https://v6.exchangerate-api.com/v6/{apiKey}/latest/{forCurr}")
-                    .Respond("application/json", expectedResponse);
 
             var exchangeRepoMock = new Mock<IExchangeRepository>();
             var memoryCacheMock = new Mock<IMemoryCache>();
             var userServiceMock = new Mock<IUserService>();
 
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object);
+            var apiKeys = new ApiKeys { ExchangeRateApikey = $"{apiKey}" };
+
+            var apiKeysOptions = Options.Create(apiKeys);
+
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, apiKeysOptions);
+
+            mockHttp.When($"https://v6.exchangerate-api.com/v6/{apiKey}/latest/{forCurr}")
+                    .Respond("application/json", expectedResponse);
+
 
 
             // Act
