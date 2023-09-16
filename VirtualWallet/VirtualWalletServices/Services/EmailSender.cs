@@ -1,15 +1,23 @@
-﻿using SendGrid;
+﻿using Microsoft.Extensions.Options;
+using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Text;
+using VirtualWallet.Dto.Config;
 
 namespace VirtualWallet.Business.Services
 {
     public class EmailSender
     {
+        private readonly IOptions<ApiKeys> _keys;
+
+        public EmailSender(IOptions<ApiKeys> keys)
+        {
+            _keys = keys;
+        }
+
         public async Task SendEmail(string subject, string toEmail, string toUser, string message)
         {
-            var apiKey = "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";
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient(_keys.Value.SendGridApiKey);
             var from = new EmailAddress("sparki-wallet@outlook.com", "Sparki Wallet");
             var to = new EmailAddress(toEmail, toUser);
             var plainTextContent = message;

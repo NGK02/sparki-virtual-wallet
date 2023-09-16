@@ -50,6 +50,8 @@ builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>(
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
 
+builder.Services.AddScoped<EmailSender, EmailSender>();
+
 builder.Services.AddMemoryCache();
 
 builder.Services.AddSwaggerGen();

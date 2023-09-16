@@ -27,6 +27,7 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IAuthManagerMvc authManagerMVC;
         private readonly IReferralService referralService;
         private readonly IWalletService walletService;
+        private readonly EmailSender emailSender;
 
         public UserController(IUserService userService,
                                 IAuthManager authManager,
@@ -34,7 +35,8 @@ namespace VirtualWallet.Web.ViewControllers
                                 IImageManager imageManager,
                                 IAuthManagerMvc authManagerMVC,
                                 IReferralService referralService,
-                                IWalletService walletService)
+                                IWalletService walletService,
+                                EmailSender emailSender)
         {
             this.userService = userService;
             this.authManager = authManager;
@@ -43,6 +45,7 @@ namespace VirtualWallet.Web.ViewControllers
             this.authManagerMVC = authManagerMVC;
             this.referralService = referralService;
             this.walletService = walletService;
+            this.emailSender = emailSender;
         }
 
         [HttpGet]
@@ -185,7 +188,7 @@ namespace VirtualWallet.Web.ViewControllers
                     user.ProfilePicPath = imageManager.UploadOriginalProfilePicInRoot(filledForm.ProfilePic).Result;
                 }
 
-                EmailSender emailSender = new EmailSender();
+                //EmailSender emailSender = new EmailSender();
                 string confirmationToken = EmailSender.GenerateConfirmationToken();
                 var expiryTimestamp = DateTime.UtcNow.AddHours(24);
 
@@ -329,7 +332,7 @@ namespace VirtualWallet.Web.ViewControllers
                 string emailMessage = $"Dear {user.FirstName}, please confirm your registration by clicking the link below:\n\n" +
                     $"{Url.Action("ConfirmEmail", "User", new { userId = user.Id, token = confirmationToken }, Request.Scheme)}";
 
-                EmailSender emailSender = new EmailSender();
+               // EmailSender emailSender = new EmailSender();
                 emailSender.SendEmail(emailSubject, user.Email, toUser, emailMessage).Wait();
 
                 ViewBag.SuccessMessage = "Activation email was sent to your email. Please activate your account!";
@@ -481,7 +484,7 @@ namespace VirtualWallet.Web.ViewControllers
 
                 int userId = HttpContext.Session.GetInt32("userId") ?? 0;
 
-                EmailSender emailSender = new EmailSender();
+               // EmailSender emailSender = new EmailSender();
                 string confirmationToken = "";
 
                 bool isUnique = false;
