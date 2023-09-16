@@ -9,7 +9,7 @@ namespace VirtualWalletTests.EmailSenderTests
         public void GenerateConfirmationTokenShould_GenerateTokenWithCorrectLength()
         {
             var expectedLength = 32;
-            var token = EmailSender.GenerateConfirmationToken(expectedLength);
+            var token = EmailSender.GenerateConfirmationToken();
 
             Assert.AreEqual(expectedLength, token.Length);
         }
@@ -19,7 +19,7 @@ namespace VirtualWalletTests.EmailSenderTests
         {
             var validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-            var token = EmailSender.GenerateConfirmationToken(validChars.Length);
+            var token = EmailSender.GenerateConfirmationToken();
 
             foreach (char c in token)
             {
@@ -36,7 +36,7 @@ namespace VirtualWalletTests.EmailSenderTests
 
             for (int i = 0; i < numTokens; i++)
             {
-                var token = EmailSender.GenerateConfirmationToken(tokenLength);
+                var token = EmailSender.GenerateConfirmationToken();
                 tokens.Add(token);
             }
 

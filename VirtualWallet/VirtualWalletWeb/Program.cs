@@ -50,7 +50,7 @@ builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>(
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
 
-builder.Services.AddScoped<EmailSender, EmailSender>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddMemoryCache();
 

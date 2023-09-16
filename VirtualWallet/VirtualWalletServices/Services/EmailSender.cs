@@ -2,11 +2,12 @@
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Text;
+using VirtualWallet.Business.Services.Contracts;
 using VirtualWallet.Dto.Config;
 
 namespace VirtualWallet.Business.Services
 {
-    public class EmailSender
+    public class EmailSender : IEmailSender
     {
         private readonly IOptions<ApiKeys> _keys;
 
@@ -26,8 +27,9 @@ namespace VirtualWallet.Business.Services
             var response = await client.SendEmailAsync(msg);
         }
 
-        public static string GenerateConfirmationToken(int length = 32)
+        public static string GenerateConfirmationToken()
         {
+            int length = 32;
             const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
             var result = new StringBuilder(length);
