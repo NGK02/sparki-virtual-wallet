@@ -144,7 +144,7 @@ Sparki Virtual Wallet
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ErrorPageDark.gif)
     <br><br>
 ## Responsive design
-* Here are some screencaps from out app on mobile to show it is fully responsive!
+* Here are some screencaps from our app on mobile to show it is fully responsive!
     <br><br>
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Responsive.png)
     <br><br>
