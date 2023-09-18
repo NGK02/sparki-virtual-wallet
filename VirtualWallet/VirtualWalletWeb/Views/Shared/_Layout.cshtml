@@ -4,7 +4,7 @@
     int? loggedUserId = Context.Session.GetInt32("userId");
     bool isAdmin = Context.Session.GetInt32("roleId") == (int)RoleName.Admin;
     string loggedUserProfilePicPath = Context.Session.GetString("profilePicPath");
-
+    string swaggerPath = "http://" + this.Context.Request.Host.Value + "/swagger";
 }
 
 <!DOCTYPE html>
@@ -14,6 +14,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sparki</title>
     <link rel="icon" href="~/assets/favicon.ico">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://sparkiwalletweb.azurewebsites.net/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sparki - Virtual Wallet">
+    <meta property="og:description" content="Send money to people and exchange currency with real-time exchange rates with our user-friendly aesthetic UI.">
+    <meta property="og:image" content="https://sparkiwalletweb.azurewebsites.net/assets/linkpreviewthumbnail.png">
 
     <link href="~/main.css" rel="stylesheet" />
 
@@ -58,13 +65,13 @@
 							dark:bg-neutral-800 dark:md:bg-transparent">
 
                     <li>
-                        <a href="http://localhost:7275/home/about" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+                        <a asp-controller="Home" asp-action="About" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">About</a>
                     </li>
 
                     <li>
-                        <a href="http://localhost:7275/swagger" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
+                        <a href="@swaggerPath" class="block py-2 pl-3 pr-4 text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">API</a>
                     </li>
@@ -108,12 +115,12 @@
                     else
                     {
                         <li>
-                            <a href="http://localhost:7275/User/Login" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
+                            <a asp-controller="User" asp-action="Login" method="get" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign in</a>
                         </li>
                         <li>
-                            <a href="http://localhost:7275/User/Register" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
+                            <a asp-controller="User" asp-action="Register" method="get" class="block py-2 pl-3 pr-4 w-full text-neutral-950 rounded hover:bg-purple-400
 											md:hover:bg-transparent md:hover:text-purple-400 transition duration-300 ease-in-out md:p-0 dark:text-neutral-50
 											md:dark:hover:text-purple-400 dark:hover:text-neutral-50 md:dark:hover:bg-transparent">Sign up</a>
                         </li>

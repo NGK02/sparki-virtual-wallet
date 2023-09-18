@@ -5,6 +5,9 @@ Sparki Virtual Wallet
 
 >The project is developed on the ASP.NET Core 6 framework with a graphic UI built with MVC and TailWind CSS entirely from scratch - no templates/themes used. We've also integrated some public API's which provide great added functionality.
 
+#### You can visit Sparki at - https://sparkiwalletweb.azurewebsites.net
+<br>
+
 ## Project Description
 ### Key Features:
 * **Email verification** - Secure your virtual wallet with email verification. It’s quick, easy, and adds an extra layer of protection to your account.
@@ -126,7 +129,7 @@ Sparki Virtual Wallet
     * Amount
     * Exchanged Amount
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ViewTransfers.PNG)
-
+    
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel. Within the Admin panel, admins are able to search for users based on their username, email address or phone number.
     <br><br>
@@ -140,6 +143,12 @@ Sparki Virtual Wallet
     <br><br>
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/ErrorPageDark.gif)
     <br><br>
+## Responsive design
+* Here are some screencaps from out app on mobile to show it is fully responsive!
+    <br><br>
+    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/Responsive.png)
+    <br><br>
+
 ## API
 * Sparki Wallet provides a REST API documentation in Swagger, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations.
     ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/API.PNG)
@@ -150,7 +159,7 @@ Sparki Virtual Wallet
 
 ## Installation
 * Download project from the repository.
-* Connect Database and seed the stored data inside.(use commands below)
+* Connect Database and seed the stored data inside. You can do this by installing the NuGet package Microsoft.EntityFrameworkCore for VS and running the following commands:
 ```
 add-migration initial
 update-database
@@ -180,5 +189,3 @@ update-database
 * Nikolai Gigov - [GitLab](https://gitlab.com/NG02)
 * Katrin Lilova - [GitLab](https://gitlab.com/katrinlilova)
 * Telerik Acedemy Official Project
-<br>
-    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/telerik.PNG)

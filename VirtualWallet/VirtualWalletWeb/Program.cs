@@ -23,8 +23,8 @@ builder.Services.Configure<ApiKeys>(builder.Configuration.GetSection("ApiKeys"))
 builder.Services.AddScoped<IReferralRepository, ReferralRepository>();
 builder.Services.AddScoped<IReferralService, ReferralService>();
 
-builder.Services.AddScoped<IAuthManager,AuthManager>();
-builder.Services.AddScoped<IImageManager,ImageManager>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
+builder.Services.AddScoped<IImageManager, ImageManager>();
 builder.Services.AddScoped<IAuthManagerMvc, AuthManagerMvc>();
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -58,7 +58,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<WalletDbContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddSession(options =>
@@ -82,15 +82,15 @@ app.UseDeveloperExceptionPage();
 
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -99,7 +99,7 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
