@@ -189,5 +189,3 @@ update-database
 * Nikolai Gigov - [GitLab](https://gitlab.com/NG02)
 * Katrin Lilova - [GitLab](https://gitlab.com/katrinlilova)
 * Telerik Acedemy Official Project
-<br>
-    ![Alt text](https://gitlab.com/project-one-group-five/virtual-wallet/-/raw/dev/ImagesForREADME/telerik.PNG)
