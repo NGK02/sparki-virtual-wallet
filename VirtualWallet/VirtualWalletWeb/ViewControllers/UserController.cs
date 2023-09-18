@@ -27,7 +27,7 @@ namespace VirtualWallet.Web.ViewControllers
         private readonly IAuthManagerMvc authManagerMVC;
         private readonly IReferralService referralService;
         private readonly IWalletService walletService;
-        private readonly EmailSender emailSender;
+        private readonly IEmailSender emailSender;
 
         public UserController(IUserService userService,
                                 IAuthManager authManager,
@@ -36,7 +36,7 @@ namespace VirtualWallet.Web.ViewControllers
                                 IAuthManagerMvc authManagerMVC,
                                 IReferralService referralService,
                                 IWalletService walletService,
-                                EmailSender emailSender)
+                                IEmailSender emailSender)
         {
             this.userService = userService;
             this.authManager = authManager;
