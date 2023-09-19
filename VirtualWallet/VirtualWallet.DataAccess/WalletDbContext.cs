@@ -191,7 +191,7 @@ namespace VirtualWallet.DataAccess
                 WalletId = 1,
                 IsConfirmed = true,
                 PhoneNumber="0888888881",
-                ProfilePicPath="/Assets/OriginalProfilePics/1d825707-a65e-4378-8e70-91030d7443bb_c372cf2e-0cab-43a0-81e1-73ea610f9dfd_ddh0598-18d7e667-d117-4b11-8ef0-244eb60bfa45.jpg"
+                ProfilePicPath="/Assets/OriginalProfilePics/1d825707-a65e-4378-8e70-91030d7443bb_c372cf2e-0cab-43a0.jpg"
 
                 //123
             },
@@ -207,7 +207,7 @@ namespace VirtualWallet.DataAccess
                 WalletId = 2,
                 IsConfirmed = true,
                 PhoneNumber="0888888882",
-                ProfilePicPath="/Assets/OriginalProfilePics/00305ad2-a944-49ef-ac46-036c00ec8387_1805f02d-058f-4396-b8e9-3286a4344754_650566858583572501.png"
+                ProfilePicPath="/Assets/OriginalProfilePics/00305ad2-a944-49ef-ac46-036c00ec8387_1805f02d-058f-4396-b8e9.png"
 
                 //123
             },

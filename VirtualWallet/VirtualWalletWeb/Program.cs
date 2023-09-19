@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using VirtualWallet.Web.Helper.Contracts;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Dto.Config;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
