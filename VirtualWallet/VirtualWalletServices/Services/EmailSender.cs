@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Text;
@@ -9,16 +10,19 @@ namespace VirtualWallet.Business.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IOptions<ApiKeys> _keys;
+        private readonly IOptions<ApiKeys> keys;
+        private readonly IConfiguration configuration;
 
-        public EmailSender(IOptions<ApiKeys> keys)
+        public EmailSender(IOptions<ApiKeys> keys, IConfiguration configuration)
         {
-            _keys = keys;
+            this.keys = keys;
+            this.configuration = configuration;
         }
 
         public async Task SendEmail(string subject, string toEmail, string toUser, string message)
         {
-            var client = new SendGridClient(_keys.Value.SendGridApiKey);
+            //var client = new SendGridClient(keys.Value.SendGridApiKey);
+            var client = new SendGridClient(configuration["ApiKeys:SendGridApiKey"]);
             var from = new EmailAddress("sparki-wallet@outlook.com", "Sparki Wallet");
             var to = new EmailAddress(toEmail, toUser);
             var plainTextContent = message;

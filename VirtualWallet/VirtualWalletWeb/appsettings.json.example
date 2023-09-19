@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server =.; Database = VirtualWallet; Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True"
+  },
+
+  "ApiKeys": {
+    "SendGridApiKey": "<Your SendGrid API Key>",
+    "ExchangeRateApikey": "<Your Exchange Rate API Key>"
+  }
+}

@@ -12,6 +12,7 @@ using VirtualWallet.Web.Helper.Contracts;
 using VirtualWallet.Web.Helper;
 using VirtualWallet.Dto.Config;
 using Azure.Identity;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,9 @@ builder.Services.AddScoped<IWalletService, WalletService>();
 
 builder.Services.AddScoped<IWalletTransactionRepository, WalletTransactionRepository>();
 builder.Services.AddScoped<IWalletTransactionService, WalletTransactionService>();
+
+var config = builder.Configuration;
+builder.Services.AddSingleton<IConfiguration>(config);
 
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
