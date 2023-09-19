@@ -165,8 +165,8 @@ add-migration initial
 update-database
 ```
 * Run the project 
-* Register 
-* Use all functionalities :)
+* Add the necessary data to ``appsettings.json.example`` and then convert it into ``appsettings.json`` file
+* ### Enjoy!
 
 ## Additionally
 * Exchange Rate API - https://www.exchangerate-api.com
