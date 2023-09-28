@@ -5,7 +5,9 @@ Sparki Virtual Wallet
 
 >The project is developed on the ASP.NET Core 6 framework with a graphic UI built with MVC and TailWind CSS entirely from scratch - no templates/themes used. We've also integrated some public API's which provide great added functionality.
 
-#### You can visit Sparki at - https://sparkiwalletweb.azurewebsites.net
+### You can visit Sparki at - https://sparkiwalletweb.azurewebsites.net
+
+Sparki won "Best Project" in Telerik Alpha C# 47!
 <br>
 
 ## Project Description
@@ -185,7 +187,7 @@ update-database
      * HTML
      * CSS
 ## Team Members
-* Atanas Iliev - [GitLab](https://gitlab.com/atanasiliev1293)
-* Nikolai Gigov - [GitLab](https://gitlab.com/NG02)
-* Katrin Lilova - [GitLab](https://gitlab.com/katrinlilova)
+* Atanas Iliev - [GitHub](https://gitlab.com/atanasiliev1293)
+* Nikolai Gigov - [GitHub](https://github.com/Nachosa)
+* Katrin Lilova - [GitHub](https://github.com/keti03)
 * Telerik Acedemy Official Project
