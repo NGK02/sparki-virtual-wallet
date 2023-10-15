@@ -157,7 +157,7 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
 
 ## Database Diagram
 * A detailed database diagram is included to provide a an idea for the underlying structure of Sparki Wallet. This diagram visually represents the relationships between different database tables and the structure of the data model.
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DataBaseDiagram.png)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DatabaseDiagram.png)
 
 ## Installation
 * Download project from the repository.
