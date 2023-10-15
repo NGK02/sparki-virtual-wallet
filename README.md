@@ -28,77 +28,77 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
 #### Login Page
 * The login page provides visitors with the opportunity to access the full potential of the website by logging in with their accounts, unlocking various features and functionalities.
 
-![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Login.PNG)
+![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Login.png)
 
 ### Register Page
 * Visitors can get some info on the website’s features and register to unlock the app’s full functionality.
 
-![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Register.PNG)
+![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Register.png)
 
 ### Logged User Options
 * Dashboard - Opens the Main Dashboard page.
 * View Profile - Opens detailed profile page.
 * Sign Out - Doesn't need description.
 
-![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DropDown.PNG)
+![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DropDown.png)
 
 ### View profile
 * On this page every user can see and edit their profile information.
 
-![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Profile.PNG)
+![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/Profile.png)
 
 ### Main Dashboard
 * Within this page, each user has an advanced overview of their financial landscape. Here users can review their balances, see details of their credit and debit cards, and a dynamic diagram illustrating their transactions from the past seven days.
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MainDashboard.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MainDashboard.png)
 
 ### Make Transfer
 * Every user can deposit into their wallet directly from their debit or credit card. Additionally, users have the freedom to initiate withdrawals.
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransfer.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransfer.png)
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransferForm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransferForm.png)
 
 * Readonly confirmation Page where you can confirm your transfer or edit it.
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransferConfirm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransferConfirm.png)
 
 * Message for successful transfer.
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/STransfer.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/STransfer.png)
 
     
 ### Make Exchange
 * Every user has the opportunity to exchange their currencies at the latest real-time rates. 
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchange.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchange.png)
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchangeForm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchangeForm.png)
 
 * Readonly confirmation page where you can check the rate and the expected amount and confirm your exchange or edit it.
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchangeConfirm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeExchangeConfirm.png)
 
 * Message for Successful Exchange.
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/SExchange.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/SExchange.png)
 
     ### Make Transaction
 * With just a few clicks, users can effortlessly send or receive funds from other users. 
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransaction.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransaction.png)
 
 * Users can find their recipient by Username, Email and Phone number. 
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransactionForm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransactionForm.png)
 
 * Readonly confirmation page where you can confirm your transaction or edit it (Only the Username of the recipient is shown).
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransactionConfirm.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/MakeTransactionConfirm.png)
 
 * Message for successful Transaction.
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/STransaction.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/STransaction.png)
 
 ## View Exchanges
 * Every user has the ability to view all their exchanges with options to Order them by Descending/Ascending and Sort them by:
@@ -108,7 +108,7 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
     * Amount
     * Exchanged Amount
 
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewExchanges.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewExchanges.png)
 
 ## View Transactions
 * Every user has the ability to view all their transactions with options to Order them by Descending/Ascending and Search or Sort them by:
@@ -121,7 +121,7 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
     * Date
     * Currency
     * Amount
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewTransactions.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewTransactions.png)
 
     ## View Transfers
 * Every user has the ability to view all their transfers with options to Order them by Descending/Ascending and Sort them by:
@@ -130,16 +130,16 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
     * To Currency
     * Amount
     * Exchanged Amount
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewTransfers.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/ViewTransfers.png)
     
 ## Administrative part
 * When an admin is logged into the system, they gain access to the Admin panel. Within the Admin panel, admins are able to search for users based on their username, email address or phone number.
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DropDownAdmin.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DropDownAdmin.png)
     <br><br>
 * From the Admin panel, administrators have access to all user profiles, allowing them to view detailed user information and manage user accounts effectively, including the ability to block or unblock accounts , view their profiles (by clicking on their names) and full history of their transactions (by clicking on username).
     <br><br>
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/AdminPanel.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/AdminPanel.png)
     <br><br>
 * If you try to access the any other user's data without being an admin. You will be greeted by our awesome custom error page!
     <br><br>
@@ -153,11 +153,11 @@ Sparki won "Best Project" in Telerik Alpha C# 47!
 
 ## API
 * Sparki Wallet provides a REST API documentation in Swagger, allowing developers to easily explore and understand the available endpoints, request/response structures, and supported operations.
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/API.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/API.png)
 
 ## Database Diagram
 * A detailed database diagram is included to provide a an idea for the underlying structure of Sparki Wallet. This diagram visually represents the relationships between different database tables and the structure of the data model.
-    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DataBaseDiagram.PNG)
+    ![Alt text](https://github.com/NGK02/sparki-virtual-wallet/blob/main/ImagesForREADME/DataBaseDiagram.png)
 
 ## Installation
 * Download project from the repository.
