@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VirtualWallet.Business.Exceptions;
 using Microsoft.Extensions.Options;
 using VirtualWallet.Dto.Config;
+using Microsoft.Extensions.Configuration;
 
 namespace VirtualWalletTests.ExchangeServiceTests
 {
@@ -27,12 +28,12 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var exchangeRepoMock = new Mock<IExchangeRepository>();
             var memoryCacheMock = new Mock<IMemoryCache>();
             var userServiceMock = new Mock<IUserService>();
-            var keys = new Mock<IOptions<ApiKeys>>();
+            var config = new Mock<IConfiguration>();
 
             Dictionary<string, decimal> conversionRates = new Dictionary<string, decimal>();
             conversionRates.Add(CurrencyCode.USD.ToString(), 1.3m);
 
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, keys.Object);
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, config.Object);
 
             decimal result = sut.CalculateExchangeResult(conversionRates, currency, 1000);
 
@@ -45,12 +46,12 @@ namespace VirtualWalletTests.ExchangeServiceTests
             var exchangeRepoMock = new Mock<IExchangeRepository>();
             var memoryCacheMock = new Mock<IMemoryCache>();
             var userServiceMock = new Mock<IUserService>();
-            var keys = new Mock<IOptions<ApiKeys>>();
+            var config = new Mock<IConfiguration>();
 
             Dictionary<string, decimal> conversionRates = new Dictionary<string, decimal>();
 
 
-            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, keys.Object);
+            var sut = new ExchangeService(exchangeRepoMock.Object, memoryCacheMock.Object, userServiceMock.Object, config.Object);
 
             Assert.ThrowsException<EntityNotFoundException>(() => sut.CalculateExchangeResult(conversionRates, currency, 1000));
 

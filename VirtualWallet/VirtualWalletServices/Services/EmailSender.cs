@@ -10,12 +10,10 @@ namespace VirtualWallet.Business.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IOptions<ApiKeys> keys;
         private readonly IConfiguration configuration;
 
-        public EmailSender(IOptions<ApiKeys> keys, IConfiguration configuration)
+        public EmailSender(IConfiguration configuration)
         {
-            this.keys = keys;
             this.configuration = configuration;
         }
 

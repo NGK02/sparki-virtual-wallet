@@ -17,19 +17,16 @@ namespace VirtualWallet.Business.Services
         private readonly IExchangeRepository exchangeRepository;
         private readonly IMemoryCache cache;
         private readonly IUserService userService;
-        private readonly IOptions<ApiKeys> keys;
         private readonly IConfiguration configuration;
 
         public ExchangeService(IExchangeRepository exchangeRepository,
             IMemoryCache cache,
             IUserService userService,
-            IOptions<ApiKeys> keys,
             IConfiguration configuration)
         {
             this.cache = cache;
             this.exchangeRepository = exchangeRepository;
             this.userService = userService;
-            this.keys = keys;
             this.configuration = configuration;
         }
 
